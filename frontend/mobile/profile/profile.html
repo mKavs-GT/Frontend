@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MKAVS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+
+
+    <!-- Main Content -->
+    <main class="main-content" style="display: none;">
+        <header class="top-bar">
+            <a href="../index.html" class="nav-logo">
+                <img src="../../images/MKAVS.png" alt="MKAVS" style="height: 20px;">
+            </a>
+
+
+            <div class="header-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                <a href="/auth/logout" class="logout-header-btn" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+
+                <div class="menu-container">
+                    <button class="hamburger-btn" id="menuToggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <nav class="hamburger-dropdown" id="menuDropdown">
+                        <a href="#dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                        <a href="#sessions" class="menu-item"><i class="fa-solid fa-calendar-check"></i> Sessions</a>
+                        <a href="#palettes" class="menu-item"><i class="fa-solid fa-palette"></i> Palettes</a>
+                        <a href="#orders" class="menu-item"><i class="fa-solid fa-box-open"></i> Orders</a>
+                        <a href="#settings" class="menu-item"><i class="fa-solid fa-gear"></i> Settings</a>
+                        <div class="menu-divider"></div>
+                        <a href="/auth/logout" class="menu-item logout"><i class="fa-solid fa-right-from-bracket"></i>
+                            Logout</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div class="welcome-text">
+            <h1>Welcome, <span class="user-name">Alex</span>!</h1><br>
+        </div>
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="card stat-card">
+                <h3>Active Projects</h3>
+                <div class="number">2</div>
+                <div class="desc">In Progress</div>
+            </div>
+            <div class="card stat-card">
+                <h3>Next Session</h3>
+                <div class="number">Dec 30</div>
+                <div class="desc">10:00 AM</div>
+            </div>
+            <div class="card stat-card">
+                <h3>Saved Palettes</h3>
+                <div class="number">12</div>
+                <div class="desc">View All</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Active Orders -->
+            <div class="card orders-card">
+                <div class="card-header">
+                    <h2>Active Orders</h2>
+                    <button class="icon-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="order-item">
+                    <div class="order-info">
+                        <h4>E-Commerce Website Redesign</h4>
+                        <span class="status in-progress">In Progress</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%;"></div>
+                    </div>
+                    <p class="meta">Milestone: Frontend Development (65%)</p>
+                </div>
+                <div class="order-item">
+                    <div class="order-info">
+                        <h4>Branding Package</h4>
+                        <span class="status review">Under Review</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%;"></div>
+                    </div>
+                    <p class="meta">Milestone: Final Polish (90%)</p>
+                </div>
+            </div>
+
+            <!-- Upcoming Sessions -->
+            <div class="card sessions-card">
+                <div class="card-header">
+                    <h2>Booked Sessions</h2>
+                    <button class="view-btn">View Calendar</button>
+                </div>
+                <div class="session-item">
+                    <div class="date-box">
+                        <span class="day">30</span>
+                        <span class="month">DEC</span>
+                    </div>
+                    <div class="session-details">
+                        <h4>Strategy Call with Mr. V</h4>
+                        <p>10:00 AM - 11:00 AM • Google Meet</p>
+                    </div>
+                    <button class="join-btn">Join</button>
+                </div>
+                <div class="session-item">
+                    <div class="date-box">
+                        <span class="day">05</span>
+                        <span class="month">JAN</span>
+                    </div>
+                    <div class="session-details">
+                        <h4>Design Review</h4>
+                        <p>02:00 PM - 03:00 PM • Zoom</p>
+                    </div>
+                    <button class="join-btn disabled">Wait</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites / Palettes -->
+        <div class="palettes-section" id="palettes">
+            <h2>Favorite Palettes</h2>
+            <div class="palettes-grid" id="favoritesGrid">
+                <div class="palette-card">
+                    <div class="colors">
+                        <div class="color" style="background: #CCFF00;"></div>
+                        <div class="color" style="background: #050A1F;"></div>
+                        <div class="color" style="background: #FFFFFF;"></div>
+                    </div>
+                    <span>Neon Tech</span>
+                </div>
+                <div class="palette-card">
+                    <div class="colors">
+                        <div class="color" style="background: #FF5733;"></div>
+                        <div class="color" style="background: #C70039;"></div>
+                        <div class="color" style="background: #900C3F;"></div>
+                    </div>
+                    <span>Sunset Vibes</span>
+                </div>
+                <div class="palette-card">
+                    <div class="colors">
+                        <div class="color" style="background: #1e283d;"></div>
+                        <div class="color" style="background: #aab6d3;"></div>
+                        <div class="color" style="background: #e2e8f0;"></div>
+                    </div>
+                    <span>Corporate Blue</span>
+                </div>
+                <a href="../../mobile/brandpg/colopg/color.html" class="palette-card add-new">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Favorite Fonts Section -->
+        <div class="fonts-section" style="margin-top: 3rem;">
+            <h2>Favorite Fonts</h2>
+            <div class="palettes-grid" id="favoriteFontsGrid"> <!-- Reusing grid class for consistency -->
+                <div class="palette-card font-card">
+                    <div class="font-preview" style="font-family: 'Inter', sans-serif;">Ag</div>
+                    <span>Inter</span>
+                </div>
+                <div class="palette-card font-card">
+                    <div class="font-preview" style="font-family: 'Outfit', sans-serif;">Ag</div>
+                    <span>Outfit</span>
+                </div>
+                <div class="palette-card font-card">
+                    <div class="font-preview" style="font-family: 'Playfair Display', serif;">Ag</div>
+                    <span>Playfair</span>
+                </div>
+                <a href="../../mobile/brandpg/fontspg/fonts.html" class="palette-card add-new">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

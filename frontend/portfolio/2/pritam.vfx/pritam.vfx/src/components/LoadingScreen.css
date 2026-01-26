@@ -1,0 +1,101 @@
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0a0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.loading-screen__content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+.loading-screen__logo {
+    filter: drop-shadow(0 0 20px rgba(244, 165, 180, 0.3));
+}
+
+.loading-screen__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.loading-screen__brand {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.loading-screen__progress-container {
+    width: 200px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.loading-screen__progress-bar {
+    height: 100%;
+    background: var(--gradient-accent);
+    box-shadow: 0 0 10px rgba(244, 165, 180, 0.5);
+}
+
+.loading-screen__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.loading-screen__gradient {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+}
+
+.loading-screen__gradient--1 {
+    top: -10%;
+    left: -10%;
+    background: var(--pastel-pink);
+}
+
+.loading-screen__gradient--2 {
+    bottom: -10%;
+    right: -10%;
+    background: var(--pastel-lavender);
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] .loading-screen {
+    background: #ffffff;
+}
+
+[data-theme="light"] .loading-screen__brand {
+    color: #1a1a2e;
+}
+
+[data-theme="light"] .loading-screen__progress-container {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .loading-screen__logo {
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.1));
+}
+
+[data-theme="light"] .loading-screen__gradient {
+    opacity: 0.1;
+}

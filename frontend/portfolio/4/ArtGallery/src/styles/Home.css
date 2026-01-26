@@ -1,0 +1,52 @@
+/* Category Filters */
+.category-filter-bar {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+}
+
+.category-filter-bar::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+}
+
+.filter-pill {
+    padding: 0.6rem 2rem;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.filter-pill:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.filter-pill.active {
+    background-color: var(--accent-primary);
+    /* Gold/Yellow from screenshot? Or branding color */
+    color: white;
+    border-color: var(--accent-primary);
+    font-weight: 600;
+}
+
+/* Home Layout Tweaks */
+.home-page {
+    padding-bottom: 4rem;
+}
+
+.content-container {
+    position: relative;
+    z-index: 20;
+    /* Adjust margin up to overlap with hero gradient if desired */
+    margin-top: -60px;
+}

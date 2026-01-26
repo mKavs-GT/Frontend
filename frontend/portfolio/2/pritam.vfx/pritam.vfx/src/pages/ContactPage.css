@@ -1,0 +1,52 @@
+.contact-page {
+    min-height: 100vh;
+    padding-top: 100px;
+}
+
+/* Header */
+.contact-page__header {
+    padding: var(--space-16) 0 var(--space-8);
+    text-align: center;
+}
+
+.contact-page__intro {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-page__label {
+    display: inline-block;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--pastel-pink);
+    margin-bottom: var(--space-4);
+}
+
+.contact-page__title {
+    font-size: var(--text-5xl);
+    font-weight: 700;
+    margin-bottom: var(--space-6);
+}
+
+.contact-page__description {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-page {
+        padding-top: 80px;
+    }
+
+    .contact-page__header {
+        padding: var(--space-10) 0 var(--space-4);
+    }
+
+    .contact-page__title {
+        font-size: var(--text-4xl);
+    }
+}

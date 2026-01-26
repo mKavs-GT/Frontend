@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Slide Scroll with Scrubbing Zoom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <!-- Circular Favicon -->
+    <link rel="icon" type="image/png" href="images/LOGOI.png" style="border-radius: 50%;">
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+
+    <!-- Preload Sub-Projects for seamless transition -->
+    <link rel="prefetch" href="./portfolio/2/index.html">
+    <link rel="prefetch" href="./portfolio/3/index.html">
+    <link rel="prefetch" href="./portfolio/4/index.html">
+    <link rel="prefetch" href="./portfolio/7/index.html">
+
+    <script>
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            window.location.href = "./mobile/index.html";
+        }
+    </script>
+</head>
+
+<body class="h-full w-full">
+    <!-- PRELOADER START -->
+    <div id="preloader"
+        class="fixed inset-0 z-[9999] bg-[#171717] flex justify-center items-center transition-opacity duration-500">
+        <div class="relative flex flex-col items-center justify-center h-full w-full">
+            <!-- Video Container -->
+            <div class="relative">
+                <video autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
+                    <source src="images/mascot.mp4" type="video/mp4">
+                </video>
+                <!-- Progress Bar Overlapping Base -->
+                <div
+                    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 h-4 bg-gray-800/50 backdrop-blur-sm rounded-full overflow-hidden border border-white/10">
+                    <div id="loader-progress"
+                        class="h-full bg-[#685EB9] w-0 rounded-full transition-all duration-75 ease-out"></div>
+                </div>
+            </div>
+            <!-- Percentage Text -->
+            <div id="loader-text" class="mt-4 text-[#685EB9] font-black font-sans text-lg tracking-widest">0%</div>
+        </div>
+    </div>
+    <!-- PRELOADER END -->
+    <div style="display:none;">
+        <iframe src="./portfolio/2/index.html"></iframe>
+        <iframe src="./portfolio/3/index.html"></iframe>
+        <iframe src="./portfolio/4/index.html"></iframe>
+        <iframe src="./portfolio/7/index.html"></iframe>
+    </div>
+
+
+
+
+
+    <!-- CUSTOM SCROLLBAR -->
+    <div id="custom-scrollbar-track" class="fixed top-0 right-0 w-3 h-full z-[100] cursor-pointer">
+        <div id="custom-scrollbar-thumb"
+            class="w-full bg-[#c7f908]/50 hover:bg-[#c7f908] rounded-full transition-colors duration-200 absolute right-0 top-0 cursor-grab active:cursor-grabbing">
+        </div>
+    </div>
+
+    <div id="container" class="relative h-full w-full">
+
+        <!-- MAIN TOOLBAR (Fixed on top, moved out of slide-1) -->
+        <nav id="main-toolbar"
+            class="absolute top-0 left-0 right-0 p-2 pt-14 md:p-4 md:pt-7 w-full bg-transparent z-[70] transform -translate-y-full transition-transform duration-700 ease-out">
+            <div class="flex justify-between items-center max-w-7xl mx-auto">
+                <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
+                    <div class="space-x-6 whitespace-nowrap flex items-center">
+                        <!-- Added Toolbar Logo -->
+
+                        <a href="index.html" id="toolbar-home-link"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors">Home</a>
+                        <a href="./about/about.html" target="_blank"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors">About</a>
+                        <a href="#slide-3" class="text-lg text-white hover:text-[#c7f908] transition-colors">Our
+                            Work</a>
+                        <a href="./brandpg/brnd.html"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors">Branding</a>
+                    </div>
+                </div>
+                <button class="md:hidden text-lg ml-auto pointer-events-auto">&#x2261;</button>
+                <div
+                    class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
+                    <div class="space-x-6 whitespace-nowrap flex items-center">
+
+                        <a href="pricingpage/pricing.html" target="_blank"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors">Pricing</a>
+                        <a href="./consult/consult.html" target="_blank"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors">Book Us</a>
+                        <!-- Login Button Styled -->
+                        <a href="./loginpg/login.html" id="desktop-login-btn"
+                            class="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">Login</a>
+                    </div>
+                    <div class="flex space-x-4 text-xl">
+                        <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-discord"></i></a>
+                        <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="./profile/profile.html" class="text-white hover:text-[#c7f908]"><i
+                                class="fa-regular fa-user"></i></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- SLIDE 1: HERO -->
+        <div class="slide-wrapper-corner">
+            <div id="slide-1"
+                class="slide bg-gradient-to-br from-[#0c19ad] to-[#0C1AC1] z-10 slide-transition concave-inner-slide">
+                <!-- Stars -->
+                <img class="star absolute w-20 h-20 top-[15%] left-[90%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
+                <img class="star absolute w-20 h-20 top-[35%] left-[10%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFC300/000000?text=*;';">
+                <img class="star absolute w-20 h-20 top-[85%] left-[25%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFE5A0/000000?text=*;';">
+                <img class="star absolute w-20 h-20 top-[65%] right-[10%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
+                <img class="star absolute w-20 h-20 top-[15%] left-[25%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/000000?text=*;';">
+                <img class="star absolute w-20 h-20 top-[20%] right-[30%] z-20 object-contain" src="images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFA500/000000?text=*;';">
+
+                <div id="popping-logo"
+                    class="absolute top-0 left-1/2 transform -translate-x-1/2 z-[60] opacity-0 transition-all duration-700 ease-out scale-0">
+                    <img src="images/LOGOI.png" alt="Company Logo" class="repulse-target h-20 md:h-24 w-auto"
+                        onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/000000?text=LOGO';">
+                </div>
+
+
+
+                <div id="text-left"
+                    class="absolute top-[80%] right-[68%] -translate-y-1/2 w-full max-w-lg text-white transform -translate-x-full opacity-0 transition-all duration-700 ease-out text-left pl-8 md:pl-20 z-40">
+                    <div class="space-y-5 border-l-4 border-[#c7f908] pl-8">
+                        <div class="metric-block group cursor-pointer">
+                            <div data-target="40" data-plus="+"
+                                class="metric-number text-2xl md:text-3xl font-black inline-block text-white group-hover:text-[#c7f908] transition-colors duration-300">
+                                0</div>
+                            <div
+                                class="metric-label text-sm md:text-base font-bold uppercase tracking-widest text-gray-400 mt-1 group-hover:text-white transition-colors">
+                                Happy Clients</div>
+                        </div>
+                        <div class="metric-block group cursor-pointer">
+                            <div data-target="98" data-plus="%"
+                                class="metric-number text-2xl md:text-3xl font-black inline-block text-white group-hover:text-[#c7f908] transition-colors duration-300">
+                                0</div>
+                            <div
+                                class="metric-label text-sm md:text-base font-bold uppercase tracking-widest text-gray-400 mt-1 group-hover:text-white transition-colors">
+                                Success Score</div>
+                        </div>
+                        <div class="metric-block group cursor-pointer">
+                            <div data-target="1500" data-plus=""
+                                class="metric-number text-2xl md:text-3xl font-black inline-block text-white group-hover:text-[#c7f908] transition-colors duration-300">
+                                0</div>
+                            <div
+                                class="metric-label text-sm md:text-base font-bold uppercase tracking-widest text-gray-400 mt-1 group-hover:text-white transition-colors">
+                                Development hours</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="absolute left-1/2 top-3/4 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-[1000px] aspect-square shrink-0">
+                    <img id="slide-1-image" src="images/MKAVS.png" alt="Base Image"
+                        class="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 object-contain opacity-0 transform scale-50 transition-all duration-700 ease-out w-full h-full"
+                        onerror="this.onerror=null; this.src='https://placehold.co/600x400/1E40AF/FFFFFF?text=LOGO+LAYER+1';">
+                    <div
+                        class="absolute left-1/2 top-3/4 -translate-x-1/2 -translate-y-1/2 w-11/12 md:w-[1400px] aspect-square shrink-0">
+                        <img id="slide-1-overlay-image" src="images/heroimg.png" alt="Overlay Image"
+                            class="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 object-contain slide-up-transition translate-y-full opacity-0 z-30 w-full h-full duration-[2000ms] transition-all"
+                            onerror="this.onerror=null; this.src='https://placehold.co/600x400/DC2626/FFFFFF?text=HERO+LAYER+3';">
+                    </div>
+                </div>
+
+                <div
+                    class="absolute bottom-12 right-0 left-0 flex justify-center md:justify-end max-w-7xl mx-auto px-4 pointer-events-none z-50">
+                    <a href="./consult/consult.html" id="get-started-button" target="_blank"
+                        class="pulsate bg-[#c7f908] text-[#0C1AC1] hover:bg-white hover:text-[#c7f908] hover:border-[#0C1AC1] font-bold py-3 px-8 rounded-full shadow-2xl border-2 border-[#0C1AC1] button-transition transform translate-x-full opacity-0 transition-all duration-500 ease-out pointer-events-auto text-lg inline-block text-center">
+                        GET STARTED
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- SLIDE 2: WHAT WE DO -->
+        <div id="slide-2" class="slide bg-[#1F1F1F] z-20 translate-y-full slide-transition overflow-y-auto">
+            <div class="w-full min-h-full pb-20">
+
+                <div class="max-w-6xl mx-auto p-8 pt-32 space-y-16">
+                    <div id="slide-2-text"
+                        class="text-left border-l-4 border-[#c7f908] pl-8 md:pl-20 slide-left-entry opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                        <h2
+                            class="text-6xl md:text-7xl font-black mb-6 text-white uppercase tracking-tighter leading-none">
+                            What&nbsp;&nbsp;<span class="text-[#c7f908]">we&nbsp;&nbsp; Do</span>
+                        </h2>
+                        <h2
+                            class="text-1xl md:text-2xl font-black mb-6 text-white uppercase tracking-wider leading-none">
+                            We&nbsp;&nbsp;Build&nbsp;&nbsp;Kreative&nbsp;&nbsp;Advanced&nbsp;&nbsp;Visual&nbsp;&nbsp;Sites
+                        </h2>
+                        <p class="text-xl md:text-2xl text-gray-300 max-w-6xl font-light leading-relaxed">
+                            We Kode your Destiny. Yes, we really do.<br><br>
+                            Your ideas deserve more than a basic website; they deserve a clean, modern, high-performing
+                            digital experience that stands out every single time.<br>
+                            We take your vision and transform it into something beautiful, functional, and built to
+                            last.<br><br>
+                            Our team invests real time and creativity- blending design, development, strategy, and
+                            storytelling to build websites that do not just look good - they work, they convert, and
+                            they represent you perfectly
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Card 1 -->
+                        <div id="slide-2-card-1"
+                            class="group relative h-[500px] bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-2xl overflow-hidden scale-0 opacity-0 z-30">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                            <img src="images/1.jpeg" alt="Custom Web Design"
+                                class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700">
+                            <div
+                                class="absolute bottom-0 left-0 p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 class="text-3xl font-black text-white mb-2 uppercase italic">Custom<br>Website
+                                    Design</h3>
+                                <p
+                                    class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                    Unique, aesthetic, and tailored layouts<br>No templates, no shortcuts.</p>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div id="slide-2-card-2"
+                            class="group relative h-[500px] bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-2xl overflow-hidden scale-0 opacity-0 z-20">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                            <img src="images/2.jpeg" alt="Full Stack"
+                                class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700">
+                            <div
+                                class="absolute bottom-0 left-0 p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 class="text-3xl font-black text-[#c7f908] mb-2 uppercase italic">Full-Stack Web <br>
+                                    Development
+                                </h3>
+                                <p
+                                    class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                    Fast, secure, scalable websites built <br>with the latest tech.</p>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div id="slide-2-card-3"
+                            class="group relative h-[500px] bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-2xl overflow-hidden scale-0 opacity-0 z-10">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                            <img src="images/3.jpeg" alt="Portfolio"
+                                class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700">
+                            <div
+                                class="absolute bottom-0 left-0 p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 class="text-3xl font-black text-white mb-2 uppercase italic">Portfolio &<br>
+                                    Business<br>Websites
+                                </h3>
+                                <p
+                                    class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                    Sleek, professional, mobile-friendly<br> sites for creators, startups & Brands</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="slide-2-marquee"
+                    class="relative w-full py-24 overflow-hidden flex justify-center items-center">
+                    <div class="absolute inset-0 flex items-center justify-center transform rotate-3">
+                        <div class="w-[100%] bg-[#c7f908] text-black py-2 shadow-xl">
+                            <div class="marquee-container animate-scroll-left">
+                                <span class="text-2xl font-extrabold px-6 ">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6 ">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="max-w-7xl mx-auto px-4 -mt-50 pb-10">
+                    <div class="flex flex-col gap-16">
+                        <!-- Text Row -->
+                        <div id="slide-2-bottom-text"
+                            class="flex flex-col md:flex-row gap-12 border-l-4 border-[#c7f908] pl-8 md:pl-20 opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                            <!-- Left Col: Header & Intro -->
+                            <div class="w-full md:w-1/2 space-y-6">
+                                <h2
+                                    class="text-6xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none">
+                                    Why Choose<br><span class="text-[#c7f908]">mKavs?</span>
+                                </h2>
+                                <h3 class="text-3xl font-bold text-white leading-tight">
+                                    Your Vision Meets Our Creativity
+                                </h3>
+                                <p class="text-xl text-gray-300 leading-relaxed">
+                                    Choosing us means choosing a team that actually cares about your brand, your vision,
+                                    and the final impact of your website. We don't rush, reuse templates, or settle for
+                                    "good enough." We build with intention — every detail, every pixel, every line of
+                                    code.
+                                </p>
+                            </div>
+
+                            <!-- Right Col: Details -->
+                            <div class="w-full md:w-1/2 space-y-8 flex flex-col justify-center">
+                                <p class="text-xl text-gray-300 leading-relaxed">
+                                    <strong class="text-[#c7f908] block text-2xl mb-2">Flexible Communication — We're
+                                        Everywhere.</strong>
+                                    Talk to us however you want: WhatsApp, Discord, Teams, Google Meet. We adjust to
+                                    your comfort.
+                                </p>
+                                <p class="text-xl text-gray-300 leading-relaxed">
+                                    <strong class="text-[#c7f908] block text-2xl mb-2">Dedicated Support.</strong>
+                                    We stick with you before, during, and after the project. Updates? Fixes? New ideas?
+                                    We're here.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Video Row (Full Width) -->
+                        <div class="w-full relative mt-12">
+                            <video class="w-full h-auto" autoplay muted loop playsinline>
+                                <source src="images/why.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
+                    <p>Scroll down for next slide</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 3: OUR WORKS -->
+        <div id="slide-3"
+            class="slide bg-[#1F1F1F] z-30 translate-y-full slide-transition flex flex-col justify-center relative">
+            <div id="works-list-column"
+                class="absolute left-0 top-15 -translate-y-1/2 pl-8 md:pl-20 z-50 text-white opacity-0 works-slide-transition w-full md:w-1/3 pointer-events-none">
+                <div class="border-l-4 border-[#c7f908] pl-8 md:pl-20 pointer-events-auto">
+                    <h2
+                        class="text-4xl md:text-5xl font-black mb-12 text-white uppercase tracking-tighter leading-none">
+                        Our<br><span class="text-[#c7f908]">Works</span>
+                    </h2>
+                    <ul class="space-y-8">
+                        <li class="group cursor-pointer">
+                            <div
+                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
+                                <span
+                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Portfolio
+                                    Sites</span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
+                            </div>
+                        </li>
+                        <li class="group cursor-pointer">
+                            <div
+                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
+                                <span
+                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Company
+                                    Sites</span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
+                            </div>
+                        </li>
+                        <li class="group cursor-pointer">
+                            <div
+                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
+                                <span
+                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Ecommerce
+                                    Sites</span>
+                                <i
+                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="zoom-image-container"
+                class="preserve-3d relative w-3/4 h-1/2 mx-auto  overflow-hidden reveal-on-scroll">
+                <div id="zoom-image-flipper" class="transform-style-preserve-3d w-full h-full">
+                    <img id="zoom-image-front" src="images/4.jpeg" alt="Zoom Target Front"
+                        class="flip-face flip-face-front w-full h-full object-contain">
+                    <a id="zoom-image-link" href="./portfolio/1/index.html" target="_blank"
+                        class="flip-face flip-face-back w-full h-full block">
+                        <img id="zoom-image-back" src="images/thumb1.png" alt="Zoom Target Back"
+                            class="w-full h-full object-contain">
+                    </a>
+                </div>
+            </div>
+
+            <div id="thumbnail-gallery">
+                <div class="gallery-inner">
+                    <img src="images/thumb1.png" class="gallery-thumb" alt="Thumbnail Project 1">
+                    <img src="images/thumb2.png" class="gallery-thumb" alt="Thumbnail Project 2">
+                    <img src="images/thumb3.png" class="gallery-thumb" alt="Thumbnail Project 3">
+                </div>
+            </div>
+
+            <div id="looping-text-wrapper">
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left">
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+
+                    </div>
+                </div>
+
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right">
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left">
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                        <span class="marquee-text">TYPOGRAPHY</span>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right">
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                        <span class="marquee-text">DATABASE</span>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left">
+                        <span class="marquee-text">FRONTEND</span>
+                        <span class="marquee-text">FRONTEND</span>
+                        <span class="marquee-text">FRONTEND</span>
+                        <span class="marquee-text">FRONTEND</span>
+
+                        <span class="marquee-text">FRONTEND</span>
+                        <span class="marquee-text">FRONTEND</span>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right">
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+                        <span class="marquee-text">ANIMATIONS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: OUR EXPERTISE -->
+        <div id="slide-4"
+            class="slide bg-gray-900 z-40 translate-y-full slide-transition flex flex-col items-center justify-start p-20 overflow-y-auto">
+
+            <div class="max-w-6xl w-full flex flex-col md:flex-row justify-between items-start mb-12 mt-8 px-4">
+
+                <div id="slide-4-header-text"
+                    class="md:w-1/2 w-full mb-6 md:mb-0 border-l-4 border-[#c7f908] pl-8 md:pl-20 reveal-on-scroll opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                    <h2 class="text-6xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none">
+                        Our<br><span class="text-[#c7f908]">Expertise</span>
+                    </h2>
+                </div>
+
+                <div id="slide-4-image-card"
+                    class="md:w-1/2 w-full flex justify-center md:justify-end opacity-0 scale-0 transition-all duration-1000 ease-out">
+                    <div
+                        class="bg-[#c7f908] w-full max-w-lg h-64 flex items-center justify-center rounded-lg shadow-xl overflow-hidden">
+                        <img src="images/4.jpeg" alt="Expertise Visual" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl w-full mb-20 px-4">
+                <div id="slide-4-card-1"
+                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
+                    <h3
+                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
+                        <i class="fa-solid fa-code text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
+                        Advanced Dev
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
+                        Fast, animated, modern frontends paired with rock-solid backends. Smooth transitions, clean
+                        interactions, and secure APIs.
+                    </p>
+                </div>
+
+                <div id="slide-4-card-2"
+                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
+                    <h3
+                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
+                        <i
+                            class="fa-solid fa-ranking-star text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
+                        SEO & Indexing
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
+                        Google loves our code. Optimized structure, speed, and metadata to get you ranked higher and
+                        seen by more clients.
+                    </p>
+                </div>
+
+                <div id="slide-4-card-3"
+                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
+                    <h3
+                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
+                        <i
+                            class="fa-solid fa-palette text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
+                        Branding
+                    </h3>
+                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
+                        Custom color systems, typography, and visual direction. We give your website a personality that
+                        feels intentional and premium.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: VIDEO END CAP -->
+        <div id="slide-5" onclick="window.open('./brandpg/brnd.html', '_blank')"
+            class="slide bg-black z-50 translate-y-full slide-transition flex items-center justify-center overflow-hidden cursor-pointer">
+            <video id="end-cap-video" class="w-full h-full object-cover" autoplay muted playsinline preload="auto"
+                poster="images/video-poster.jpg">
+                <source src="images/vid.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+        </div>
+
+        <!-- SLIDE 6: FOOTER SECTION -->
+        <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] p-10 overflow-hidden">
+
+            <div class="relative w-full h-full flex flex-col justify-between">
+
+                <div class="flex-grow flex items-start justify-between p-4 pt-10">
+
+                    <div class="flex flex-col space-y-8">
+
+                        <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase">
+                            YOUR <br>
+                            <span class="text-[#0C1AC1]">
+                                DIGITAL JOURNEY
+                            </span><br>
+                            <span class="text-[#c7f908]">STARTS HERE.</span>
+                        </h1>
+
+                        <div class="flex space-x-8 mt-12">
+                            <a href="./consult/consult.html" target="_blank"
+                                class="button-transition px-12 py-5 bg-[#C7F908] rounded-full text-2xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center">
+                                BOOK NOW
+                            </a>
+                            <a href="./pricingpage/pricing.html" target="_blank"
+                                class="button-transition px-12 py-5 bg-transparent rounded-full text-2xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center">
+                                VIEW PLANS
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col space-y-8 mt-2">
+                        <span class="w-96 h-auto">
+                            <video src="images/mascot.mp4" class="w-1/2 h-1/2 object-contain" autoplay loop muted
+                                playsinline>
+                                Your browser does not support the video tag.
+                            </video>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 right-0 h-1/4 bg-[#0C1AC1]">
+
+                    <div class="absolute top-0 left-0 right-0 h-full bg-[#C7F908]" style="
+                        border-top-left-radius: 1000% 1000px; 
+                        border-top-right-radius: 1000% 1000px;
+                        transform: translateY(0);
+                        box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.3);
+                    ">
+
+                        <div class="absolute top-[-100px] left-0 right-0 p-8 bg-[#0C1AC1] text-center">
+                            <h2 class="text-5xl font-extrabold tracking-widest text-white uppercase">
+                                JOIN OUR COMMUNITY
+                            </h2>
+                        </div>
+
+                        <div class="flex justify-center items-center space-x-16 pt-12">
+                            <div class="flex space-x-16 text-6xl">
+                                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-discord"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-1 left-0 right-0 text-center text-[10px] text-gray-500">
+                    &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+                </div>
+
+            </div>
+        </section>
+
+        <script src="scripts.js"></script>
+
+        <!-- Kairon Chat Widget Integration -->
+        <link rel="stylesheet" href="./chatbot/kairon-widget.css">
+        <script>window.KAIRON_BASE_PATH = "./chatbot/";</script>
+        <div id="kairon">
+            <button id="kairon-button" aria-label="Open chat">
+                <img src="./chatbot/kairon-logo.png" alt="Kairon">
+            </button>
+            <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
+                <div class="panel-header">
+                    <div class="left-section">
+                        <div class="logo-placeholder">
+                            <img src="./chatbot/kairon-logo.png" alt="Logo">
+                        </div>
+                        <div class="title">Kairon</div>
+                    </div>
+                    <select id="agent-selector" class="agent-selector" style="display:none">
+                        <option value="" disabled selected>Talk to Agent</option>
+                        <option value="Mr.K">Mr.K</option>
+                    </select>
+                    <button id="kairon-close" class="close-btn" aria-label="Close chat">×</button>
+                </div>
+                <div id="kairon-messages" class="messages"></div>
+                <div class="interactive-area">
+                    <div id="kairon-controls" class="kairon-controls">
+                        <div id="kairon-categories" class="kairon-categories"></div>
+                    </div>
+                    <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+                </div>
+                <form id="kairon-form" class="composer" autocomplete="off">
+                    <input id="kairon-input" type="text" aria-label="Message" />
+                    <button type="submit" aria-label="Send">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <script src="./chatbot/kairon-widget.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const loginBtn = document.getElementById('desktop-login-btn');
+                if (loginBtn) {
+                    try {
+                        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status');
+                        const data = await response.json();
+                        if (data.loggedIn) {
+                            loginBtn.textContent = 'Logout';
+                            loginBtn.href = MKAVS_CONFIG.API_BASE_URL + '/auth/logout';
+                        }
+                    } catch (err) {
+                        console.error('Error fetching auth status:', err);
+                    }
+                }
+            });
+        </script>
+</body>
+
+</html>

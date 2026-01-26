@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Kairon - Staff Dashboard</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:12px}
+    #staffList {margin-bottom:12px}
+    .online{color:green}
+    .offline{color:gray}
+    #chats{display:flex;gap:12px}
+    #inbox{width:320px;border:1px solid #ddd;padding:8px}
+    #viewer{flex:1;border:1px solid #ddd;padding:8px}
+    .chat-item{padding:6px;border-bottom:1px solid #eee;cursor:pointer}
+    .chat-item:hover{background:#f8f8f8}
+    .message{margin:6px 0}
+    .from-staff{font-weight:600}
+  </style>
+</head>
+<body>
+  <h2>Kairon Staff Dashboard</h2>
+  <!--
+    Simple staff dashboard
+    - Select your name and click Go Online to receive chats
+    - Click a session to view history, reply, transfer, or close the session
+    - This is an MVP: no authentication. For production, issue staff tokens and verify on WebSocket connect.
+  -->
+  <div id="me">You are: <strong>Live Agent</strong>
+    <button id="goOnline">Go Online</button>
+    <button id="goOffline">Go Offline</button>
+  </div>
+
+  <div id="staffList"></div>
+
+  <div id="chats">
+    <div id="inbox">
+      <h4>Incoming / Assigned</h4>
+      <div id="incoming"></div>
+    </div>
+
+    <div id="viewer">
+      <h4>Chat Viewer</h4>
+      <div id="chatMeta" style="margin-bottom:8px"></div>
+      <div id="chatContent" style="height:320px;overflow:auto;padding:6px;border:1px solid #eee;background:#fafafa"></div>
+      <div style="margin-top:8px">
+        <input id="msgIn" style="width:60%"> <button id="sendBtn">Send</button>
+        <select id="transferTo"></select> <button id="transferBtn">Transfer</button>
+        <button id="closeBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Node WS base (use localhost:3000)
+    const WS_BASE = 'ws://localhost:3000';
+    const FALLBACK_STAFF = [
+      { id: 'staff_1', name: 'Mr.K', online: false },
+      { id: 'staff_2', name: 'Mr.A', online: false },
+      { id: 'staff_3', name: 'Mr.V', online: false },
+      { id: 'staff_4', name: 'Mr.S', online: false },
+      { id: 'staff_5', name: 'Mr.M', online: false }
+    ];
+
+    let myId = null, myName = null, ws = null;
+    const sessions = {}; // session_id -> session object (cached)
+    let selectedSessionId = null;
+
+    function loadStaff(){
+      const transfer = document.getElementById('transferTo'); transfer.innerHTML='';
+      // Set default name
+      myName = 'Live Agent';
+      
+      // Hardcode Transfer to Live Agent
+      const topt=document.createElement('option'); topt.value = 'Live Agent'; topt.textContent = 'Live Agent'; transfer.appendChild(topt);
+    }
+
+    function formatChatItem(s){
+      const unread = s._unread || 0;
+      return `${s.customer.name || 'Guest'} — ${s.id} ${unread?(' ('+unread+' new)'):''}`;
+    }
+
+    function renderSessionsList(){
+      const c = document.getElementById('incoming'); c.innerHTML='';
+      Object.values(sessions).forEach(s=>{
+        const d = document.createElement('div'); d.className='chat-item'; d.textContent = formatChatItem(s);
+        d.onclick = ()=> selectSession(s.id);
+        c.appendChild(d);
+      });
+    }
+
+    function renderSessionViewer(id){
+      selectedSessionId = id;
+      const session = sessions[id];
+      if(!session) return;
+      session._unread = 0;
+      renderSessionsList();
+      const meta = document.getElementById('chatMeta'); meta.textContent = `Session: ${session.id} — Customer: ${session.customer.name || 'Guest'} — Staff: ${session.staff || 'Unassigned'}`;
+      const v = document.getElementById('chatContent'); v.innerHTML='';
+      (session.messages||[]).forEach(m=>{
+        const p=document.createElement('div'); p.className='message'; p.innerHTML = `<strong>${m.from}:</strong> ${m.text}`; v.appendChild(p);
+      });
+      v.scrollTop = v.scrollHeight;
+    }
+
+    function addMessageToSession(sessionId, from, text){
+      const s = sessions[sessionId] || (sessions[sessionId] = {id: sessionId, customer: {name:'Guest'}, staff: null, messages: [], _unread:0});
+      s.messages.push({from, text});
+      if(selectedSessionId !== sessionId){ s._unread = (s._unread || 0) + 1; }
+      renderSessionsList();
+      if(selectedSessionId === sessionId) renderSessionViewer(sessionId);
+    }
+
+    function updateStaffStatusDisplay(name){
+      const el = document.getElementById('staffList'); el.textContent = `Online as ${name}`; el.className = 'online';
+    }
+
+    function startWs(){
+      myName = 'Live Agent';
+
+      if(ws && ws.readyState === WebSocket.OPEN) return;
+      ws = new WebSocket(WS_BASE + '/staff');
+      ws.addEventListener('open', ()=>{
+        console.log('ws open');
+        try{ ws.send(JSON.stringify({ type:'staff_online', staffName: myName })); }catch(e){}
+        updateStaffStatusDisplay(myName);
+      });
+
+      // Track accepted sessions to avoid duplicate auto-accept/greeting
+      const acceptedSessions = new Set();
+
+      ws.addEventListener('message', (ev)=>{
+        let d = {};
+        try{ d = JSON.parse(ev.data || '{}'); }catch(e){}
+
+        if(d.type === 'request_staff' || d.type === 'assigned'){
+          const cid = d.customerId || (d.session && d.session.id);
+          if(cid){
+            sessions[cid] = sessions[cid] || { id: cid, customer: { name: d.customerName || 'Guest' }, messages: [] };
+            sessions[cid]._unread = (sessions[cid]._unread || 0) + 1;
+            renderSessionsList();
+            // Auto-accept and greet customer once per session
+            if(!acceptedSessions.has(cid)){
+              acceptedSessions.add(cid);
+              try{ ws.send(JSON.stringify({ type:'accept_request', customerId: cid, staffName: myName })); }catch(e){}
+              try{ ws.send(JSON.stringify({ type:'staff_message', customerId: cid, staffName: myName, message: 'Hello, I am ' + myName })); }catch(e){}
+            }
+            // Auto-open the session in the viewer so Send works immediately
+            try{
+              selectedSessionId = cid;
+              renderSessionViewer(cid);
+              // focus message input for convenience
+              const mi = document.getElementById('msgIn'); if(mi) mi.focus();
+            }catch(e){/* ignore */}
+          }
+        }
+
+        else if(d.type === 'queued_message' || d.type === 'customer_message'){
+          const cid = d.customerId;
+          addMessageToSession(cid || selectedSessionId, d.customerName || 'Guest', d.message);
+        }
+
+        else if(d.type === 'transferred' || d.type === 'closed'){
+          if(d.session && d.session.id) sessions[d.session.id] = d.session; renderSessionsList();
+        }
+
+        // else if(d.type === 'staff_list'){
+        //   // Do not update transfer list dynamically, keep it as 'Live Agent'
+        // }
+      });
+
+      ws.addEventListener('close', ()=>{ console.log('ws closed'); document.getElementById('staffList').textContent = 'Offline'; document.getElementById('staffList').className='offline'; });
+    }
+
+    document.getElementById('goOnline').addEventListener('click', async ()=>{ startWs(); });
+    document.getElementById('goOffline').addEventListener('click', ()=>{ if(ws){ try{ ws.send(JSON.stringify({ type:'staff_offline', staffName: myName })); }catch(e){} ws.close(); ws=null; document.getElementById('staffList').textContent='Offline'; document.getElementById('staffList').className='offline'; } });
+
+    function selectSession(id){ renderSessionViewer(id); }
+
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const t = document.getElementById('msgIn').value; if(!selectedSessionId){ alert('select session'); return; }
+      try{ ws.send(JSON.stringify({ type:'staff_message', customerId: selectedSessionId, staffName: myName, message: t })); }catch(e){ alert('Not connected'); return; }
+      addMessageToSession(selectedSessionId, myName, t);
+      document.getElementById('msgIn').value='';
+    });
+
+    document.getElementById('transferBtn').addEventListener('click', ()=>{
+      const to = document.getElementById('transferTo').value; if(!selectedSessionId){ alert('select session'); return; }
+      try{ ws.send(JSON.stringify({ type:'transfer_chat', customerId: selectedSessionId, fromStaff: myName, toStaff: to })); }catch(e){ alert('Not connected'); return; }
+      delete sessions[selectedSessionId]; selectedSessionId=null; renderSessionsList(); document.getElementById('chatContent').innerHTML='';
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', ()=>{
+      if(!selectedSessionId){ alert('select session'); return; }
+      try{ ws.send(JSON.stringify({ type:'close_chat', customerId: selectedSessionId, staffName: myName })); }catch(e){ alert('Not connected'); return; }
+      delete sessions[selectedSessionId]; selectedSessionId=null; renderSessionsList(); document.getElementById('chatContent').innerHTML='';
+    });
+
+    // initial load
+    loadStaff();
+  </script>
+</body>
+</html>

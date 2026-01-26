@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up — MKAVS Global Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Circular Favicon -->
+    <link rel="icon" type="image/png" href="../images/LOGOI.png" />
+    <script src="../config.js"></script>
+    <style>
+      :root {
+        --primary: #ccff00;
+        /* Lime Green */
+        --bg-page: #2f2f2d;
+        /* Updated page background */
+        --bg-card: #15161a;
+        /* Updated card background */
+        --input-bg: #1e1e1e;
+        --text-main: #ffffff;
+        --text-muted: #a1a1a1;
+        --border-color: #333333;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Outfit", sans-serif;
+      }
+
+      body,
+      html {
+        height: 100%;
+        width: 100%;
+        background: var(--bg-page);
+        display: flex;
+        align-items: flex-start;
+        /* Changed from center to move higher */
+        justify-content: center;
+        overflow: hidden;
+        padding-top: 1vh;
+        /* Added top spacing */
+      }
+
+      .auth-container {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 1200px;
+        /* Restored container width constraint */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 4vh;
+      }
+
+      .login-card {
+        width: 100%;
+        max-width: 650px;
+        /* Increased for side-by-side fields */
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 0.8rem 1.25rem;
+        /* Further reduced padding */
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        border: 1px solid #333;
+        position: relative;
+        z-index: 10;
+      }
+
+      @media (max-width: 650px) {
+        .login-card {
+          max-width: 350px;
+          padding: 1.25rem 1.5rem;
+        }
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        /* Reduced gap */
+      }
+
+      @media (max-width: 600px) {
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+      }
+
+      .card-header {
+        text-align: center;
+        /* Centered like original */
+        margin-bottom: 0.6rem;
+        /* Reduced margin */
+      }
+
+      .card-title {
+        font-size: 1.5rem;
+        /* Smaller title */
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 0.25rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+
+      .form-group {
+        margin-bottom: 0.6rem;
+        /* Reduced margin */
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-main);
+        margin-bottom: 0.35rem;
+        /* Reduced margin */
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.5rem 0.8rem;
+        /* Reduced padding */
+        padding-right: 2.2rem;
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        /* Smaller radius */
+        color: white;
+        font-size: 0.9rem;
+        /* Smaller font */
+        transition: border-color 0.2s;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+
+      .form-input::placeholder {
+        color: #555;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+        cursor: pointer;
+      }
+
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.9rem;
+        /* Reduced margin */
+        font-size: 0.85rem;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .remember-me input {
+        accent-color: var(--primary);
+        width: 14px;
+        height: 14px;
+      }
+
+      .forgot-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .forgot-link:hover {
+        color: white;
+      }
+
+      .submit-button {
+        width: 100%;
+        padding: 0.7rem;
+        /* Further reduced padding */
+        background: var(--primary);
+        color: black;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition:
+          transform 0.2s,
+          background-color 0.2s;
+      }
+
+      .submit-button:hover {
+        transform: translateY(-2px);
+        background-color: #b3e600;
+      }
+
+      .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 0.6rem 0;
+        /* Reduced margin */
+        color: #555;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #333;
+      }
+
+      .divider::before {
+        margin-right: 1rem;
+      }
+
+      .divider::after {
+        margin-left: 1rem;
+      }
+
+      .sso-button {
+        width: 100%;
+        padding: 0.65rem;
+        /* Further reduced padding */
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid #333;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: background-color 0.2s;
+      }
+
+      .sso-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .signup-prompt {
+        text-align: center;
+        margin-top: 0.7rem;
+        /* Reduced margin */
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .signup-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      .signup-link:hover {
+        text-decoration: underline;
+      }
+
+      /* RESTORED CHARACTER ANIMATIONS */
+      .char {
+        position: absolute;
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0;
+        animation-duration: 0.8s;
+        animation-fill-mode: forwards;
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .char.left-1 {
+        left: -210px;
+        top: 26%;
+        width: 310px;
+        animation-name: entryLeft;
+      }
+
+      .char.left-2 {
+        left: -10px;
+        padding-top: 15%;
+        width: 300px;
+        z-index: 15;
+        animation-name: entryLeft;
+        animation-delay: 0.1s;
+      }
+
+      .char.right-1 {
+        left: 350px;
+        padding-top: 50%;
+        /* Restored from broken '%' */
+        width: 410px;
+        z-index: 5;
+        animation-name: entryBottom;
+        animation-delay: 0.2s;
+      }
+
+      .char.right-2 {
+        left: 900px;
+        padding-top: 15%;
+        width: 290px;
+        z-index: 15;
+        animation-name: entryRight;
+        animation-delay: 0.3s;
+      }
+
+      .char.sleeping {
+        right: -200px;
+        top: 28%;
+        width: 310px;
+        animation-name: entryRight;
+        animation-delay: 0.4s;
+      }
+
+      @keyframes entryLeft {
+        from {
+          transform: translateX(-100px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes entryRight {
+        from {
+          transform: translateX(100px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes entryBottom {
+        from {
+          transform: translateY(100px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .char,
+        .marquee-tape {
+          display: none;
+        }
+      }
+
+      .auth-logo {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        width: 150px;
+        z-index: 50;
+        transition: transform 0.3s;
+      }
+
+      .auth-logo:hover {
+        transform: scale(1.05);
+      }
+
+      .auth-logo img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .auth-logo {
+          width: 120px;
+          top: 1.5rem;
+          left: 1.5rem;
+        }
+      }
+
+      /* Step Progress Indicator */
+      .step-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .step {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--input-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+      }
+
+      .step.active .step-number {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: black;
+      }
+
+      .step.completed .step-number {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: black;
+      }
+
+      .step-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        transition: color 0.3s ease;
+      }
+
+      .step.active .step-label {
+        color: var(--text-main);
+      }
+
+      .step-connector {
+        width: 40px;
+        height: 2px;
+        background: var(--border-color);
+        transition: background 0.3s ease;
+      }
+
+      .step-connector.active {
+        background: var(--primary);
+      }
+
+      /* OTP Input Styles */
+      .otp-container {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      .otp-input {
+        width: 48px;
+        height: 56px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: var(--input-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--primary);
+        transition: all 0.2s ease;
+      }
+
+      .otp-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.1);
+      }
+
+      .otp-input.error {
+        border-color: #ff4444;
+      }
+
+      .otp-input.success {
+        border-color: var(--primary);
+        background: rgba(204, 255, 0, 0.1);
+      }
+
+      /* Form Step visibility */
+      .form-step {
+        display: none;
+      }
+
+      .form-step.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Resend Timer */
+      .resend-container {
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      .resend-link {
+        color: var(--primary);
+        cursor: pointer;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+
+      .resend-link:hover {
+        text-decoration: underline;
+      }
+
+      .resend-link.disabled {
+        color: var(--text-muted);
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      .resend-timer {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      /* Email display */
+      .email-display {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        color: var(--primary);
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .change-email {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .change-email:hover {
+        color: var(--text-main);
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="../index.html" class="auth-logo">
+      <img src="../images/MKAVS.png" alt="MKAVS Global Tech" />
+    </a>
+
+    <div class="auth-container">
+      <!-- Exact Character Placement -->
+      <img src="images/1.png" class="char left-1" alt="char 1" />
+      <img src="images/2.png" class="char left-2" alt="char 2" />
+      <!--<img src="images/3.png" class="char right-1" alt="char 3">-->
+      <img src="images/4.png" class="char right-2" alt="char 4" />
+      <img src="images/5.png" class="char sleeping" alt="sleeping char" />
+
+      <main class="login-card">
+        <header class="card-header">
+          <h1 class="card-title">Sign Up</h1>
+          <p class="card-subtitle">Create an account to get started</p>
+        </header>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+          <div class="step active" id="step1-indicator">
+            <span class="step-number">1</span>
+            <span class="step-label">Details</span>
+          </div>
+          <div class="step-connector" id="step-connector"></div>
+          <div class="step" id="step2-indicator">
+            <span class="step-number">2</span>
+            <span class="step-label">Verify</span>
+          </div>
+        </div>
+
+        <form id="signupForm">
+          <!-- Step 1: User Details -->
+          <div class="form-step active" id="step1">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <div class="input-wrapper">
+                  <input type="text" id="name" class="form-input" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-wrapper">
+                  <input type="email" id="email" class="form-input" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="country" class="form-label">Country</label>
+                <div class="input-wrapper">
+                  <input type="text" id="country" class="form-input" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone</label>
+                <div class="input-wrapper">
+                  <input type="tel" id="phone" class="form-input" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-wrapper">
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-input"
+                    required
+                  />
+                  <i
+                    class="fa-regular fa-eye password-toggle"
+                    onclick="togglePassword()"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-options" style="justify-content: flex-start">
+              <label class="remember-me">
+                <input type="checkbox" /> Remember me
+              </label>
+            </div>
+
+            <!-- reCAPTCHA Widget -->
+            <div class="form-group" style="margin-bottom: 1rem">
+              <div
+                class="g-recaptcha"
+                data-sitekey="6LeaoVQsAAAAACMcbKlK2aoHOVeeZUNna08MTlP8"
+                data-theme="dark"
+                data-callback="onRecaptchaSuccess"
+                data-expired-callback="onRecaptchaExpired"
+                role="group"
+                aria-label="reCAPTCHA verification"
+              ></div>
+              <p
+                id="recaptcha-error"
+                style="
+                  color: #ff4444;
+                  font-size: 0.85rem;
+                  margin-top: 0.5rem;
+                  display: none;
+                "
+              >
+                Please complete the reCAPTCHA verification
+              </p>
+            </div>
+
+            <p
+              id="step1-error"
+              style="
+                color: #ff4444;
+                font-size: 0.85rem;
+                margin-bottom: 0.5rem;
+                text-align: center;
+                display: none;
+              "
+            ></p>
+
+            <button
+              type="button"
+              class="submit-button"
+              id="sendOtpBtn"
+              onclick="sendOTP()"
+            >
+              Continue
+              <i class="fas fa-arrow-right" style="margin-left: 0.5rem"></i>
+            </button>
+          </div>
+
+          <!-- Step 2: OTP Verification -->
+          <div class="form-step" id="step2">
+            <div style="text-align: center; margin-bottom: 1rem">
+              <p style="color: var(--text-muted); font-size: 0.9rem">
+                We've sent a verification code to
+              </p>
+              <div class="email-display" id="displayEmail"></div>
+              <span class="change-email" onclick="goBackToStep1()">
+                <i class="fas fa-arrow-left" style="margin-right: 0.25rem"></i>
+                Change email
+              </span>
+            </div>
+
+            <p
+              style="
+                color: var(--text-main);
+                font-size: 0.9rem;
+                text-align: center;
+                margin-bottom: 0.5rem;
+              "
+            >
+              Enter 6-digit code
+            </p>
+
+            <div class="otp-container">
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="0"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="1"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="2"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="3"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="4"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+              <input
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                data-index="5"
+                inputmode="numeric"
+                pattern="[0-9]"
+              />
+            </div>
+
+            <p
+              id="otp-error"
+              style="
+                color: #ff4444;
+                font-size: 0.85rem;
+                margin-bottom: 0.5rem;
+                text-align: center;
+                display: none;
+              "
+            ></p>
+
+            <button type="submit" class="submit-button" id="verifyBtn">
+              Verify & Sign Up
+            </button>
+
+            <div class="resend-container">
+              <span class="resend-timer" id="resendTimer"
+                >Resend code in <span id="countdown">60</span>s</span
+              >
+              <span
+                class="resend-link disabled"
+                id="resendLink"
+                onclick="resendOTP()"
+                >Resend Code</span
+              >
+            </div>
+          </div>
+        </form>
+
+        <div class="divider">Or Continue With</div>
+
+        <a
+          href="#"
+          onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=signup'"
+          class="sso-button"
+          style="text-decoration: none"
+        >
+          <i class="fa-brands fa-google"></i>
+          Continue with Google
+        </a>
+
+        <footer class="signup-prompt">
+          Already have an account?
+          <a href="../loginpg/login.html" class="signup-link">Sign in</a>
+        </footer>
+      </main>
+    </div>
+
+    <script src="../services/data-service.js"></script>
+    <script>
+      // Form data storage
+      let formData = {
+        name: "",
+        email: "",
+        country: "",
+        phone: "",
+        username: "",
+        password: "",
+      };
+
+      let recaptchaCompleted = false;
+      let resendCountdown = 60;
+      let countdownInterval = null;
+
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const icon = document.querySelector(".password-toggle");
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+
+      // reCAPTCHA callbacks
+      function onRecaptchaSuccess(token) {
+        recaptchaCompleted = true;
+        document.getElementById("recaptcha-error").style.display = "none";
+      }
+
+      function onRecaptchaExpired() {
+        recaptchaCompleted = false;
+      }
+
+      // OTP Input handling
+      const otpInputs = document.querySelectorAll(".otp-input");
+
+      otpInputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+          const value = e.target.value;
+
+          // Only allow numbers
+          if (!/^\d*$/.test(value)) {
+            e.target.value = "";
+            return;
+          }
+
+          // Move to next input
+          if (value && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+          }
+
+          // Clear error styling
+          e.target.classList.remove("error");
+          document.getElementById("otp-error").style.display = "none";
+        });
+
+        input.addEventListener("keydown", (e) => {
+          // Handle backspace
+          if (e.key === "Backspace" && !e.target.value && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+
+        // Handle paste
+        input.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const pastedData = e.clipboardData
+            .getData("text")
+            .replace(/\D/g, "")
+            .slice(0, 6);
+
+          pastedData.split("").forEach((char, i) => {
+            if (otpInputs[i]) {
+              otpInputs[i].value = char;
+            }
+          });
+
+          // Focus on next empty or last input
+          const nextEmpty = Array.from(otpInputs).findIndex(
+            (inp) => !inp.value,
+          );
+          if (nextEmpty !== -1) {
+            otpInputs[nextEmpty].focus();
+          } else {
+            otpInputs[otpInputs.length - 1].focus();
+          }
+        });
+      });
+
+      function getOTPValue() {
+        return Array.from(otpInputs)
+          .map((input) => input.value)
+          .join("");
+      }
+
+      function clearOTPInputs() {
+        otpInputs.forEach((input) => {
+          input.value = "";
+          input.classList.remove("error", "success");
+        });
+        otpInputs[0].focus();
+      }
+
+      // Step navigation
+      function goToStep2() {
+        document.getElementById("step1").classList.remove("active");
+        document.getElementById("step2").classList.add("active");
+
+        document.getElementById("step1-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("completed");
+        document.getElementById("step-connector").classList.add("active");
+        document.getElementById("step2-indicator").classList.add("active");
+
+        document.getElementById("displayEmail").textContent = formData.email;
+
+        // Focus first OTP input
+        setTimeout(() => otpInputs[0].focus(), 300);
+
+        // Start countdown
+        startResendCountdown();
+      }
+
+      function goBackToStep1() {
+        document.getElementById("step2").classList.remove("active");
+        document.getElementById("step1").classList.add("active");
+
+        document.getElementById("step2-indicator").classList.remove("active");
+        document.getElementById("step-connector").classList.remove("active");
+        document
+          .getElementById("step1-indicator")
+          .classList.remove("completed");
+        document.getElementById("step1-indicator").classList.add("active");
+
+        // Stop countdown
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+      }
+
+      // Resend countdown
+      function startResendCountdown() {
+        resendCountdown = 60;
+        document.getElementById("resendTimer").style.display = "inline";
+        document.getElementById("resendLink").style.display = "none";
+        document.getElementById("resendLink").classList.add("disabled");
+
+        countdownInterval = setInterval(() => {
+          resendCountdown--;
+          document.getElementById("countdown").textContent = resendCountdown;
+
+          if (resendCountdown <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("resendTimer").style.display = "none";
+            document.getElementById("resendLink").style.display = "inline";
+            document.getElementById("resendLink").classList.remove("disabled");
+          }
+        }, 1000);
+      }
+
+      // Send OTP
+      async function sendOTP() {
+        const btn = document.getElementById("sendOtpBtn");
+        const errorEl = document.getElementById("step1-error");
+        const recaptchaError = document.getElementById("recaptcha-error");
+
+        // Get form values
+        formData.name = document.getElementById("name").value.trim();
+        formData.email = document.getElementById("email").value.trim();
+        formData.country = document.getElementById("country").value.trim();
+        formData.phone = document.getElementById("phone").value.trim();
+        formData.username = document.getElementById("username").value.trim();
+        formData.password = document.getElementById("password").value;
+
+        // Validate required fields
+        if (
+          !formData.name ||
+          !formData.email ||
+          !formData.country ||
+          !formData.phone ||
+          !formData.username ||
+          !formData.password
+        ) {
+          errorEl.textContent = "Please fill in all fields";
+          errorEl.style.display = "block";
+          return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+          errorEl.textContent = "Please enter a valid email address";
+          errorEl.style.display = "block";
+          return;
+        }
+
+        // Validate password length
+        if (formData.password.length < 6) {
+          errorEl.textContent = "Password must be at least 6 characters";
+          errorEl.style.display = "block";
+          return;
+        }
+
+        // Validate reCAPTCHA
+        const recaptchaToken = grecaptcha.getResponse();
+        if (!recaptchaToken) {
+          recaptchaError.style.display = "block";
+          return;
+        }
+
+        // Reset errors
+        errorEl.style.display = "none";
+        recaptchaError.style.display = "none";
+
+        const originalText = btn.innerHTML;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Sending code...';
+        btn.disabled = true;
+
+        try {
+          const response = await fetch(MKAVS_CONFIG.API_BASE_URL + "/auth/send-otp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              name: formData.name,
+              recaptchaToken,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            goToStep2();
+          } else {
+            errorEl.textContent =
+              data.error || "Failed to send verification code";
+            errorEl.style.display = "block";
+            grecaptcha.reset();
+            recaptchaCompleted = false;
+          }
+        } catch (err) {
+          console.error("Send OTP error:", err);
+          errorEl.textContent = "An error occurred. Please try again.";
+          errorEl.style.display = "block";
+          grecaptcha.reset();
+          recaptchaCompleted = false;
+        } finally {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      }
+
+      // Resend OTP
+      async function resendOTP() {
+        const resendLink = document.getElementById("resendLink");
+
+        if (resendLink.classList.contains("disabled")) return;
+
+        resendLink.textContent = "Sending...";
+        resendLink.classList.add("disabled");
+
+        try {
+          // Reset reCAPTCHA and get new token
+          grecaptcha.reset();
+
+          // Wait a bit for reCAPTCHA to reset
+          await new Promise((resolve) => setTimeout(resolve, 500));
+
+          const recaptchaToken = grecaptcha.getResponse();
+
+          const response = await fetch(MKAVS_CONFIG.API_BASE_URL + "/auth/send-otp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              name: formData.name,
+              recaptchaToken: recaptchaToken || "resend",
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            clearOTPInputs();
+            startResendCountdown();
+          } else {
+            document.getElementById("otp-error").textContent =
+              data.error || "Failed to resend code";
+            document.getElementById("otp-error").style.display = "block";
+            resendLink.classList.remove("disabled");
+          }
+        } catch (err) {
+          console.error("Resend error:", err);
+          document.getElementById("otp-error").textContent =
+            "Failed to resend code";
+          document.getElementById("otp-error").style.display = "block";
+          resendLink.classList.remove("disabled");
+        }
+
+        resendLink.textContent = "Resend Code";
+      }
+
+      // Form submission - Verify OTP and complete signup
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const btn = document.getElementById("verifyBtn");
+          const errorEl = document.getElementById("otp-error");
+          const otp = getOTPValue();
+
+          // Validate OTP length
+          if (otp.length !== 6) {
+            errorEl.textContent = "Please enter the complete 6-digit code";
+            errorEl.style.display = "block";
+            otpInputs.forEach((input) => input.classList.add("error"));
+            return;
+          }
+
+          errorEl.style.display = "none";
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+          btn.disabled = true;
+
+          try {
+            // Step 1: Verify OTP
+            const verifyResponse = await fetch(MKAVS_CONFIG.API_BASE_URL + "/auth/verify-otp", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: formData.email,
+                otp,
+              }),
+            });
+
+            const verifyData = await verifyResponse.json();
+
+            if (!verifyResponse.ok) {
+              throw new Error(verifyData.error || "Invalid verification code");
+            }
+
+            // Mark OTP inputs as success
+            otpInputs.forEach((input) => input.classList.add("success"));
+
+            // Step 2: Complete signup
+            btn.innerHTML =
+              '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+
+            // Get reCAPTCHA token for signup
+            grecaptcha.reset();
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            const recaptchaToken = grecaptcha.getResponse() || "verified";
+
+            const signupResponse = await fetch(MKAVS_CONFIG.API_BASE_URL + "/auth/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                country: formData.country,
+                phone: formData.phone,
+                username: formData.username,
+                password: formData.password,
+                recaptchaToken,
+              }),
+            });
+
+            const signupData = await signupResponse.json();
+
+            if (signupResponse.ok) {
+              btn.innerHTML = '<i class="fas fa-check"></i> Success!';
+              setTimeout(() => {
+                window.location.href = "../index.html";
+              }, 1000);
+            } else {
+              throw new Error(signupData.error || "Failed to create account");
+            }
+          } catch (err) {
+            console.error("Signup error:", err);
+            errorEl.textContent = err.message;
+            errorEl.style.display = "block";
+            otpInputs.forEach((input) => input.classList.add("error"));
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+          }
+        });
+    </script>
+  </body>
+</html>

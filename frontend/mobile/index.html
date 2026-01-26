@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Slide Scroll with Scrubbing Zoom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="../config.js"></script>
+
+    <script>
+        if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // Check if window width is larger than typical mobile breakpoint to be sure
+            if (window.innerWidth > 768) {
+                window.location.href = "../index.html";
+            }
+        }
+    </script>
+</head>
+
+<body class="h-full w-full">
+    <!-- PRELOADER START -->
+    <div id="preloader"
+        class="fixed inset-0 z-[9999] bg-[#171717] flex justify-center items-center transition-opacity duration-500">
+        <div class="relative flex flex-col items-center justify-center h-full w-full">
+            <!-- Video Container -->
+            <div class="relative">
+                <video autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
+                    <source src="../images/mascot.mp4" type="video/mp4">
+                </video>
+                <!-- Progress Bar Overlapping Base -->
+                <div
+                    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 h-4 bg-gray-800/50 backdrop-blur-sm rounded-full overflow-hidden border border-white/10">
+                    <div id="loader-progress"
+                        class="h-full bg-[#685EB9] w-0 rounded-full transition-all duration-75 ease-out"></div>
+                </div>
+            </div>
+            <!-- Percentage Text -->
+            <div id="loader-text" class="mt-4 text-[#685EB9] font-black font-sans text-lg tracking-widest">0%</div>
+        </div>
+    </div>
+    <!-- PRELOADER END -->
+
+
+
+
+
+    <!-- CUSTOM SCROLLBAR -->
+    <div id="custom-scrollbar-track" class="fixed top-0 right-0 w-3 h-full z-[100] cursor-pointer">
+        <div id="custom-scrollbar-thumb"
+            class="w-full bg-[#c7f908]/50 hover:bg-[#c7f908] rounded-full transition-colors duration-200 absolute right-0 top-0 cursor-grab active:cursor-grabbing">
+        </div>
+    </div>
+
+    <div id="container" class="relative h-full w-full">
+
+        <!-- MAIN TOOLBAR (Fixed on top, split layout for mobile) -->
+        <nav id="main-toolbar"
+            class="absolute top-0 left-0 right-0 p-2 pt-4 w-full bg-transparent z-[70] transform -translate-y-full transition-transform duration-700 ease-out">
+            <div
+                class="max-w-7xl mx-auto flex justify-center items-center overflow-x-auto whitespace-nowrap no-scrollbar px-2">
+
+                <!-- Links & Icon -->
+                <div
+                    class="flex items-center space-x-4 text-[10px] sm:text-xs font-medium text-white uppercase tracking-wider">
+                    <a href="index.html" class="hover:text-[#c7f908] transition-colors">Home</a>
+                    <a href="./about/about.html" class="hover:text-[#c7f908] transition-colors">About</a>
+                    <a href="./brandpg/brnd.html" class="hover:text-[#c7f908] transition-colors">Branding</a>
+                    <a href="pricingpage/pricing.html" class="hover:text-[#c7f908] transition-colors">Pricing</a>
+                    <a href="./consult/consult.html" class="hover:text-[#c7f908] transition-colors">Book Us</a>
+
+                    <!-- Profile Icon -->
+                    <a href="./profile/profile.html" class="hover:text-[#c7f908] transition-colors text-base ml-2">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- SLIDE 1: HERO -->
+        <div class="slide-wrapper-corner">
+            <div id="slide-1"
+                class="slide bg-gradient-to-br from-[#0c19ad] to-[#0C1AC1] z-10 slide-transition concave-inner-slide">
+
+                <!--
+                <img class="star absolute w-10 h-10 top-[15%] left-[80%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
+                <img class="star absolute w-10 h-10 top-[45%] left-[10%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFC300/000000?text=*;';">
+                <img class="star absolute w-10 h-10 top-[45%] right-[10%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFE5A0/000000?text=*;';">
+                <img class="star absolute w-10 h-10 top-[50%] right-[40%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
+                <img class="star absolute w-10 h-10 top-[15%] left-[10%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/000000?text=*;';">
+                <img class="star absolute w-10 h-10 top-[10%] right-[40%] z-20 object-contain" src="../images/star.png"
+                    alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFA500/000000?text=*;';"> -->
+                <br><br><br><br>
+                <!-- FLEX CONTAINER instead of Absolute chaos -->
+                <div class="absolute inset-0 z-30 flex flex-col items-center justify-center pt-16 pb-20 px-4 gap-4">
+
+                    <!-- Main Image Layer -->
+                    <div class="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px]">
+                        <img id="slide-1-image" src="../images/MKAVS.png" alt="Base Image"
+                            class="absolute inset-0 w-full h-full object-contain opacity-0 transform scale-50 -translate-y-8 transition-all duration-700 ease-out"
+                            onerror="this.onerror=null; this.src='https://placehold.co/600x400/1E40AF/FFFFFF?text=LOGO+LAYER+1';">
+                        <div class="absolute inset-0 w-full h-full flex items-center justify-center">
+                            <img id="slide-1-overlay-image" src="../images/heroimg.png" alt="Overlay Image"
+                                class="w-[80%] h-auto object-contain slide-up-transition translate-y-full opacity-0 duration-[2000ms] transition-all"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/DC2626/FFFFFF?text=HERO+LAYER+3';">
+                        </div>
+                    </div>
+
+
+
+
+                    <br><br><br><br>
+                    <!-- Curved Auto-Scrolling Carousel -->
+                    <a href="#slide-3" id="hero-carousel"
+                        class="block w-screen -mx-4 -mt-16 z-30 relative mask-curve opacity-0 transform translate-y-full transition-all duration-1000 ease-out cursor-pointer">
+                        <style>
+                            .mask-curve {
+                                mask-image: radial-gradient(circle at 50% 50%, black 85%, transparent 100%);
+                            }
+
+                            /* Simpler Approach for "Curved top and bottom" visual: Border Radius */
+                            .curved-container {
+                                border-radius: 10% / 910%;
+                                /* Elliptical shape */
+                            }
+                        </style>
+                        <div
+                            class="w-full h-24 overflow-hidden curved-container bg-white/20 backdrop-blur-sm border-y border-white/30 shadow-2xl relative">
+
+
+                            <div class="flex items-center space-x-4 animate-scroll-left w-max py-2 h-full">
+                                <!-- Duplicated images for seamless loop -->
+                                <img src="../images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 1">
+                                <img src="../images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 2">
+                                <img src="../images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 3">
+                                <img src="../images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 4">
+                                <img src="../images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 5">
+
+                                <!-- Duplicate Set -->
+                                <img src="../images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 1">
+                                <img src="../images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 2">
+                                <img src="../images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 3">
+                                <img src="../images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 4">
+                                <img src="../images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                    alt="Work 5">
+                            </div>
+                        </div>
+                    </a>
+
+
+
+                    <!-- CTA Button -->
+                    <a href="./consult/consult.html" id="get-started-button" target="_blank"
+                        class="pulsate bg-[#c7f908] text-[#0C1AC1] hover:bg-white hover:text-[#c7f908] hover:border-[#0C1AC1] font-bold py-3 px-10 rounded-full shadow-2xl border-2 border-[#0C1AC1] button-transition transform scale-0 opacity-0 transition-all duration-500 cubic-bezier(0.175, 0.885, 0.32, 1.275) text-base inline-block text-center mt-4">
+                        GET STARTED
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- SLIDE 2: WHAT WE DO -->
+        <div id="slide-2" class="slide bg-[#1F1F1F] z-20 translate-y-full slide-transition overflow-y-auto">
+            <div class="w-full min-h-full pb-20">
+
+                <div class="w-full max-w-7xl mx-auto px-4 pt-24 pb-8 space-y-8">
+                    <div id="slide-2-text"
+                        class="text-left slide-left-entry opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                        <h2
+                            class="text-3xl font-black mb-4 text-white uppercase tracking-tighter leading-none break-words">
+                            What&nbsp;&nbsp;<span class="text-[#c7f908]">we&nbsp;&nbsp; Do</span>
+                        </h2>
+                        <h2 class="text-lg font-black mb-4 text-white uppercase tracking-wider leading-tight">
+                            We Build Kreative Advanced Visual Sites
+                        </h2>
+                        <p class="text-sm text-gray-300 font-light leading-relaxed max-w-full">
+                            Your ideas deserve more than a basic website; they deserve a clean, modern, high-performing
+                            digital experience that stands out every single time.<br>
+                            We take your vision and transform it into something beautiful, functional, and built to
+                            last.
+                        </p>
+                    </div>
+
+                    <!-- Cards Container: Flex Row, 3 Items Small on One Line -->
+                    <div class="flex flex-row justify-between gap-2 w-full">
+                        <!-- Card 1 -->
+                        <div id="slide-2-card-1"
+                            class="group relative h-32 w-1/3 bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-lg overflow-hidden scale-0 opacity-0 z-30">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10 transition-opacity duration-300">
+                            </div>
+                            <img src="../images/1.jpeg" alt="Web Design"
+                                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                            <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
+                                <h3 class="text-[10px] font-black text-white mb-0.5 uppercase leading-none">
+                                    Web Design</h3>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div id="slide-2-card-2"
+                            class="group relative h-32 w-1/3 bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-lg overflow-hidden scale-0 opacity-0 z-20">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                            <img src="../images/2.jpeg" alt="Full Stack"
+                                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                            <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
+                                <h3 class="text-[10px] font-black text-[#c7f908] mb-0.5 uppercase leading-none">
+                                    Full Stack
+                                </h3>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div id="slide-2-card-3"
+                            class="group relative h-32 w-1/3 bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-lg overflow-hidden scale-0 opacity-0 z-10">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                            <img src="../images/3.jpeg" alt="Branding"
+                                class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                            <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
+                                <h3 class="text-[10px] font-black text-white mb-0.5 uppercase leading-none">
+                                    Brand Identity</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="slide-2-marquee"
+                    class="relative w-full py-24 overflow-hidden flex justify-center items-center">
+                    <div class="absolute inset-0 flex items-center justify-center transform rotate-3">
+                        <div class="w-[100%] bg-[#c7f908] text-black py-2 shadow-xl">
+                            <div class="marquee-container animate-scroll-left">
+                                <span class="text-2xl font-extrabold px-6 ">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6 ">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">GRAPHIC DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">WEB DESIGN</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                                <span class="text-2xl font-extrabold px-6">BRANDING</span>
+                                <span class="logo-container"><span class="logo-image"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="max-w-7xl mx-auto px-4 -mt-50 pb-10">
+                    <div class="flex flex-col gap-16">
+                        <!-- Text Row -->
+                        <div id="slide-2-bottom-text"
+                            class="flex flex-col md:flex-row gap-12 border-l-4 border-[#c7f908] pl-8 md:pl-20 transition-all duration-1000 ease-out">
+                            <!-- Left Col: Header & Intro -->
+                            <div class="w-full md:w-1/2 space-y-6">
+                                <h2
+                                    class="text-3xl font-black mb-4 text-white uppercase tracking-tighter leading-none break-words">
+                                    Why Choose<span class="text-[#c7f908]"> mKavs?</span>
+                                </h2>
+                                <h2 class="text-lg font-black mb-4 text-white uppercase tracking-wider leading-tight">
+                                    Your Vision Meets Our Creativity
+                                </h2>
+                                <p class="text-sm text-gray-300 font-light leading-relaxed max-w-full">
+                                    Choosing us means choosing a team that actually cares about your brand, your vision,
+                                    and the final impact of your website. We don't rush, reuse templates, or settle for
+                                    "good enough." We build with intention — every detail, every pixel, every line of
+                                    code.
+                                </p>
+                            </div>
+
+                            <!-- Right Col: Details -->
+                            <div class="w-full md:w-1/2 space-y-8 flex flex-col justify-center">
+                                <p class="text-sm text-gray-300 font-light leading-relaxed max-w-full">
+                                    <strong class="text-[#c7f908] block text-1xl mb-2">FLEXIBLE COMMUNICATION</strong>
+                                    Talk to us however you want: WhatsApp, Discord, Teams, Google Meet. We adjust to
+                                    your comfort.
+                                </p>
+                                <p class="text-sm text-gray-300 font-light leading-relaxed max-w-full">
+                                    <strong class="text-[#c7f908] block text-1xl mb-2">DEDICATED SUPPORT</strong>
+                                    We stick with you before, during, and after the project. Updates? Fixes? New ideas?
+                                    We're here.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Video Row (Full Width) -->
+                        <div class="w-full relative mt-12">
+                            <video class="w-full h-auto" autoplay muted loop playsinline>
+                                <source src="../images/why.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
+                    <p>Scroll down for next slide</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 3: OUR WORKS -->
+        <div id="slide-3"
+            class="slide bg-[#1F1F1F] z-30 translate-y-full slide-transition flex flex-col justify-center items-center relative overflow-hidden">
+
+            <!-- 1. Marquee Background (Visible initially, fades out on flip) -->
+            <div id="looping-text-wrapper"
+                class="absolute top-0 left-0 w-full h-full flex flex-col justify-between py-4 overflow-hidden pointer-events-none z-0 transition-opacity duration-500 ease-in-out">
+                <!-- Row 1 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                        <span class="marquee-text">UI/UX DESIGN</span>
+                    </div>
+                </div>
+                <!-- Row 2 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                        <span class="marquee-text">MOODBOARDS</span>
+                    </div>
+                </div>
+                <!-- Row 3 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">WIREFRAMING</span>
+                        <span class="marquee-text">WIREFRAMING</span>
+                        <span class="marquee-text">WIREFRAMING</span>
+                        <span class="marquee-text">WIREFRAMING</span>
+                        <span class="marquee-text">WIREFRAMING</span>
+                        <span class="marquee-text">WIREFRAMING</span>
+                    </div>
+                </div>
+                <!-- Row 4 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">PROTOTYPING</span>
+                        <span class="marquee-text">PROTOTYPING</span>
+                        <span class="marquee-text">PROTOTYPING</span>
+                        <span class="marquee-text">PROTOTYPING</span>
+                        <span class="marquee-text">PROTOTYPING</span>
+                        <span class="marquee-text">PROTOTYPING</span>
+                    </div>
+                </div>
+                <!-- Row 5 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">USER RESEARCH</span>
+                        <span class="marquee-text">USER RESEARCH</span>
+                        <span class="marquee-text">USER RESEARCH</span>
+                        <span class="marquee-text">USER RESEARCH</span>
+                        <span class="marquee-text">USER RESEARCH</span>
+                        <span class="marquee-text">USER RESEARCH</span>
+                    </div>
+                </div>
+                <!-- Row 6 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                        <span class="marquee-text">VISUAL DESIGN</span>
+                    </div>
+                </div>
+                <!-- Row 7 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">INTERACTION</span>
+                        <span class="marquee-text">INTERACTION</span>
+                        <span class="marquee-text">INTERACTION</span>
+                        <span class="marquee-text">INTERACTION</span>
+                        <span class="marquee-text">INTERACTION</span>
+                        <span class="marquee-text">INTERACTION</span>
+                    </div>
+                </div>
+                <!-- Row 8 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">STRATEGY</span>
+                        <span class="marquee-text">STRATEGY</span>
+                        <span class="marquee-text">STRATEGY</span>
+                        <span class="marquee-text">STRATEGY</span>
+                        <span class="marquee-text">STRATEGY</span>
+                        <span class="marquee-text">STRATEGY</span>
+                    </div>
+                </div>
+                <!-- Row 9 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">DEVELOPMENT</span>
+                        <span class="marquee-text">DEVELOPMENT</span>
+                        <span class="marquee-text">DEVELOPMENT</span>
+                        <span class="marquee-text">DEVELOPMENT</span>
+                        <span class="marquee-text">DEVELOPMENT</span>
+                        <span class="marquee-text">DEVELOPMENT</span>
+                    </div>
+                </div>
+                <!-- Row 10 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">ANIMATION</span>
+                        <span class="marquee-text">ANIMATION</span>
+                        <span class="marquee-text">ANIMATION</span>
+                        <span class="marquee-text">ANIMATION</span>
+                        <span class="marquee-text">ANIMATION</span>
+                        <span class="marquee-text">ANIMATION</span>
+                    </div>
+                </div>
+                <!-- Row 11 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-left h-full">
+                        <span class="marquee-text">BRANDING</span>
+                        <span class="marquee-text">BRANDING</span>
+                        <span class="marquee-text">BRANDING</span>
+                        <span class="marquee-text">BRANDING</span>
+                        <span class="marquee-text">BRANDING</span>
+                        <span class="marquee-text">BRANDING</span>
+                    </div>
+                </div>
+                <!-- Row 12 -->
+                <div class="overflow-hidden w-full">
+                    <div class="marquee-container animate-scroll-right h-full">
+                        <span class="marquee-text">CREATIVE</span>
+                        <span class="marquee-text">CREATIVE</span>
+                        <span class="marquee-text">CREATIVE</span>
+                        <span class="marquee-text">CREATIVE</span>
+                        <span class="marquee-text">CREATIVE</span>
+                        <span class="marquee-text">CREATIVE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Header & Categories (Hidden initially, appears Top Center on flip) -->
+            <div id="slide-3-header"
+                class="absolute top-24 left-0 w-full flex flex-col items-center z-20 opacity-0 pointer-events-none transition-all duration-500 transform translate-y-[-20px]">
+                <h2
+                    class="text-4xl font-black text-white uppercase tracking-tighter leading-none mb-4 relative inline-block">
+                    Our <span class="text-[#c7f908]">Works</span> <br>
+                    <span class="block w-1/2 h-1 bg-[#c7f908] mx-auto mt-1 rounded-full"></span>
+                </h2>
+                <div class="flex flex-wrap justify-center gap-2 px-4">
+                    <button data-category="portfolio"
+                        class="category-btn active px-3 py-1 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold uppercase backdrop-blur-sm hover:bg-[#c7f908] hover:text-black transition-colors ring-[#c7f908]">Portfolio
+                    </button>
+                    <button data-category="company"
+                        class="category-btn px-3 py-1 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold uppercase backdrop-blur-sm hover:bg-[#c7f908] hover:text-black transition-colors">Company
+                    </button>
+                    <button data-category="ecommerce"
+                        class="category-btn px-3 py-1 bg-white/10 border border-white/20 rounded-full text-white text-xs font-bold uppercase backdrop-blur-sm hover:bg-[#c7f908] hover:text-black transition-colors">Ecommerce
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Main Image / Flip Card (Centered via Wrapper) -->
+            <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                <div id="zoom-image-container"
+                    class="preserve-3d relative w-11/12 max-w-md aspect-[3/2] pointer-events-auto transition-transform duration-700 ease-out">
+                    <div id="zoom-image-flipper"
+                        class="transform-style-preserve-3d w-full h-full cursor-pointer pointer-events-auto">
+                        <img id="zoom-image-front" src="../images/4.jpeg" alt="Zoom Target Front"
+                            class="flip-face flip-face-front w-full h-full object-cover rounded-xl shadow-2xl">
+                        <img id="zoom-image-back" src="../images/thumb1.png" alt="Zoom Target Back"
+                            class="flip-face flip-face-back w-full h-full object-cover rounded-xl shadow-2xl">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Thumbnails (Hidden initially, appears below image on flip) -->
+            <div id="slide-3-thumbnails"
+                class="absolute bottom-24 left-0 w-full flex justify-center gap-3 z-20 opacity-0 pointer-events-none transition-all duration-500 transform translate-y-[20px] flex-wrap px-4">
+
+                <!-- Portfolio Thumbnails (1-3) -->
+                <img src="../images/thumb1.png" data-category="portfolio" data-image="../images/thumb1.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
+                    alt="Portfolio 1">
+                <img src="../images/thumb2.png" data-category="portfolio" data-image="../images/thumb2.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
+                    alt="Portfolio 2">
+                <img src="../images/thumb3.png" data-category="portfolio" data-image="../images/thumb3.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
+                    alt="Portfolio 3">
+
+                <!-- Company Thumbnails (4-6) - Hidden initially via JS logic/CSS -->
+                <img src="../images/thumb4.png" data-category="company" data-image="../images/thumb4.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Company 1">
+                <img src="../images/thumb5.png" data-category="company" data-image="../images/thumb5.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Company 2">
+                <img src="../images/thumb6.png" data-category="company" data-image="../images/thumb6.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Company 3">
+
+                <!-- Ecommerce Thumbnails (7-9) - Hidden initially via JS logic/CSS -->
+                <img src="../images/thumb7.png" data-category="ecommerce" data-image="../images/thumb7.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Ecommerce 1">
+                <img src="../images/thumb8.png" data-category="ecommerce" data-image="../images/thumb8.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Ecommerce 2">
+                <img src="../images/thumb9.png" data-category="ecommerce" data-image="../images/thumb9.png"
+                    data-url="https://example.com"
+                    class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
+                    alt="Ecommerce 3">
+            </div>
+        </div>
+
+        <!-- SLIDE 4: OUR EXPERTISE -->
+        <div id="slide-4" class="slide bg-[#111827] translate-y-full slide-transition overflow-hidden relative">
+
+            <div
+                class="max-w-6xl w-full flex flex-col md:flex-row justify-between items-start mb-12 mt-20 px-4 md:mt-8">
+
+                <div id="slide-4-header-text"
+                    class="md:w-1/2 w-full mb-8 md:mb-0 border-l-4 border-[#c7f908] pl-6 md:pl-20 opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                    <h2 class="text-4xl font-black text-white uppercase tracking-tighter leading-none">
+                        Our<br><span class="text-[#c7f908]">Expertise</span>
+                    </h2>
+                </div>
+
+            </div>
+
+            <!-- Compact Container -->
+            <div class="grid grid-cols-1 gap-2 max-w-lg w-full mb-10 px-4 mt-2">
+                <div id="slide-4-card-1"
+                    class="p-3 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-xl opacity-0 scale-0 transition-all duration-700 ease-out flex flex-row items-center gap-3">
+                    <div class="flex-shrink-0 text-[#c7f908] bg-white/5 p-2 rounded-lg">
+                        <i class="fa-solid fa-code text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="text-base md:text-lg font-black text-white uppercase italic group-hover:text-[#c7f908] transition-colors leading-none mb-1">
+                            Advanced Dev
+                        </h3>
+                        <p
+                            class="text-[10px] text-gray-400 leading-tight group-hover:text-gray-200 transition-colors line-clamp-2">
+                            Fast, animated, modern frontends paired with <br>rock-solid backends.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="slide-4-card-2"
+                    class="p-3 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-xl opacity-0 scale-0 transition-all duration-700 ease-out flex flex-row items-center gap-3">
+                    <div class="flex-shrink-0 text-[#c7f908] bg-white/5 p-2 rounded-lg">
+                        <i class="fa-solid fa-ranking-star text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="text-base md:text-lg font-black text-white uppercase italic group-hover:text-[#c7f908] transition-colors leading-none mb-1">
+                            SEO & Indexing
+                        </h3>
+                        <p
+                            class="text-[10px] text-gray-400 leading-tight group-hover:text-gray-200 transition-colors line-clamp-2">
+                            Optimized structure, speed, and metadata<br> to get you ranked higher.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="slide-4-card-3"
+                    class="p-3 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-xl opacity-0 scale-0 transition-all duration-700 ease-out flex flex-row items-center gap-3">
+                    <div class="flex-shrink-0 text-[#c7f908] bg-white/5 p-2 rounded-lg">
+                        <i class="fa-solid fa-palette text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3
+                            class="text-base md:text-lg font-black text-white uppercase italic group-hover:text-[#c7f908] transition-colors leading-none mb-1">
+                            Branding
+                        </h3>
+                        <p
+                            class="text-[10px] text-gray-400 leading-tight group-hover:text-gray-200 transition-colors line-clamp-2">
+                            Custom color systems, typography, and visual direction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Curved Semicircle Image -->
+            <div class="w-full flex justify-center pb-24 opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-500"
+                id="slide-4-bottom-image">
+                <div class="w-full h-auto overflow-hidden shadow-2xl relative">
+                    <img src="../images/4.jpeg" class="w-full h-full object-cover border-t-6 border-[#c7f908]/50"
+                        style="border-top-left-radius: 140px; border-top-right-radius: 140px;" alt="Creative Work">
+                    <!-- Overlay gradient for depth -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"
+                        style="border-top-left-radius: 140px; border-top-right-radius: 140px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: VIDEO END CAP -->
+        <div id="slide-5" onclick="window.open('./brandpg/brnd.html', '_blank')"
+            class="slide bg-black z-50 translate-y-full slide-transition flex items-center justify-center overflow-hidden cursor-pointer relative">
+            <video id="end-cap-video" class="w-full h-full object-cover" autoplay muted playsinline preload="auto"
+                poster="../images/video-poster.jpg">
+                <source src="../images/mobvid.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <!-- Top Semicircle Overlay -->
+            <div id="slide-5-top-overlay"
+                class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full transition-transform duration-700 ease-out z-20">
+                <div
+                    class="bg-[#0C18BE] pt-6 pb-2 px-8 rounded-b-full shadow-lg flex flex-col items-center justify-center w-[350px] h-[100px]">
+                    <p class="text-white text-xs font-bold uppercase text-center leading-tight">
+                        Tap to view branding page elements
+                    </p>
+                    <i class="fa-solid fa-arrow-up text-white/50 text-xs mt-1 animate-bounce"></i>
+                </div>
+            </div>
+
+            <!-- Bottom Semicircle Overlay -->
+            <div id="slide-5-bottom-overlay"
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full transition-transform duration-700 ease-out z-20">
+                <div
+                    class="bg-[#C46AE3] pt-2 pb-8 px-8 rounded-t-full shadow-lg flex flex-col items-center justify-center w-[350px] h-[100px]">
+                    <i class="fa-solid fa-palette text-white/50 text-xs mb-1 animate-pulse"></i>
+                    <p class="text-white text-xs font-bold uppercase text-center leading-tight">
+                        Save your favorite color and font palletes
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SLIDE 6: FOOTER SECTION -->
+        <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] overflow-hidden">
+
+            <div class="relative w-full h-full flex flex-col justify-between">
+
+                <!-- Inner Content with Padding -->
+                <div class="flex-grow flex flex-col items-start justify-start p-5 pt-6">
+
+                    <h1
+                        class="text-4xl md:text-5xl font-black leading-tight tracking-tighter text-white uppercase mb-6">
+                        YOUR<br>
+                        <span class="text-[#0C1AC1]">
+                            DIGITAL JOURNEY
+                        </span><br>
+                        <span class="text-[#c7f908]">STARTS HERE.</span>
+                    </h1>
+
+                    <div class="relative w-full h-64 z-20">
+
+                        <!-- Mascot Video (Left Extreme) -->
+                        <div class="absolute bottom-0 left-0 -ml-12 cursor-pointer group">
+                            <video src="../images/mascot.mp4" class="w-64 h-64 object-contain" autoplay loop muted
+                                playsinline>
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <!-- Buttons (Right Side, Absolutely Positioned) -->
+                        <div class="absolute bottom-12 right-2 flex flex-col gap-4">
+                            <a href="./consult/consult.html" target="_blank"
+                                class="px-6 py-3 bg-[#C7F908] rounded-full text-xs font-black text-[#0E0E0E] shadow-xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 text-center whitespace-nowrap">
+                                BOOK NOW
+                            </a>
+                            <a href="./pricingpage/pricing.html" target="_blank"
+                                class="px-6 py-3 bg-transparent backdrop-blur-md rounded-full text-xs font-black text-white shadow-xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 text-center whitespace-nowrap">
+                                VIEW PLANS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Full Width -->
+                <!-- Reduced Height from h-1/4 to h-[20%] -->
+                <div class="absolute bottom-0 left-0 right-0 h-auto min-h-[30%] bg-[#0C1AC1]">
+                    <div class="absolute top-[0px] left-0 right-0 p-5 bg-transparent text-center">
+                        <h2 class="text-2xl font-extrabold tracking-widest text-white uppercase drop-shadow-md">
+                            JOIN OUR COMMUNITY
+                        </h2>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-[70%] bg-[#C7F908]" style="
+                        border-top-left-radius: 50% 50px; 
+                        border-top-right-radius: 50% 50px;
+                        transform: translateY(0);
+                        box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.3);
+                    ">
+
+                        <!-- Attached Text (Reduced top offset) -->
+
+
+                        <div class="flex justify-center items-center space-x-12 pt-8">
+                            <div class="flex space-x-10 text-3xl">
+                                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-discord"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Footer Links -->
+                        <div
+                            class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 mt-6 text-[11px] font-bold text-[#0E0E0E] tracking-wider uppercase opacity-80">
+
+                            <a href="#" class="hover:text-[#4F46E5] transition-colors">Terms of Use</a>
+                            <a href="#" class="hover:text-[#4F46E5] transition-colors">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-1 left-0 right-0 text-center text-[9px] text-gray-800 font-bold z-10">
+                    &copy; COPYRIGHT MKAVS GLOBAL TECH / SUPPORT@MKAVS.COM
+                </div>
+
+            </div>
+        </section>
+
+        <script src="scripts.js"></script>
+
+        <!-- Kairon Chat Widget Integration -->
+        <link rel="stylesheet" href="./chatbot/kairon-widget.css">
+        <script>window.KAIRON_BASE_PATH = "./chatbot/";</script>
+        <div id="kairon">
+            <button id="kairon-button" aria-label="Open chat">
+                <img src="./chatbot/kairon-logo.png" alt="Kairon">
+            </button>
+            <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
+                <div class="panel-header">
+                    <div class="left-section">
+                        <div class="logo-placeholder">
+                            <img src="./chatbot/kairon-logo.png" alt="Logo">
+                        </div>
+                        <div class="title">Kairon</div>
+                    </div>
+                    <select id="agent-selector" class="agent-selector" style="display:none">
+                        <option value="" disabled selected>Talk to Agent</option>
+                        <option value="Mr.K">Mr.K</option>
+                    </select>
+                    <button id="kairon-close" class="close-btn" aria-label="Close chat">×</button>
+                </div>
+                <div id="kairon-messages" class="messages"></div>
+                <div class="interactive-area">
+                    <div id="kairon-controls" class="kairon-controls">
+                        <div id="kairon-categories" class="kairon-categories"></div>
+                    </div>
+                    <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+                </div>
+                <form id="kairon-form" class="composer" autocomplete="off">
+                    <input id="kairon-input" type="text" aria-label="Message" />
+                    <button type="submit" aria-label="Send">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <script src="./chatbot/kairon-widget.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const loginBtn = document.getElementById('mobile-login-btn');
+                if (loginBtn) {
+                    try {
+                        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status');
+                        const data = await response.json();
+                        if (data.loggedIn) {
+                            loginBtn.textContent = 'Logout';
+                            loginBtn.href = MKAVS_CONFIG.API_BASE_URL + '/auth/logout';
+                        }
+                    } catch (err) {
+                        console.error('Error fetching auth status:', err);
+                    }
+                }
+            });
+        </script>
+</body>
+
+</html>

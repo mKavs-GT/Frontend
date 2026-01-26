@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (window.innerWidth <= 768) {
+            window.location.replace("../../mobile/brandpg/colopg/color.html");
+        }
+    </script>
+    <title>Color Palettes - mKavs</title>
+    <meta name="description"
+        content="Explore 2,000 expertly curated color palettes for your next creative project by mKavs">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Premium Animation Styles -->
+    <style>
+        .title-wrapper {
+            overflow: hidden;
+            padding-bottom: 0.5rem;
+        }
+
+        .color-strip {
+            will-change: transform;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="../../index.html" class="nav-logo"
+            style="position: absolute; top: 2rem; left: 2rem; z-index: 10; display: block;">
+            <img src="../../images/MKAVS.png" alt="MKAVS" style="height: 40px; width: auto;">
+        </a>
+
+        <!-- Profile Icon -->
+        <a href="../../profile/profile.html" class="profile-link">
+            <i class="fa-solid fa-circle-user"></i>
+        </a>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>LET'S <span style="color: #C6FF00;">COLOR</span></h1>
+            <p>Explore 2,000 expert-crafted web palettes for your creative projects</p>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="Modern SaaS">Modern SaaS</button>
+                <button class="filter-btn" data-category="Dark Mode">Dark Mode</button>
+                <button class="filter-btn" data-category="Bold / Experimental">Bold / Experimental</button>
+                <button class="filter-btn" data-category="popular">Popular</button>
+                <button class="filter-btn" data-category="liked">Favorites</button>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; justify-content: center;">
+                <select id="sortSelect" class="sort-select"
+                    style="width: auto; background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);">
+                    <option value="default">Default Order</option>
+                    <option value="az">Name A-Z</option>
+                    <option value="type">Type</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Palette Grid -->
+        <div class="palette-grid" id="paletteGrid"></div>
+        <div class="loader" id="loader"></div>
+        <div id="sentinel"></div>
+    </div>
+
+    <!-- Back Button -->
+    <div style="text-align: center; margin-bottom: 4rem;">
+        <a href="../brnd.html" style="
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 3rem;
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-family: var(--font-body);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 0 30px var(--accent-glow)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                style="margin-right: 8px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Brand Page
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3 class="footer-logo">mKavs</h3>
+                <p class="footer-tagline">Creative Visual Solutions</p>
+            </div>
+            <div class="footer-stats">
+                <div class="stat">
+                    <span class="stat-number">40+</span>
+                    <span class="stat-label">Happy Clients</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Success Score</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">1500</span>
+                    <span class="stat-label">Development Hours</span>
+                </div>
+            </div>
+            <div class="footer-contact">
+
+                <p class="footer-copyright">© 2024 mKavs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="palette_data.js"></script>
+    <script src="script.js"></script>
+    <!-- Kairon Chat Widget Integration -->
+    <link rel="stylesheet" href="../../chatbot/kairon-widget.css">
+    <script>window.KAIRON_BASE_PATH = "../../chatbot/";</script>
+    <div id="kairon">
+        <button id="kairon-button" aria-label="Open chat">
+            <img src="../../chatbot/kairon-logo.png" alt="Kairon">
+        </button>
+        <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
+            <div class="panel-header">
+                <div class="left-section">
+                    <div class="logo-placeholder">
+                        <img src="../../chatbot/kairon-logo.png" alt="Logo">
+                    </div>
+                    <div class="title">Kairon</div>
+                </div>
+                <select id="agent-selector" class="agent-selector" style="display:none">
+                    <option value="" disabled selected>Talk to Agent</option>
+                    <option value="Mr.K">Mr.K</option>
+                </select>
+                <button id="kairon-close" class="close-btn" aria-label="Close chat">×</button>
+            </div>
+            <div id="kairon-messages" class="messages"></div>
+            <div class="interactive-area">
+                <div id="kairon-controls" class="kairon-controls">
+                    <div id="kairon-categories" class="kairon-categories"></div>
+                </div>
+                <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+            </div>
+            <form id="kairon-form" class="composer" autocomplete="off">
+                <input id="kairon-input" type="text" aria-label="Message" />
+                <button type="submit" aria-label="Send">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="../../chatbot/kairon-widget.js"></script>
+</body>
+
+</html>

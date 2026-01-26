@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MKAVS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Circular Favicon -->
+    <link rel="icon" type="image/png" href="../images/LOGOI.png">
+    <script src="../config.js"></script>
+</head>
+
+<body>
+
+
+
+    <!-- Main Content -->
+    <main class="main-content" style="display: none;">
+        <header class="top-bar">
+            <a href="../index.html" class="nav-logo">
+                <img src="../images/MKAVS.png" alt="MKAVS" style="height: 40px;">
+            </a>
+
+
+
+            <div class="header-actions" style="display: flex; gap: 0.8rem; align-items: center;">
+                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/logout'" class="logout-header-btn" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+
+                <div class="menu-container">
+                    <button class="hamburger-btn" id="menuToggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <nav class="hamburger-dropdown" id="menuDropdown">
+                        <a href="#dashboard" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                        <a href="#sessions" class="menu-item"><i class="fa-solid fa-calendar-check"></i> Sessions</a>
+                        <a href="#palettes" class="menu-item"><i class="fa-solid fa-palette"></i> Palettes</a>
+                        <a href="#orders" class="menu-item"><i class="fa-solid fa-box-open"></i> Orders</a>
+                        <a href="#settings" class="menu-item"><i class="fa-solid fa-gear"></i> Settings</a>
+                        <div class="menu-divider"></div>
+                        <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/logout'" class="menu-item logout"><i class="fa-solid fa-right-from-bracket"></i>
+                            Logout</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div class="welcome-text">
+            <h1>Welcome back, <span class="user-name">{user_name}</span>!</h1>
+            <p>Here's what's happening with your projects today.</p>
+        </div><br> <br>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <div class="card projects-card">
+                <div class="card-header">
+                    <h2>Active Project</h2>
+                </div>
+                <div id="activeProjectContainer">
+                    <div class="loading-state">Loading project details...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites / Palettes -->
+        <div class="palettes-section" id="palettes">
+            <h2>Favorite Palettes</h2>
+            <div class="palettes-grid" id="favoritesGrid">
+                <!-- Palettes will be populated by script.js -->
+                <a href="../brandpg/colopg/color.html" class="palette-card add-new">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Favorite Fonts Section -->
+        <div class="fonts-section" style="margin-top: 3rem;">
+            <h2>Favorite Fonts</h2>
+            <div class="palettes-grid" id="favoriteFontsGrid">
+                <!-- Populated by script.js -->
+                <a href="../brandpg/fontspg/fonts.html" class="palette-card add-new">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../brandpg/colopg/palette_data.js"></script>
+    <script src="../brandpg/fontspg/fonts_data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
