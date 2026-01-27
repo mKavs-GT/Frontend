@@ -764,6 +764,15 @@
             </div>
         </section>
 
+        <script>
+            const API_BASE_URL = "https://backend-zjwg.onrender.com/api";
+
+            // Example: fetch users
+            fetch(`${API_BASE_URL}/users`)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.error(err));
+        </script>
         <script src="scripts.js"></script>
 
         <!-- Kairon Chat Widget Integration -->

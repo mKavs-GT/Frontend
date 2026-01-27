@@ -653,7 +653,7 @@
                     </div>
                 </div>
 
-                <div class="absolute bottom-0 left-0 right-0 h-1/4 bg-[#0C1AC1]">
+                <div class="absolute bottom-0 left-0 right-0 h-[40%] bg-[#0C1AC1]">
 
                     <div class="absolute top-0 left-0 right-0 h-full bg-[#C7F908]" style="
                         border-top-left-radius: 1000% 1000px; 
@@ -700,13 +700,22 @@
                     </div>
                 </div>
 
-                <div class="absolute bottom-1 left-0 right-0 text-center text-[10px] text-gray-500">
+                <div class="absolute bottom-4 left-0 right-0 text-center text-[10px] text-gray-500">
                     &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
                 </div>
 
             </div>
         </section>
 
+        <script>
+            const API_BASE_URL = "https://backend-zjwg.onrender.com/api";
+
+            // Example: fetch users
+            fetch(`${API_BASE_URL}/users`)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.error(err));
+        </script>
         <script src="scripts.js"></script>
 
         <!-- Kairon Chat Widget Integration -->
