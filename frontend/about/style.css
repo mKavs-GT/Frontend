@@ -2080,27 +2080,36 @@ p {
 /* Defined specifically to preserve the scale of each character */
 
 @keyframes float-mrv {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1.8) translateY(0);
     }
+
     50% {
         transform: scale(1.8) translateY(-15px);
     }
 }
 
 @keyframes float-mrss-mrm {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1.3) translateY(0);
     }
+
     50% {
         transform: scale(1.3) translateY(-15px);
     }
 }
 
 @keyframes float-mra {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1.6) translateY(0);
     }
+
     50% {
         transform: scale(1.6) translateY(-15px);
     }
@@ -2112,15 +2121,47 @@ p {
 
 .mrs-s .char-img {
     animation: float-mrss-mrm 6s ease-in-out infinite;
-    animation-delay: 1s; /* Offset for natural feel */
+    animation-delay: 1s;
+    /* Offset for natural feel */
 }
 
 .mr-m .char-img {
     animation: float-mrss-mrm 6s ease-in-out infinite;
-    animation-delay: 2s; /* Offset for natural feel */
+    animation-delay: 2s;
+    /* Offset for natural feel */
 }
 
 .mr-a .char-img {
     animation: float-mra 6s ease-in-out infinite;
-    animation-delay: 3s; /* Offset for natural feel */
+    animation-delay: 3s;
+    /* Offset for natural feel */
+}
+
+/* Policy Buttons Styling */
+.policy-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.policy-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(14, 14, 14, 0.3);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0E0E0E;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.policy-btn:hover {
+    background: #0C1AC1;
+    color: white !important;
+    border-color: #0C1AC1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(12, 26, 193, 0.2);
 }
