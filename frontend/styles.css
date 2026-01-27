@@ -407,7 +407,7 @@ html {
 .policy-links {
     display: flex;
     gap: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
     margin-bottom: 3.5rem;
     justify-content: center;
 }
