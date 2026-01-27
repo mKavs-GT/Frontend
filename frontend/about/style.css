@@ -1833,8 +1833,8 @@ p {
 
 @media (min-width: 1000px) {
     .footer-curve {
-        border-top-left-radius: 50% 100px;
-        border-top-right-radius: 50% 100px;
+        border-top-left-radius: 50% 100%;
+        border-top-right-radius: 50% 100%;
     }
 }
 
