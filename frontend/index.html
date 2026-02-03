@@ -368,8 +368,10 @@
                         </div>
 
                         <!-- Video Row (Full Width) -->
-                        <div class="w-full relative mt-12">
-                            <video class="w-full h-auto" autoplay muted loop playsinline>
+                        <div class="w-full relative mt-12 overflow-hidden h-64 md:h-[500px] rounded-2xl">
+                            <video id="scroll-parallax-video"
+                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120%] object-cover"
+                                muted playsinline preload="auto">
                                 <source src="images/why.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -653,7 +655,7 @@
                     </div>
                 </div>
 
-                <div class="absolute bottom-0 left-0 right-0 h-[50%] bg-[#0C1AC1]">
+                <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-[#0C1AC1]">
 
                     <div class="absolute top-0 left-0 right-0 h-full bg-[#C7F908]" style="
                         border-top-left-radius: 1000% 1000px; 

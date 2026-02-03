@@ -86,6 +86,7 @@ let isImageFlipping = false;
 // --- ELEMENTS ---
 let allSlides;
 let slide2, slide4, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton;
+let scrollParallaxVideo;
 let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery;
 let worksListItems;
 let zoomMainImage;
@@ -349,7 +350,24 @@ function updateScrollState(newGlobalY) {
     // 4. Handle Internal Logic per Slide
     if (newSlideIndex === 1) { // Slide 2
         triggerSlide2Animations();
-        if (slide2) slide2.scrollTop = localScrollY;
+        if (slide2) {
+            slide2.scrollTop = localScrollY;
+            // Scrub Video based on scroll progress within Slide 2
+            if (scrollParallaxVideo && scrollParallaxVideo.duration) {
+                const slide2ContentHeight = slideHeights[1];
+                const scrollableDistance = slide2ContentHeight - window.innerHeight;
+                const progress = Math.min(Math.max(localScrollY / scrollableDistance, 0), 1);
+
+                // Map progress to video duration
+                scrollParallaxVideo.currentTime = progress * scrollParallaxVideo.duration;
+
+                // Parallax shift: Move video slightly as we scroll
+                // Container height is md-500px, Video height is 120% (600px)
+                // We have 100px range to move.
+                const parallaxShift = (progress - 0.5) * 50; // shift by up to ±25px
+                scrollParallaxVideo.style.transform = `translate(-50%, calc(-50% + ${parallaxShift}px))`;
+            }
+        }
     }
     else if (newSlideIndex === 2) { // Slide 3 (Flip)
         handleSlide3Flip(localScrollY);
@@ -499,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Standard Elements
     allSlides = Array.from(document.querySelectorAll('.slide'));
     slide2 = document.getElementById('slide-2');
+    scrollParallaxVideo = document.getElementById('scroll-parallax-video');
     slide4 = document.getElementById('slide-4');
     starImages = document.querySelectorAll('.star');
     slide1Image = document.getElementById('slide-1-image');
