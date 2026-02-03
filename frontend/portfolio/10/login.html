@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Kristy Tarot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #ffffff;
+            --accent: #e94560;
+            --shadow: 8px 8px 0px var(--primary);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Login Container */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid var(--primary);
+            padding: 40px 30px;
+            background-color: var(--secondary);
+            box-shadow: var(--shadow);
+            position: relative;
+            border-radius: 12px;
+            margin-top: 70px;
+        }
+
+        .login-container::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: -6px;
+            bottom: -6px;
+            border: 2px solid var(--primary);
+            z-index: -1;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            font-family: "Cinzel", serif;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary);
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--primary);
+            background-color: var(--secondary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        input:focus {
+            box-shadow: 4px 4px 0px var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-family: "Cinzel", serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+            background-color: #ff6f6c;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px solid var(--primary);
+            margin: 0 10px;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            background-color: var(--secondary);
+            font-size: 18px;
+        }
+
+        .social-btn:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+            background-color: var(--accent);
+            color: var(--secondary);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+            font-family: "Cormorant Garamond", serif;
+        }
+
+        .footer a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .login-container {
+                max-width: 100%;
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .login-container::before {
+                top: 4px;
+                right: -4px;
+                bottom: -4px;
+                left: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="daily-reading.html">Daily Card</a></li>
+                <li><a href="booking.html">Book Reading</a></li>
+                <li><a href="shop/shop.html">Shop</a></li>
+                <li><a href="login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <h1>LOGIN</h1>
+
+        <div class="input-group">
+            <label for="email">EMAIL</label>
+            <input type="email" id="email" placeholder="your@email.com">
+        </div>
+
+        <div class="input-group">
+            <label for="password">PASSWORD</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+
+        <button type="submit">SIGN IN</button>
+
+        <div class="divider">OR</div>
+
+        <div class="social-login">
+            <div class="social-btn">G</div>
+            <div class="social-btn">F</div>
+            <div class="social-btn">X</div>
+        </div>
+
+        <div class="footer">
+            Don't have an account? <a href="#">Sign up</a>
+        </div>
+    </div>
+</body>
+</html>

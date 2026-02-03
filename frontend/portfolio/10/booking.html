@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritual Booking | Kristy Tarot</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --accent: #ffffff;
+            --bg-dark: #000000;
+            --text-muted: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: #fff;
+            font-family: 'Cormorant Garamond', serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding-top: 70px;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .booking-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            color: #000;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .form-ritual {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #000;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            color: #000;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #000;
+        }
+
+        .submit-btn {
+            margin-top: 25px;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            font-weight: 700;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+            letter-spacing: 5px;
+        }
+
+        .overlay-msg {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            color: #000;
+            z-index: 20;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 4px;
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="daily-reading.html">Daily Card</a></li>
+                <li><a href="booking.html">Book Reading</a></li>
+                <li><a href="shop/shop.html">Shop</a></li>
+                <li><a href="login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="booking-container">
+        <h1>BOOK A SESSION</h1>
+        <form class="form-ritual" id="bookingForm">
+            <div class="input-group">
+                <label>Your Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+                <label>Contact number</label>
+                <input type="number" id="number" required>
+            </div>
+            <div class="input-group">
+                <label>Service</label>
+                <select id="type" required>
+                    <option value="" disabled selected>Select service</option>
+                    <option value="Personal Protection">Personal Protection</option>
+                    <option value="Mediumship">Mediumship</option>
+                    <option value="Shadow Work">Shadow Work</option>
+                    <option value="General Guidance">General Guidance</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Preferred Date</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="input-group">
+                <label>Query</label>
+                <textarea id="intent" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+        </form>
+
+        <div class="overlay-msg" id="overlayMsg">
+            <h2>Request Received</h2>
+            <p style="font-family:'Cormorant Garamond'; letter-spacing: 1px; font-style: italic; color: #888;">The
+                spirits are aligning. You will receive a message once the veil is cleared.</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 100 };
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseX = this.x; this.baseY = this.y;
+                this.size = Math.random() * 2 + 1;
+                this.density = (Math.random() * 30) + 1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouse.radius) {
+                    this.x -= (dx / distance) * (mouse.radius - distance) / mouse.radius * this.density;
+                    this.y -= (dy / distance) * (mouse.radius - distance) / mouse.radius * this.density;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 10;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 10;
+                }
+            }
+        }
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].draw(); particles[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('overlayMsg').style.display = 'flex';
+        });
+    </script>
+</body>
+
+</html>

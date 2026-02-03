@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot Card Selection - Monochrome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&family=Space+Grotesk:wght@300&family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --card-width: 8rem;
+            --card-animation: slide-down 0.8s ease-out backwards;
+            --accent-color: #ffffff;
+            --bg-color: #000000;
+            /* Reveal styles */
+            --rv-card-width: 160px;
+            --rv-card-height: 260px;
+            --bg-black: #0f0f12;
+            --mystic-white: #e0e0e0;
+            --glow-white: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center,
+                    #1a1a1a 0%,
+                    #000000 100%);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: "Space Grotesk", sans-serif;
+            transition: background 0.8s ease;
+            padding-top: 70px;
+        }
+
+        @keyframes slide-down {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) rotate(0deg);
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Selection Phase Styles */
+        #selection-phase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            transition: opacity 0.6s ease, visibility 0.6s;
+            padding-top: 15vh;
+        }
+
+        #selection-phase.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .card-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background-color: #111;
+            width: var(--card-width);
+            aspect-ratio: 2/3;
+            border-radius: 0.2rem;
+            position: absolute;
+            transform-origin: 50% 250%;
+            box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.8);
+            border: solid 1px rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+            animation: var(--card-animation);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            filter: grayscale(1) brightness(0.6) contrast(1.2);
+            transition: filter 0.3s;
+        }
+
+        .card:hover img {
+            filter: grayscale(1) brightness(1) contrast(1.1);
+        }
+
+        .card.selected {
+            border-color: var(--accent-color) !important;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .card.selected img {
+            filter: grayscale(0.8) brightness(1);
+        }
+
+        #view-reading-btn {
+            margin-top: 100px;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 0.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        #view-reading-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .selection-counter {
+            position: absolute;
+            top: 15%;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Reveal Phase Styles */
+        #reveal-phase {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 5;
+            padding-top: 100px;
+        }
+
+        #reveal-phase.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .reveal-headline {
+            margin-bottom: 100px;
+            font-weight: 200;
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-align: center;
+            font-family: 'Cinzel', serif;
+        }
+
+        .deck-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .tarot-card {
+            perspective: 1000px;
+            width: var(--rv-card-width);
+            height: var(--rv-card-height);
+            flex-shrink: 0;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            display: block;
+        }
+
+        .tarot-card input {
+            display: none;
+        }
+
+        .tarot-card input:checked+.card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-back,
+        .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+
+        .card-back {
+            background-color: #0a0a0a;
+            background-image: url("me.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: grayscale(1) brightness(0.5);
+        }
+
+
+
+        .card-front {
+            background: #ffffff;
+            color: #000;
+            transform: rotateY(180deg);
+            padding: 20px 15px;
+            justify-content: center;
+            border: 4px solid black;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .card-meaning {
+            font-size: 0.75rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: #111;
+            margin: 10px 0;
+            padding: 0 5px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-number {
+            font-family: serif;
+            font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .card-front::before,
+        .card-front::after {
+            content: "☾";
+            position: absolute;
+            font-size: 10px;
+            color: #000;
+        }
+
+        .card-front::before {
+            top: 5px;
+            left: 5px;
+        }
+
+        .card-front::after {
+            bottom: 5px;
+            right: 5px;
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 1000px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .deck-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+        }
+
+        /* Footer Styles */
+        .spooky-footer {
+            background-color: #0a0a0a;
+            padding: 80px 20px 40px;
+            text-align: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            margin-top: 100px;
+        }
+
+        .footer-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .spooky-footer h3 {
+            font-family: "Cinzel", serif;
+            color: #ffffff;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .spooky-footer p {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-family: "Cormorant Garamond", serif;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="daily-reading.html">Daily Card</a></li>
+                <li><a href="booking.html">Book Reading</a></li>
+                <li><a href="shop/shop.html">Shop</a></li>
+                <li><a href="login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="selection-phase">
+        <div class="selection-counter" id="counter">Select 6 cards for your reading</div>
+        <div class="card-container" id="deck-selection"></div>
+        <button id="view-reading-btn">View Reading</button>
+    </section>
+
+    <section id="reveal-phase">
+        <canvas id="particle-canvas"></canvas>
+        <h3 class="reveal-headline">The Unseen</h3>
+        <div class="deck-container" id="deck-reveal"></div>
+    </section>
+
+    <footer class="spooky-footer">
+        <div class="footer-section">
+            <h3>The Ethical Code</h3>
+            <p>I do not predict medical outcomes or legal results. My readings are for guidance and entertainment
+                purposes, intended to empower your own decision-making.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Newsletter</h3>
+            <p>“Join the Inner Circle for weekly astrology updates and tarot tips.”</p>
+        </div>
+        <p class="copyright">© 2024 KRISTY TAROT. ALL RIGHTS RESERVED IN THIS REALM AND THE NEXT.</p>
+    </footer>
+
+    <script>
+        const majorArcana = [
+            { num: "0", name: "The Fool", meaning: "A new journey begins with an open heart. Trust the path before you and leap into the unknown." },
+            { num: "I", name: "The Magician", meaning: "You possess all the tools needed to succeed. Manifest your desires through focus and pure intent." },
+            { num: "II", name: "The High Priestess", meaning: "Trust your intuition; the answers lie within. Look beyond the veil to find the hidden truths." },
+            { num: "III", name: "The Empress", meaning: "Abundance and creativity are flowing to you. Nature and nurture combine to bring forth new life." },
+            { num: "IV", name: "The Emperor", meaning: "Structure and discipline will bring stability. Lead with authority and establish your solid ground." },
+            { num: "V", name: "The Hierophant", meaning: "Seek wisdom in tradition and spiritual guidance. Align your actions with your highest sacred beliefs." },
+            { num: "VI", name: "The Lovers", meaning: "Harmony and choice define your current path. Seek the balance between the heart and the logical mind." },
+            { num: "VII", name: "The Chariot", meaning: "Victory is achieved through focus and willpower. Command your opposing forces to reach your destination." },
+            { num: "VIII", name: "Strength", meaning: "True power comes from inner courage and gentleness. Tame the beast within using love rather than force." },
+            { num: "IX", name: "The Hermit", meaning: "Solitude offers the clarity you currently seek. Withdraw from the noise to light your own inner lantern." },
+            { num: "X", name: "Wheel of Fortune", meaning: "A change in luck is inevitable and approaching. Embrace the cycle of fate as the wheel turns for you." },
+            { num: "XI", name: "Justice", meaning: "Truth will prevail; balance is being restored. Every action has a consequence; act with total integrity." },
+            { num: "XII", name: "The Hanged Man", meaning: "A new perspective requires temporary sacrifice. Let go of control to see the world from a different angle." },
+            { num: "XIII", name: "Death", meaning: "Endings make space for necessary new beginnings. Shed the old skin to allow for a powerful transformation." },
+            { num: "XIV", name: "Temperance", meaning: "Patience and moderation are your greatest allies. Blend the elements of your life into a perfect harmony." },
+            { num: "XV", name: "The Devil", meaning: "Break free from the chains of your own shadow. Realize the bonds that hold you are an illusion of the mind." },
+            { num: "XVI", name: "The Tower", meaning: "Sudden change clears the way for a solid foundation. Let the structures fall so truth can finally emerge." },
+            { num: "XVII", name: "The Star", meaning: "Hope and healing are guiding you forward. Renew your spirit under the calm light of inspiration." },
+            { num: "XVIII", name: "The Moon", meaning: "Beware of illusions; not all is as it seems. Navigate the subconscious and face your deepest fears." },
+            { num: "XIX", name: "The Sun", meaning: "Success, joy, and vitality shine upon you. Radiate your inner light and celebrate your achievements." },
+            { num: "XX", name: "Judgement", meaning: "A call to awakening and personal reckoning. Forgive the past and step into a higher state of being." },
+            { num: "XXI", name: "The World", meaning: "Completion and fulfillment are within your grasp. The journey is ending as you achieve perfect wholeness." }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const deckSelection = document.getElementById('deck-selection');
+            const btn = document.getElementById('view-reading-btn');
+            const counter = document.getElementById('counter');
+            const selectionPhase = document.getElementById('selection-phase');
+            const revealPhase = document.getElementById('reveal-phase');
+            const deckReveal = document.getElementById('deck-reveal');
+
+            const totalCards = 15;
+            const maxSelections = 6;
+            let selectedCount = 0;
+
+            const spreadAngle = 80;
+            const startAngle = (spreadAngle / 2) * -1;
+            const angleStep = spreadAngle / (totalCards - 1);
+
+            // Phase 1: Selection Logic
+            for (let i = 0; i < totalCards; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const rotation = startAngle + (i * angleStep);
+                card.style.animationDelay = `${i * 0.04}s`;
+                card.style.transform = `rotate(${rotation}deg)`;
+
+                const img = document.createElement('img');
+                img.src = "me.png";
+                img.alt = `Card ${i + 1}`;
+
+                card.appendChild(img);
+                deckSelection.appendChild(card);
+
+                card.addEventListener('click', () => {
+                    if (!card.classList.contains('selected')) {
+                        if (selectedCount < maxSelections) {
+                            card.classList.add('selected');
+                            selectedCount++;
+                        }
+                    } else {
+                        card.classList.remove('selected');
+                        selectedCount--;
+                    }
+                    updateUI();
+                    updateCardTransform(card, rotation);
+                });
+
+                card.addEventListener('mouseenter', () => {
+                    if (!card.classList.contains('selected')) {
+                        card.style.transform = `rotate(${rotation}deg) translateY(-30px)`;
+                    }
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    updateCardTransform(card, rotation);
+                });
+            }
+
+            function updateCardTransform(card, rotation) {
+                if (card.classList.contains('selected')) {
+                    card.style.transform = `rotate(${rotation}deg) translateY(-80px)`;
+                } else {
+                    card.style.transform = `rotate(${rotation}deg)`;
+                }
+            }
+
+            function updateUI() {
+                counter.innerText = selectedCount === maxSelections ? "The ritual is ready" : `Choose ${maxSelections - selectedCount} remaining keys`;
+                if (selectedCount === maxSelections) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            }
+
+            btn.addEventListener('click', () => {
+                selectionPhase.classList.add('hidden');
+                // Show reveal phase immediately but keep opacity at 0 via transition
+                // This prevents the page height from collapsing
+                revealPhase.style.display = 'flex';
+
+                setTimeout(() => {
+                    revealPhase.classList.add('active');
+                    initRevealPhase();
+                    initParticles();
+                    animateParticles();
+                }, 100); // Trigger sooner for smoother handover
+            });
+
+            // Phase 2: Reveal Logic
+            function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+            function initRevealPhase() {
+                deckReveal.innerHTML = '';
+                const shuffled = shuffle([...majorArcana]).slice(0, 6);
+                shuffled.forEach((card, index) => {
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'tarot-card';
+                    cardEl.innerHTML = `
+                        <input type="checkbox" id="rv-card-${index}">
+                        <label class="card-inner" for="rv-card-${index}">
+                            <div class="card-back"></div>
+                            <div class="card-front">
+                                <div class="card-number">${card.num}</div>
+                                <div class="card-title">${card.name}</div>
+                                <div class="card-meaning">${card.meaning}</div>
+                            </div>
+                        </label>
+                    `;
+                    deckReveal.appendChild(cardEl);
+                });
+            }
+
+            // Particle System
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouse = { x: null, y: null, radius: 100 };
+
+            window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.baseX = this.x; this.baseY = this.y;
+                    this.size = Math.random() * 2 + 1;
+                    this.density = (Math.random() * 30) + 1;
+                }
+                draw() {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                update() {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    let forceDirectionX = dx / distance;
+                    let forceDirectionY = dy / distance;
+                    let force = (mouse.radius - distance) / mouse.radius;
+                    if (distance < mouse.radius) {
+                        this.x -= forceDirectionX * force * this.density;
+                        this.y -= forceDirectionY * force * this.density;
+                    } else {
+                        if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 15;
+                        if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 15;
+                    }
+                }
+            }
+
+            function initParticles() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                particles = [];
+                for (let i = 0; i < 150; i++) particles.push(new Particle());
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].draw();
+                    particles[i].update();
+                }
+                requestAnimationFrame(animateParticles);
+            }
+
+            window.addEventListener('resize', initParticles);
+        });
+
+    </script>
+</body>
+
+</html>

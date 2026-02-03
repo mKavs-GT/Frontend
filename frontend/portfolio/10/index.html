@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kristy Tarot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: grid;
+            place-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .cards-loader {
+            display: grid;
+            grid-template-areas: "cards";
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-loader {
+            grid-area: cards;
+            display: flex;
+            width: 18vmin;
+            aspect-ratio: 2.5/3.5;
+            border-radius: 2vmin;
+            border: 0.1vmin solid hsl(0 0% 0% / 0.15);
+            background-color: #f8f8f8;
+            background-image: url("baby.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            will-change: transform;
+        }
+
+        .loader-info {
+            position: absolute;
+            bottom: 12vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 250px;
+        }
+
+        .loader-text {
+            font-family: "Cinzel", serif;
+            font-size: 1.2rem;
+            color: #000;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .loader-progress-wrap {
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid #000;
+        }
+
+        .loader-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #000;
+        }
+
+        body {
+            background: black;
+            font-family: "Cormorant Garamond", serif;
+            color: white;
+            overflow-x: hidden;
+            transition: background 0.4s ease-in;
+        }
+
+        /* --- BUTTON STYLES --- */
+        .spooky-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-family: "Cinzel", serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            transition: transform 0.3s, background 0.3s;
+            margin-top: 20px;
+            pointer-events: all;
+            letter-spacing: 1px;
+        }
+
+        .spooky-btn:hover {
+            transform: scale(1.1);
+            background: #cc0000;
+        }
+
+        /* --- HERO & INTRO (UPDATED FOR HUGE TITLE) --- */
+        .intro {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            color: #000000;
+            text-align: center;
+            pointer-events: none;
+            padding-top: 20vh;
+        }
+
+        .intro h1 {
+            font-family: "Cinzel", serif;
+            /* Massive responsive font size */
+            font-size: clamp(5rem, 18vw, 7rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .intro p {
+            font-family: "Cormorant Garamond", serif;
+            /* Elegant subline sizing */
+            font-size: clamp(1rem, 3vw, 2.5rem);
+            font-style: italic;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            color: #000000;
+            /* Contrast against red title */
+            opacity: 0.8;
+        }
+
+        .hero-section {
+            width: 100%;
+            height: 500vh;
+            position: relative;
+            background-image: url('bg.png');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .frame-container {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .frame-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .intermission-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 70;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .side-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 0 10vw;
+            perspective: 1200px;
+            position: relative;
+        }
+
+
+        .side-image.img-s1-r {
+            transform: translateX(-60px);
+            width: 200px;
+            height: auto;
+            object-fit: cover;
+            backface-visibility: visible;
+            z-index: 10;
+        }
+
+        .side-image.img-s1-l {
+            transform: translateX(60px);
+            width: 200px;
+            height: auto;
+            object-fit: cover;
+            backface-visibility: visible;
+            z-index: 10;
+        }
+
+        .side-image.img-s2-r {
+            transform: translateY(50px);
+            width: 170px;
+            height: auto;
+            object-fit: cover;
+            backface-visibility: visible;
+            z-index: 10;
+        }
+
+        .side-image.img-s2-l {
+            transform: translateY(50px);
+            width: 170px;
+            height: auto;
+            object-fit: cover;
+            backface-visibility: visible;
+            z-index: 10;
+        }
+
+        .level-image {
+            position: fixed;
+            width: 350px;
+            height: 180px;
+            object-fit: cover;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 15px;
+            z-index: 85;
+            opacity: 0;
+            pointer-events: none;
+            transform-origin: center;
+        }
+
+        .img-roof {
+            top: 5vh;
+        }
+
+        .img-floor {
+            bottom: 5vh;
+        }
+
+        .curtain-image {
+            position: fixed;
+            width: 50%;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 75;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .curtain-left {
+            left: -17%;
+            top: 0;
+            transform: translateX(-100%);
+        }
+
+        .curtain-right {
+            right: -17%;
+            top: 0;
+            transform: translateX(100%);
+        }
+
+        .slide-image {
+            position: fixed;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            z-index: 60;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .roof-slide {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 900px;
+            transform: translateY(-100%);
+        }
+
+        .floor-slide {
+            bottom: 0;
+            left: 12%;
+            width: 80%;
+            height: 500px;
+            transform: translateY(100%);
+        }
+
+        .content-block {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.8) translateY(-25vh);
+            z-index: 20;
+        }
+
+        .hi-text {
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1rem, 2.8vw, 1.5rem);
+            font-weight: 500;
+            line-height: 1.5;
+            color: #000000;
+            max-width: 800px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #stage1 .spooky-btn {
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+
+        #stage1 .spooky-btn:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .stage-headline {
+            font-family: "Cinzel", serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #000000;
+        }
+
+        .reading-text {
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1rem, 2.8vw, 1.5rem);
+            font-weight: 500;
+            max-width: 700px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #000000;
+        }
+
+        #stage2 .spooky-btn {
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+
+        #stage2 .spooky-btn:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .gap-text-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            position: relative;
+            z-index: 80;
+        }
+
+        .grid-title {
+            font-family: "Cinzel", serif;
+            text-align: center;
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 0.9;
+            pointer-events: none;
+            width: 100%;
+            opacity: 0;
+        }
+
+        .reveal-container {
+            position: relative;
+            z-index: 10;
+            background: black;
+        }
+
+        .grid-wrapper {
+            height: 250vh;
+            position: relative;
+        }
+
+        .sticky-viewport {
+            height: 100vh;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .reveal-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 20px;
+            width: 90vw;
+            height: 80vh;
+            max-width: 1400px;
+            position: relative;
+        }
+
+        .grid-item {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-scaler {
+            position: absolute;
+            top: -10vh;
+            left: -5vw;
+            width: 110vw;
+            height: 110vh;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-scaler img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- SERVICES SECTION --- */
+        .services-section {
+            padding: 100px 20px 20px 20px;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .services-section h2 {
+            font-family: "Cinzel", serif;
+            color: #ffffff;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .services-section input[type="radio"] {
+            display: none;
+        }
+
+        .services-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cards {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            position: absolute;
+            width: 80%;
+            height: 100%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            object-fit: contain;
+            border: 2px solid #333;
+            filter: grayscale(1);
+            transition: filter 0.3s ease;
+        }
+
+        .card:hover img {
+            filter: grayscale(0.5);
+        }
+
+        /* 4-Item Carousel Logic */
+        #item-1:checked~.cards #song-4,
+        #item-2:checked~.cards #song-1,
+        #item-3:checked~.cards #song-2,
+        #item-4:checked~.cards #song-3 {
+            transform: translatex(-40%) scale(0.8);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        #item-1:checked~.cards #song-2,
+        #item-2:checked~.cards #song-3,
+        #item-3:checked~.cards #song-4,
+        #item-4:checked~.cards #song-1 {
+            transform: translatex(40%) scale(0.8);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        #item-1:checked~.cards #song-1,
+        #item-2:checked~.cards #song-2,
+        #item-3:checked~.cards #song-3,
+        #item-4:checked~.cards #song-4 {
+            transform: translatex(0) scale(1);
+            opacity: 1;
+            z-index: 1;
+        }
+
+        #item-1:checked~.cards #song-1 img,
+        #item-2:checked~.cards #song-2 img,
+        #item-3:checked~.cards #song-3 img,
+        #item-4:checked~.cards #song-4 img {
+            box-shadow: 0px 0px 20px 5px rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+        }
+
+
+        .footer-curve {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            background-color: #000;
+            overflow: hidden;
+            margin-top: -2px;
+        }
+
+        .footer-curve svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .spooky-footer {
+            background-color: #0a0a0a;
+            padding: 80px 20px 40px;
+            text-align: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .footer-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .spooky-footer h3 {
+            font-family: "Cinzel", serif;
+            color: #ffffff;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .spooky-footer p {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-family: "Cormorant Garamond", serif;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Preloader UI -->
+    <div id="preloader">
+        <ul class="cards-loader">
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+            <li class="card-loader"></li>
+        </ul>
+        <div class="loader-info">
+            <div class="loader-text">Loading</div>
+            <div class="loader-progress-wrap">
+                <div class="loader-progress-bar" id="loaderProgressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="frame-container">
+        <img id="frame" src="fg.png" alt="">
+    </div>
+
+    <img id="curtain1" class="curtain-image curtain-left" src="left.png" alt="">
+    <img id="curtain2" class="curtain-image curtain-right" src="right.png" alt="">
+    <img id="roof-slide" class="slide-image roof-slide" src="roof.png" alt="">
+    <img id="floor-slide" class="slide-image floor-slide" src="floor.png" alt="">
+
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="daily-reading.html">Daily Card</a></li>
+                <li><a href="booking.html">Book Reading</a></li>
+                <li><a href="shop/shop.html">Shop</a></li>
+                <li><a href="login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="intro">
+        <h1>Kristy</h1>
+        <p>Tarot Reading</p>
+    </div>
+
+    <div class="hero-section">
+        <div class="intermission-overlay" id="stage1">
+            <div class="side-row" z-index="180">
+                <img class="side-image img-s1-l" src="sun.png" alt="">
+                <div class="content-block" id="hi-content">
+                    <div class="hi-text">Life doesn't always come with a map, but it does leave clues. Whether you’re
+                        navigating a crossroads in your career, searching for depth in your relationships, or seeking
+                        spiritual alignment.</div>
+                    <div class="btn-container">
+                        <a href="daily-reading.html" target="_blank" style="text-decoration: none;">
+                            <button class="spooky-btn">Get a Free Daily Card</button>
+                        </a>
+                        <a href="booking.html" style="text-decoration: none;">
+                            <button class="spooky-btn">Book a Deep-Dive Reading</button>
+                        </a>
+                    </div>
+                </div>
+                <img class="side-image img-s1-r" src="moon.png" alt="">
+            </div>
+        </div>
+
+        <div class="intermission-overlay" id="stage2">
+            <div class="side-row">
+                <img class="side-image img-s2-l" src="baby.png" alt="">
+                <div class="content-block" id="reading-content">
+                    <div class="stage-headline">The Soul’s Toolkit</div>
+                    <div class="reading-text">Hand-picked crystals, sacred accessories, and wearable intentions to
+                        support your spiritual journey. Find the piece that’s calling to you today.</div>
+                    <a href="shop/shop.html" style="text-decoration: none;">
+                        <button class="spooky-btn">SHOP NOW</button>
+                    </a>
+                </div>
+                <img class="side-image img-s2-r" src="me.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="gap-text-section">
+        <h2 class="grid-title">why<br>tarot?</h2>
+    </div>
+
+    <div class="reveal-container">
+        <div class="grid-wrapper">
+            <div class="sticky-viewport">
+                <div class="reveal-grid">
+                    <div class="grid-item"><img src="1.png" alt=""></div>
+                    <div class="grid-item"><img src="2.png" alt=""></div>
+
+                    <div class="grid-item"><img src="14.png" alt=""></div>
+                    <div class="grid-item"><img src="3.png" alt=""></div>
+                    <div class="grid-item"><img src="5.png" alt=""></div>
+                    <div class="grid-item"><img src="6.png" alt=""></div>
+                    <div class="grid-item"><img src="13.png" alt=""></div>
+
+                    <div class="grid-item"><img src="12.png" alt=""></div>
+                    <div class="grid-item"><img src="4.png" alt=""></div>
+
+                    <div class="placeholder" style="grid-area: 2/3;"></div>
+                    <div class="grid-item"><img src="8.png" alt=""></div>
+                    <div class="grid-item"><img src="9.png" alt=""></div>
+                    <div class="grid-item"><img src="10.png" alt=""></div>
+
+                    <div class="grid-item"><img src="11.png" alt=""></div>
+                    <div class="grid-item"><img src="7.png" alt=""></div>
+                    <div class="main-scaler" id="scaler">
+                        <img src="center.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="services-section">
+        <h2>Our Services</h2>
+        <div class="services-container">
+            <input type="radio" name="slider" id="item-1" checked>
+            <input type="radio" name="slider" id="item-2">
+            <input type="radio" name="slider" id="item-3">
+            <input type="radio" name="slider" id="item-4">
+            <div class="cards">
+                <label class="card" for="item-1" id="song-1"><img src="s1.png" alt="Service 1"></label>
+                <label class="card" for="item-2" id="song-2"><img src="s2.png" alt="Service 2"></label>
+                <label class="card" for="item-3" id="song-3"><img src="s3.png" alt="Service 3"></label>
+                <label class="card" for="item-4" id="song-4"><img src="s4.png" alt="Service 4"></label>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-curve">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path fill="#0a0a0a" d="M0,0 C480,100 960,100 1440,0 L1440,100 L0,100 Z"></path>
+        </svg>
+    </div>
+
+    <footer class="spooky-footer">
+        <div class="footer-section">
+            <h3>The Ethical Code</h3>
+            <p>I do not predict medical outcomes or legal results. My readings are for guidance and entertainment
+                purposes, intended to empower your own decision-making.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Newsletter</h3>
+            <p>“Join the Inner Circle for weekly astrology updates and tarot tips.”</p>
+        </div>
+        <p class="copyright">© 2024 KRISTY TAROT. ALL RIGHTS RESERVED IN THIS REALM AND THE NEXT.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.onload = () => {
+            // Initialize preloader animation
+            const initPreloaderAnimation = () => {
+                let cards = document.querySelectorAll(".card-loader");
+                let cardsMidIndex = Math.floor(cards.length / 2);
+                let yOffset = 60;
+                let scaleOffset = 0.02;
+                let duration = 0.8;
+                let scaleDuration = duration / 3;
+                let tl = gsap.timeline({ repeat: -1, yoyoEase: true });
+
+                function driftIn() {
+                    return gsap.timeline().from(".cards-loader", {
+                        yPercent: -yOffset / 3,
+                        duration,
+                        ease: "power2.inOut",
+                        yoyoEase: true
+                    });
+                }
+
+                function driftOut() {
+                    return gsap.timeline().to(".cards-loader", {
+                        yPercent: yOffset / 3,
+                        duration,
+                        ease: "power2.inOut",
+                        yoyoEase: true
+                    });
+                }
+
+                function scaleCards() {
+                    return gsap.timeline()
+                        .to(".card-loader", {
+                            scale: (i) => {
+                                if (i <= cardsMidIndex) {
+                                    return 1 - i * scaleOffset;
+                                } else {
+                                    return 1 - (cards.length - 1 - i) * scaleOffset;
+                                }
+                            },
+                            delay: duration / 3,
+                            duration: scaleDuration,
+                            ease: "expo.inOut",
+                            yoyoEase: true
+                        })
+                        .to(".card-loader", { scale: 1, duration: scaleDuration });
+                }
+
+                function shuffleCards() {
+                    return gsap.timeline()
+                        .set(".card-loader", { y: (i) => -i * 0.5 })
+                        .fromTo(".card-loader",
+                            { rotate: 45, yPercent: -yOffset },
+                            {
+                                duration,
+                                rotate: 65,
+                                yPercent: yOffset,
+                                stagger: duration * 0.03,
+                                ease: "expo.inOut",
+                                yoyoEase: true
+                            }
+                        );
+                }
+
+                tl.add(driftIn())
+                    .add(shuffleCards(), "<")
+                    .add(scaleCards(), "<")
+                    .add(driftOut(), "<55%");
+            };
+
+            initPreloaderAnimation();
+
+            // Control Loading State & Progress Bar
+            const preloader = document.getElementById('preloader');
+            const progressBar = document.getElementById('loaderProgressBar');
+
+            // Animate progress bar
+            gsap.to(progressBar, {
+                width: "100%",
+                duration: 3,
+                ease: "none"
+            });
+
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+            }, 3000);
+
+            const radios = document.querySelectorAll('input[name="slider"]');
+            radios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.id === 'item-2') document.body.style.backgroundColor = "#120202";
+                    else if (radio.id === 'item-3') document.body.style.backgroundColor = "#020212";
+                    else document.body.style.backgroundColor = "#000000";
+                });
+            });
+
+            const frameTl = gsap.timeline({ scrollTrigger: { trigger: ".hero-section", start: "top top", end: "30% top", scrub: true } });
+            frameTl.to("#frame", { scale: 15, duration: 1 });
+
+            gsap.to(".intro", {
+                scrollTrigger: { trigger: ".hero-section", start: "top top", end: "10% top", scrub: true },
+                opacity: 0, y: -100
+            });
+
+            gsap.to("#curtain1", {
+                scrollTrigger: { trigger: ".hero-section", start: "top top", end: "7% top", scrub: true },
+                opacity: 1, x: 0
+            });
+
+            gsap.to("#curtain2", {
+                scrollTrigger: { trigger: ".hero-section", start: "top top", end: "7% top", scrub: true },
+                opacity: 1, x: 0
+            });
+
+            gsap.to("#floor-slide", {
+                scrollTrigger: { trigger: ".hero-section", start: "top top", end: "7% top", scrub: true },
+                opacity: 1, y: 0
+            });
+
+            const intermissionTl = gsap.timeline({ scrollTrigger: { trigger: ".hero-section", start: "8% top", end: "95% top", scrub: true } });
+            intermissionTl.to(["#stage1"], { opacity: 1, duration: 0.1 })
+                .addLabel("hiEntry")
+                .from(".img-s1-l", { x: '-50vw', rotation: -180 }, "hiEntry")
+                .from(".img-s1-r", { x: '50vw', rotation: 180 }, "hiEntry")
+                .to("#hi-content", { opacity: 1, scale: 1, duration: 0.3 }, "hiEntry")
+                .to(".img-s1-l", { rotation: "+=360", duration: 0.8 }, "hiEntry+=0.1")
+                .to(".img-s1-r", { rotation: "-=360", duration: 0.8 }, "hiEntry+=0.1");
+
+            intermissionTl.addLabel("handover", "+=0.3")
+                .to("#stage1", { opacity: 0, y: -80, scale: 0.8, duration: 0.5 }, "handover")
+                .to("#curtain1", { x: "-100%", scale: 1.2, duration: 0.5 }, "handover")
+                .to("#curtain2", { x: "100%", scale: 1.2, duration: 0.5 }, "handover")
+                .to("#roof-slide", { opacity: 1, y: 0, duration: 0.5 }, "handover")
+                .to(".img-roof", { y: '50%', scale: 8, opacity: 1, duration: 1.2, ease: "power2.inOut" }, "handover")
+                .to(".img-floor", { y: '50%', scale: 8, opacity: 1, duration: 1.2, ease: "power2.inOut" }, "handover")
+                .to(".img-s1-l", { scale: 1.5, x: '-60vw', duration: 0.6, ease: "power2.in" }, "handover")
+                .to(".img-s1-r", { scale: 1.5, x: '60vw', duration: 0.6, ease: "power2.in" }, "handover")
+                .to("#stage2", { opacity: 1, duration: 0.3 }, "handover+=0.4")
+                .from(".img-s2-l", { x: '-50vw', rotateY: 1080, transformStyle: "preserve-3d", duration: 0.6, ease: "power2.out" }, "handover+=0.4")
+                .from(".img-s2-r", { x: '50vw', rotateY: -1080, transformStyle: "preserve-3d", duration: 0.6, ease: "power2.out" }, "handover+=0.4")
+                .to("#reading-content", { opacity: 1, scale: 1, duration: 0.5 }, "handover+=0.4");
+
+            intermissionTl.addLabel("finalExit")
+                .to("#stage2", { opacity: 0, scale: 0.9, y: -100, duration: 0.4 }, "finalExit")
+                .to([".img-roof", ".img-floor"], { scale: 15, y: '50%', duration: 0.5 }, "finalExit");
+
+            gsap.to(".grid-title", {
+                scrollTrigger: { trigger: ".gap-text-section", start: "top 60%", end: "bottom 20%", scrub: true },
+                opacity: 1, y: -20,
+            });
+
+            gsap.to(["#roof-slide", "#floor-slide"], {
+                scrollTrigger: { trigger: ".gap-text-section", start: "top 80%", end: "top 20%", scrub: true },
+                opacity: 0
+            });
+
+            const revealTl = gsap.timeline({ scrollTrigger: { trigger: ".grid-wrapper", start: "top 10%", end: "bottom bottom", scrub: true } });
+            revealTl.to("#scaler", { top: "33.33%", left: "40%", width: "20%", height: "33.33%", borderRadius: "12px", duration: 1, ease: "power2.inOut" })
+                .to(".grid-item", { opacity: 1, scale: 1, stagger: { amount: 0.4, from: "center", grid: [3, 5] }, duration: 0.6, ease: "back.out(1.4)" }, "-=0.8");
+        };
+    </script>
+</body>
+
+</html>

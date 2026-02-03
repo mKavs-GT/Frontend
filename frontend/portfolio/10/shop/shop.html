@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <!-- Professional Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --accent: #ffffff;
+            --bg-dark: #000000;
+            --bg-light: #f8f8f8;
+            --panel-gray: #111111;
+            --text-muted: #888888;
+            --transition-curve: cubic-bezier(1, 0.885, 0.72, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        body {
+            font-family: "Cormorant Garamond", serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            margin: 0;
+            padding-top: 0;
+        }
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Radio Navigation Controls */
+        .nav-btn {
+            position: absolute;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            left: calc(50% + 350px);
+            top: calc(50% + 230px);
+            transform: translate(-50%, -50%);
+            transition: 0.2s ease-in-out;
+            box-shadow: 0 0 0 2px #fff;
+            border-radius: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn.prev {
+            left: calc(50% + 300px);
+        }
+
+
+        .nav-btn:before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            /* Invisible hit area */
+        }
+
+        .nav-btn:after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-top: 3px solid #fff;
+            border-right: 3px solid #fff;
+            transform: rotate(45deg) translate(-2px, 2px);
+            transition: 0.2s ease-in-out;
+        }
+
+        .nav-btn.prev:after {
+            transform: rotate(-135deg) translate(-2px, 2px);
+        }
+
+
+        /* Custom Radio Styling for Logic */
+        .radio-input {
+            position: absolute;
+            z-index: 1001;
+            width: 60px;
+            height: 60px;
+            left: calc(50% + 350px);
+            top: calc(50% + 230px);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Core Wrapper */
+        #wrap {
+            width: 900px;
+            height: 650px;
+            position: relative;
+            background: var(--white);
+            box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Background Animated Panels */
+        #wrap:before,
+        #wrap:after {
+            content: "";
+            position: absolute;
+            width: 200vw;
+            height: 100vh;
+            background: linear-gradient(to right, #000 25%, #111 25%, #111 50%, #080808 50%, #080808 75%, #000 75%);
+            z-index: -2;
+            transition: transform 650ms var(--transition-curve);
+            left: 0;
+            top: 0;
+            margin-top: calc(-50vh + 325px);
+            margin-left: calc(-50vw + 450px);
+        }
+
+        #wrap:after {
+            background: linear-gradient(to bottom, #050505 25%, #151515 25%, #151515 50%, #0a0a0a 50%, #0a0a0a 75%, #050505 75%);
+            left: 50%;
+            height: 400vh;
+            width: 50vw;
+            z-index: -1;
+            transition: transform 700ms var(--transition-curve);
+            margin-top: calc(-250vh + 325px);
+            margin-left: 0;
+        }
+
+        .outer {
+            z-index: -1;
+            position: absolute;
+            width: 25%;
+            height: 50%;
+        }
+
+        .outer .box {
+            position: absolute;
+            width: 100vw;
+            height: 400vh;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .outer .box:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: linear-gradient(to top, #111 25%, #080808 25%, #080808 50%, #151515 50%, #151515 75%, #111 75%);
+            transition: transform 600ms var(--transition-curve);
+        }
+
+        /* Navigation Logic */
+        [data-slide="1"] #wrap:before {
+            transform: translateX(0);
+        }
+
+        [data-slide="1"] #wrap:after {
+            transform: translateY(0);
+        }
+
+        [data-slide="1"] #wrap .outer .box:before {
+            transform: translateY(0);
+        }
+
+        [data-slide="2"] #wrap:before {
+            transform: translateX(-25%);
+        }
+
+        [data-slide="2"] #wrap:after {
+            transform: translateY(25%);
+        }
+
+        [data-slide="2"] #wrap .outer .box:before {
+            transform: translateY(25%);
+        }
+
+
+        /* Slides */
+        .slide {
+            position: absolute;
+            display: grid;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            grid-template-columns: 25% 25% 50%;
+            grid-template-rows: 15% 85%;
+            z-index: 2;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .slide:before {
+            content: "";
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            z-index: -1;
+            transform: translateY(100%);
+            transition: all 600ms var(--transition-curve);
+        }
+
+        .slide:nth-of-type(1):before {
+            background: #000;
+        }
+
+        .slide:nth-of-type(2):before {
+            background: #0a0a0a;
+        }
+
+        .slide:nth-of-type(3):before {
+            background: #111;
+        }
+
+        .slide:nth-of-type(4):before {
+            background: #080808;
+        }
+
+
+        .slide.active:before {
+            transform: translateY(0);
+        }
+
+        /* Labels */
+        .label {
+            grid-column: 1 / span 1;
+            grid-row: 1 / span 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .label:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform: translateY(100%);
+            transition: all 650ms var(--transition-curve);
+        }
+
+        .slide:nth-of-type(1) .label:before {
+            background: #151515;
+        }
+
+        .slide:nth-of-type(2) .label:before {
+            background: #222222;
+        }
+
+        .slide:nth-of-type(3) .label:before {
+            background: #000000;
+        }
+
+        .slide:nth-of-type(4) .label:before {
+            background: #1a1a1a;
+        }
+
+
+        .slide.active .label:before {
+            transform: translateY(0);
+        }
+
+        .label:after {
+            content: "TOOLKIT";
+            position: relative;
+            font-family: "Cinzel", serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: #fff;
+            font-weight: 400;
+            z-index: 1;
+        }
+
+        .classification-tag {
+            color: #fff;
+            -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.1);
+            font-family: "Cinzel", serif;
+            font-size: 60px;
+            font-weight: 400;
+            position: absolute;
+            top: 50%;
+            left: -80px;
+            transform: rotate(-90deg) translateY(-50%);
+            width: 400px;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0.6;
+            letter-spacing: 12px;
+        }
+
+        /* Image Display */
+        .image {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            left: 50%;
+            top: 45%;
+            transform: translate(-50%, -120%);
+            transition: transform 800ms var(--transition-curve), width 0.5s, height 0.5s, top 0.5s;
+            z-index: 5;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+        }
+
+        .slide.active .image {
+            transform: translate(-50%, -50%);
+        }
+
+        .slide:nth-of-type(1) .image {
+            background-image: url("c1.png");
+        }
+
+        .slide:nth-of-type(2) .image {
+            background-image: url("c2.png");
+        }
+
+        .slide:nth-of-type(3) .image {
+            background-image: url("Rose%20Quartz%20CAndle.avif");
+        }
+
+        .slide:nth-of-type(4) .image {
+            background-image: url("Rose%20Quartz%20Bracelet.png");
+        }
+
+
+
+        /* Content Box */
+        .content {
+            position: absolute;
+            width: 50%;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0 60px 0 80px;
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            transition: clip-path 0.6s ease-in-out;
+            z-index: 6;
+        }
+
+        .slide.active .content {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            transition-delay: 0.3s;
+        }
+
+        .content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            color: #fff;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .content p {
+            color: #fff;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Jar Animation */
+        .jar {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            left: 25%;
+            overflow: hidden;
+            z-index: 8;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .jar:before,
+        .jar:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/383755/jar.png") no-repeat center/contain;
+            transition: 0.5s var(--transition-curve);
+            transform: translateY(100%) scale(0.8);
+        }
+
+        .jar:after {
+            background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/383755/lid.png");
+            background-size: 260px;
+            top: -190px;
+            transform: translateY(-100%) scale(0.8);
+        }
+
+        .jar.visible {
+            opacity: 1;
+        }
+
+        .jar.visible:before,
+        .jar.visible:after {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Action Buttons */
+        .add-btn {
+            position: absolute;
+            width: 180px;
+            height: 48px;
+            bottom: 40px;
+            left: calc(75% - 90px);
+            background: #000;
+            color: #fff;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 100;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .add-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Cart UI */
+        .cart-panel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: #fff;
+            z-index: 150;
+            transform: translateX(100%);
+            transition: transform 0.6s var(--transition-curve);
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-panel.open {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            font-size: 32px;
+            font-family: 'Playfair Display';
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-cart-btn {
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+
+        .close-cart-btn:hover {
+            opacity: 1;
+        }
+
+        .cart-items-container {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 50px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .cart-item .name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .cart-item .price {
+            font-weight: 300;
+            color: #888;
+        }
+
+        .cart-item .remove {
+            cursor: pointer;
+            color: #888;
+            font-weight: 300;
+            transition: color 0.3s;
+        }
+
+        .cart-item .remove:hover {
+            color: #fff;
+        }
+
+        .checkout-footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-price {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .checkout-btn {
+            background: #000;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Small interaction tweaks */
+        .slide.in-jar .image {
+            width: 25%;
+            height: 25%;
+            top: 55%;
+            z-index: 9;
+        }
+
+        .classifications {
+            position: absolute;
+            left: 17.5%;
+            top: 50%;
+            transform: translateY(-50%);
+            clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+            transition: clip-path 0.4s ease-in-out;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            z-index: 4;
+        }
+
+        .slide.active .classifications {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            transition-delay: 0.4s;
+        }
+
+        .classifications span {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .classifications b {
+            display: block;
+            color: #ffffff;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .meta {
+            margin-top: 20px;
+            display: flex;
+            gap: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .meta span b {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../daily-reading.html">Daily Card</a></li>
+                <li><a href="../booking.html">Book Reading</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="../login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav><body data-slide="1">
+
+    <div id="wrap">
+        <!-- Navigation Buttons -->
+        <div class="nav-btn prev" id="prevBtn"></div>
+        <div class="nav-btn" id="nextBtn"></div>
+
+        <!-- Specimen 01 -->
+        <div class="slide active" id="slide-1">
+            <div class="label"></div>
+            <div class="image"></div>
+            <div class="classification-tag">RITUAL</div>
+
+            <div class="classifications">
+                <span>Medium <b>Rose Candle</b></span>
+                <span>Scent <b>Wild Flora</b></span>
+                <span>Burn <b>Pure</b></span>
+                <span>Aura <b>Warmth</b></span>
+                <span>Purpose <b>Intention</b></span>
+            </div>
+
+            <div class="content">
+                <h1>Eternal<br>Flame</h1>
+                <p>Infused with rose essential oils and topped with mini quartz chips. Light this candle to set your
+                    intentions and create a sacred atmosphere for your reading.</p>
+                <div class="meta">
+                    <span><b>Rarity</b>Pure</span>
+                    <span><b>Vibe</b>Radiant</span>
+                </div>
+            </div>
+            <button class="add-btn" onclick="addToCart(0)">ACQUIRE TOOL</button>
+        </div>
+
+        <!-- Specimen 02 -->
+        <div class="slide" id="slide-2">
+            <div class="label"></div>
+            <div class="image"></div>
+            <div class="classification-tag">BOND</div>
+
+            <div class="classifications">
+                <span>Tool <b>Rose Bracelet</b></span>
+                <span>Material <b>Beaded Quartz</b></span>
+                <span>Origin <b>Handcrafted</b></span>
+                <span>Energy <b>Connection</b></span>
+                <span>Aura <b>Luminous</b></span>
+            </div>
+
+            <div class="content">
+                <h1>Tethered<br>Light</h1>
+                <p>A wearable reminder of your connection to the divine. Each rose quartz bead is polished to perfection
+                    to sit comfortably as you navigate your daily path.</p>
+                <div class="meta">
+                    <span><b>Rarity</b>Legend</span>
+                    <span><b>Vibe</b>Gentle</span>
+                </div>
+            </div>
+            <button class="add-btn" onclick="addToCart(1)">ACQUIRE TOOL</button>
+        </div>
+
+
+        <div class="jar" id="jar"></div>
+        <div class="outer">
+            <div class="box"></div>
+        </div>
+
+        <!-- Cart Panel -->
+        <div class="cart-panel" id="cartPanel">
+            <div class="cart-header">
+                Your Collection
+                <div class="close-cart-btn" onclick="toggleCart(false)">✕</div>
+            </div>
+            <div class="cart-items-container" id="cartItems">
+                <!-- Items injected here -->
+            </div>
+            <div class="checkout-footer">
+                <div class="total-price" id="totalPrice">$0.00</div>
+                <button class="checkout-btn" onclick="checkout()">ACQUIRE SPECIMENS</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const specimens = [
+            { id: 1, name: "Eternal Flame", price: 30, img: "Rose%20Quartz%20CAndle.avif" },
+            { id: 2, name: "Tethered Light", price: 35, img: "Rose%20Quartz%20Bracelet.png" }
+        ];
+        // ... (rest of script)
+
+        let currentSlide = 1;
+        let cart = [];
+
+        // Navigation Logic
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentSlide = currentSlide >= 2 ? 1 : currentSlide + 1;
+            updateUI();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentSlide = currentSlide <= 1 ? 2 : currentSlide - 1;
+            updateUI();
+        });
+
+
+        function updateUI() {
+            document.body.setAttribute('data-slide', currentSlide);
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active', i + 1 === currentSlide);
+            });
+        }
+
+        // Cart Logic
+        function addToCart(index) {
+            const specimen = specimens[index];
+            const slide = document.getElementById(`slide-${currentSlide}`);
+            const jar = document.getElementById('jar');
+
+            // Trigger Animation
+            jar.classList.add('visible');
+            slide.classList.add('in-jar');
+
+            setTimeout(() => {
+                cart.push(specimen);
+                renderCart();
+                toggleCart(true);
+
+                // Reset state for next interaction
+                setTimeout(() => {
+                    jar.classList.remove('visible');
+                    slide.classList.remove('in-jar');
+                }, 600);
+            }, 800);
+        }
+
+        function toggleCart(show) {
+            document.getElementById('cartPanel').classList.toggle('open', show);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const totalEl = document.getElementById('totalPrice');
+            container.innerHTML = '';
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="name">${item.name}</div>
+                    <div class="price">$${item.price.toFixed(2)}</div>
+                    <div class="remove" onclick="removeFromCart(${index})">✕</div>
+                `;
+                container.appendChild(div);
+            });
+
+            totalEl.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            const message = document.createElement('div');
+            message.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#000; color:#fff; padding:40px; border: 1px solid #333; border-radius:10px; z-index:2000; text-align:center; font-family:'Cinzel', serif; letter-spacing: 2px;";
+            message.innerHTML = "RITUAL TOOLS ACQUIRED.<br><br>Preparing for spiritual transport...";
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                cart = [];
+                renderCart();
+                toggleCart(false);
+                message.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
