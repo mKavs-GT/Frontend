@@ -540,66 +540,106 @@
             class="slide z-40 translate-y-full slide-transition flex flex-col items-center justify-center p-4 md:p-20 overflow-y-auto expertise-slide-bg">
 
             <div class="relative w-full max-w-7xl">
-                <!-- Mascot sitting on the edge -->
-                <div class="absolute -top-16 right-[15%] z-20 hidden md:block">
-                    <img src="images/mid.png" class="h-32 object-contain" alt="">
-                </div>
+
 
                 <div
                     class="rounded-expertise-container p-6 md:p-16 flex flex-col md:flex-row items-center gap-12 md:gap-20">
-                    <!-- Left Side: Chat Mockup -->
+                    <!-- Left Side: Modern Chatbot Mockup -->
                     <div id="slide-4-image-card"
                         class="chat-mockup-wrapper w-full md:w-[500px] shrink-0 opacity-0 scale-0 transition-all duration-1000 ease-out">
                         <div
-                            class="chat-mockup shadow-2xl overflow-hidden rounded-3xl bg-white flex flex-col h-[500px]">
-                            <!-- Mockup Header -->
-                            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 italic">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-solid fa-arrow-left text-gray-400"></i>
-                                    <span class="font-black text-gray-800 tracking-tighter"># main-chat ›</span>
-                                </div>
-                                <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
-                            </div>
-
-                            <!-- Mockup Messages Area -->
-                            <div class="flex-1 p-6 space-y-6 overflow-y-auto">
-                                <div id="slide-4-card-1"
-                                    class="flex gap-4 opacity-0 scale-0 transition-all duration-700 ease-out">
-                                    <div class="w-10 h-10 rounded-full bg-pink-500 shrink-0"></div>
-                                    <div class="space-y-1">
-                                        <div class="flex items-center gap-2">
-                                            <span class="font-black text-[#8E44AD] italic">Loky</span>
-                                            <span class="text-[10px] text-gray-400">Today at 2:12 PM</span>
+                            class="chat-mockup shadow-2xl overflow-hidden rounded-[2.5rem] bg-[#F7F7F7] flex flex-col h-[500px] border-8 border-gray-900 shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+                            <!-- Bot Header -->
+                            <div class="bg-white px-6 py-5 flex items-center justify-between border-b border-gray-100">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="relative w-12 h-12 rounded-full bg-gradient-to-tr from-[#0C1AC1] to-[#c7f908] p-[2px]">
+                                        <div
+                                            class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                                            <img src="images/chat.png" class="w-8 h-auto" alt="AI">
                                         </div>
-                                        <p class="text-sm text-gray-600 font-bold leading-tight">hey look at this<br>ur
-                                            an emoji</p>
-                                        <div class="flex gap-2 mt-2">
-                                            <div class="bg-blue-100 p-2 rounded-lg"><img src="images/leftbot.png"
-                                                    class="h-8" alt=""></div>
-                                            <div class="bg-blue-100 p-2 rounded-lg"><img src="images/rightbot.png"
-                                                    class="h-8" alt=""></div>
+                                        <div
+                                            class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full">
                                         </div>
                                     </div>
+                                    <div>
+                                        <h4 class="font-black text-gray-900 tracking-tight leading-none mb-1">KAIRON
+                                        </h4>
+                                        <span
+                                            class="text-[10px] font-bold text-green-600 uppercase tracking-widest animate-pulse">Online
+                                            Now</span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4 text-gray-400">
+                                    <i class="fa-solid fa-phone-flip text-sm"></i>
+                                    <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
                                 </div>
                             </div>
 
-                            <!-- Mockup Footer -->
-                            <div class="p-4 border-t border-gray-100 italic">
-                                <div class="bg-gray-100 rounded-full px-4 py-3 flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fa-solid fa-circle-plus text-gray-400"></i>
-                                        <span class="text-gray-400 font-black text-sm">Message #main-chat</span>
+                            <!-- Bot Conversation -->
+                            <div class="flex-1 p-6 space-y-6 overflow-y-auto bg-gradient-to-b from-white to-[#F7F7F7]">
+                                <!-- User Message -->
+                                <div class="flex flex-col items-end space-y-1">
+                                    <div
+                                        class="bg-[#0C1AC1] text-white px-5 py-3 rounded-2xl rounded-tr-none text-sm font-bold max-w-[80%] shadow-lg">
+                                        Hey! Can you build me a custom website?
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <i class="fa-solid fa-keyboard text-gray-400"></i>
-                                        <i class="fa-solid fa-microphone text-gray-400"></i>
+                                    <span class="text-[9px] text-gray-400 font-bold uppercase">Delivered</span>
+                                </div>
+
+                                <!-- Bot Message -->
+                                <div class="flex items-start gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+                                        <img src="images/LOGOI.png" class="w-5 h-auto grayscale" alt="">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div
+                                            class="bg-white text-gray-800 px-5 py-3 rounded-2xl rounded-tl-none text-sm font-bold max-w-[85%] shadow-md border border-gray-50">
+                                            Absolutely! We specialize in React, GSAP, and Node.js.
+                                        </div>
+                                        <div
+                                            class="bg-white text-gray-800 px-5 py-3 rounded-2xl rounded-tl-none text-sm font-bold max-w-[85%] shadow-md border border-gray-50">
+                                            What kind of project are you planning?
+                                        </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="flex justify-around mt-4 py-2 text-[10px] font-black uppercase text-gray-400 tracking-widest">
-                                    <span class="text-gray-800 border-b-2 border-gray-800">Emoji</span>
-                                    <span>GIFs</span>
-                                    <span>Stickers</span>
+
+                                <!-- Typing Indicator -->
+                                <div class="flex items-center gap-2 px-11 opacity-60">
+                                    <div class="flex gap-1">
+                                        <div class="w-1.5 h-1.5 bg-[#c7f908] rounded-full animate-bounce"></div>
+                                        <div class="w-1.5 h-1.5 bg-[#c7f908] rounded-full animate-bounce delay-75">
+                                        </div>
+                                        <div class="w-1.5 h-1.5 bg-[#c7f908] rounded-full animate-bounce delay-150">
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">AI is
+                                        thinking</span>
+                                </div>
+                            </div>
+
+                            <!-- Bot Quick Actions -->
+                            <div class="px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
+                                <button
+                                    class="whitespace-nowrap bg-white border border-[#c7f908] text-[#0C1AC1] px-4 py-1.5 rounded-full text-[10px] font-black uppercase hover:bg-[#c7f908] transition-colors">Portfolio
+                                    Review</button>
+                                <button
+                                    class="whitespace-nowrap bg-white border border-[#c7f908] text-[#0C1AC1] px-4 py-1.5 rounded-full text-[10px] font-black uppercase hover:bg-[#c7f908] transition-colors">Pricing
+                                    Info</button>
+                            </div>
+
+                            <!-- Bot Input Area -->
+                            <div class="p-6 bg-white border-t border-gray-100">
+                                <div class="bg-gray-100 rounded-2xl px-5 py-3 flex items-center justify-between">
+                                    <span class="text-gray-400 font-bold text-sm">Write a message...</span>
+                                    <div class="flex items-center gap-4 text-[#0C1AC1]">
+                                        <i class="fa-solid fa-paperclip opacity-30"></i>
+                                        <button
+                                            class="bg-[#c7f908] w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+                                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -607,15 +647,56 @@
 
                     <!-- Right Side: Text Content -->
                     <div id="slide-4-header-text"
-                        class="text-white space-y-8 md:max-w-xl opacity-0 -translate-x-full transition-all duration-1000 ease-out">
-                        <h2 class="text-5xl md:text-7xl font-black italic uppercase leading-[0.9] tracking-tighter">
-                            MAKE YOUR<br>GROUP CHATS<br>MORE FUN
-                        </h2>
-                        <p class="text-lg md:text-xl font-bold leading-relaxed text-blue-100">
-                            Use custom emoji, stickers, soundboard effects and more to add your personality to your
-                            voice, video, or text chat. Set your avatar and a custom status, and write your own profile
-                            to show up in chat your way.
-                        </p>
+                        class="text-white space-y-8 md:max-w-2xl opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                        <div class="space-y-10">
+                            <!-- Point 1 -->
+                            <div class="border-l-4 border-[#c7f908] pl-6 group">
+                                <h3
+                                    class="text-2xl md:text-3xl font-black uppercase italic text-[#c7f908] tracking-tighter mb-2">
+                                    1. Advanced Frontend & Complete Backend
+                                </h3>
+                                <p class="text-sm md:text-base font-bold text-gray-400 mb-3 tracking-widest uppercase">
+                                    React • GSAP • Framer Motion • Node.js • Express.js
+                                </p>
+                                <p class="text-base md:text-lg text-blue-100 leading-tight font-medium">
+                                    We craft fast, animated, modern frontends paired with a rock-solid backend.<br>
+                                    Smooth transitions, clean interactions, secure APIs, and scalable architecture — all
+                                    custom-built.
+                                </p>
+                            </div>
+
+                            <!-- Point 2 -->
+                            <div class="border-l-4 border-white pl-6 group">
+                                <h3
+                                    class="text-2xl md:text-3xl font-black uppercase italic text-white tracking-tighter mb-2">
+                                    2. SEO & Google Indexing
+                                </h3>
+                                <p class="text-sm md:text-base font-bold text-[#c7f908] mb-3 tracking-widest uppercase">
+                                    A website that Google loves.
+                                </p>
+                                <p class="text-base md:text-lg text-blue-100 leading-tight font-medium">
+                                    We optimize your structure, content, speed, and metadata so your site gets indexed
+                                    fast and ranks higher.<br>
+                                    Better visibility = more clients.
+                                </p>
+                            </div>
+
+                            <!-- Point 3 -->
+                            <div class="border-l-4 border-[#c7f908] pl-6 group">
+                                <h3
+                                    class="text-2xl md:text-3xl font-black uppercase italic text-[#c7f908] tracking-tighter mb-2">
+                                    3. Branding (Color Palettes & Fonts)
+                                </h3>
+                                <p class="text-sm md:text-base font-bold text-gray-400 mb-3 tracking-widest uppercase">
+                                    We don't just design — we brand.
+                                </p>
+                                <p class="text-base md:text-lg text-blue-100 leading-tight font-medium">
+                                    Custom color systems, typography sets, mood boards, and visual direction that give
+                                    your website personality and identity.<br>
+                                    Your brand will look intentional and premium.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
