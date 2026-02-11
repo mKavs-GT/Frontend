@@ -537,66 +537,86 @@
 
         <!-- SLIDE 4: OUR EXPERTISE -->
         <div id="slide-4"
-            class="slide bg-gray-900 z-40 translate-y-full slide-transition flex flex-col items-center justify-start p-20 overflow-y-auto">
+            class="slide z-40 translate-y-full slide-transition flex flex-col items-center justify-center p-4 md:p-20 overflow-y-auto expertise-slide-bg">
 
-            <div class="max-w-6xl w-full flex flex-col md:flex-row justify-between items-start mb-12 mt-8 px-4">
-
-                <div id="slide-4-header-text"
-                    class="md:w-1/2 w-full mb-6 md:mb-0 border-l-4 border-[#c7f908] pl-8 md:pl-20 reveal-on-scroll opacity-0 -translate-x-full transition-all duration-1000 ease-out">
-                    <h2 class="text-6xl md:text-7xl font-black text-white uppercase tracking-tighter leading-none">
-                        Our<br><span class="text-[#c7f908]">Expertise</span>
-                    </h2>
+            <div class="relative w-full max-w-7xl">
+                <!-- Mascot sitting on the edge -->
+                <div class="absolute -top-16 right-[15%] z-20 hidden md:block">
+                    <img src="images/mid.png" class="h-32 object-contain" alt="">
                 </div>
 
-                <div id="slide-4-image-card"
-                    class="md:w-1/2 w-full flex justify-center md:justify-end opacity-0 scale-0 transition-all duration-1000 ease-out">
-                    <div
-                        class="bg-[#c7f908] w-full max-w-lg h-64 flex items-center justify-center rounded-lg shadow-xl overflow-hidden">
-                        <img src="images/4.jpeg" alt="Expertise Visual" class="w-full h-full object-cover">
+                <div
+                    class="rounded-expertise-container p-6 md:p-16 flex flex-col md:flex-row items-center gap-12 md:gap-20">
+                    <!-- Left Side: Chat Mockup -->
+                    <div id="slide-4-image-card"
+                        class="chat-mockup-wrapper w-full md:w-[500px] shrink-0 opacity-0 scale-0 transition-all duration-1000 ease-out">
+                        <div
+                            class="chat-mockup shadow-2xl overflow-hidden rounded-3xl bg-white flex flex-col h-[500px]">
+                            <!-- Mockup Header -->
+                            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 italic">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-arrow-left text-gray-400"></i>
+                                    <span class="font-black text-gray-800 tracking-tighter"># main-chat ›</span>
+                                </div>
+                                <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                            </div>
+
+                            <!-- Mockup Messages Area -->
+                            <div class="flex-1 p-6 space-y-6 overflow-y-auto">
+                                <div id="slide-4-card-1"
+                                    class="flex gap-4 opacity-0 scale-0 transition-all duration-700 ease-out">
+                                    <div class="w-10 h-10 rounded-full bg-pink-500 shrink-0"></div>
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-black text-[#8E44AD] italic">Loky</span>
+                                            <span class="text-[10px] text-gray-400">Today at 2:12 PM</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 font-bold leading-tight">hey look at this<br>ur
+                                            an emoji</p>
+                                        <div class="flex gap-2 mt-2">
+                                            <div class="bg-blue-100 p-2 rounded-lg"><img src="images/leftbot.png"
+                                                    class="h-8" alt=""></div>
+                                            <div class="bg-blue-100 p-2 rounded-lg"><img src="images/rightbot.png"
+                                                    class="h-8" alt=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mockup Footer -->
+                            <div class="p-4 border-t border-gray-100 italic">
+                                <div class="bg-gray-100 rounded-full px-4 py-3 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-circle-plus text-gray-400"></i>
+                                        <span class="text-gray-400 font-black text-sm">Message #main-chat</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-keyboard text-gray-400"></i>
+                                        <i class="fa-solid fa-microphone text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex justify-around mt-4 py-2 text-[10px] font-black uppercase text-gray-400 tracking-widest">
+                                    <span class="text-gray-800 border-b-2 border-gray-800">Emoji</span>
+                                    <span>GIFs</span>
+                                    <span>Stickers</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl w-full mb-20 px-4">
-                <div id="slide-4-card-1"
-                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
-                    <h3
-                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
-                        <i class="fa-solid fa-code text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
-                        Advanced Dev
-                    </h3>
-                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
-                        Fast, animated, modern frontends paired with rock-solid backends. Smooth transitions, clean
-                        interactions, and secure APIs.
-                    </p>
-                </div>
-
-                <div id="slide-4-card-2"
-                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
-                    <h3
-                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
-                        <i
-                            class="fa-solid fa-ranking-star text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
-                        SEO & Indexing
-                    </h3>
-                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
-                        Google loves our code. Optimized structure, speed, and metadata to get you ranked higher and
-                        seen by more clients.
-                    </p>
-                </div>
-
-                <div id="slide-4-card-3"
-                    class="p-6 border border-gray-800 hover:border-[#c7f908] transition-colors duration-300 bg-gray-900/50 group rounded-2xl opacity-0 scale-0 transition-all duration-700 ease-out">
-                    <h3
-                        class="text-3xl font-black text-white mb-4 flex items-center uppercase italic group-hover:text-[#c7f908] transition-colors">
-                        <i
-                            class="fa-solid fa-palette text-gray-500 mr-4 group-hover:text-[#c7f908] transition-colors"></i>
-                        Branding
-                    </h3>
-                    <p class="text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
-                        Custom color systems, typography, and visual direction. We give your website a personality that
-                        feels intentional and premium.
-                    </p>
+                    <!-- Right Side: Text Content -->
+                    <div id="slide-4-header-text"
+                        class="text-white space-y-8 md:max-w-xl opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                        <h2 class="text-5xl md:text-7xl font-black italic uppercase leading-[0.9] tracking-tighter">
+                            MAKE YOUR<br>GROUP CHATS<br>MORE FUN
+                        </h2>
+                        <p class="text-lg md:text-xl font-bold leading-relaxed text-blue-100">
+                            Use custom emoji, stickers, soundboard effects and more to add your personality to your
+                            voice, video, or text chat. Set your avatar and a custom status, and write your own profile
+                            to show up in chat your way.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -613,98 +633,107 @@
         </div>
 
         <!-- SLIDE 6: FOOTER SECTION -->
-        <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] p-10 overflow-hidden">
+        <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] overflow-y-auto">
+            <div class="slide-content-centered">
+                <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase mb-12">
+                    YOUR
+                    <span class="text-[#0C1AC1]">DIGITAL JOURNEY</span><br>
+                    <span class="text-[#c7f908]">STARTS HERE.</span>
+                </h1>
 
-            <div class="relative w-full h-full flex flex-col justify-between">
-
-                <div class="flex-grow flex items-start justify-between p-4 pt-10">
-
-                    <div class="flex flex-col space-y-8">
-
-                        <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase">
-                            YOUR <br>
-                            <span class="text-[#0C1AC1]">
-                                DIGITAL JOURNEY
-                            </span><br>
-                            <span class="text-[#c7f908]">STARTS HERE.</span>
-                        </h1>
-
-                        <div class="flex space-x-8 mt-12">
-                            <a href="./consult/consult.html" target="_blank"
-                                class="button-transition px-12 py-5 bg-[#C7F908] rounded-full text-2xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
-                                rel="noopener noreferrer">
-                                BOOK NOW
-                            </a>
-                            <a href="./pricingpage/pricing.html" target="_blank"
-                                class="button-transition px-12 py-5 bg-transparent rounded-full text-2xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
-                                rel="noopener noreferrer">
-                                VIEW PLANS
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col space-y-8 mt-2">
-                        <span class="w-96 h-auto">
-                            <video src="images/mascot.mp4" class="w-1/2 h-1/2 object-contain" autoplay loop muted
-                                playsinline>
-                                Your browser does not support the video tag.
-                            </video>
-                        </span>
-                    </div>
+                <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 mb-24">
+                    <a href="./consult/consult.html" target="_blank"
+                        class="button-transition px-12 py-4 bg-[#C7F908] rounded-full text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        rel="noopener noreferrer">
+                        BOOK NOW
+                    </a>
+                    <a href="./pricingpage/pricing.html" target="_blank"
+                        class="button-transition px-12 py-4 bg-transparent rounded-full text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        rel="noopener noreferrer">
+                        VIEW PLANS
+                    </a>
                 </div>
-
-                <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-[#0C1AC1]">
-
-                    <div class="absolute top-0 left-0 right-0 h-full bg-[#C7F908]" style="
-                        border-top-left-radius: 1000% 1000px; 
-                        border-top-right-radius: 1000% 1000px;
-                        transform: translateY(0);
-                        box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.3);
-                    ">
-
-                        <div class="absolute top-[-100px] left-0 right-0 p-8 bg-[#0C1AC1] text-center">
-                            <h2 class="text-5xl font-extrabold tracking-widest text-white uppercase">
-                                JOIN OUR COMMUNITY
-                            </h2>
-                        </div>
-
-                        <div class="flex flex-col justify-center items-center pt-12">
-                            <div class="flex space-x-16 text-6xl">
-                                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                    rel="noopener noreferrer">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
-                                <a href="https://discord.gg/hkBnFXJd"
-                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                    target="_blank" rel="noopener noreferrer">
-                                    <i class="fa-brands fa-discord"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                                    class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                    rel="noopener noreferrer">
-                                    <i class="fa-brands fa-linkedin-in"></i>
-                                </a>
-                            </div>
-                            <div class="policy-links">
-                                <a href="./docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" target="_blank"
-                                    class="policy-btn" rel="noopener noreferrer">
-                                    Privacy Policy
-                                </a>
-                                <a href="./docs/Refund%20and%20Cancellation%20Policy.pdf.pdf" target="_blank"
-                                    class="policy-btn" rel="noopener noreferrer">
-                                    Refund Policy
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="absolute bottom-4 left-0 right-0 text-center text-[10px] text-gray-500">
-                    &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
-                </div>
-
             </div>
+
+            <!-- CHARACTER WATERMARKS -->
+            <div class="footer-characters-container">
+                <img src="images/back.png" class="footer-char char-back" alt="">
+                <img src="images/leftbot.png" class="footer-char char-leftbot" alt="">
+                <img src="images/left.png" class="footer-char char-left" alt="">
+                <img src="images/mid.png" id="mid-char" class="footer-char char-mid" alt="">
+                <img src="images/right.png" class="footer-char char-right" alt="">
+                <img src="images/rightbot.png" class="footer-char char-rightbot" alt="">
+                <img src="images/end.png" class="footer-char char-end" alt="">
+            </div>
+
+            <!-- DISCORD-STYLE FOOTER -->
+            <footer class="discord-footer">
+                <div class="footer-container">
+                    <div class="footer-brand-side">
+                        <div class="footer-contact">
+                            <div class="contact-item">
+                                <i class="fa-solid fa-phone"></i>
+                                <a href="tel:8073499837">8073499837</a>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <a href="mailto:support@mkavs.com">support@mkavs.com</a>
+                            </div>
+                        </div>
+                        <div class="footer-lang-selector">
+                            <img src="https://flagcdn.com/w20/gb.png" alt="UK Flag">
+                            <select class="lang-select">
+                                <option>English (UK)</option>
+                                <option>English (US)</option>
+                            </select>
+                        </div>
+                        <div class="footer-socials">
+                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"><i
+                                    class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://discord.gg/hkBnFXJd" target="_blank"><i
+                                    class="fa-brands fa-discord"></i></a>
+                        </div>
+                    </div>
+
+
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="./about/about.html">About</a></li>
+                            <li><a href="./consult/consult.html ">Booking</a></li>
+                            <li><a href="./brandpg/brnd.html">Branding</a></li>
+                            <li><a href="./pricingpage/pricing.html">Pricing</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="mailto:support@mkavs.com">Support</a></li>
+                            <li><a
+                                    href="https://discord.com/channels/1429008861854961753/1429491228617080995">Community</a>
+                            </li>
+                            <li><a href="mailto:support@mkavs.com">Feedback</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Policies</h4>
+                        <ul>
+                            <li><a href="./docs/T%26C%20and%20Privacy%20Policy.pdf">T&C and Privacy Policy</a>
+                            </li>
+                            <li><a href="./docs/Refund%20Policy.pdf">Refund Policy</a></li>
+                            <li><a href="./docs/Brochure.pdf">Brochure</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-watermark-container">
+                    <img src="images/MKAVS.png" alt="MKAVS LOGO" class="footer-watermark-image">
+                </div>
+            </footer>
         </section>
 
         <script>

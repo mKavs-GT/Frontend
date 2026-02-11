@@ -598,7 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // OR if it is Slide 2 (Index 1) explicitly requested by user.
         // Slide 3 (Index 2) is Flip. We treat it as semi-scrollable (steps).
 
-        const isContentScrollable = (currentIndex === 1) || (currentIndex === 3 && slide4.scrollHeight > window.innerHeight);
+        const isContentScrollable = (currentIndex === 1) || (currentIndex === 3 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 5);
 
         // Flip Slide (Index 2) Special Case:
         // We want 1 scroll to Flip, 1 scroll to Leave.
@@ -992,4 +992,27 @@ document.addEventListener('DOMContentLoaded', () => {
             updateMainZoomImage(this.src);
         });
     });
+
+    // --- Mid Character Animation Loop (Slide 6) ---
+    const desktopMid = document.getElementById('mid-char');
+    const mobileMid = document.getElementById('mid-char-mobile');
+    let isChar1 = false;
+
+    if (desktopMid || mobileMid) {
+        function toggleMidChar() {
+            isChar1 = !isChar1;
+            const fileName = isChar1 ? 'mid1.png' : 'mid.png';
+            const duration = isChar1 ? 1500 : 400; // mid1: 1.5s, mid: 0.4s
+
+            if (desktopMid) {
+                desktopMid.src = `images/${fileName}`;
+            }
+            if (mobileMid) {
+                mobileMid.src = `../images/${fileName}`;
+            }
+
+            setTimeout(toggleMidChar, duration);
+        }
+        toggleMidChar();
+    }
 });
