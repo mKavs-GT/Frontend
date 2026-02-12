@@ -13,7 +13,7 @@
     --color-purple-a: #9933ff;
     --color-dark-cta: #111;
     --color-blue-footer: #1a1aff;
-    --color-btn-green: #ccff00;
+    --color-btna-green: #ccff00;
 }
 
 * {
@@ -791,13 +791,13 @@ p {
 .team-horizontal-track {
     display: flex;
     height: 100%;
-    width: 400%;
-    /* 4 sections */
+    width: 500%;
+    /* 5 sections */
     will-change: transform;
 }
 
 .team-horizontal-track .character-section {
-    width: 25%;
+    width: 20%;
     /* 1/4 of 400% = 100% of viewport */
     height: 100vh;
     flex-shrink: 0;
@@ -886,7 +886,10 @@ p {
 .mr-v .char-img {
     /* Individual positioning for Mr. V image */
     left: 20%;
-    top: 13%;
+    bottom: 0;
+    top: 60%;
+    transform-origin: bottom center;
+    position: absolute;
     transform: scale(1.8);
 }
 
@@ -1103,17 +1106,18 @@ p {
 }
 
 .mr-a .char-image-container::before {
-    left: 40%;
+    left: 50%;
     width: 120%;
     transform: skewX(45deg);
 }
 
 .mr-a .char-img {
     /* Individual positioning for Mr. V image */
-    left: 25%;
+    left: 35%;
     top: 13%;
     transform: scale(1.6);
 }
+
 
 .mr-a .char-text {
     /* Individual positioning for Mr. V text */
@@ -1124,7 +1128,7 @@ p {
 .mr-a .char-text h2 {
     color: #000;
     position: relative;
-    right: 120%;
+    right: 130%;
 }
 
 .mr-a .horizontal-role {
@@ -1134,7 +1138,7 @@ p {
 .mr-a .side-role {
     position: absolute;
     top: 40%;
-    right: -832px;
+    right: -890px;
     transform: rotate(45deg);
     font-weight: 900;
     /* Bold as requested */
@@ -1163,11 +1167,101 @@ p {
     /* Light grey bar */
 }
 
-.mr-a .char-text p {
+.mr-z {
+    --panel-color: #8a1e1e;
+}
+
+.mr-z .char-image-container::before {
+    left: 40%;
+    width: 120%;
+    transform: skewX(45deg);
+}
+
+.mr-z .char-img {
+    /* Individual positioning for Mr. V image */
+    left: 38%;
+    top: 1%;
+    transform: scale(1.5);
+}
+
+
+.mr-z .char-text {
+    /* Individual positioning for Mr. V text */
+    transform: translateY(330%);
+
+}
+
+.mr-z .char-text h2 {
+    color: #000;
+    position: relative;
+    right: 120%;
+}
+
+.mr-z .horizontal-role {
+    color: #000;
+}
+
+.mr-z .side-role {
+    position: absolute;
+    top: 30%;
+    right: -586px;
+    transform: rotate(45deg);
+    font-weight: 900;
+    /* Bold as requested */
+    font-size: 5rem;
+    letter-spacing: 1px;
+    color: #8a1e1e;
+    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+    color: #8a1e1e;
+    white-space: nowrap;
+    z-index: 0;
+}
+
+.mr-z .mra-quote {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    max-width: 400px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: right;
+    font-weight: 500;
+    z-index: 10;
+    padding-right: 1.5rem;
+    border-right: 4px solid #d3d3d3;
+    /* Light grey bar */
+}
+
+.mr-z .char-text p {
     color: #000;
     background: rgba(255, 255, 255, 0.5);
     border-color: #000;
 }
+
+
+.mr-z .mrz-quote {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    max-width: 400px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: right;
+    font-weight: 500;
+    z-index: 10;
+    padding-right: 1.5rem;
+    border-right: 4px solid #d3d3d3;
+    /* Light grey bar */
+}
+
+.mr-z .char-text p {
+    color: #000;
+    background: rgba(255, 255, 255, 0.5);
+    border-color: #000;
+}
+
 
 /* CTA Section */
 .cta-section {
@@ -1464,7 +1558,6 @@ p {
 
 .footer-socials {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding-top: 4rem;
@@ -1850,7 +1943,6 @@ p {
 
 .footer-socials {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding-top: 4rem;
@@ -2137,34 +2229,4 @@ p {
     animation: float-mra 6s ease-in-out infinite;
     animation-delay: 3s;
     /* Offset for natural feel */
-}
-
-/* Policy Buttons Styling */
-.policy-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    margin-bottom: 3.5rem;
-    justify-content: center;
-}
-
-.policy-btn {
-    padding: 0.5rem 1.25rem;
-    border: 1px solid rgba(14, 14, 14, 0.3);
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #0E0E0E;
-    text-decoration: none !important;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(4px);
-}
-
-.policy-btn:hover {
-    background: #0C1AC1;
-    color: white !important;
-    border-color: #0C1AC1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(12, 26, 193, 0.2);
 }

@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = scrollY / scrollDist;
 
             // We want to move the track horizontally.
-            // Track width is 400% (4 items). We want to show the last one at the end.
-            // So we translate from 0% to -75% (showing 4th item which starts at 75%)
-            const maxTranslate = 75; // %
+            // Track width is 500% (5 items). We want to show the last one at the end.
+            // So we translate from 0% to -80% (showing 5th item which starts at 80%)
+            const maxTranslate = 80; // %
             const translateX = -(progress * maxTranslate);
 
             horizontalTrack.style.transform = `translateX(${translateX}%)`;
