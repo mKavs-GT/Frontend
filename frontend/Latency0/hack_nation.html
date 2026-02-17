@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatencyZero | GCU</title>
+    <link rel="stylesheet" href="hack_nation_styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/png" href="1.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="1.png" alt="Latency Zero" class="preloader-img">
+            <div class="loader-3d-wrap">
+                <div class="loader-3d">
+                    <div class="loader-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <div class="container container-nav">
+            <a href="#" class="logo">
+                <span class="logo-accent">GCU</span>&nbsp;x <img src="logo.png" alt="Latency Zero" class="nav-logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#why-latency-zero">About</a></li>
+                <li><a href="#gcu-needs">Vision</a></li>
+                <li><a href="#activities-benefits">Activities</a></li>
+                <li><a href="#leadership">Team</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <a href="#apply" class="btn-primary">Join Now</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <canvas id="repulsion-canvas"></canvas>
+        <div class="hero-bg-overlay"></div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="badge">Garden City University</div>
+                <div class="hero-title-group">
+                    <img src="1.png" alt="" class="hero-side-img img-left">
+                    <h1>LATENCY<span class="text-gradient"><BR>ZERO</span></h1>
+                    <img src="2.png" alt="" class="hero-side-img img-right">
+                </div>
+                <div class="tagline">Think. Build. Deploy.</div>
+                <p class="hero-subtitle">Bridging the gap between theory and execution through rapid prototyping and
+                    innovation.</p>
+                <a href="#apply" class="btn-primary btn-large">Join Now</a>
+            </div>
+        </div>
+        </div>
+    </header>
+
+
+
+    <!-- Tech Stack Marquee -->
+    <section class="tech-marquee-section reveal">
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">JavaScript</span>
+                <span class="tech-pill">React</span>
+                <span class="tech-pill">Node.js</span>
+                <span class="tech-pill">TensorFlow</span>
+                <span class="tech-pill">PyTorch</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">Kubernetes</span>
+                <span class="tech-pill">Git</span>
+                <span class="tech-pill">MongoDB</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">AWS</span>
+                <span class="tech-pill">FastAPI</span>
+                <span class="tech-pill">TypeScript</span>
+                <!-- Duplicate for seamless loop -->
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">JavaScript</span>
+                <span class="tech-pill">React</span>
+                <span class="tech-pill">Node.js</span>
+                <span class="tech-pill">TensorFlow</span>
+                <span class="tech-pill">PyTorch</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">Kubernetes</span>
+                <span class="tech-pill">Git</span>
+                <span class="tech-pill">MongoDB</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">AWS</span>
+                <span class="tech-pill">FastAPI</span>
+                <span class="tech-pill">TypeScript</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Latency Zero Section -->
+    <section id="why-latency-zero" class="section why-section reveal">
+        <div class="container">
+            <div class="why-header text-center">
+                <h2 class="section-title">Why Latency Zero?</h2>
+                <p class="why-subtitle">Latency Zero represents the elimination of the gap between an Idea and its
+                    Implementation.</p>
+            </div>
+            <div class="why-grid">
+                <!-- Think Card -->
+                <div class="why-card card-think">
+                    <div class="card-icon-wrap">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1 2.96-3.08 3 3 0 0 1-.34-5.55 2.5 2.5 0 0 1 1.35-4.81 2.5 2.5 0 0 1 1-1A2.5 2.5 0 0 1 9.5 2Z" />
+                            <path
+                                d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0-2.96-3.08 3 3 0 0 0 .34-5.55 2.5 2.5 0 0 0-1.35-4.81 2.5 2.5 0 0 0-1-1A2.5 2.5 0 0 0 14.5 2Z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Think</h3>
+                    <div class="card-status">Analysis</div>
+                    <p class="card-desc">Identifying real-world problems through critical analysis.</p>
+                </div>
+
+                <!-- Build Card -->
+                <div class="why-card card-build">
+                    <div class="card-icon-wrap">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Build</h3>
+                    <div class="card-status">Engineering</div>
+                    <p class="card-desc">Engineering robust solutions using modern tech stacks.</p>
+                </div>
+
+                <!-- Deploy Card -->
+                <div class="why-card card-deploy">
+                    <div class="card-icon-wrap">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                            <path d="M4 22h16" />
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Deploy</h3>
+                    <div class="card-status">Production</div>
+                    <p class="card-desc">Delivering a working product to the end-user.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why GCU Needs "Latency Zero" Section -->
+    <section id="gcu-needs" class="section gcu-section reveal">
+        <div class="container">
+            <h2 class="section-title text-center gcu-title">Why GCU Needs <span class="text-gradient"> Latency
+                    Zero</span></h2>
+            <div class="gcu-grid">
+                <!-- Innovation -->
+                <div class="gcu-card">
+                    <div class="gcu-card-header">
+                        <span class="gcu-number">01</span>
+                        <h3 class="gcu-card-title">Innovation</h3>
+                    </div>
+                    <p class="gcu-card-content">
+                        We move beyond the syllabus. Students master AI, Cloud, and Web3—the tools companies are hiring
+                        for now.
+                    </p>
+                </div>
+
+                <!-- Reputation -->
+                <div class="gcu-card">
+                    <div class="gcu-card-header">
+                        <span class="gcu-number">02</span>
+                        <h3 class="gcu-card-title">Reputation</h3>
+                    </div>
+                    <p class="gcu-card-content">
+                        By winning national events like Smart India Hackathon (SIH), we put GCU on the map for technical
+                        excellence.
+                    </p>
+                </div>
+
+                <!-- Collaboration -->
+                <div class="gcu-card">
+                    <div class="gcu-card-header">
+                        <span class="gcu-number">03</span>
+                        <h3 class="gcu-card-title">Collaboration</h3>
+                    </div>
+                    <p class="gcu-card-content">
+                        We don’t just code. We bring together Developers, Designers, and Business thinkers to build
+                        complete solutions.
+                    </p>
+                </div>
+
+                <!-- Placement -->
+                <div class="gcu-card">
+                    <div class="gcu-card-header">
+                        <span class="gcu-number">04</span>
+                        <h3 class="gcu-card-title">Placement</h3>
+                    </div>
+                    <p class="gcu-card-content">
+                        A "Deployed Project" is the ultimate resume. We turn students into Job-Ready Graduates with a
+                        portfolio to prove it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="activities-benefits" class="section ab-section reveal">
+        <div class="container ab-container">
+            <div class="ab-grid">
+                <!-- Proposed Activities Column -->
+                <div class="ab-column">
+                    <h2 class="ab-title title-activities">Proposed Activities</h2>
+                    <ul class="ab-list">
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">Micro-hackathons</span>
+                        </li>
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">Ideathons</span>
+                        </li>
+
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">Internal workshops</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Student Benefits Column -->
+                <div class="ab-column">
+                    <h2 class="ab-title title-benefits">Student Benefits</h2>
+                    <ul class="ab-list">
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">Portfolio building</span>
+                        </li>
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">GitHub contributions</span>
+                        </li>
+                        <li>
+                            <img src="1.png" alt="Icon" class="ab-icon-img float-animation">
+                            <span class="ab-text">Soft skills: Pitching and teamwork</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Leadership Team Section -->
+    <section id="leadership" class="section leadership-section reveal">
+        <div class="container">
+            <h2 class="section-title text-center">Leadership <span class="text-gradient">Team</span></h2>
+
+            <div class="leadership-grid">
+                <!-- Branch Counselor -->
+                <div class="counselor-row">
+                    <div class="counselor-card glass-card">
+                        <div class="counselor-img-wrap">
+                            <img src="nallathambi.png" alt="Prof. Nallathambi" class="team-img">
+                        </div>
+                        <div class="counselor-content">
+                            <h3 class="team-name">Prof. Nallathambi</h3>
+                            <p class="team-role">Branch Counselor</p>
+                            <p class="team-quote">"A quote"</p>
+                            <p class="team-desc">Guiding the team towards technical excellence and fostering a culture
+                                of innovation within the campus.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chairs -->
+                <div class="chairs-grid">
+                    <div class="team-card glass-card row-card">
+                        <img src="sofia.jpg" alt="Sofia Stalance" class="team-img">
+                        <div class="team-info">
+                            <h3 class="team-name">Sofia Stalance</h3>
+                            <p class="team-role">Chair</p>
+                            <p class="team-desc">Driving the vision and strategy for the club's growth.</p>
+                        </div>
+                    </div>
+                    <div class="team-card glass-card row-card">
+                        <img src="krishawn.jpeg" alt="Krishawn V Rahul" class="team-img">
+                        <div class="team-info">
+                            <h3 class="team-name">Krishawn V Rahul</h3>
+                            <p class="team-role">Vice Chair</p>
+                            <p class="team-desc">Executing operations and ensuring smooth event management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Team -->
+                <div class="core-team-grid">
+                    <div class="team-card glass-card">
+                        <img src="silmia.jpeg" alt="Silmiya" class="team-img">
+                        <h3 class="team-name">Silmiya</h3>
+                        <p class="team-role">Tech Lead</p>
+                    </div>
+                    <div class="team-card glass-card">
+                        <img src="vinith.jpeg" alt="Vinith" class="team-img">
+                        <h3 class="team-name">Vinith</h3>
+                        <p class="team-role">General Secretary</p>
+                    </div>
+                    <div class="team-card glass-card">
+                        <img src="micheal.jpeg" alt="Micheal" class="team-img">
+                        <h3 class="team-name">Micheal</h3>
+                        <p class="team-role">Treasurer</p>
+                    </div>
+                    <div class="team-card glass-card">
+                        <img src="sitesh.jpeg" alt="Sitesh" class="team-img">
+                        <h3 class="team-name">Sitesh</h3>
+                        <p class="team-role">Student Mentor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="section faq reveal">
+        <div class="container">
+            <h2 class="section-title">FAQ</h2>
+            <div class="faq-list">
+
+                <div class="faq-item">
+                    <div class="faq-question">Do I need prior experience? <span class="faq-arrow">▼</span></div>
+                    <div class="faq-answer">No! We have workshops for beginners. Just bring your curiosity.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What kind of projects do we build? <span class="faq-arrow">▼</span></div>
+                    <div class="faq-answer">We focus on AI, Web3, and Cloud computing solutions that solve real campus
+                        or societal problems.</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer reveal">
+        <div class="container footer-container">
+            <div class="footer-info">
+                <div class="logo">LATENCYZERO</div>
+                <p>GCU AI Hackathon & Community</p>
+            </div>
+            <div class="footer-links-group">
+                <div class="links-col">
+                    <h4>Event</h4>
+                    <a href="#leadership">Team</a>
+                    <a href="#activities-benefits">Benefits</a>
+                    <a href="#apply">Register</a>
+                </div>
+                <div class="links-col">
+                    <h4>Community</h4>
+                    <a href="#">Whatsapp</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 LatencyZero.</p>
+        </div>
+    </footer>
+
+
+    <!-- Registration Modal -->
+    <div id="join-modal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-btn">&times;</span>
+            <div class="modal-images">
+                <img src="1.png" alt="" class="modal-img img-1 float-animation">
+                <img src="2.png" alt="" class="modal-img img-2 float-animation">
+            </div>
+            <h2 class="modal-title text-center">Registration</h2>
+            <form id="registration-form">
+                <div class="form-grid-layout">
+                    <!-- Left Column -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="reg-no">Reg No</label>
+                            <input type="text" id="reg-no" name="reg-no" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email ID</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone No</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <input type="text" id="semester" name="semester" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" name="department" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="course">Course</label>
+                            <input type="text" id="course" name="course" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="skills">Skills (if any)</label>
+                            <textarea id="skills" name="skills" rows="1"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Submit changes to span full width in CSS if needed, or stick to bottom -->
+                <button type="submit" class="btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="hack_nation.js"></script>
+</body>
+
+</html>
