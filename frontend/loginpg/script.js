@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isValid) {
                 // Call backend signin API
                 try {
-                    const response = await fetch('/api/signin', {
+                    const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/signin', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             window.location.href = '/index.html';
                         }, 1000);
                     } else {
+                        const errorMessage = data.error || 'Login failed';
                         if (errorMessage.toLowerCase().includes('not found')) {
                             emailError.textContent = 'Account not created. Redirecting to signup...';
                             emailInput.setAttribute('aria-invalid', 'true');
@@ -123,9 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         } else if (errorMessage.toLowerCase().includes('credentials') || errorMessage.toLowerCase().includes('password')) {
                             passwordError.textContent = 'Incorrect password';
                             passwordInput.setAttribute('aria-invalid', 'true');
-                        } else if (errorMessage.toLowerCase().includes('google')) {
-                            emailError.textContent = errorMessage;
-                            emailInput.setAttribute('aria-invalid', 'true');
                         } else {
                             passwordError.textContent = errorMessage;
                         }

@@ -491,11 +491,52 @@ function updateScrollbarVisuals() {
 }
 
 
+// --- AUTHENTICATION STATE HANDLING ---
+async function checkAuthStatus() {
+    try {
+        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status');
+        const data = await response.json();
+
+        const loginBtn = document.getElementById('desktop-login-btn');
+        const userIcon = document.querySelector('.fa-regular.fa-user')?.parentElement;
+
+        if (data.loggedIn) {
+            // User is logged in
+            if (loginBtn) {
+                loginBtn.textContent = 'Logout';
+                loginBtn.href = MKAVS_CONFIG.API_BASE_URL + '/auth/logout';
+                // Add click event for logout to clear local storage if needed
+                loginBtn.addEventListener('click', () => {
+                    localStorage.removeItem('mKavs_palette_likes');
+                    localStorage.removeItem('mKavs_font_likes');
+                });
+            }
+
+            if (userIcon) {
+                userIcon.href = './profile/profile.html';
+            }
+        } else {
+            // User is not logged in
+            if (loginBtn) {
+                loginBtn.textContent = 'Login';
+                loginBtn.href = './loginpg/login.html';
+            }
+
+            // If user icon is clicked while logged out, redirect to login
+            if (userIcon) {
+                userIcon.href = './loginpg/login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Error checking auth status:', error);
+    }
+}
+
 // --- INIT ---
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Check Auth Status
+    checkAuthStatus();
     // Standard Elements
     allSlides = Array.from(document.querySelectorAll('.slide'));
     slide2 = document.getElementById('slide-2');

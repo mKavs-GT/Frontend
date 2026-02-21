@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (form) {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             let isValid = true;
@@ -150,15 +150,41 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (isValid) {
-                console.log({ email: email, password: password });
-                successMsg.textContent = 'Account created successfully! Redirecting...';
-                successMsg.classList.add('visible');
+                // Call backend signup API
+                try {
+                    const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
 
-                setTimeout(function () {
-                    form.reset();
-                    successMsg.textContent = '';
-                    successMsg.classList.remove('visible');
-                }, 2000);
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        successMsg.textContent = 'Account created successfully! Redirecting...';
+                        successMsg.classList.add('visible');
+
+                        setTimeout(function () {
+                            window.location.href = '/index.html';
+                        }, 2000);
+                    } else {
+                        const errorMessage = data.error || 'Signup failed';
+                        if (errorMessage.toLowerCase().includes('email')) {
+                            emailError.textContent = errorMessage;
+                            emailInput.setAttribute('aria-invalid', 'true');
+                        } else if (errorMessage.toLowerCase().includes('verify')) {
+                            emailError.textContent = errorMessage;
+                            emailInput.setAttribute('aria-invalid', 'true');
+                        } else {
+                            passwordError.textContent = errorMessage;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    passwordError.textContent = 'Connection error. Please try again.';
+                }
             }
         });
     }
