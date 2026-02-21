@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load user profile from backend
     async function loadUserProfile() {
         try {
-            const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me');
+            const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me', {
+                credentials: 'include'
+            });
 
             if (response.ok) {
                 const user = await response.json();

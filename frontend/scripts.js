@@ -494,7 +494,9 @@ function updateScrollbarVisuals() {
 // --- AUTHENTICATION STATE HANDLING ---
 async function checkAuthStatus() {
     try {
-        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status');
+        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status', {
+            credentials: 'include'
+        });
         const data = await response.json();
 
         const loginBtn = document.getElementById('desktop-login-btn');

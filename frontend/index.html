@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MKAVS Global Tech - Your Web Development Agency</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         target="_blank" rel="noopener noreferrer">
     <link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet" target="_blank"
@@ -837,15 +838,7 @@
             </footer>
         </section>
 
-        <script>
-            const API_BASE_URL = "https://backend-zjwg.onrender.com/api";
 
-            // Example: fetch users
-            fetch(`${API_BASE_URL}/users`)
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(err => console.error(err));
-        </script>
         <script src="scripts.js"></script>
 
         <!-- Kairon Chat Widget Integration -->
@@ -888,23 +881,7 @@
         </div>
         <script src="./chatbot/kairon-widget.js"></script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', async () => {
-                const loginBtn = document.getElementById('desktop-login-btn');
-                if (loginBtn) {
-                    try {
-                        const response = await fetch('/auth/status');
-                        const data = await response.json();
-                        if (data.loggedIn) {
-                            loginBtn.textContent = 'Logout';
-                            loginBtn.href = '/auth/logout';
-                        }
-                    } catch (err) {
-                        console.error('Error fetching auth status:', err);
-                    }
-                }
-            });
-        </script>
+
 </body>
 
 </html>

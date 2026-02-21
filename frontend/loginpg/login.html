@@ -455,7 +455,8 @@
                     Or Continue With
                 </div>
 
-                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login'" class="sso-button" style="text-decoration: none;">
+                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login'" class="sso-button"
+                    style="text-decoration: none;">
                     <i class="fa-brands fa-google"></i>
                     Continue with Google
                 </a>
@@ -543,6 +544,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ email, password, recaptchaToken })
                 });
 
