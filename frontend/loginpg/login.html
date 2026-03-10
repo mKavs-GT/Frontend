@@ -240,10 +240,35 @@
             font-weight: 500;
             font-size: 0.85rem;
             transition: background-color 0.2s;
+            text-decoration: none;
         }
 
         .sso-button:hover {
             background: rgba(255, 255, 255, 0.1);
+        }
+
+        .google-error-banner {
+            display: none;
+            background: rgba(255, 68, 68, 0.12);
+            border: 1px solid rgba(255, 68, 68, 0.4);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #ff6b6b;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .google-error-banner a {
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .signup-prompt {
@@ -411,6 +436,9 @@
 
             </header>
 
+            <!-- Google Auth Error Banner -->
+            <div id="google-error-banner" class="google-error-banner"></div>
+
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
@@ -455,8 +483,7 @@
                     Or Continue With
                 </div>
 
-                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login'" class="sso-button"
-                    style="text-decoration: none;">
+                <a id="googleSignInBtn" href="#" class="sso-button">
                     <i class="fa-brands fa-google"></i>
                     Continue with Google
                 </a>
@@ -485,17 +512,28 @@
             }
         }
 
+        // Wire up Google Sign-In button
+        document.getElementById('googleSignInBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location.href = MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login';
+        });
+
         // Check for error parameters in URL (Google Auth redirects)
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get('error');
         const errorEl = document.getElementById('error-message');
+        const googleBanner = document.getElementById('google-error-banner');
 
         if (error) {
-            errorEl.style.display = 'block';
             if (error === 'no_account') {
-                errorEl.innerHTML = 'Create an account first <a href="../signpg/signup.html" style="color: var(--primary); text-decoration: underline;">here</a>';
+                googleBanner.style.display = 'block';
+                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="../signpg/signup.html">create an account</a> first.';
             } else if (error === 'auth_failed') {
-                errorEl.textContent = 'Authentication failed. Please try again.';
+                googleBanner.style.display = 'block';
+                googleBanner.textContent = 'Google authentication failed. Please try again.';
+            } else {
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'An error occurred. Please try again.';
             }
             window.history.replaceState({}, document.title, window.location.pathname);
         }
