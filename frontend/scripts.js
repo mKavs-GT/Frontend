@@ -521,7 +521,7 @@ async function checkAuthStatus() {
             // User is not logged in
             if (loginBtn) {
                 loginBtn.textContent = 'Login';
-                loginBtn.href = 'https://api.mkavs.com/auth/google';
+                loginBtn.href = './loginpg/login.html';
             }
 
             // If user icon is clicked while logged out, redirect to login
