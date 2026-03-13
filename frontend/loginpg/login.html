@@ -515,7 +515,7 @@
         // Wire up Google Sign-In button
         document.getElementById('googleSignInBtn').addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login';
+            window.location.href = MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login&source=desktop';
         });
 
         // Check for error parameters in URL (Google Auth redirects)

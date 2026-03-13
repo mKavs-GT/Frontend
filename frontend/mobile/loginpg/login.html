@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <!-- Google reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="../../config.js"></script>
     <style>
         :root {
             --primary: #CCFF00;
@@ -468,7 +469,7 @@
                 </div>
 
                 <button type="button" class="sso-button"
-                    onclick="window.location.href='/auth/google?flow=login&source=mobile'">
+                    onclick="window.location.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login&source=mobile'">
                     <i class="fa-brands fa-google"></i>
                     Continue with Google
                 </button>
@@ -547,7 +548,7 @@
             btn.style.opacity = '0.7';
 
             try {
-                const response = await fetch('/api/signin', {
+                const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/signin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

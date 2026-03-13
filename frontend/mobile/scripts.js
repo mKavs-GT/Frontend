@@ -1232,4 +1232,34 @@ document.addEventListener('DOMContentLoaded', () => {
             updateMainZoomImage(this.src);
         });
     });
+    // Check Auth Status on Load
+    checkAuthStatus();
 });
+
+// --- AUTHENTICATION STATUS CHECK ---
+async function checkAuthStatus() {
+    try {
+        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/auth/status', {
+            credentials: 'include'
+        });
+        const data = await response.json();
+
+        const userIcon = document.querySelector('a[href="./profile/profile.html"]');
+        
+        if (data.loggedIn) {
+            console.log('User is logged in:', data.user.displayName);
+            if (userIcon) {
+                userIcon.href = './profile/profile.html';
+                userIcon.title = `Logged in as ${data.user.displayName}`;
+            }
+        } else {
+            console.log('User is not logged in');
+            if (userIcon) {
+                userIcon.href = './loginpg/login.html';
+                userIcon.title = 'Login';
+            }
+        }
+    } catch (error) {
+        console.error('Error checking auth status:', error);
+    }
+}
