@@ -29,7 +29,13 @@
             </a>
 
             <div class="header-actions" style="display: flex; gap: 0.8rem; align-items: center;">
-                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/logout'" class="logout-header-btn with-text" title="Logout">
+                <img id="toolbarProfilePhoto"
+                    src="https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150"
+                    alt="Profile Toolbar"
+                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #c7f908;"
+                    onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150'">
+                <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/logout'"
+                    class="logout-header-btn with-text" title="Logout">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -44,11 +50,11 @@
                 </div>
 
                 <div class="quick-links-grid">
-                    <a href="../booking/booking.html" class="quick-link-card">
+                    <a href="../consult/consult.html" class="quick-link-card">
                         <i class="fa-regular fa-calendar-check"></i>
                         <span>Book Slot</span>
                     </a>
-                    <a href="../pricing/pricing.html" class="quick-link-card">
+                    <a href="../pricingpage/pricing.html" class="quick-link-card">
                         <i class="fa-solid fa-tags"></i>
                         <span>View Pricing</span>
                     </a>
@@ -101,7 +107,7 @@
                         <div class="empty-consultation">
                             <i class="fa-solid fa-file-contract"></i>
                             <p>No active consultations requested.</p>
-                            <a href="../booking/booking.html" class="request-btn">Request Now</a>
+                            <a href="../consult/consult.html" class="request-btn">Request Now</a>
                         </div>
                     </div>
                 </div>
@@ -139,9 +145,12 @@
                         </div>
                     </div>
                     <div class="social-links-glass">
-                        <a href="https://instagram.com" target="_blank" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://discord.com" target="_blank" class="social-icon" title="Discord"><i class="fa-brands fa-discord"></i></a>
-                        <a href="https://x.com" target="_blank" class="social-icon" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank" class="social-icon" title="Instagram"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="https://discord.com" target="_blank" class="social-icon" title="Discord"><i
+                                class="fa-brands fa-discord"></i></a>
+                        <a href="https://x.com" target="_blank" class="social-icon" title="X (Twitter)"><i
+                                class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
             </aside>

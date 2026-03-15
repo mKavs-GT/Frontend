@@ -23,9 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 const userPhotoEl = document.getElementById('mobileUserProfilePhoto');
-                if (userPhotoEl) {
-                    userPhotoEl.src = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
-                }
+                const toolbarPhotoEl = document.getElementById('mobileToolbarProfilePhoto');
+                const pfpUrl = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                
+                if (userPhotoEl) userPhotoEl.src = pfpUrl;
+                if (toolbarPhotoEl) toolbarPhotoEl.src = pfpUrl;
                 
                 // Store user data for potential later use
                 window.currentUser = user;
@@ -190,9 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reader = new FileReader();
                 reader.onload = async function(event) {
                     const userPhotoEl = document.getElementById('mobileUserProfilePhoto');
-                    if (userPhotoEl) {
-                        userPhotoEl.src = event.target.result;
-                    }
+                    const toolbarPhotoEl = document.getElementById('mobileToolbarProfilePhoto');
+                    if (userPhotoEl) userPhotoEl.src = event.target.result;
+                    if (toolbarPhotoEl) toolbarPhotoEl.src = event.target.result;
                     
                     try {
                         const response = await fetch('/api/user/me', {

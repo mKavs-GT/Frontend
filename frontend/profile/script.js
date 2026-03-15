@@ -28,9 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     userEmailEl.textContent = user.email || user.username || 'user@mkavs.com';
                 }
                 const userPhotoEl = document.getElementById('userProfilePhoto');
-                if (userPhotoEl) {
-                    userPhotoEl.src = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
-                }
+                const toolbarPhotoEl = document.getElementById('toolbarProfilePhoto');
+                const pfpUrl = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                
+                if (userPhotoEl) userPhotoEl.src = pfpUrl;
+                if (toolbarPhotoEl) toolbarPhotoEl.src = pfpUrl;
 
                 // Render Project Details
                 renderProjectDetails(user.adminData);
@@ -214,9 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reader = new FileReader();
                 reader.onload = async function(event) {
                     const userPhotoEl = document.getElementById('userProfilePhoto');
-                    if (userPhotoEl) {
-                        userPhotoEl.src = event.target.result;
-                    }
+                    const toolbarPhotoEl = document.getElementById('toolbarProfilePhoto');
+                    if (userPhotoEl) userPhotoEl.src = event.target.result;
+                    if (toolbarPhotoEl) toolbarPhotoEl.src = event.target.result;
                     
                     try {
                         const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me', {
