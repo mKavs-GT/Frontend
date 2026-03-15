@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesGrid = document.getElementById('favoritesGrid');
     const favoriteFontsGrid = document.getElementById('favoriteFontsGrid');
     const palettesSection = document.getElementById('palettes');
-    const userNameElement = document.querySelector('.user-name');
+    // Removed single querySelector for userNameElement, now uses querySelectorAll inside loadUserProfile
 
     // Check if PALETTE_DATA adheres to global window object
     const paletteData = window.PALETTE_DATA || [];
@@ -18,9 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const user = await response.json();
-                // Update UI with user data
-                if (userNameElement && user.displayName) {
-                    userNameElement.textContent = user.displayName.split(' ')[0]; // First name only
+                const userNameElements = document.querySelectorAll('.user-name');
+                if (userNameElements.length > 0 && user.displayName) {
+                    const firstName = user.displayName.split(' ')[0];
+                    userNameElements.forEach(el => el.textContent = firstName);
+                }
+                const userEmailEl = document.getElementById('userEmail');
+                if (userEmailEl) {
+                    userEmailEl.textContent = user.email || user.username || 'user@mkavs.com';
+                }
+                const userPhotoEl = document.getElementById('userProfilePhoto');
+                if (userPhotoEl) {
+                    userPhotoEl.src = user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                 }
 
                 // Render Project Details
