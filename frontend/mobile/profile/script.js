@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load user profile from backend
     async function loadUserProfile() {
         try {
-            const response = await fetch('/api/user/me');
+            const baseUrl = window.MKAVS_CONFIG ? MKAVS_CONFIG.API_BASE_URL : 'https://api.mkavs.com';
+            const response = await fetch(baseUrl + '/api/user/me', {
+                credentials: 'include'
+            });
 
             if (response.ok) {
                 const user = await response.json();
@@ -189,29 +192,62 @@ document.addEventListener('DOMContentLoaded', () => {
         profileImageUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
+                // Resize image client-side to avoid MongoDB documents exceeding 16MB limit
                 const reader = new FileReader();
-                reader.onload = async function(event) {
-                    const userPhotoEl = document.getElementById('mobileUserProfilePhoto');
-                    const toolbarPhotoEl = document.getElementById('mobileToolbarProfilePhoto');
-                    if (userPhotoEl) userPhotoEl.src = event.target.result;
-                    if (toolbarPhotoEl) toolbarPhotoEl.src = event.target.result;
-                    
-                    try {
-                        const response = await fetch('/api/user/me', {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            credentials: 'include',
-                            body: JSON.stringify({ image: event.target.result })
-                        });
-                        
-                        if (!response.ok) {
-                            console.error('Failed to update profile image on server');
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = async function() {
+                        let width = img.width;
+                        let height = img.height;
+                        const maxDimension = 500; // max width/height
+
+                        if (width > height) {
+                            if (width > maxDimension) {
+                                height = Math.round((height * maxDimension) / width);
+                                width = maxDimension;
+                            }
+                        } else {
+                            if (height > maxDimension) {
+                                width = Math.round((width * maxDimension) / height);
+                                height = maxDimension;
+                            }
                         }
-                    } catch (error) {
-                        console.error('Error uploading profile image:', error);
-                    }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Output optimized base64 at 80% quality
+                        const optimizedImageBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+                        // Update local UI immediately
+                        const userPhotoEl = document.getElementById('mobileUserProfilePhoto');
+                        const toolbarPhotoEl = document.getElementById('mobileToolbarProfilePhoto');
+                        if (userPhotoEl) userPhotoEl.src = optimizedImageBase64;
+                        if (toolbarPhotoEl) toolbarPhotoEl.src = optimizedImageBase64;
+                        
+                        // Sync with Backend
+                        try {
+                            const baseUrl = window.MKAVS_CONFIG ? MKAVS_CONFIG.API_BASE_URL : 'https://api.mkavs.com';
+                            const response = await fetch(baseUrl + '/api/user/me', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                credentials: 'include',
+                                body: JSON.stringify({ image: optimizedImageBase64 })
+                            });
+                            
+                            if (!response.ok) {
+                                console.error('Failed to update profile image on server. Response Status:', response.status);
+                            }
+                        } catch (error) {
+                            console.error('Error uploading profile image:', error);
+                        }
+                    };
+                    img.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
             }
