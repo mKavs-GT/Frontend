@@ -402,12 +402,11 @@
 
     .character-base {
       position: fixed;
-      top: 75vh;
+      top: 85svh;
       left: 0;
       width: 100vw;
       height: 25vh;
-      background: linear-gradient(180deg, rgba(204, 255, 0, 0.08) 0%, rgba(204, 255, 0, 0) 100%);
-      border-top: 2px solid rgba(204, 255, 0, 0.2);
+      background: #20201F;
       z-index: 2;
       pointer-events: none;
       animation: baseFade 1s ease 0.5s forwards;
@@ -415,7 +414,9 @@
     }
 
     @keyframes baseFade {
-      to { opacity: 1; }
+      to {
+        opacity: 1;
+      }
     }
 
     @media (max-width: 850px) {
