@@ -414,11 +414,21 @@
             }
         }
         /* Character Watermarks for Footer */
+        .footer-base-block {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 25vh;
+            background-color: #cafe00;
+            z-index: 1;
+        }
+
         .footer-characters-container {
             position: fixed;
             width: 100vw;
             height: 220px;
-            bottom: 0;
+            bottom: 25vh;
             left: 0;
             pointer-events: none;
             z-index: 20;
@@ -524,6 +534,8 @@
     </a>
 
     <div class="auth-container">
+        <!-- Footer Base Line Block -->
+        <div class="footer-base-block"></div>
         <!-- Character Watermarks for Footer -->
         <div class="footer-characters-container">
             <img src="../images/back.png" class="footer-char char-back" alt="">
