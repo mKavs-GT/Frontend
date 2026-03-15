@@ -267,8 +267,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .signup-prompt {
@@ -290,58 +297,7 @@
             text-decoration: underline;
         }
 
-        /* RESTORED CHARACTER ANIMATIONS */
-        .char {
-            position: absolute;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0;
-            animation-duration: 0.8s;
-            animation-fill-mode: forwards;
-            animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
 
-        .char.left-1 {
-            left: -180px;
-            top: 20%;
-            width: 360px;
-            animation-name: entryLeft;
-        }
-
-        .char.left-2 {
-            left: 80px;
-            padding-top: 10%;
-            width: 350px;
-            z-index: 5;
-            animation-name: entryLeft;
-            animation-delay: 0.1s;
-        }
-
-        .char.right-1 {
-            left: 390px;
-            padding-top: 40%;
-            width: 460px;
-            z-index: 15;
-            animation-name: entryBottom;
-            animation-delay: 0.2s;
-        }
-
-        .char.right-2 {
-            left: 780px;
-            padding-top: 10%;
-            width: 340px;
-            z-index: 5;
-            animation-name: entryRight;
-            animation-delay: 0.3s;
-        }
-
-        .char.sleeping {
-            right: -200px;
-            top: 20%;
-            width: 360px;
-            animation-name: entryRight;
-            animation-delay: 0.4s;
-        }
 
         @keyframes entryLeft {
             from {
@@ -413,6 +369,7 @@
                 left: 1.5rem;
             }
         }
+
         /* Character Watermarks for Footer */
         .footer-base-block {
             position: fixed;
