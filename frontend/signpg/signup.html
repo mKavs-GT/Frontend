@@ -400,9 +400,28 @@
       }
     }
 
+    .character-base {
+      position: fixed;
+      top: 75vh;
+      left: 0;
+      width: 100vw;
+      height: 25vh;
+      background: linear-gradient(180deg, rgba(204, 255, 0, 0.08) 0%, rgba(204, 255, 0, 0) 100%);
+      border-top: 2px solid rgba(204, 255, 0, 0.2);
+      z-index: 2;
+      pointer-events: none;
+      animation: baseFade 1s ease 0.5s forwards;
+      opacity: 0;
+    }
+
+    @keyframes baseFade {
+      to { opacity: 1; }
+    }
+
     @media (max-width: 850px) {
 
       .char,
+      .character-base,
       .marquee-tape {
         display: none;
       }
@@ -615,6 +634,7 @@
     <img src="../images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
+  <div class="character-base"></div>
   <div class="auth-container">
     <!-- Exact Character Placement -->
     <img src="images/1.png" class="char left-1" alt="char 1" />
