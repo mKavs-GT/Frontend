@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const userPhotoEl = document.getElementById('userProfilePhoto');
                 if (userPhotoEl) {
-                    userPhotoEl.src = user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                    userPhotoEl.src = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                 }
 
                 // Render Project Details
@@ -212,13 +212,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = async function(event) {
                     const userPhotoEl = document.getElementById('userProfilePhoto');
                     if (userPhotoEl) {
                         userPhotoEl.src = event.target.result;
                     }
-                    // Additional logic to upload the file to the backend API would go here.
-                    // e.g., using FormData and fetch()
+                    
+                    try {
+                        const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body: JSON.stringify({ image: event.target.result })
+                        });
+                        
+                        if (!response.ok) {
+                            console.error('Failed to update profile image on server');
+                        }
+                    } catch (error) {
+                        console.error('Error uploading profile image:', error);
+                    }
                 };
                 reader.readAsDataURL(file);
             }

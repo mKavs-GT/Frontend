@@ -516,6 +516,11 @@ async function checkAuthStatus() {
 
             if (userIcon) {
                 userIcon.href = './profile/profile.html';
+                
+                if (data.user) {
+                    const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                    userIcon.innerHTML = `<img src="${profileImageUrl}" alt="Profile" class="w-8 h-8 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover" style="margin-top:-0.2rem" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150'">`;
+                }
             }
         } else {
             // User is not logged in

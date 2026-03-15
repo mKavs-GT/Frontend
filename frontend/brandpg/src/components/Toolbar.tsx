@@ -1,7 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function Toolbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [userAuth, setUserAuth] = useState<{ loggedIn: boolean, user?: any }>({ loggedIn: false });
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const API_BASE_URL = (window as any).MKAVS_CONFIG?.API_BASE_URL || 'https://api.mkavs.com';
+                const response = await fetch(API_BASE_URL + '/auth/status', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                setUserAuth(data);
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+            }
+        };
+        checkAuth();
+    }, []);
+
+    const profileImageUrl = userAuth.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(userAuth.user?.displayName || 'User')}&background=ccff00&color=000&size=150`;
 
     return (
         <nav id="main-toolbar"
@@ -38,16 +57,23 @@ export function Toolbar() {
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">Book Us</a>
                         {/* Login Button Styled */}
                         <a href="../../loginpg/login.html"
-                            className="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">Login</a>
+                            className="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">
+                            {userAuth.loggedIn ? 'Dashboard' : 'Login'}
+                        </a>
                     </div>
-                    <div className="flex space-x-4 text-xl">
+                    <div className="flex space-x-4 text-xl items-center">
                         <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" rel="noopener noreferrer"
                             className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-instagram"></i></a>
                         <a href="#" className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-discord"></i></a>
                         <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" rel="noopener noreferrer"
                             className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-linkedin-in"></i></a>
-                        <a href="../../profile/profile.html" className="text-white hover:text-[#c7f908]"><i
-                            className="fa-regular fa-user"></i></a>
+                        <a href="../../profile/profile.html" className="text-white hover:text-[#c7f908] ml-2 flex items-center" title={userAuth.loggedIn ? `Logged in as ${userAuth.user?.displayName}` : 'Login'}>
+                            {userAuth.loggedIn ? (
+                                <img src={profileImageUrl} alt="Profile" className="w-6 h-6 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover" onError={(e) => { (e.target as HTMLImageElement).src = 'https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150'; }} />
+                            ) : (
+                                <i className="fa-regular fa-user"></i>
+                            )}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -61,7 +87,7 @@ export function Toolbar() {
                     <a href="/brandpg/brnd.html" className="text-white hover:text-[#c7f908] transition-colors">Branding</a>
                     <a href="../../pricingpage/pricing.html" className="text-white hover:text-[#c7f908] transition-colors">Pricing</a>
                     <a href="../../consult/consult.html" className="text-white hover:text-[#c7f908] transition-colors">Book Us</a>
-                    <a href="../../loginpg/login.html" className="text-white hover:text-[#c7f908] transition-colors">Login</a>
+                    <a href="../../loginpg/login.html" className="text-white hover:text-[#c7f908] transition-colors">{userAuth.loggedIn ? 'Dashboard' : 'Login'}</a>
                 </div>
             )}
         </nav>

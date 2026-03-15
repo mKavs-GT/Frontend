@@ -34,4 +34,68 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Global Auth Status check for all pages with sticky-navbar
+    async function checkAuthStatusGlobal() {
+        try {
+            const baseUrl = (window.MKAVS_CONFIG && window.MKAVS_CONFIG.API_BASE_URL) ? window.MKAVS_CONFIG.API_BASE_URL : 'https://api.mkavs.com';
+            const response = await fetch(baseUrl + '/auth/status', {
+                credentials: 'include'
+            });
+            const data = await response.json();
+
+            const loginBtns = document.querySelectorAll('.login-btn, #desktop-login-btn');
+            const userIcons = document.querySelectorAll('.fa-regular.fa-user');
+
+            if (data.loggedIn) {
+                loginBtns.forEach(btn => {
+                    if (btn.textContent.trim().toLowerCase() === 'login') {
+                        btn.textContent = 'Logout';
+                        btn.href = baseUrl + '/auth/logout';
+                        btn.addEventListener('click', () => {
+                            localStorage.removeItem('mKavs_palette_likes');
+                            localStorage.removeItem('mKavs_font_likes');
+                        });
+                    }
+                });
+
+                userIcons.forEach(icon => {
+                    const parent = icon.parentElement;
+                    if (parent) {
+                        try {
+                            const currentPath = window.location.pathname;
+                            const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
+                            // Update href to profile based on relative path if needed, though they already have href usually
+                            if (parent.getAttribute('href') === '#' || parent.getAttribute('href') === '') {
+                                parent.href = isRoot ? './profile/profile.html' : '../profile/profile.html';
+                            }
+                        } catch(e) {}
+                    }
+                    if (data.user) {
+                        const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                        const imgEl = document.createElement('img');
+                        imgEl.src = profileImageUrl;
+                        imgEl.alt = "Profile";
+                        // Basic stylings that fit everywhere
+                        imgEl.style.width = "24px";
+                        imgEl.style.height = "24px";
+                        imgEl.style.borderRadius = "50%";
+                        imgEl.style.border = "1px solid white";
+                        imgEl.style.objectFit = "cover";
+                        imgEl.style.marginTop = "-0.2rem";
+                        imgEl.style.display = "inline-block";
+                        
+                        imgEl.onerror = function() {
+                            this.src = "https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150";
+                        };
+                        icon.parentElement.replaceChild(imgEl, icon);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error checking auth status (global):', error);
+        }
+    }
+    
+    checkAuthStatusGlobal();
 });

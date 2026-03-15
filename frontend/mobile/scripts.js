@@ -1244,19 +1244,22 @@ async function checkAuthStatus() {
         });
         const data = await response.json();
 
-        const userIcon = document.querySelector('a[href="./profile/profile.html"]');
+        const userIconLink = document.querySelector('a[href="./profile/profile.html"], a[href="./loginpg/login.html"]');
         
         if (data.loggedIn) {
             console.log('User is logged in:', data.user.displayName);
-            if (userIcon) {
-                userIcon.href = './profile/profile.html';
-                userIcon.title = `Logged in as ${data.user.displayName}`;
+            if (userIconLink) {
+                userIconLink.href = './profile/profile.html';
+                userIconLink.title = `Logged in as ${data.user.displayName}`;
+                
+                const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
+                userIconLink.innerHTML = `<img src="${profileImageUrl}" alt="Profile" class="w-6 h-6 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover inline-block" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150';">`;
             }
         } else {
             console.log('User is not logged in');
-            if (userIcon) {
-                userIcon.href = './loginpg/login.html';
-                userIcon.title = 'Login';
+            if (userIconLink) {
+                userIconLink.href = './loginpg/login.html';
+                userIconLink.title = 'Login';
             }
         }
     } catch (error) {
