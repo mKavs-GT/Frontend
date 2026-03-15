@@ -205,26 +205,28 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // Hamburger Menu Logic
-    const menuToggle = document.getElementById('menuToggle');
-    const menuDropdown = document.getElementById('menuDropdown');
-
-    if (menuToggle && menuDropdown) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuDropdown.classList.toggle('active');
-        });
-
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-                menuDropdown.classList.remove('active');
+    // Profile Image Upload Handling
+    const profileImageUpload = document.getElementById('profileImageUpload');
+    if (profileImageUpload) {
+        profileImageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const userPhotoEl = document.getElementById('userProfilePhoto');
+                    if (userPhotoEl) {
+                        userPhotoEl.src = event.target.result;
+                    }
+                    // Additional logic to upload the file to the backend API would go here.
+                    // e.g., using FormData and fetch()
+                };
+                reader.readAsDataURL(file);
             }
         });
     }
 
     // Logout and local storage clearing
-    const logoutLinks = document.querySelectorAll('a[href="/auth/logout"]');
+    const logoutLinks = document.querySelectorAll('.logout-header-btn.with-text, a[href="/auth/logout"]');
     logoutLinks.forEach(link => {
         link.addEventListener('click', () => {
             localStorage.removeItem('mKavs_palette_likes');
