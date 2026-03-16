@@ -180,40 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('mKavs_font_likes');
         });
     });
-
-    // Profile Image Upload Handling
-    const profileImageUpload = document.getElementById('mobileProfileImageUpload');
-    if (profileImageUpload) {
-        profileImageUpload.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(event) {
-                    const userPhotoEl = document.getElementById('mobileUserProfilePhoto');
-                    if (userPhotoEl) {
-                        userPhotoEl.src = event.target.result;
-                    }
-                    
-                    try {
-                        const response = await fetch('/api/user/me', {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            credentials: 'include',
-                            body: JSON.stringify({ image: event.target.result })
-                        });
-                        
-                        if (!response.ok) {
-                            console.error('Failed to update profile image on server');
-                        }
-                    } catch (error) {
-                        console.error('Error uploading profile image:', error);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
+    // Profile Image Upload Handling removed as per user request
 });
 

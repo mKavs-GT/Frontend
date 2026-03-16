@@ -27,7 +27,7 @@
 
 
             <div class="header-actions" style="display: flex; gap: 0.5rem; align-items: center;">
-                <a href="/auth/logout" class="logout-header-btn" title="Logout">
+                <a href="/auth/logout" style="color: var(--text-muted); font-size: 1.2rem; text-decoration: none; padding: 0.5rem;" title="Logout">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
 
@@ -51,10 +51,6 @@
         <div class="welcome-text" style="display: flex; align-items: center; gap: 1rem;">
             <div class="profile-image-container relative">
                 <img id="mobileUserProfilePhoto" src="https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color);">
-                <label for="mobileProfileImageUpload" style="position: absolute; bottom: 0; right: 0; background: var(--bg-card); color: var(--accent-color); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border-color); font-size: 10px;">
-                    <i class="fa-solid fa-camera"></i>
-                </label>
-                <input type="file" id="mobileProfileImageUpload" accept="image/*" style="display: none;">
             </div>
             <h1>Welcome, <span class="user-name">Alex</span>!</h1>
         </div>
