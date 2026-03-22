@@ -894,7 +894,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // OR if it is Slide 2 (Index 1) explicitly requested by user.
         // Slide 3 (Index 2) is now continuous scroll for parallax.
 
-        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 5);
+        const slide4 = document.getElementById('slide-4');
+        const slide6 = document.getElementById('slide-6');
+        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3 && slide4 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 4 && slide6 && slide6.scrollHeight > window.innerHeight);
 
         if (isContentScrollable) {
             // Normal Scroll behavior
