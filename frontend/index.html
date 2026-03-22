@@ -478,13 +478,7 @@
                             </div>
                         </div>
 
-                        <!-- Video Row (Full Width) -->
-                        <div class="w-full relative mt-12">
-                            <video class="w-full h-auto" autoplay muted loop playsinline>
-                                <source src="images/why.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
+
                     </div>
                 </div>
                 <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
@@ -497,68 +491,68 @@
         <!-- SLIDE 3: OUR WORKS -->
         <div id="slide-3"
             class="slide bg-[#1F1F1F] z-30 translate-y-full slide-transition flex flex-col justify-center relative">
-            <div id="works-list-column"
-                class="absolute left-0 top-15 -translate-y-1/2 pl-8 md:pl-20 z-50 text-white opacity-0 works-slide-transition w-full md:w-1/3 pointer-events-none">
-                <div class="border-l-4 border-[#c7f908] pl-8 md:pl-20 pointer-events-auto">
-                    <h2
-                        class="text-4xl md:text-5xl font-black mb-12 text-white uppercase tracking-tighter leading-none">
-                        Our<br><span class="text-[#c7f908]">Works</span>
-                    </h2>
-                    <ul class="space-y-8">
-                        <li class="group cursor-pointer">
-                            <div
-                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
-                                <span
-                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Portfolio
-                                    Sites</span>
-                                <i
-                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
-                            </div>
-                        </li>
-                        <li class="group cursor-pointer">
-                            <div
-                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
-                                <span
-                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Company
-                                    Sites</span>
-                                <i
-                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
-                            </div>
-                        </li>
-                        <li class="group cursor-pointer">
-                            <div
-                                class="flex items-center justify-between border-b border-gray-700 pb-4 group-hover:border-[#c7f908] transition-colors duration-300">
-                                <span
-                                    class="text-xl md:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors">Ecommerce
-                                    Sites</span>
-                                <i
-                                    class="fa-solid fa-arrow-right text-[#c7f908] opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300"></i>
-                            </div>
-                        </li>
-                    </ul>
+
+            <!-- Slide 3 Phase 3 Header (Fades in on drop) -->
+            <div id="slide-3-header" class="absolute top-[8%] left-0 w-full flex flex-col items-center justify-start z-50 pointer-events-none opacity-0" style="transform: translateY(-20px)">
+                <h2 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter mb-4 text-center leading-none">
+                    OUR <span class="text-[#c7f908]">WORKS</span>
+                </h2>
+                <div id="slide-3-nav" class="flex flex-wrap justify-center items-center gap-4 md:gap-8 text-sm md:text-base font-bold tracking-widest uppercase text-gray-500">
+                    <button class="carousel-btn hover:text-white transition-colors cursor-pointer text-white" data-category="portfolio">Portfolio Sites</button>
+                    <span class="text-white/20 hidden md:block">|</span>
+                    <button class="carousel-btn hover:text-white transition-colors cursor-pointer" data-category="company">Company Sites</button>
+                    <span class="text-white/20 hidden md:block">|</span>
+                    <button class="carousel-btn hover:text-white transition-colors cursor-pointer" data-category="ecommerce">Ecommerce Sites</button>
                 </div>
             </div>
 
+            <!-- Background Image Grid (fades in on flip) -->
+            <div id="slide-3-bg-grid"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] z-0 opacity-0 transition-opacity duration-1000 grid grid-cols-3 grid-rows-3 gap-24 pointer-events-none">
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb1.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb2.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb3.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb4.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden bg-transparent opacity-0"><img src="images/thumb5.png"
+                        class="w-full h-full object-contain"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb6.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb7.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb8.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+                <div class="w-full h-full overflow-hidden  bg-black/50"><img src="images/thumb9.png"
+                        class="w-full h-full object-contain opacity-20  transition-all duration-500"></div>
+            </div>
+
+            <!-- Slide 3 Carousel Arrows -->
+            <div id="slide-3-arrows" class="absolute top-1/2 left-1/2 w-[90vw] md:w-[85vw] h-0 flex justify-between items-center z-50 pointer-events-none opacity-0" style="transform: translate(-50%, -50%);">
+                <button id="carousel-left" class="pointer-events-auto text-white hover:text-[#c7f908] transition-colors p-4 bg-black/30 rounded-full backdrop-blur-md border border-white/20">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button id="carousel-right" class="pointer-events-auto text-white hover:text-[#c7f908] transition-colors p-4 bg-black/30 rounded-full backdrop-blur-md border border-white/20">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+
             <div id="zoom-image-container"
-                class="preserve-3d relative w-3/4 h-1/2 mx-auto  overflow-hidden reveal-on-scroll">
+                class="preserve-3d relative w-3/4 h-1/2 mx-auto overflow-hidden reveal-on-scroll z-10">
                 <div id="zoom-image-flipper" class="transform-style-preserve-3d w-full h-full">
-                    <img id="zoom-image-front" src="images/4.jpeg" alt="Zoom Target Front"
-                        class="flip-face flip-face-front w-full h-full object-contain">
-                    <a id="zoom-image-link" href="./portfolio/1/index.html" target="_blank"
+                    <img id="zoom-image-front" src="images/4.jpeg" alt=""
+                        class="flip-face flip-face-front w-full h-full object-contain rounded-xl">
+                    <a id="zoom-image-link" href="./portfolio/5/index.html" target="_blank"
                         class="flip-face flip-face-back w-full h-full block" rel="noopener noreferrer">
-                        <img id="zoom-image-back" src="images/thumb1.png" alt="Zoom Target Back"
-                            class="w-full h-full object-contain">
+                        <img id="zoom-image-back" src="images/thumb5.png" alt="Zoom Target Back"
+                            class="w-full h-full object-contain rounded-xl">
                     </a>
                 </div>
             </div>
 
-            <div id="thumbnail-gallery">
-                <div class="gallery-inner">
-                    <img src="images/thumb1.png" class="gallery-thumb" alt="Thumbnail Project 1">
-                    <img src="images/thumb2.png" class="gallery-thumb" alt="Thumbnail Project 2">
-                    <img src="images/thumb3.png" class="gallery-thumb" alt="Thumbnail Project 3">
-                </div>
-            </div>
+
 
             <div id="looping-text-wrapper">
                 <div class="overflow-hidden w-full">
@@ -646,111 +640,46 @@
             </div>
         </div>
 
-        <!-- SLIDE 4: OUR EXPERTISE -->
-        <div id="slide-4"
-            class="slide z-40 translate-y-full slide-transition flex flex-col items-center justify-center p-4 md:p-20 overflow-y-auto expertise-slide-bg">
 
-            <div class="relative w-full max-w-7xl">
-
-
-                <div class="rounded-expertise-container p-4 md:p-14 flex flex-col md:flex-row items-center gap-8 md:gap-16 w-full">
-                    <!-- Left Side: Text Content Box Layout -->
-                    <div id="slide-4-header-text" class="w-full md:w-1/2 text-white space-y-6 opacity-0 -translate-x-full transition-all duration-1000 ease-out z-10 flex flex-col justify-center md:pr-4">
-                        <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none mb-2">
-                            OUR <br><span class="text-[#c7f908]">EXPERTISE</span>
-                        </h2>
-
-                        <div class="flex flex-col gap-4">
-                            <!-- Bento Box 1 -->
-                            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 hover:bg-white/10 transition-colors duration-300 group">
-                                <h3 class="text-lg md:text-xl font-black uppercase italic text-[#c7f908] tracking-tighter mb-1.5 group-hover:translate-x-1 transition-transform duration-300">
-                                    1. Advanced Frontend & Complete Backend
-                                </h3>
-                                <p class="text-[10px] md:text-xs font-bold text-gray-400 mb-3 tracking-[0.15em] uppercase">
-                                    React • GSAP • Framer Motion • Node.js • Express.js
-                                </p>
-                                <p class="text-sm md:text-base text-gray-300 leading-relaxed font-medium">
-                                    We craft fast, animated, modern frontends paired with a rock-solid backend.<br>
-                                    Smooth transitions, clean interactions, and scalable architecture.
-                                </p>
-                            </div>
-
-                            <!-- Bento Box 2 -->
-                            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 hover:bg-white/10 transition-colors duration-300 group">
-                                <h3 class="text-lg md:text-xl font-black uppercase italic text-white tracking-tighter mb-1.5 group-hover:translate-x-1 transition-transform duration-300">
-                                    2. SEO & Google Indexing
-                                </h3>
-                                <p class="text-[10px] md:text-xs font-bold text-[#c7f908] mb-3 tracking-[0.15em] uppercase">
-                                    A website that Google loves.
-                                </p>
-                                <p class="text-sm md:text-base text-gray-300 leading-relaxed font-medium">
-                                    We optimize your structure, content, and speed so your site gets indexed fast and ranks higher. Better visibility = more clients.
-                                </p>
-                            </div>
-
-                            <!-- Bento Box 3 -->
-                            <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 hover:bg-white/10 transition-colors duration-300 group">
-                                <h3 class="text-lg md:text-xl font-black uppercase italic text-white tracking-tighter mb-1.5 group-hover:translate-x-1 transition-transform duration-300">
-                                    3. Branding & Design Systems
-                                </h3>
-                                <p class="text-[10px] md:text-xs font-bold text-[#c7f908] mb-3 tracking-[0.15em] uppercase">
-                                    We don't just design — we brand.
-                                </p>
-                                <p class="text-sm md:text-base text-gray-300 leading-relaxed font-medium">
-                                    Custom color systems, typography sets, and visual direction that give your website personality and identity. Your brand will look intentional and premium.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Side: Box with floating pills -->
-                    <div id="slide-4-image-card" class="relative w-full md:w-1/2 h-[500px] md:h-[600px] shrink-0 opacity-0 scale-0 transition-all duration-1000 ease-out z-0 mt-8 md:mt-0">
-                        <!-- Translucent Frosted Glass Background Container -->
-                        <div class="absolute inset-0 rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-white/5 backdrop-blur-[40px] border border-white/10 z-0">
-                            <!-- Subtle lighting accents inside the glass -->
-                            <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                            <div class="absolute bottom-0 right-[-20%] w-[300px] h-[300px] bg-[#0C1AC1]/30 rounded-full blur-[80px]"></div>
-                            <div class="absolute top-[-10%] left-[-10%] w-[250px] h-[250px] bg-[#c7f908]/20 rounded-full blur-[80px]"></div>
-                        </div>
+        <!-- SLIDE 4: TECH STACK MARQUEE & VIDEO -->
+        <div id="slide-4" onclick="window.open('./brandpg/brnd.html', '_blank')"
+            class="slide bg-black z-40 translate-y-full slide-transition flex flex-col justify-center items-center overflow-hidden cursor-pointer relative">
+            
+            <!-- Video Background -->
+            <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-lighten pointer-events-none" autoplay muted playsinline preload="auto" poster="images/video-poster.jpg">
+                <source src="images/vid.mp4" type="video/mp4">
+            </video>
+            
+            <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-16 text-center w-full relative z-10 pointer-events-none drop-shadow-lg">
+                POWERED <span class="text-[#c7f908] italic font-serif opacity-75">BY</span> THE BEST
+            </h2>
+            <div class="relative w-full py-8 bg-black/40 backdrop-blur-md border-y border-white/10 z-10 flex pointer-events-none">
+                <div class="marquee-container w-full animate-scroll-left overflow-visible">
+                    <div class="flex items-center space-x-24 px-12 text-white opacity-90 min-w-max drop-shadow-md">
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-html5 text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">HTML5</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-css3-alt text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">CSS3</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-js text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">JS</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-react text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">REACT</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-node-js text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">NODE</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-python text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">PYTHON</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-aws text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">AWS</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-figma text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">FIGMA</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-docker text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">DOCKER</span></div>
                         
-                        <!-- Free Falling Pills Container -->
-                        <div class="absolute inset-0 w-full h-full flex items-center justify-center z-10">
-                            <div class="relative w-[340px] h-[400px] md:w-[460px] md:h-[460px] perspective-[1000px]">
-                                <!-- Pill 1: Advanced Frontend (Top Left, Green) -->
-                                <div class="expertise-pill absolute top-[28%] left-[-5%] md:left-[2%] bg-gradient-to-r from-[#c7f908] from-[55%] to-[#c7f908]/0 backdrop-blur-md text-black px-6 md:px-10 py-5 md:py-8 rounded-full font-black text-sm md:text-lg uppercase shadow-xl w-[260px] md:w-[340px] flex items-center justify-start whitespace-nowrap z-50" style="--rot: -25deg; transition-delay: 150ms;">
-                                    ADVANCED FRONTEND
-                                </div>
-
-                                <!-- Pill 2: Branding (Top Right, White) -->
-                                <div class="expertise-pill absolute top-[5%] right-[-10%] md:right-[-5%] bg-gradient-to-br from-white from-[55%] to-white/0 backdrop-blur-md text-black px-6 md:px-10 py-5 md:py-8 rounded-full font-black text-sm md:text-lg uppercase shadow-xl w-[260px] md:w-[340px] flex items-center justify-start whitespace-nowrap z-20" style="--rot: 55deg; transition-delay: 300ms;">
-                                    BRANDING & DESIGN
-                                </div>
-
-                                <!-- Pill 3: SEO (Bottom Right, Green) -->
-                                <div class="expertise-pill absolute bottom-[25%] right-[-5%] md:right-[0%] bg-gradient-to-r from-[#c7f908] from-[55%] to-[#c7f908]/0 backdrop-blur-md text-black px-6 md:px-10 py-5 md:py-8 rounded-full font-black text-sm md:text-lg uppercase shadow-xl w-[260px] md:w-[340px] flex items-center justify-start whitespace-nowrap z-30" style="--rot: 25deg; transition-delay: 450ms;">
-                                    SEO & INDEXING
-                                </div>
-                                
-                                <!-- Pill 4: Complete Backend (Bottom Left, White) -->
-                                <div class="expertise-pill absolute bottom-[5%] left-[-5%] md:left-[5%] bg-gradient-to-r from-white from-[55%] to-white/0 backdrop-blur-md text-black px-6 md:px-10 py-5 md:py-8 rounded-full font-black text-sm md:text-lg uppercase shadow-xl w-[260px] md:w-[340px] flex items-center justify-start whitespace-nowrap z-40" style="--rot: 0deg; transition-delay: 600ms;">
-                                    COMPLETE BACKEND
-                                </div>
-                            </div>
-                        </div>
+                        <!-- duplicate for seamless loop -->
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-html5 text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">HTML5</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-css3-alt text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">CSS3</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-js text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">JS</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-react text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">REACT</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-node-js text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">NODE</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-python text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">PYTHON</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-aws text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">AWS</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-figma text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">FIGMA</span></div>
+                        <div class="flex items-center space-x-4"><i class="fa-brands fa-docker text-5xl md:text-7xl"></i> <span class="text-2xl md:text-4xl font-black uppercase tracking-widest font-sans">DOCKER</span></div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- SLIDE 5: VIDEO END CAP -->
-        <div id="slide-5" onclick="window.open('./brandpg/brnd.html', '_blank')"
-            class="slide bg-black z-50 translate-y-full slide-transition flex items-center justify-center overflow-hidden cursor-pointer">
-            <video id="end-cap-video" class="w-full h-full object-cover" autoplay muted playsinline preload="auto"
-                poster="images/video-poster.jpg">
-                <source src="images/vid.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-
+            <p class="mt-16 text-white/50 font-bold uppercase tracking-widest animate-pulse transition-opacity relative z-10 pointer-events-none">Scroll down for next slide</p>
         </div>
 
         <!-- SLIDE 6: FOOTER SECTION -->

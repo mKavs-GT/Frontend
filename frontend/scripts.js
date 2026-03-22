@@ -80,13 +80,16 @@ let globalScrollY = 0;
 let totalVirtualHeight = 0;
 let slideHeights = [];
 // Configuration
-const FLIP_SCROLL_HEIGHT = 800; // Extra pixels of scrolling to trigger the flip
+const FLIP_SCROLL_HEIGHT = 100; // Extra pixels of scrolling to trigger the flip
+const SLIDE_3_PARALLAX_BUFFER = 1200; // Extra scrolling pixels dedicated to the grid scaling
+const SLIDE_3_COLLAPSE_BUFFER = 1000; // Extra scrolling pixels for rows to slide behind center
+const SLIDE_3_DROP_BUFFER = 800; // Extra scrolling pixels to drop the carousel down
 let isImageFlipping = false;
 
 // --- ELEMENTS ---
 let allSlides;
-let slide2, slide4, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton;
-let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery;
+let slide2, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton;
+let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery, slide3BgGrid;
 let worksListItems;
 let zoomMainImage;
 let thumbnailImages;
@@ -103,6 +106,9 @@ const THUMBNAIL_DATA = {
     'ecommerce': ['images/thumb7.png', 'images/thumb8.png', 'images/thumb9.png'],
 };
 
+const CATEGORY_ORDER = ['portfolio', 'company', 'ecommerce'];
+let activeCategory = 'portfolio';
+
 // --- External URLs for specific portfolio items ---
 const PORTFOLIO_EXTERNAL_URLS = {
     '2': 'https://pritamvfx.vercel.app/',
@@ -115,33 +121,161 @@ const PORTFOLIO_EXTERNAL_URLS = {
 function setThumbnails(category, skipMainImageUpdate = false) {
     const sources = THUMBNAIL_DATA[category];
 
-    if (!sources || sources.length === 0 || thumbnailImages.length === 0) return;
+    if (!sources) return;
 
     activeCategory = category;
 
-    // Update list item styling
-    worksListItems.forEach(item => {
-        item.classList.remove('font-bold', 'text-white', 'text-4xl');
-        item.classList.add('font-light', 'text-gray-400', 'text-3xl');
-    });
-
-    const activeItem = Array.from(worksListItems).find(item => item.dataset.category === category);
-    if (activeItem) {
-        activeItem.classList.add('font-bold', 'text-white', 'text-4xl');
-        activeItem.classList.remove('font-light', 'text-gray-400', 'text-3xl');
+    // Update Nav Buttons styling
+    const navButtons = document.querySelectorAll('#slide-3-nav .carousel-btn');
+    if (navButtons.length > 0) {
+        navButtons.forEach(btn => {
+            if (btn.dataset.category === category) {
+                btn.classList.add('text-[#c7f908]');
+                btn.classList.remove('text-gray-500', 'text-white');
+            } else {
+                btn.classList.remove('text-[#c7f908]', 'text-white');
+                btn.classList.add('text-gray-500');
+            }
+        });
     }
 
-    // Update thumbnail image sources and parent links
-    thumbnailImages.forEach((img, index) => {
-        if (sources[index]) {
-            img.src = sources[index];
-            img.dataset.fullSrc = sources[index];
+    // Smooth Animation Execution
+    let leftImg = null, rightImg = null;
+    if (slide3BgGrid && slide3BgGrid.children.length === 9) {
+        leftImg = slide3BgGrid.children[3].querySelector('img');
+        rightImg = slide3BgGrid.children[5].querySelector('img');
+    }
+
+    const imgs = [leftImg, rightImg, zoomMainImage].filter(Boolean);
+
+    // Apply strict fade-out overriding scroll listener inline opacities
+    imgs.forEach(img => {
+        img.style.setProperty('transition', 'opacity 0.3s ease-in-out', 'important');
+        img.style.setProperty('opacity', '0', 'important');
+    });
+
+    setTimeout(() => {
+        // Swap Sources
+        if (leftImg) leftImg.src = sources[0];
+        if (rightImg) rightImg.src = sources[2];
+        if (zoomMainImage && sources[1] && !skipMainImageUpdate) {
+            updateMainZoomImage(sources[1]);
         }
+
+        // Trigger fade-in
+        imgs.forEach(img => {
+            img.style.removeProperty('opacity');
+            // Remove transition override after it finishes fading in so scroll listener resumes control cleanly
+            setTimeout(() => {
+                img.style.removeProperty('transition');
+            }, 300);
+        });
+    }, 300);
+}
+
+let isCarouselAnimating = false;
+
+// --- Cycle Carousel (Sliding Animation) ---
+function cycleCarousel(direction) {
+    if (isCarouselAnimating) return;
+    const sources = THUMBNAIL_DATA[activeCategory];
+    if (!sources || !slide3BgGrid || slide3BgGrid.children.length !== 9) return;
+
+    const leftContainer = slide3BgGrid.children[3];
+    const rightContainer = slide3BgGrid.children[5];
+    const leftImg = leftContainer.querySelector('img');
+    const rightImg = rightContainer.querySelector('img');
+    const centerImg = zoomMainImage;
+    if (!leftImg || !rightImg || !centerImg || !zoomImageContainer) return;
+
+    isCarouselAnimating = true;
+
+    // Shift Native Application Data
+    if (direction === 'right') {
+        sources.unshift(sources.pop());
+    } else {
+        sources.push(sources.shift());
+    }
+
+    // Prepare Physical Tracking array
+    const nodes = [leftImg, centerImg, rightImg];
+    const containers = [leftContainer, zoomImageContainer, rightContainer];
+    
+    // Snapshot strictly absolute bounding coordinates globally!
+    const rects = containers.map(c => c.getBoundingClientRect());
+    const starts = nodes.map(n => window.getComputedStyle(n));
+    const slide3 = document.getElementById('slide-3');
+    const slide3Rect = slide3.getBoundingClientRect();
+
+    // Determine target index mapping (0=L, 1=C, 2=R)
+    // If Right Arrow: Left -> Center (0->1), Center -> Right (1->2), Right -> Left (2->0)
+    const targetIndices = direction === 'right' ? [1, 2, 0] : [2, 0, 1];
+
+    // Generate physical clones traveling to target geometric bounds
+    const clones = nodes.map((node, i) => {
+        const clone = document.createElement('img');
+        clone.src = node.src; // Keep original state visually traveling
+        clone.style.position = 'absolute'; // Lock cleanly to slide container explicitly over fixed
+        clone.style.top = (rects[i].top - slide3Rect.top) + 'px';
+        clone.style.left = (rects[i].left - slide3Rect.left) + 'px';
+        clone.style.width = rects[i].width + 'px';
+        clone.style.height = rects[i].height + 'px';
+        clone.style.objectFit = starts[i].objectFit;
+        clone.style.borderRadius = '0.75rem';
+        clone.style.pointerEvents = 'none';
+
+        // Elevate the element transitioning into the center space above others, safely under arrows (z-index 50)
+        const tIdx = targetIndices[i];
+        if (tIdx === 1) clone.style.zIndex = '42';
+        else if (i === 1) clone.style.zIndex = '41'; 
+        else clone.style.zIndex = '40'; 
+
+        slide3.appendChild(clone);
+
+        const targetRect = rects[tIdx];
+        const targetStyle = starts[tIdx]; 
+
+        // Leverage Web Animations execution API to smoothly fly layout
+        const anim = clone.animate([
+            {
+                top: (rects[i].top - slide3Rect.top) + 'px', left: (rects[i].left - slide3Rect.left) + 'px',
+                width: rects[i].width + 'px', height: rects[i].height + 'px',
+                opacity: starts[i].opacity, filter: starts[i].filter
+            },
+            {
+                top: (targetRect.top - slide3Rect.top) + 'px', left: (targetRect.left - slide3Rect.left) + 'px',
+                width: targetRect.width + 'px', height: targetRect.height + 'px',
+                opacity: targetStyle.opacity, filter: targetStyle.filter
+            }
+        ], { duration: 500, easing: 'cubic-bezier(0.25, 1, 0.5, 1)', fill: 'forwards' });
+
+        return { clone, anim };
     });
 
-    if (zoomMainImage && sources[0] && !skipMainImageUpdate) {
-        updateMainZoomImage(sources[0]);
-    }
+    // Obscure original DOM nodes seamlessly underneath and lock their native transitions
+    nodes.forEach(n => {
+        n.style.setProperty('transition', 'none', 'important');
+        n.style.setProperty('visibility', 'hidden', 'important');
+    });
+
+    // Resolve instantly after animations conclude
+    Promise.all(clones.map(c => c.anim.finished)).then(() => {
+        leftImg.src = sources[0];
+        updateMainZoomImage(sources[1]);
+        rightImg.src = sources[2];
+
+        nodes.forEach(n => n.style.removeProperty('visibility'));
+        
+        // Wait 1 extra frame to guarantee the browser repaints the new images before deleting clones
+        requestAnimationFrame(() => {
+            clones.forEach(c => c.clone.remove());
+            
+            requestAnimationFrame(() => {
+                nodes.forEach(n => n.style.removeProperty('transition'));
+                isCarouselAnimating = false;
+            });
+        });
+    });
 }
 
 function updateMainZoomImage(newSrc) {
@@ -183,10 +317,9 @@ function calculateSlideHeights() {
     slideHeights = [
         viewportHeight, // Slide 1
         getScrollHeight(slide2), // Slide 2
-        viewportHeight + FLIP_SCROLL_HEIGHT, // Slide 3 (Base + Flip Buffer)
-        getScrollHeight(slide4), // Slide 4
-        viewportHeight, // Slide 5
-        getScrollHeight(document.getElementById('slide-6')) // Slide 6
+        viewportHeight + FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER, // Slide 3
+        viewportHeight, // Slide 4 (Marquee + Video)
+        getScrollHeight(document.getElementById('slide-6')) // Slide 6 (Index 4 now)
     ];
 
     totalVirtualHeight = slideHeights.reduce((a, b) => a + b, 0);
@@ -233,53 +366,7 @@ function triggerSlide2Animations() {
     slide2Animated = true;
 }
 
-function triggerSlide4Animations() {
-    if (slide4Animated) return; // Run once
-
-    const headerText = document.getElementById('slide-4-header-text');
-    const imageCard = document.getElementById('slide-4-image-card');
-    const card1 = document.getElementById('slide-4-card-1');
-    const card2 = document.getElementById('slide-4-card-2');
-    const card3 = document.getElementById('slide-4-card-3');
-
-    // Header Slide In
-    if (headerText) {
-        headerText.classList.remove('opacity-0', '-translate-x-full');
-        headerText.classList.add('opacity-100', 'translate-x-0');
-    }
-
-    // Image Pop In
-    setTimeout(() => {
-        if (imageCard) {
-            imageCard.classList.remove('opacity-0', 'scale-0');
-            imageCard.classList.add('opacity-100', 'scale-100');
-        }
-    }, 200);
-
-    // Cards Pop In (Staggered)
-    setTimeout(() => {
-        if (card1) {
-            card1.classList.remove('opacity-0', 'scale-0');
-            card1.classList.add('opacity-100', 'scale-100');
-        }
-    }, 400);
-
-    setTimeout(() => {
-        if (card2) {
-            card2.classList.remove('opacity-0', 'scale-0');
-            card2.classList.add('opacity-100', 'scale-100');
-        }
-    }, 600);
-
-    setTimeout(() => {
-        if (card3) {
-            card3.classList.remove('opacity-0', 'scale-0');
-            card3.classList.add('opacity-100', 'scale-100');
-        }
-    }, 800);
-
-    slide4Animated = true;
-}
+// Removed slide 4 animations
 
 function updateScrollState(newGlobalY) {
     // 0. Sticky Toolbar Logic
@@ -349,16 +436,15 @@ function updateScrollState(newGlobalY) {
     // 4. Handle Internal Logic per Slide
     if (newSlideIndex === 1) { // Slide 2
         triggerSlide2Animations();
-        if (slide2) slide2.scrollTop = localScrollY;
+
+        if (slide2) {
+            slide2.scrollTop = localScrollY;
+        }
     }
     else if (newSlideIndex === 2) { // Slide 3 (Flip)
         handleSlide3Flip(localScrollY);
     }
-    else if (newSlideIndex === 3) { // Slide 4
-        triggerSlide4Animations();
-        if (slide4) slide4.scrollTop = localScrollY;
-    }
-    else if (newSlideIndex === 5) { // Slide 6 (Footer)
+    else if (newSlideIndex === 4) { // Slide 6 (Footer)
         const slide6 = document.getElementById('slide-6');
         if (slide6) slide6.scrollTop = localScrollY;
     }
@@ -373,8 +459,8 @@ function handleVideoPlayback(index) {
     if (endCapVideoSlide6) { endCapVideoSlide6.pause(); endCapVideoSlide6.currentTime = 0; }
 
     // Play active
-    if (index === 4 && endCapVideoSlide5) endCapVideoSlide5.play().catch(e => { });
-    if (index === 5 && endCapVideoSlide6) endCapVideoSlide6.play().catch(e => { });
+    if (index === 3 && endCapVideoSlide5) endCapVideoSlide5.play().catch(e => { });
+    if (index === 4 && endCapVideoSlide6) endCapVideoSlide6.play().catch(e => { });
 }
 
 // Global Timeout Variable for Flip Sequencing
@@ -383,6 +469,110 @@ let slide3FlipTimeout;
 function handleSlide3Flip(localY) {
     // Trigger point: 50% through the buffer
     const progress = Math.min(Math.max(localY / FLIP_SCROLL_HEIGHT, 0), 1);
+
+    // Continuous Parallax for Grid Background (scaling down to fit)
+    if (slide3BgGrid) {
+        let bgScaleVal = 1;
+        let gapVal = 6; // 6rem corresponds to Tailwind gap-24
+        const flipPoint = FLIP_SCROLL_HEIGHT / 2;
+
+        const scaleEndLocalY = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER;
+        const collapseEndLocalY = scaleEndLocalY + SLIDE_3_COLLAPSE_BUFFER;
+
+        let scaleProgress = 0;
+        let collapseProgress = 0;
+        let dropProgress = 0;
+
+        // Phase 1: Grid scaling
+        if (localY > flipPoint && localY <= scaleEndLocalY) {
+            scaleProgress = Math.min((localY - flipPoint) / (scaleEndLocalY - flipPoint), 1);
+        } else if (localY > scaleEndLocalY) {
+            scaleProgress = 1;
+            // Phase 2: Row collapse
+            if (localY <= collapseEndLocalY) {
+                collapseProgress = Math.min((localY - scaleEndLocalY) / SLIDE_3_COLLAPSE_BUFFER, 1);
+            } else {
+                collapseProgress = 1;
+                // Phase 3: Drop down
+                dropProgress = Math.min((localY - collapseEndLocalY) / SLIDE_3_DROP_BUFFER, 1);
+            }
+        }
+
+        const marginTotalPx = 16;
+        const targetScaleW = (window.innerWidth - marginTotalPx) / (window.innerWidth * 1.5);
+        const targetScaleH = (window.innerHeight - marginTotalPx) / (window.innerHeight * 1.5);
+        const targetScale = Math.min(targetScaleW, targetScaleH);
+
+        bgScaleVal = 1 - (scaleProgress * (1 - targetScale));
+        gapVal = 6 - (scaleProgress * 4);
+
+        // Base translateY is -50%. We drop it by up to 30vh mathematically cleanly.
+        const translateY = `calc(-50% + ${dropProgress * 15}vh)`;
+
+        slide3BgGrid.style.transform = `translate(-50%, ${translateY}) scale(${bgScaleVal})`;
+        slide3BgGrid.style.gap = `${gapVal}rem`;
+
+        let centerScaleVal = bgScaleVal * (1 + (0.5 * collapseProgress));
+
+        const cells = Array.from(slide3BgGrid.children);
+        if (cells.length === 9) {
+            cells.forEach(c => c.style.position = 'relative');
+
+            // Set fading and translation based safely cleanly on mapping
+            [0, 1, 2].forEach(i => {
+                cells[i].style.transform = `translateY(calc(${collapseProgress * 100}% + ${collapseProgress * gapVal}rem))`;
+                cells[i].style.zIndex = '0';
+                cells[i].style.opacity = 1 - collapseProgress; // Fade completely unseen
+            });
+
+            [3, 4, 5].forEach(i => {
+                cells[i].style.transform = `translateY(0)`;
+                cells[i].style.zIndex = '10';
+            });
+
+            [6, 7, 8].forEach(i => {
+                cells[i].style.transform = `translateY(calc(-${collapseProgress * 100}% - ${collapseProgress * gapVal}rem))`;
+                cells[i].style.zIndex = '0';
+                cells[i].style.opacity = 1 - collapseProgress; // Fade completely unseen
+            });
+
+            // Side images linearly reach 100% true opacity without dark filtering
+            const targetOpacity = 0.4 + (0.6 * collapseProgress);
+            const filterBrightness = 1.0;
+            const img3 = cells[3].querySelector('img');
+            const img5 = cells[5].querySelector('img');
+            if (img3) {
+                img3.style.opacity = targetOpacity;
+                img3.style.filter = `brightness(1)`;
+            }
+            if (img5) {
+                img5.style.opacity = targetOpacity;
+                img5.style.filter = `brightness(1)`;
+            }
+        }
+
+        if (zoomImageContainer) {
+            zoomImageContainer.style.transform = `translate(-50%, ${translateY}) scale(${centerScaleVal})`;
+            // Sync center image overlay with dropdown
+            // To properly overlap if they use arrows, the main image might need explicit z-indexing internally natively
+        }
+
+        // Handle Arrows fading in smoothly and translating down with the bundle
+        const arrows = document.getElementById('slide-3-arrows');
+        if (arrows) {
+            arrows.style.opacity = collapseProgress;
+            arrows.style.transform = `translate(-50%, ${translateY})`;
+            arrows.style.pointerEvents = collapseProgress > 0.8 ? 'auto' : 'none'; // Only clickable when visible
+        }
+        
+        // Handle Phase 3 Title Header Fade In
+        const slide3Header = document.getElementById('slide-3-header');
+        if (slide3Header) {
+            slide3Header.style.opacity = dropProgress;
+            slide3Header.style.transform = `translateY(${dropProgress * 20 - 20}px)`; // Glides slightly down into position
+            slide3Header.style.pointerEvents = dropProgress > 0.8 ? 'auto' : 'none';
+        }
+    }
 
     if (progress > 0.5) {
         // Flipped State (Show List, Hide Cover Text)
@@ -404,8 +594,8 @@ function handleSlide3Flip(localY) {
                     loopingTextWrapper.style.opacity = 0;
                 }
 
-                worksListColumn.classList.add('works-slide-in');
-                thumbnailGallery.classList.add('gallery-visible');
+                if (worksListColumn) worksListColumn.classList.add('works-slide-in');
+                if (thumbnailGallery) thumbnailGallery.classList.add('gallery-visible');
 
                 // ENABLE POINTER EVENTS ON IMAGE CONTAINER SO LINK IS CLICKABLE
                 zoomImageContainer.style.pointerEvents = 'auto';
@@ -413,12 +603,27 @@ function handleSlide3Flip(localY) {
                 setThumbnails('portfolio', true);
 
                 // Pop Animation
-                const thumbs = thumbnailGallery.querySelectorAll('img');
-                thumbs.forEach((img, idx) => {
-                    setTimeout(() => {
-                        img.classList.add('thumb-visible');
-                    }, idx * 100 + 100);
-                });
+                if (thumbnailGallery) {
+                    const thumbs = thumbnailGallery.querySelectorAll('img');
+                    thumbs.forEach((img, idx) => {
+                        setTimeout(() => {
+                            img.classList.add('thumb-visible');
+                        }, idx * 100 + 100);
+                    });
+                }
+
+                // Background Grid Fade In
+                if (slide3BgGrid) {
+                    slide3BgGrid.classList.remove('opacity-0');
+                    slide3BgGrid.classList.add('opacity-100');
+                    const gridImgs = slide3BgGrid.querySelectorAll('img');
+                    gridImgs.forEach((img, idx) => {
+                        setTimeout(() => {
+                            img.classList.remove('opacity-20');
+                            img.classList.add('opacity-40');
+                        }, idx * 100);
+                    });
+                }
             }, 500); // 500ms Overlap (Zoom is 1.2s, so this happens during zoom)
         }
     } else {
@@ -434,22 +639,39 @@ function handleSlide3Flip(localY) {
             clearTimeout(slide3FlipTimeout);
 
             // Hide Content Immediately (Instant Exit)
-            worksListColumn.style.transition = 'none';
-            worksListColumn.classList.remove('works-slide-in');
+            if (worksListColumn) {
+                worksListColumn.style.transition = 'none';
+                worksListColumn.classList.remove('works-slide-in');
+            }
 
             // Disable transition for instant Reset
-            thumbnailGallery.style.transition = 'none';
-            thumbnailGallery.classList.remove('gallery-visible');
+            if (thumbnailGallery) {
+                thumbnailGallery.style.transition = 'none';
+                thumbnailGallery.classList.remove('gallery-visible');
+            }
 
             // DISABLE POINTER EVENTS IMMEDIATELY
             zoomImageContainer.style.pointerEvents = 'none';
 
             // Reset Scale Instantly
-            const thumbs = thumbnailGallery.querySelectorAll('img');
-            thumbs.forEach(img => {
-                img.style.transition = 'none';
-                img.classList.remove('thumb-visible');
-            });
+            if (thumbnailGallery) {
+                const thumbs = thumbnailGallery.querySelectorAll('img');
+                thumbs.forEach(img => {
+                    img.style.transition = 'none';
+                    img.classList.remove('thumb-visible');
+                });
+            }
+
+            // Background Grid Fade Out
+            if (slide3BgGrid) {
+                slide3BgGrid.classList.remove('opacity-100');
+                slide3BgGrid.classList.add('opacity-0');
+                const gridImgs = slide3BgGrid.querySelectorAll('img');
+                gridImgs.forEach(img => {
+                    img.classList.remove('opacity-40');
+                    img.classList.add('opacity-20');
+                });
+            }
 
             // Show Text Slowly
             if (loopingTextWrapper) {
@@ -501,6 +723,7 @@ async function checkAuthStatus() {
 
         const loginBtn = document.getElementById('desktop-login-btn');
         const userIcon = document.querySelector('.fa-regular.fa-user')?.parentElement;
+        const getStartedBtn = document.getElementById('get-started-button');
 
         if (data.loggedIn) {
             // User is logged in
@@ -516,11 +739,15 @@ async function checkAuthStatus() {
 
             if (userIcon) {
                 userIcon.href = './profile/profile.html';
-                
+
                 if (data.user) {
                     const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                     userIcon.innerHTML = `<img src="${profileImageUrl}" alt="Profile" class="w-8 h-8 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover" style="margin-top:-0.2rem" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150'">`;
                 }
+            }
+
+            if (getStartedBtn) {
+                getStartedBtn.href = './consult/consult.html';
             }
         } else {
             // User is not logged in
@@ -532,6 +759,10 @@ async function checkAuthStatus() {
             // If user icon is clicked while logged out, redirect to login
             if (userIcon) {
                 userIcon.href = './loginpg/login.html';
+            }
+
+            if (getStartedBtn) {
+                getStartedBtn.href = './loginpg/login.html';
             }
         }
     } catch (error) {
@@ -547,7 +778,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Standard Elements
     allSlides = Array.from(document.querySelectorAll('.slide'));
     slide2 = document.getElementById('slide-2');
-    slide4 = document.getElementById('slide-4');
     starImages = document.querySelectorAll('.star');
     slide1Image = document.getElementById('slide-1-image');
     slide1OverlayImage = document.getElementById('slide-1-overlay-image');
@@ -562,14 +792,33 @@ document.addEventListener('DOMContentLoaded', () => {
     loopingTextWrapper = document.getElementById('looping-text-wrapper');
     worksListColumn = document.getElementById('works-list-column');
     thumbnailGallery = document.getElementById('thumbnail-gallery');
+    slide3BgGrid = document.getElementById('slide-3-bg-grid');
     zoomMainImage = document.getElementById('zoom-image-back');
     thumbnailImages = thumbnailGallery ? thumbnailGallery.querySelectorAll('img') : [];
-
-    endCapVideoSlide5 = document.getElementById('slide-5').querySelector('video');
-    endCapVideoSlide6 = document.getElementById('slide-6').querySelector('video');
+    endCapVideoSlide5 = document.getElementById('slide-4')?.querySelector('video');
+    endCapVideoSlide6 = document.getElementById('slide-6')?.querySelector('video');
 
     scrollbarTrack = document.getElementById('custom-scrollbar-track');
     scrollbarThumb = document.getElementById('custom-scrollbar-thumb');
+
+    // --- SETUP CAROUSEL ---
+    document.querySelectorAll('.carousel-btn').forEach(btn => {
+        btn.addEventListener('click', () => setThumbnails(btn.dataset.category));
+    });
+
+    const carouselLeft = document.getElementById('carousel-left');
+    const carouselRight = document.getElementById('carousel-right');
+    
+    if (carouselLeft) {
+        carouselLeft.addEventListener('click', () => {
+            cycleCarousel('left');
+        });
+    }
+    if (carouselRight) {
+        carouselRight.addEventListener('click', () => {
+             cycleCarousel('right');
+        });
+    }
 
     // --- SETUP SCROLLING ---
     calculateSlideHeights();
@@ -595,7 +844,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Let's observe the *children* of slide 2 if possible, or just putting it on slide2 might catch layout shifts.
     // Better: observe `slide2.firstElementChild` if it exists.
     if (slide2 && slide2.firstElementChild) resizeObserver.observe(slide2.firstElementChild);
-    if (slide4 && slide4.firstElementChild) resizeObserver.observe(slide4.firstElementChild);
     // Also Slide 6 footer
     const slide6 = document.getElementById('slide-6');
     if (slide6 && slide6.firstElementChild) resizeObserver.observe(slide6.firstElementChild);
@@ -644,29 +892,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if current slide is "Long/Scrollable"
         // We consider it scrollable if it is significantly larger than viewport
         // OR if it is Slide 2 (Index 1) explicitly requested by user.
-        // Slide 3 (Index 2) is Flip. We treat it as semi-scrollable (steps).
+        // Slide 3 (Index 2) is now continuous scroll for parallax.
 
-        const isContentScrollable = (currentIndex === 1) || (currentIndex === 3 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 5);
-
-        // Flip Slide (Index 2) Special Case:
-        // We want 1 scroll to Flip, 1 scroll to Leave.
-        if (currentIndex === 2) {
-            // If we are at start of slide 3
-            if (Math.abs(currentY - currentSlideStart) < 10) {
-                if (delta > 0) return currentSlideStart + FLIP_SCROLL_HEIGHT; // Snap to Flipped
-                if (delta < 0) { // Go to Prev Slide (Bottom)
-                    const prevIndex = currentIndex - 1;
-                    return boundaries[prevIndex] + slideHeights[prevIndex] - window.innerHeight;
-                }
-            }
-            // If we are at end of slide 3 (Flipped)
-            else {
-                if (delta > 0) return boundaries[currentIndex + 1]; // Go to Next Slide
-                if (delta < 0) return currentSlideStart; // Snap back to Unflipped
-            }
-            // If in between (unlikely with snap, but possible via drag), complete the nearest state
-            return delta > 0 ? boundaries[currentIndex + 1] : currentSlideStart;
-        }
+        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 5);
 
         if (isContentScrollable) {
             // Normal Scroll behavior
@@ -918,6 +1146,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressFill = document.getElementById('loader-progress');
         const progressText = document.getElementById('loader-text');
 
+        if (sessionStorage.getItem('preloaderShown')) {
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+            activateInitialSlide();
+            return;
+        }
+
         if (!preloader || !progressFill || !progressText) {
             // If no preloader, trigger immediately
             activateInitialSlide();
@@ -940,6 +1176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnimationFrame(updateLoader);
             } else {
                 // Loaded! Remove preloader then trigger animations.
+                sessionStorage.setItem('preloaderShown', 'true');
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');
                     // Start Entrance Animations simulataneously with fade out or just after?

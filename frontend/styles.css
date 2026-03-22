@@ -247,9 +247,7 @@ html {
     position: absolute;
     width: 100%;
     height: 100%;
-    /* CRITICAL FIX: Change from 'cover' to 'contain'
-    to respect the image's original aspect ratio. */
-    object-fit: contain;
+    /* Allow Tailwind classes like object-cover to rule freely */
 
     /* Key for 3D: Hides the back side of the face when turned away */
     backface-visibility: hidden;
@@ -269,9 +267,8 @@ html {
 /* ==================================== */
 
 .image-final-position {
-    /* Slightly less aggressive move, rely more on scale for zoom effect */
-    transform: translate(-28%, -55%) scale(1.3) !important;
-    transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.4, 1);
+    /* Class now used purely as a javascript logic flag for flip state */
+    z-index: 40;
 }
 
 /* Initial state and transition for the works column (NO CHANGE HERE) */

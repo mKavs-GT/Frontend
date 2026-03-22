@@ -1110,6 +1110,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressFill = document.getElementById('loader-progress');
         const progressText = document.getElementById('loader-text');
 
+        if (sessionStorage.getItem('preloaderShown')) {
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+            activateInitialSlide();
+            return;
+        }
+
         if (!preloader || !progressFill || !progressText) {
             // If no preloader, trigger immediately
             activateInitialSlide();
@@ -1132,6 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnimationFrame(updateLoader);
             } else {
                 // Loaded! Remove preloader then trigger animations.
+                sessionStorage.setItem('preloaderShown', 'true');
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');
                     // Start Entrance Animations simulataneously with fade out or just after?
