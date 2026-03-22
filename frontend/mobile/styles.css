@@ -61,18 +61,20 @@ html {
 }
 
 /* Scrollbar styling for Slide 2 (for inner scroll content) */
-/* Hiding Default Scrollbar for Slide 2 and others */
+/* Hiding Default Scrollbar for all slides to prevent overlap with custom scrollbar */
+#slide-1,
 #slide-2,
+#slide-3,
 #slide-4,
 #slide-5,
 #slide-6 {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
+#slide-1::-webkit-scrollbar,
 #slide-2::-webkit-scrollbar,
+#slide-3::-webkit-scrollbar,
 #slide-4::-webkit-scrollbar,
 #slide-5::-webkit-scrollbar,
 #slide-6::-webkit-scrollbar {

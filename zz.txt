@@ -1,7 +1,0 @@
-
-
-The faded grid showed be zoomed in and  have large grid space between them, as i scroll down the grid space shd decrease the images shd zoomout and come together and take their place correctly in 3 rows and 3 columns neatly without any overflow,
-
-
-
-NOTE : ALL of this shd be animate on scroll only as i scroll down it shd happen 

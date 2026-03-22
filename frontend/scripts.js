@@ -314,12 +314,16 @@ function calculateSlideHeights() {
     // Helper to get scroll height, ensuring at least 1 viewport height
     const getScrollHeight = (el) => el ? Math.max(el.scrollHeight, viewportHeight) : viewportHeight;
 
+    const slide3BaseVirtualHeight = viewportHeight + FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+    const slide3El = document.getElementById('slide-3');
+    const slide3RealHeight = slide3El ? slide3El.scrollHeight : viewportHeight;
+    const slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
+
     slideHeights = [
         viewportHeight, // Slide 1
         getScrollHeight(slide2), // Slide 2
-        viewportHeight + FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER, // Slide 3
-        viewportHeight, // Slide 4 (Marquee + Video)
-        getScrollHeight(document.getElementById('slide-6')) // Slide 6 (Index 4 now)
+        slide3TotalHeight, // Slide 3 (Animation + Scrolling)
+        getScrollHeight(document.getElementById('slide-6')) // Slide 6
     ];
 
     totalVirtualHeight = slideHeights.reduce((a, b) => a + b, 0);
@@ -441,10 +445,18 @@ function updateScrollState(newGlobalY) {
             slide2.scrollTop = localScrollY;
         }
     }
-    else if (newSlideIndex === 2) { // Slide 3 (Flip)
+    else if (newSlideIndex === 2) { // Slide 3 (Flip logic + Scroll Appended Content)
         handleSlide3Flip(localScrollY);
+        
+        const slide3 = document.getElementById('slide-3');
+        const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+        if (localScrollY > slide3AnimLimit) {
+            if (slide3) slide3.scrollTop = localScrollY - slide3AnimLimit;
+        } else {
+            if (slide3) slide3.scrollTop = 0;
+        }
     }
-    else if (newSlideIndex === 4) { // Slide 6 (Footer)
+    else if (newSlideIndex === 3) { // Slide 6 (Footer)
         const slide6 = document.getElementById('slide-6');
         if (slide6) slide6.scrollTop = localScrollY;
     }
@@ -454,13 +466,10 @@ function updateScrollState(newGlobalY) {
 }
 
 function handleVideoPlayback(index) {
-    // Pause all
-    if (endCapVideoSlide5) { endCapVideoSlide5.pause(); endCapVideoSlide5.currentTime = 0; }
+    // Pause all explicitly indexed ones
     if (endCapVideoSlide6) { endCapVideoSlide6.pause(); endCapVideoSlide6.currentTime = 0; }
 
-    // Play active
-    if (index === 3 && endCapVideoSlide5) endCapVideoSlide5.play().catch(e => { });
-    if (index === 4 && endCapVideoSlide6) endCapVideoSlide6.play().catch(e => { });
+    if (index === 3 && endCapVideoSlide6) endCapVideoSlide6.play().catch(e => { });
 }
 
 // Global Timeout Variable for Flip Sequencing
@@ -795,8 +804,10 @@ document.addEventListener('DOMContentLoaded', () => {
     slide3BgGrid = document.getElementById('slide-3-bg-grid');
     zoomMainImage = document.getElementById('zoom-image-back');
     thumbnailImages = thumbnailGallery ? thumbnailGallery.querySelectorAll('img') : [];
-    endCapVideoSlide5 = document.getElementById('slide-4')?.querySelector('video');
-    endCapVideoSlide6 = document.getElementById('slide-6')?.querySelector('video');
+
+    endCapVideoSlide5 = document.getElementById('end-cap-video');
+    const slide6 = document.getElementById('slide-6');
+    endCapVideoSlide6 = slide6 ? slide6.querySelector('video') : null;
 
     scrollbarTrack = document.getElementById('custom-scrollbar-track');
     scrollbarThumb = document.getElementById('custom-scrollbar-thumb');
@@ -845,7 +856,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Better: observe `slide2.firstElementChild` if it exists.
     if (slide2 && slide2.firstElementChild) resizeObserver.observe(slide2.firstElementChild);
     // Also Slide 6 footer
-    const slide6 = document.getElementById('slide-6');
     if (slide6 && slide6.firstElementChild) resizeObserver.observe(slide6.firstElementChild);
 
     // --- Intersection Observer for Slide 2 Bottom Text ---
@@ -866,6 +876,20 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.1 // Trigger sooner
         });
         observer.observe(slide2Marquee);
+    }
+    
+    // --- Intersection Observer for Video (Play when seen) ---
+    if (endCapVideoSlide5) {
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    endCapVideoSlide5.play().catch(() => {});
+                } else {
+                    endCapVideoSlide5.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+        videoObserver.observe(endCapVideoSlide5);
     }
 
     // Helper: Determine boundaries
@@ -894,9 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // OR if it is Slide 2 (Index 1) explicitly requested by user.
         // Slide 3 (Index 2) is now continuous scroll for parallax.
 
-        const slide4 = document.getElementById('slide-4');
-        const slide6 = document.getElementById('slide-6');
-        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3 && slide4 && slide4.scrollHeight > window.innerHeight) || (currentIndex === 4 && slide6 && slide6.scrollHeight > window.innerHeight);
+        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3);
 
         if (isContentScrollable) {
             // Normal Scroll behavior
