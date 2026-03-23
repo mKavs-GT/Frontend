@@ -553,7 +553,7 @@ html {
 .footer-watermark-image {
     width: 80%;
     max-width: 1200px;
-    opacity: 0.08;
+    opacity: 0.2;
     filter: grayscale(1) brightness(0);
     pointer-events: none;
     user-select: none;
