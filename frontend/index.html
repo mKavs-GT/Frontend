@@ -707,8 +707,8 @@
                             }
                         }
 
-                        .animate-run-once {
-                            animation: runAnimationForwards 12s linear forwards !important;
+                        .animate-run-loop {
+                            animation: runAnimationForwards 12s linear infinite !important;
                         }
                     </style>
                     <script>
@@ -719,8 +719,9 @@
                             const observer = new IntersectionObserver((entries) => {
                                 entries.forEach(entry => {
                                     if (entry.isIntersecting) {
-                                        runner.classList.add("animate-run-once");
+                                        runner.classList.add("animate-run-loop");
                                         runner.play();
+                                        // Wait until fully visible before running but allow repeating infinitely
                                         observer.unobserve(track);
                                     }
                                 });
@@ -927,14 +928,35 @@
             </div>
 
             <!-- Video Section inside Slide 3 -->
-            <div class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
+            <div id="vid-section" class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
                 onclick="window.open('./brandpg/brnd.html', '_blank')">
-                <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover" loop muted playsinline
+                <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover" muted playsinline
                     preload="auto" poster="images/video-poster.jpg">
                     <source src="images/vid.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const vidSection = document.getElementById("vid-section");
+                    const endCapVideo = document.getElementById("end-cap-video");
+                    
+                    const vidObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            // Play when at least 50% visible, otherwise pause
+                            if (entry.isIntersecting) {
+                                endCapVideo.play();
+                            } else {
+                                endCapVideo.pause();
+                            }
+                        });
+                    }, {
+                        threshold: 0.5 // Triggers when 50% of the viewport intersects
+                    });
+                    
+                    if (vidSection) vidObserver.observe(vidSection);
+                });
+            </script>
         </div>
 
         <!-- SLIDE 6: FOOTER SECTION -->

@@ -1185,12 +1185,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let progress = 0;
-        let isLoaded = false;
+        let isLoaded = document.readyState === 'complete';
         window.addEventListener('load', () => { isLoaded = true; });
 
         const updateLoader = () => {
-            if (isLoaded) progress += Math.random() * 5 + 2;
-            else if (progress < 90) progress += Math.random() * 2;
+            // If already fully loaded, still animate steadily so it takes ~1 second
+            if (isLoaded) progress += 1.5; 
+            // If still downloading, crawl smoothly up to 90%
+            else if (progress < 90) progress += 0.5;
 
             if (progress > 100) progress = 100;
             progressFill.style.width = `${progress}%`;
