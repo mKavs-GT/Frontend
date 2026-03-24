@@ -26,30 +26,57 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Form interactions
+    // Form submit handler
     const form = document.getElementById('bookingForm');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = form.querySelector('.submit-btn');
             const originalText = btn.innerText;
 
-            // Capture Data
+            // Capture form data
             const formData = {
-                name: form.querySelector('input[type="text"]').value,
-                email: form.querySelector('input[type="email"]').value,
-                phone: form.querySelector('input[type="tel"]').value,
-                projectInfo: form.querySelector('textarea').value
+                name: form.querySelector('input[type="text"]')?.value || '',
+                email: form.querySelector('input[type="email"]')?.value || '',
+                phone: form.querySelector('input[type="tel"]')?.value || '',
+                projectInfo: form.querySelector('textarea')?.value || ''
             };
 
-            // Log to DataService
+            // Set loading state
+            btn.innerText = 'Sending...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            // Log to DataService if available
             if (window.mkavsDataService) {
-                window.mkavsDataService.logConsultation(formData);
+                try {
+                    window.mkavsDataService.logConsultation(formData);
+                } catch (err) {
+                    console.warn('DataService log failed:', err);
+                }
             }
 
-            btn.innerText = 'Sent!';
-            btn.style.background = '#CCFF00'; // Neon accent
+            // Try EmailJS if configured, otherwise fall through to success UI
+            let sent = false;
+            if (typeof emailjs !== 'undefined') {
+                try {
+                    await emailjs.sendForm(
+                        'YOUR_SERVICE_ID',   // Replace with your EmailJS service ID
+                        'YOUR_TEMPLATE_ID',  // Replace with your EmailJS template ID
+                        form
+                    );
+                    sent = true;
+                } catch (err) {
+                    console.warn('EmailJS send failed:', err);
+                }
+            }
+
+            // Success state
+            btn.innerText = sent ? 'Sent! ✓' : 'Submitted! ✓';
+            btn.style.background = '#c7f908';
             btn.style.color = '#000';
+            btn.style.opacity = '1';
+            btn.disabled = false;
 
             setTimeout(() => {
                 btn.innerText = originalText;
@@ -59,9 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 3000);
         });
     }
-    */
 
-    // Input focus effects for parent containers (optional enhancement)
+    // Input focus effects for parent containers
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(input => {
         input.addEventListener('focus', () => {
@@ -71,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             input.parentElement.classList.remove('focused');
         });
     });
+
     // Conditional display of "Where do you prefer to connect?"
     const discordRadios = document.querySelectorAll('input[name="discord"]');
     const connectGroup = document.getElementById('connect-preference-group');
@@ -80,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'yes') {
                     connectGroup.style.display = 'flex';
-                    // Simple fade in effect
                     connectGroup.style.opacity = '0';
                     requestAnimationFrame(() => {
                         connectGroup.style.transition = 'opacity 0.3s ease';
@@ -88,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 } else {
                     connectGroup.style.display = 'none';
-                    // clear selection when hidden
                     const connectRadios = connectGroup.querySelectorAll('input[name="connect"]');
                     connectRadios.forEach(r => r.checked = false);
                 }
@@ -96,3 +121,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

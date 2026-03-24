@@ -77,13 +77,14 @@ function countUp(element, finalValue, suffix) {
 let currentSlideIndex = 0;
 // Note: We use a unified 'globalScrollY' to track position across all slides.
 let globalScrollY = 0;
+let targetScrollY = 0;
 let totalVirtualHeight = 0;
 let slideHeights = [];
 // Configuration
 const FLIP_SCROLL_HEIGHT = 100; // Extra pixels of scrolling to trigger the flip
-const SLIDE_3_PARALLAX_BUFFER = 1200; // Extra scrolling pixels dedicated to the grid scaling
-const SLIDE_3_COLLAPSE_BUFFER = 1000; // Extra scrolling pixels for rows to slide behind center
-const SLIDE_3_DROP_BUFFER = 800; // Extra scrolling pixels to drop the carousel down
+const SLIDE_3_PARALLAX_BUFFER = 700; // Extra scrolling pixels dedicated to the grid scaling
+const SLIDE_3_COLLAPSE_BUFFER = 600; // Extra scrolling pixels for rows to slide behind center
+const SLIDE_3_DROP_BUFFER = 400; // Extra scrolling pixels to drop the carousel down
 let isImageFlipping = false;
 
 // --- ELEMENTS ---
@@ -1022,10 +1023,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Feed wheel scroll raw value
         const delta = e.deltaY;
-        const newY = globalScrollY + delta;
-        
-        // Feed real-time Y progressively mapped
-        updateScrollState(newY);
+        const potentialY = targetScrollY + delta;
+        targetScrollY = Math.max(0, Math.min(potentialY, totalVirtualHeight - window.innerHeight));
     }, { passive: false });
 
     // 2. Keyboard (Arrow Keys)
@@ -1038,8 +1037,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (delta !== 0) {
             e.preventDefault();
-            const newY = globalScrollY + delta;
-            updateScrollState(newY);
+            const potentialY = targetScrollY + delta;
+            targetScrollY = Math.max(0, Math.min(potentialY, totalVirtualHeight - window.innerHeight));
         }
     });
 
@@ -1065,7 +1064,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const trackHeight = window.innerHeight - 80;
             const ratio = totalVirtualHeight / trackHeight;
             // Dragging overrides snap
-            updateScrollState(startScrollY + (delta * ratio));
+            const potentialY = startScrollY + (delta * ratio);
+            targetScrollY = Math.max(0, Math.min(potentialY, totalVirtualHeight - window.innerHeight));
+            // For dragging, update immediately for responsive feel
+            updateScrollState(targetScrollY);
         });
 
         window.addEventListener('mouseup', () => {
@@ -1078,7 +1080,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === scrollbarThumb) return;
             // Click to jump - keeping continuous for precision
             const ratio = e.clientY / window.innerHeight;
-            updateScrollState(ratio * totalVirtualHeight);
+            const potentialY = ratio * totalVirtualHeight;
+            targetScrollY = Math.max(0, Math.min(potentialY, totalVirtualHeight - window.innerHeight));
         });
     }
 
@@ -1214,15 +1217,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const currentBoundaries = getSlideBoundaries();
 
                     let targetY = currentBoundaries[2];
-                    if (window.location.hash === '#our-works') {
-                        // Add flip height to trigger the "Flipped" state (Works List) immediately
-                        // Adding a small buffer (+10) to reliably trigger the flip logic
-                        targetY += FLIP_SCROLL_HEIGHT + 10;
-                    }
+                    // Jump exactly to the end of the grid animation to show the carousel
+                    const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+                    targetY += slide3AnimLimit + 10;
 
-                    // Update internal state directly
-                    updateScrollState(targetY);
-                    updateScrollbarVisuals();
+                    // Update target scroll properly
+                    targetScrollY = targetY;
                 }, 300);
             }
         }
@@ -1299,4 +1299,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         toggleMidChar();
     }
+
+    // --- SMOOTH SCROLL LOOP ---
+    function smoothScrollLoop() {
+        if (!isDragging) {
+            // Keep target clamped in case of dynamic resize
+            const maxScroll = Math.max(0, totalVirtualHeight - window.innerHeight);
+            targetScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+            
+            if (Math.abs(targetScrollY - globalScrollY) > 0.5) {
+                let lerpedY = globalScrollY + (targetScrollY - globalScrollY) * 0.08;
+                updateScrollState(lerpedY);
+            } else if (globalScrollY !== targetScrollY) {
+                updateScrollState(targetScrollY);
+            }
+        }
+        requestAnimationFrame(smoothScrollLoop);
+    }
+    requestAnimationFrame(smoothScrollLoop);
 });

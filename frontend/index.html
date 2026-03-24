@@ -220,7 +220,8 @@
             </div>
         </div>
         <!-- SLIDE 2: WHAT WE DO -->
-        <div id="slide-2" class="slide bg-[#1F1F1F] z-20 translate-y-full slide-transition overflow-y-auto rounded-t-[40px] md:rounded-t-[80px]">
+        <div id="slide-2"
+            class="slide bg-[#1F1F1F] z-20 translate-y-full slide-transition overflow-y-auto rounded-t-[40px] md:rounded-t-[80px]">
             <div class="w-full min-h-full pb-20">
 
                 <div class="max-w-6xl mx-auto p-8 pt-32 space-y-16">
@@ -533,27 +534,27 @@
                 <div id="slide-3-bg-grid"
                     class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] z-0 opacity-0 transition-opacity duration-1000 grid grid-cols-3 grid-rows-3 gap-24 pointer-events-none">
                     <!-- Row 1: 2, 1, 3 -->
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb2.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb2.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb1.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb1.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb3.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb3.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    
+
                     <!-- Row 2: 5, 4, 6 -->
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb5.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb5.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
                     <div class="w-full h-full overflow-hidden bg-transparent opacity-0"><img src="images/thumb4.png"
                             class="w-full h-full object-contain"></div>
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb6.png"
+                    <div class="w-full h-full overflow-hidden"><img src="images/thumb6.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    
+
                     <!-- Row 3: 8, 7, 9 -->
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb8.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb8.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb7.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb7.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
-                    <div class="w-full h-full overflow-hidden bg-black/50"><img src="images/thumb9.png"
+                    <div class="w-full h-full overflow-hidden "><img src="images/thumb9.png"
                             class="w-full h-full object-contain opacity-20 transition-all duration-500"></div>
                 </div>
 
@@ -928,7 +929,8 @@
             </div>
 
             <!-- Video Section inside Slide 3 -->
-            <div id="vid-section" class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
+            <div id="vid-section"
+                class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
                 onclick="window.open('./brandpg/brnd.html', '_blank')">
                 <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover" muted playsinline
                     preload="auto" poster="images/video-poster.jpg">
@@ -940,7 +942,7 @@
                 document.addEventListener("DOMContentLoaded", () => {
                     const vidSection = document.getElementById("vid-section");
                     const endCapVideo = document.getElementById("end-cap-video");
-                    
+
                     const vidObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             // Play when at least 50% visible, otherwise pause
@@ -953,7 +955,7 @@
                     }, {
                         threshold: 0.5 // Triggers when 50% of the viewport intersects
                     });
-                    
+
                     if (vidSection) vidObserver.observe(vidSection);
                 });
             </script>
