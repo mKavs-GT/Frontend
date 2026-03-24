@@ -26,66 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Form submit handler
-    const form = document.getElementById('bookingForm');
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = form.querySelector('.submit-btn');
-            const originalText = btn.innerText;
-
-            // Capture form data
-            const formData = {
-                name: form.querySelector('input[type="text"]')?.value || '',
-                email: form.querySelector('input[type="email"]')?.value || '',
-                phone: form.querySelector('input[type="tel"]')?.value || '',
-                projectInfo: form.querySelector('textarea')?.value || ''
-            };
-
-            // Set loading state
-            btn.innerText = 'Sending...';
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-
-            // Log to DataService if available
-            if (window.mkavsDataService) {
-                try {
-                    window.mkavsDataService.logConsultation(formData);
-                } catch (err) {
-                    console.warn('DataService log failed:', err);
-                }
-            }
-
-            // Try EmailJS if configured, otherwise fall through to success UI
-            let sent = false;
-            if (typeof emailjs !== 'undefined') {
-                try {
-                    await emailjs.sendForm(
-                        'YOUR_SERVICE_ID',   // Replace with your EmailJS service ID
-                        'YOUR_TEMPLATE_ID',  // Replace with your EmailJS template ID
-                        form
-                    );
-                    sent = true;
-                } catch (err) {
-                    console.warn('EmailJS send failed:', err);
-                }
-            }
-
-            // Success state
-            btn.innerText = sent ? 'Sent! ✓' : 'Submitted! ✓';
-            btn.style.background = '#c7f908';
-            btn.style.color = '#000';
-            btn.style.opacity = '1';
-            btn.disabled = false;
-
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = '';
-                btn.style.color = '';
-                form.reset();
-            }, 3000);
-        });
-    }
+    // Form submit handler removed to prevent conflict with inline script in consult.html
 
     // Input focus effects for parent containers
     const inputs = document.querySelectorAll('input, textarea');

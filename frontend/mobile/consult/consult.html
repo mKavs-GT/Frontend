@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="../../config.js"></script>
 </head>
 
 <body>
@@ -166,7 +167,7 @@
                     <div class="form-group">
                         <label class="form-label">Tell us a bit about your project</label>
                         <div class="form-input-container">
-                            <textarea rows="2" id="projectInfo"></textarea>
+                            <textarea rows="2" id="projectInfo" required></textarea>
                         </div>
                     </div>
 
@@ -192,7 +193,7 @@
                         };
 
                         try {
-                            const response = await fetch('/api/send-consultation', {
+                            const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/send-consultation', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'

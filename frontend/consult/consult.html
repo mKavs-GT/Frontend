@@ -99,7 +99,7 @@
                         Book Your Slot</h2>
                 </div>
 
-                <form class="booking-form" id="bookingForm">
+                <form class="booking-form" id="bookingForm" onsubmit="event.preventDefault();">
 
                     <!-- Name -->
                     <div class="form-group">
@@ -187,7 +187,7 @@
                     <div class="form-group">
                         <label class="form-label">Tell us a bit about your project</label>
                         <div class="form-input-container">
-                            <textarea rows="2" id="projectInfo"></textarea>
+                            <textarea rows="2" id="projectInfo" required></textarea>
                         </div>
                     </div>
 
