@@ -1,6 +1,14 @@
 {
     "routes": [
         {
+            "src": "/adminkairon2025/(.*)",
+            "dest": "/frontend/adminkairon2025/dist/$1"
+        },
+        {
+            "src": "/adminkairon2025",
+            "dest": "/frontend/adminkairon2025/dist/index.html"
+        },
+        {
             "src": "/(.*)",
             "dest": "/frontend/index.html"
         }
