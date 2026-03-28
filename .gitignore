@@ -34,4 +34,5 @@ Thumbs.db
 
 # Build outputs
 dist/
+!frontend/adminkairon2025/dist/
 build/
