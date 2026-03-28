@@ -202,17 +202,19 @@
                         btn.disabled = true;
                         btn.innerText = 'Sending...';
 
-                        const formData = {
-                            name: document.getElementById('name').value,
-                            email: document.getElementById('email').value,
-                            phone: document.getElementById('phone').value,
-                            discord: document.querySelector('input[name="discord"]:checked')?.value || 'Not specified',
-                            connectPreference: document.querySelector('input[name="connect"]:checked')?.value || 'Not specified',
-                            plan: document.querySelector('input[name="plan"]:checked')?.value || 'Not specified',
-                            projectInfo: document.getElementById('projectInfo').value
-                        };
-
                         try {
+                            const formData = {
+                                name: document.getElementById('name') ? document.getElementById('name').value : '',
+                                email: document.getElementById('email') ? document.getElementById('email').value : '',
+                                phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
+                                discord: document.querySelector('input[name="discord"]:checked') ? document.querySelector('input[name="discord"]:checked').value : 'Not specified',
+                                connectPreference: document.querySelector('input[name="connect"]:checked') ? document.querySelector('input[name="connect"]:checked').value : 'Not specified',
+                                plan: document.querySelector('input[name="plan"]:checked') ? document.querySelector('input[name="plan"]:checked').value : 'Not specified',
+                                projectInfo: document.getElementById('projectInfo') ? document.getElementById('projectInfo').value : ''
+                            };
+                            
+                            console.log('Sending formData:', formData);
+
                             const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/send-consultation', {
                                 method: 'POST',
                                 headers: {
@@ -222,6 +224,7 @@
                             });
 
                             const result = await response.json();
+                            console.log('Server response:', result);
 
                             // Reset button state immediately after response
                             btn.disabled = false;
@@ -230,17 +233,17 @@
                             if (response.ok) {
                                 // Show Modal instead of alert
                                 const modal = document.getElementById('thankYouModal');
-                                modal.classList.add('show');
+                                if (modal) modal.classList.add('show');
                                 this.reset();
                             } else {
                                 alert('Error: ' + (result.message || 'Failed to send request.'));
                             }
                         } catch (error) {
-                            console.error('Error:', error);
+                            console.error('Submission Error:', error);
                             // Reset on error too
                             btn.disabled = false;
                             btn.innerText = originalBtnText;
-                            alert('An error occurred while sending your request. Please try again.');
+                            alert('An error occurred while sending your request. Detailed error: ' + error.message);
                         }
                     });
 
