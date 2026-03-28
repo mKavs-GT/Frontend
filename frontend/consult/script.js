@@ -26,41 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Form interactions
-    const form = document.getElementById('bookingForm');
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = form.querySelector('.submit-btn');
-            const originalText = btn.innerText;
-
-            // Capture Data
-            const formData = {
-                name: form.querySelector('input[type="text"]').value,
-                email: form.querySelector('input[type="email"]').value,
-                phone: form.querySelector('input[type="tel"]').value,
-                projectInfo: form.querySelector('textarea').value
-            };
-
-            // Log to DataService
-            if (window.mkavsDataService) {
-                window.mkavsDataService.logConsultation(formData);
-            }
-
-            btn.innerText = 'Sent!';
-            btn.style.background = '#CCFF00'; // Neon accent
-            btn.style.color = '#000';
-
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = '';
-                btn.style.color = '';
-                form.reset();
-            }, 3000);
-        });
-    }
-    */
-
+    // Form interactions handled in consult.html inline script
     // Input focus effects for parent containers (optional enhancement)
     const inputs = document.querySelectorAll('input, textarea');
     inputs.forEach(input => {
