@@ -234,7 +234,28 @@
 
             <!-- Right Profile Sidebar -->
             <aside class="profile-sidebar">
-                <div class="profile-card-glass">
+                <div class="sidebar-nav-panel">
+                    <button class="tab-btn nav-panel-btn active" data-target="tab-overview">
+                        <i class="fa-solid fa-house"></i> Overview
+                    </button>
+                    <button class="tab-btn nav-panel-btn" data-target="tab-assets">
+                        <i class="fa-solid fa-folder-open"></i> Assets
+                    </button>
+                    <button class="tab-btn nav-panel-btn" data-target="tab-schedule">
+                        <i class="fa-regular fa-calendar"></i> Schedule
+                    </button>
+                    <button class="tab-btn nav-panel-btn" data-target="tab-billing">
+                        <i class="fa-solid fa-file-invoice"></i> Billing
+                    </button>
+                    <button class="tab-btn nav-panel-btn" data-target="tab-messages">
+                        <i class="fa-regular fa-message"></i> Messages
+                    </button>
+                    <button class="tab-btn nav-panel-btn" data-target="tab-settings">
+                        <i class="fa-solid fa-gear"></i> Settings
+                    </button>
+                </div>
+
+                <div class="profile-card-glass" style="margin-top: 2rem;">
                     <div class="profile-photo-wrapper" style="position: relative;">
                         <img id="userProfilePhoto" src="../images/LOGOI.png" alt="Profile Photo" class="profile-photo">
                     </div>
@@ -242,28 +263,6 @@
                     <p class="user-title" id="userJobTitle" style="color: var(--accent); font-size: 0.9rem; font-weight: 500; margin-top: 0.2rem;"></p>
                     <p class="user-company" id="userCompanyName" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.1rem;"></p>
                     <p class="user-email" id="userEmail" style="margin-top: 0.5rem;">loading...</p>
-                </div>
-
-                <!-- Vertical Navigation Menu -->
-                <div class="side-nav-menu">
-                    <button class="nav-btn active tab-btn" data-target="tab-overview">
-                        <i class="fa-solid fa-house"></i> Overview
-                    </button>
-                    <button class="nav-btn tab-btn" data-target="tab-assets">
-                        <i class="fa-solid fa-folder-open"></i> Assets
-                    </button>
-                    <button class="nav-btn tab-btn" data-target="tab-schedule">
-                        <i class="fa-regular fa-calendar-days"></i> Schedule
-                    </button>
-                    <button class="nav-btn tab-btn" data-target="tab-billing">
-                        <i class="fa-solid fa-file-invoice-dollar"></i> Billing
-                    </button>
-                    <button class="nav-btn tab-btn" data-target="tab-messages">
-                        <i class="fa-regular fa-message"></i> Messages
-                    </button>
-                    <button class="nav-btn tab-btn" data-target="tab-settings">
-                        <i class="fa-solid fa-gear"></i> Settings
-                    </button>
                 </div>
 
                 <div class="support-card-glass">
