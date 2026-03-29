@@ -17,7 +17,7 @@ export default function LoginDemo({ onLogin }: LoginDemoProps) {
       
       {/* MKAVS Logo - Positioned at the top */}
       <div className="absolute top-16 left-0 right-0 z-20 flex justify-center pointer-events-none">
-        <div className="relative flex items-center justify-center scale-[1.3]">
+        <div className="relative flex items-center justify-center scale-[0.8] mt-4">
           {/* Subtle atmospheric glow behind logo */}
           <div className="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full"></div>
           
