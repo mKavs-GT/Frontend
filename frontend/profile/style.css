@@ -838,41 +838,53 @@ body {
   }
 }
 
-/* --- Added Profile Dashboard Features --- */
-.profile-tabs {
+/* --- Profile Dashboard Vertical Navigation --- */
+.side-nav-menu {
   display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--card-border);
+  flex-direction: column;
+  gap: 0.4rem;
 }
-.profile-tabs::-webkit-scrollbar {
-  height: 4px;
-}
-.profile-tabs::-webkit-scrollbar-thumb {
-  background: var(--card-border);
-  border-radius: 4px;
-}
-.tab-btn {
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
   background: transparent;
   border: none;
+  border-radius: 8px;
   color: var(--text-muted);
   font-family: var(--font-body);
-  font-weight: 500;
   font-size: 0.95rem;
-  padding: 0.8rem 1.2rem;
+  font-weight: 500;
+  text-align: left;
   cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  width: 100%;
 }
-.tab-btn:hover {
+
+.nav-btn i {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+  transition: color 0.3s;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-main);
 }
-.tab-btn.active {
+
+/* Active State styled like the provided image */
+.nav-btn.active {
+  background: linear-gradient(90deg, rgba(204, 255, 0, 0.1) 0%, rgba(204, 255, 0, 0.01) 100%);
+  color: var(--text-main);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px 8px 8px 4px;
+}
+
+.nav-btn.active i {
   color: var(--accent);
-  border-bottom: 2px solid var(--accent);
 }
 .tab-content {
   display: none;

@@ -347,7 +347,7 @@ export function ProjectDetailView({
 
             {/* Extra User Info Layer */}
             {userData && (
-               <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-border">
+               <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4 border-t border-border">
                   {/* Fav Palettes */}
                   <div className="space-y-3">
                      <div className="flex items-center gap-2">
@@ -386,7 +386,7 @@ export function ProjectDetailView({
                   <div className="space-y-3 md:border-l md:border-border md:pl-6 border-t md:border-t-0 pt-4 md:pt-0">
                      <div className="flex items-center gap-2">
                         <MessageSquare className="w-4 h-4 text-green-500" />
-                        <h4 className="font-semibold text-sm">Consutations History</h4>
+                        <h4 className="font-semibold text-sm">Consultations</h4>
                      </div>
                      <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
                        {userData.consultations && userData.consultations.length > 0 ? (
@@ -398,6 +398,27 @@ export function ProjectDetailView({
                              </div>
                          ))
                        ) : <span className="text-xs text-muted-foreground italic">No booking requests</span>}
+                     </div>
+                  </div>
+
+                  {/* Client Uploads */}
+                  <div className="space-y-3 md:border-l md:border-border md:pl-6 border-t md:border-t-0 pt-4 md:pt-0">
+                     <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-blue-500" />
+                        <h4 className="font-semibold text-sm">Client Uploads</h4>
+                     </div>
+                     <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
+                       {userData.adminData?.attachments && userData.adminData.attachments.length > 0 ? (
+                         [...userData.adminData.attachments].reverse().map((file, i) => (
+                             <div key={i} className="flex flex-col gap-1 p-2 bg-muted/40 rounded border border-border text-xs">
+                               <div className="font-medium text-foreground truncate" title={file.name}>{file.name}</div>
+                               <div className="flex justify-between items-center text-muted-foreground">
+                                  <span>{file.size}</span>
+                                  <a href={import.meta.env.VITE_API_BASE_URL + file.path} target="_blank" rel="noreferrer" className="text-blue-500 hover:text-blue-400 underline">Download</a>
+                               </div>
+                             </div>
+                         ))
+                       ) : <span className="text-xs text-muted-foreground italic">No files uploaded</span>}
                      </div>
                   </div>
                </motion.div>

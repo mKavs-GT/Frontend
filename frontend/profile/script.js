@@ -1,11 +1,8 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const favoritesGrid = document.getElementById('favoritesGrid');
     const favoriteFontsGrid = document.getElementById('favoriteFontsGrid');
     const palettesSection = document.getElementById('palettes');
-    // Removed single querySelector for userNameElement, now uses querySelectorAll inside loadUserProfile
 
-    // Check if PALETTE_DATA adheres to global window object
     const paletteData = window.PALETTE_DATA || [];
     const fontData = window.FONT_DATA || [];
 
@@ -38,8 +35,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render Consultations
                 renderConsultations(user.consultations);
 
+                // Render Deliverables
+                renderDeliverables(user.adminData);
+
+                // Render New Admin Fields
+                renderMeetings(user.adminData);
+                renderBilling(user.adminData);
+                renderMessages(user.adminData);
+
                 // Store user data for potential later use
                 window.currentUser = user;
+                
+                const profilePhoneInput = document.getElementById('profilePhone');
+                if (profilePhoneInput) profilePhoneInput.value = user.phone || '';
+                
+                const profileTitleInput = document.getElementById('profileTitle');
+                if (profileTitleInput) profileTitleInput.value = user.jobTitle || '';
+
+                const userJobTitleEl = document.getElementById('userJobTitle');
+                if (userJobTitleEl) userJobTitleEl.textContent = user.jobTitle || '';
+
+                const userCompanyEl = document.getElementById('userCompanyName');
+                if (userCompanyEl) userCompanyEl.textContent = user.company ? `@ ${user.company}` : '';
 
                 // Show the content now that we are authenticated
                 const mainContent = document.querySelector('.main-content');
@@ -134,6 +151,163 @@ document.addEventListener('DOMContentLoaded', () => {
         html += '</div>';
         
         container.innerHTML = html;
+    }
+
+    // Render Deliverables
+    function renderDeliverables(adminData) {
+        const container = document.getElementById('deliverablesContainer');
+        if (!container) return;
+
+        if (!adminData || !adminData.deliverables || adminData.deliverables.length === 0) {
+            container.innerHTML = `
+                <div class="empty-consultation" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                    <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 1rem; color: var(--accent);"></i>
+                    <p>No final deliverables have been uploaded yet.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        const deliverables = adminData.deliverables;
+
+        deliverables.forEach(item => {
+            // Determine icon based on simple title keyword matching
+            let iconClass = 'fa-solid fa-cloud-arrow-down';
+            let iconColor = 'color-blue';
+            const titleLower = item.title.toLowerCase();
+            
+            if (titleLower.includes('zip') || titleLower.includes('pack') || titleLower.includes('archive')) {
+                iconClass = 'fa-solid fa-file-zipper';
+                iconColor = 'color-accent';
+            } else if (titleLower.includes('pdf') || titleLower.includes('guidelines') || titleLower.includes('document')) {
+                iconClass = 'fa-solid fa-file-pdf';
+                iconColor = 'text-danger';
+            } else if (titleLower.includes('image') || titleLower.includes('logo') || titleLower.includes('png') || titleLower.includes('svg')) {
+                iconClass = 'fa-solid fa-image';
+                iconColor = 'color-purple';
+            }
+
+            const dateStr = item.uploadDate ? new Date(item.uploadDate).toLocaleDateString() : 'Recently calculated';
+
+            html += `
+                <div class="card asset-card">
+                    <i class="${iconClass} asset-icon ${iconColor}"></i>
+                    <div class="asset-info">
+                        <h4>${item.title}</h4>
+                        <p>Uploaded: ${dateStr}</p>
+                    </div>
+                    <a href="${item.link}" target="_blank" class="btn-icon" title="Download or View" style="text-decoration: none; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // Render Meetings
+    function renderMeetings(adminData) {
+        const upContainer = document.getElementById('upcomingMeetingsContainer');
+        const histContainer = document.getElementById('meetingHistoryContainer');
+        if (!upContainer || !histContainer) return;
+
+        const meetings = adminData?.meetings || [];
+        const upcoming = meetings.filter(m => m.status === 'Upcoming');
+        const history = meetings.filter(m => m.status !== 'Upcoming');
+
+        if (upcoming.length === 0) {
+            upContainer.innerHTML = '<div class="empty-consultation">No upcoming meetings scheduled.</div>';
+        } else {
+            upContainer.innerHTML = upcoming.map(m => `
+                <div class="meeting-card">
+                    <div class="meeting-date" style="padding: 10px; text-align: center;">
+                        <span class="day" style="font-size: 1.2rem; display: block; font-weight: bold; color: var(--accent);">${m.date}</span>
+                    </div>
+                    <div class="meeting-details">
+                        <h4>${m.title}</h4>
+                        <p>${m.time}</p>
+                    </div>
+                    <div class="meeting-actions">
+                        ${m.link ? `<a href="${m.link}" target="_blank" class="btn-primary join-btn" style="text-decoration:none;">Join Now</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        if (history.length === 0) {
+            histContainer.innerHTML = '<div class="empty-consultation">No meeting history.</div>';
+        } else {
+            histContainer.innerHTML = history.map(m => `
+                <div class="history-item">
+                    <div>
+                        <h5>${m.title}</h5>
+                        <p class="meta">${m.date} at ${m.time} - <span style="color: ${m.status === 'Completed' ? 'var(--accent)' : 'var(--text-danger)'}">${m.status}</span></p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Render Billing
+    function renderBilling(adminData) {
+        const subContainer = document.getElementById('subscriptionContainer');
+        const invContainer = document.getElementById('invoicesContainer');
+        if (!subContainer || !invContainer) return;
+
+        const sub = adminData?.subscription;
+        if (!sub || !sub.planName) {
+            subContainer.innerHTML = '<div class="card billing-card active-plan" style="text-align: center; color: var(--text-muted);"><h4>No Active Subscription</h4></div>';
+        } else {
+            subContainer.innerHTML = `
+                <div class="card billing-card active-plan">
+                    <h4>Active Subscription</h4>
+                    <div class="plan-price"><h2>${sub.price}</h2></div>
+                    <p class="plan-name">${sub.planName}</p>
+                    <p class="renewal">Next billing: ${sub.nextBilling}</p>
+                </div>
+            `;
+        }
+
+        const invoices = adminData?.invoices || [];
+        if (invoices.length === 0) {
+            invContainer.innerHTML = '<div class="empty-consultation">No payment history available.</div>';
+        } else {
+            invContainer.innerHTML = invoices.map(i => `
+                <div class="invoice-item">
+                    <span class="inv-date">${i.date}</span>
+                    <span class="inv-desc">${i.description}</span>
+                    <span class="inv-amount">${i.amount}</span>
+                    <span class="status status-paid" style="background: ${i.status.toLowerCase() !== 'paid' ? 'rgba(255,59,48,0.1)' : ''}; color: ${i.status.toLowerCase() !== 'paid' ? '#ff3b30' : ''}">${i.status}</span>
+                    ${i.link ? `<a href="${i.link}" target="_blank" class="btn-icon" title="View"><i class="fa-solid fa-download"></i></a>` : ''}
+                </div>
+            `).join('');
+        }
+    }
+
+    // Render Messages
+    function renderMessages(adminData) {
+        const msgContainer = document.getElementById('messagesContainer');
+        if (!msgContainer) return;
+
+        const messages = adminData?.messages || [];
+        if (messages.length === 0) {
+            msgContainer.innerHTML = '<div class="empty-consultation">Inbox is empty.</div>';
+        } else {
+            // Reverse so newest is first
+            const sorted = [...messages].reverse();
+            msgContainer.innerHTML = sorted.map(m => `
+                <div class="message-item ${m.isRead ? '' : 'unread'}">
+                    <div class="msg-avatar"><img src="../images/LOGOI.png" alt="Admin"></div>
+                    <div class="msg-content">
+                        <div class="msg-header">
+                            <h5>${m.sender || 'System Admin'}</h5>
+                            <span class="time">${new Date(m.date).toLocaleDateString()}</span>
+                        </div>
+                        <p>${m.content}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
     }
 
     // Initialize profile
@@ -280,4 +454,159 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    // Handle Client File Uploads
+    const fileUploadInput = document.getElementById('fileUploadInput');
+    if (fileUploadInput) {
+        fileUploadInput.addEventListener('change', async (e) => {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+            // Simple loading feedback
+            const uploadArea = document.querySelector('.upload-area');
+            const originalText = uploadArea.innerHTML;
+            uploadArea.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><p>Uploading files...</p>';
+            uploadArea.style.pointerEvents = 'none';
+
+            try {
+                const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/upload', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Files uploaded successfully. They will now be visible to the admin.');
+                    // Optionally update the UI or reload
+                    window.location.reload();
+                } else {
+                    alert('Upload failed: ' + (result.error || 'Server error'));
+                    uploadArea.innerHTML = originalText;
+                }
+            } catch (err) {
+                console.error("Upload Error:", err);
+                alert("An error occurred while uploading. Please check connection.");
+                uploadArea.innerHTML = originalText;
+            } finally {
+                uploadArea.style.pointerEvents = 'auto';
+                fileUploadInput.value = ''; // Reset input
+            }
+        });
+    }
+
+    // Handle Profile Update Submission
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    const saveProfileBtn = document.getElementById('saveProfileBtn');
+    if (updateProfileForm && saveProfileBtn) {
+        updateProfileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const originalText = saveProfileBtn.textContent;
+            saveProfileBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            saveProfileBtn.disabled = true;
+
+            const updateData = {
+                displayName: document.getElementById('profileName')?.value.trim(),
+                company: document.getElementById('profileCompany')?.value.trim(),
+                phone: document.getElementById('profilePhone')?.value.trim(),
+                jobTitle: document.getElementById('profileTitle')?.value.trim()
+            };
+
+            try {
+                const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData),
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Profile Updated Successfully!');
+                    // Update side panel info immediately
+                    if (updateData.displayName) {
+                        const userNameElements = document.querySelectorAll('.user-name');
+                        const firstName = updateData.displayName.split(' ')[0];
+                        userNameElements.forEach(el => el.textContent = firstName);
+                    }
+                    if (updateData.jobTitle !== undefined) {
+                        const userJobTitleEl = document.getElementById('userJobTitle');
+                        if (userJobTitleEl) userJobTitleEl.textContent = updateData.jobTitle;
+                    }
+                    if (updateData.company !== undefined) {
+                        const userCompanyEl = document.getElementById('userCompanyName');
+                        if (userCompanyEl) userCompanyEl.textContent = updateData.company ? `@ ${updateData.company}` : '';
+                    }
+                } else {
+                    alert('Failed to update profile: ' + (result.error || 'Server error'));
+                }
+            } catch (error) {
+                console.error('Update Profile Error:', error);
+                alert('An error occurred. Please check connection.');
+            } finally {
+                saveProfileBtn.textContent = originalText;
+                saveProfileBtn.disabled = false;
+            }
+        });
+    }
+
+    // Handle Password Change Submission
+    const updatePasswordForm = document.getElementById('updatePasswordForm');
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const passwordMessage = document.getElementById('passwordMessage');
+    if (updatePasswordForm && changePasswordBtn && passwordMessage) {
+        updatePasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword')?.value;
+            const newPassword = document.getElementById('newPassword')?.value;
+            
+            if (!currentPassword || !newPassword) return;
+
+            if (newPassword.length < 6) {
+                passwordMessage.textContent = 'New password must be at least 6 characters.';
+                passwordMessage.style.color = '#ff3b30';
+                return;
+            }
+
+            const originalText = changePasswordBtn.textContent;
+            changePasswordBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Changing...';
+            changePasswordBtn.disabled = true;
+            passwordMessage.textContent = '';
+
+            try {
+                const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/user/me/password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword }),
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    passwordMessage.textContent = 'Password changed successfully!';
+                    passwordMessage.style.color = 'var(--accent)';
+                    updatePasswordForm.reset();
+                } else {
+                    passwordMessage.textContent = result.error || 'Failed to change password.';
+                    passwordMessage.style.color = '#ff3b30';
+                }
+            } catch (error) {
+                console.error('Change Password Error:', error);
+                passwordMessage.textContent = 'An error occurred. Please try again later.';
+                passwordMessage.style.color = '#ff3b30';
+            } finally {
+                changePasswordBtn.textContent = originalText;
+                changePasswordBtn.disabled = false;
+            }
+        });
+    }
+
 });

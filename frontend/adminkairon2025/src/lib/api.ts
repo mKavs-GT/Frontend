@@ -25,6 +25,43 @@ export interface User {
     projectEndDate?: string;
     projectStatus?: 'Active' | 'Progress' | 'On Hold' | 'Completed';
     projectTags?: string[];
+    attachments?: {
+      name: string;
+      path: string;
+      type: string;
+      size: string;
+      uploadDate: string;
+    }[];
+    deliverables?: {
+      title: string;
+      link: string;
+      uploadDate?: string;
+    }[];
+    meetings?: {
+      title: string;
+      date: string;
+      time: string;
+      link: string;
+      status: 'Upcoming' | 'Completed' | 'Cancelled';
+    }[];
+    subscription?: {
+      planName: string;
+      price: string;
+      nextBilling: string;
+    };
+    invoices?: {
+      date: string;
+      description: string;
+      amount: string;
+      status: string;
+      link: string;
+    }[];
+    messages?: {
+      sender: string;
+      content: string;
+      date: string;
+      isRead: boolean;
+    }[];
     tasks?: {
       id: number;
       task: string;

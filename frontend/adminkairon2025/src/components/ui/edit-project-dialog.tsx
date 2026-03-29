@@ -35,6 +35,11 @@ export function EditProjectDialog({ isOpen, onClose, user, onSave }: EditProject
   const [projectEndDate, setProjectEndDate] = useState("");
   const [projectTags, setProjectTags] = useState("");
   const [projectStatus, setProjectStatus] = useState<string>("Active");
+  const [deliverables, setDeliverables] = useState<{title: string, link: string}[]>([]);
+  const [meetings, setMeetings] = useState<{title: string, date: string, time: string, link: string, status: 'Upcoming' | 'Completed' | 'Cancelled'}[]>([]);
+  const [subscription, setSubscription] = useState<{planName: string, price: string, nextBilling: string}>({planName: '', price: '', nextBilling: ''});
+  const [invoices, setInvoices] = useState<{date: string, description: string, amount: string, status: string, link: string}[]>([]);
+  const [messages, setMessages] = useState<{sender: string, content: string, date: string, isRead: boolean}[]>([]);
   
   // UI state
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +59,11 @@ export function EditProjectDialog({ isOpen, onClose, user, onSave }: EditProject
       setProjectEndDate(user.adminData?.projectEndDate || "");
       setProjectTags(user.adminData?.projectTags?.join(", ") || "");
       setProjectStatus(user.adminData?.projectStatus || "Active");
+      setDeliverables(user.adminData?.deliverables || []);
+      setMeetings(user.adminData?.meetings || []);
+      setSubscription(user.adminData?.subscription || {planName: '', price: '', nextBilling: ''});
+      setInvoices(user.adminData?.invoices || []);
+      setMessages(user.adminData?.messages || []);
       setError(null);
       setSuccess(false);
     }
@@ -111,7 +121,12 @@ export function EditProjectDialog({ isOpen, onClose, user, onSave }: EditProject
           projectStartDate: sanitizeInput(projectStartDate, 50),
           projectEndDate: sanitizeInput(projectEndDate, 50),
           projectTags: projectTags.split(",").map(tag => tag.trim()).filter(tag => tag.length > 0),
-          projectStatus: projectStatus as string,
+          projectStatus: projectStatus as "Active" | "Progress" | "On Hold" | "Completed",
+          deliverables: deliverables.filter(d => d.title.trim() && d.link.trim()),
+          meetings: meetings.filter(m => m.title.trim()),
+          subscription: subscription,
+          invoices: invoices.filter(i => i.date.trim() && i.amount.trim()),
+          messages: messages.filter(m => m.content.trim()),
         }
       };
       await onSave(updatedData);
@@ -143,7 +158,7 @@ export function EditProjectDialog({ isOpen, onClose, user, onSave }: EditProject
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
+            className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg max-h-[85vh] overflow-y-auto custom-scrollbar"
           >
             <div className="flex flex-col space-y-1.5 text-center sm:text-left">
               <h2 className="text-lg font-semibold leading-none tracking-tight">Edit Project Details</h2>
@@ -372,7 +387,124 @@ export function EditProjectDialog({ isOpen, onClose, user, onSave }: EditProject
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-4">
+              {/* Deliverables */}
+              <div className="grid grid-cols-4 items-start gap-4">
+                <label className="text-right text-sm font-medium mt-2">
+                  Deliverables
+                </label>
+                <div className="col-span-3 space-y-3">
+                  {deliverables.map((deliverable, index) => (
+                    <div key={index} className="flex gap-2 items-center">
+                      <Input
+                        placeholder="Title (e.g. Brand Guidelines)"
+                        value={deliverable.title}
+                        onChange={(e) => {
+                          const newDeliverables = [...deliverables];
+                          newDeliverables[index].title = e.target.value;
+                          setDeliverables(newDeliverables);
+                        }}
+                        className="flex-1"
+                      />
+                      <Input
+                        placeholder="Link URL"
+                        value={deliverable.link}
+                        onChange={(e) => {
+                          const newDeliverables = [...deliverables];
+                          newDeliverables[index].link = e.target.value;
+                          setDeliverables(newDeliverables);
+                        }}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          const newDeliverables = deliverables.filter((_, i) => i !== index);
+                          setDeliverables(newDeliverables);
+                        }}
+                        className="text-destructive h-10 w-10 shrink-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDeliverables([...deliverables, { title: "", link: "" }])}
+                    className="w-full border-dashed"
+                  >
+                    + Add Deliverable
+                  </Button>
+                </div>
+              </div>
+
+              {/* Meetings */}
+              <div className="grid grid-cols-4 items-start gap-4">
+                <label className="text-right text-sm font-medium mt-2">Meetings</label>
+                <div className="col-span-3 space-y-3">
+                  {meetings.map((meeting, index) => (
+                    <div key={index} className="flex gap-2 items-center flex-wrap p-3 border rounded-md relative group">
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setMeetings(meetings.filter((_, i) => i !== index))} className="absolute top-1 right-1 h-6 w-6 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"><X className="h-4 w-4" /></Button>
+                      <Input placeholder="Meet Title" value={meeting.title} onChange={e => { const m = [...meetings]; m[index].title = e.target.value; setMeetings(m); }} className="w-1/2" />
+                      <Input placeholder="e.g. Apr 12, 2026" value={meeting.date} onChange={e => { const m = [...meetings]; m[index].date = e.target.value; setMeetings(m); }} className="w-5/12" />
+                      <Input placeholder="10:00 AM" value={meeting.time} onChange={e => { const m = [...meetings]; m[index].time = e.target.value; setMeetings(m); }} className="w-1/3" />
+                      <Input placeholder="Link (google meet)" value={meeting.link} onChange={e => { const m = [...meetings]; m[index].link = e.target.value; setMeetings(m); }} className="w-1/3" />
+                      <Select value={meeting.status} onValueChange={(val: any) => { const m = [...meetings]; m[index].status = val; setMeetings(m); }}>
+                        <SelectTrigger className="w-1/4"><SelectValue /></SelectTrigger>
+                        <SelectContent><SelectItem value="Upcoming">Upcoming</SelectItem><SelectItem value="Completed">Completed</SelectItem><SelectItem value="Cancelled">Cancelled</SelectItem></SelectContent>
+                      </Select>
+                    </div>
+                  ))}
+                  <Button type="button" variant="outline" size="sm" onClick={() => setMeetings([...meetings, { title: '', date: '', time: '', link: '', status: 'Upcoming' }])} className="w-full border-dashed">+ Add Meeting</Button>
+                </div>
+              </div>
+
+              {/* Subscription */}
+              <div className="grid grid-cols-4 items-start gap-4 p-4 bg-muted/30 rounded-lg">
+                <label className="text-right text-sm font-medium mt-2">Active Plan</label>
+                <div className="col-span-3 grid grid-cols-2 gap-2">
+                   <Input placeholder="e.g. Pro Tier" value={subscription.planName} onChange={e => setSubscription({...subscription, planName: e.target.value})} className="col-span-2" />
+                   <Input placeholder="e.g. $299/mo" value={subscription.price} onChange={e => setSubscription({...subscription, price: e.target.value})} />
+                   <Input placeholder="Next Billing (e.g. Apr 15)" value={subscription.nextBilling} onChange={e => setSubscription({...subscription, nextBilling: e.target.value})} />
+                </div>
+              </div>
+
+              {/* Invoices */}
+              <div className="grid grid-cols-4 items-start gap-4">
+                <label className="text-right text-sm font-medium mt-2">Invoices</label>
+                <div className="col-span-3 space-y-3">
+                  {invoices.map((inv, index) => (
+                    <div key={index} className="flex gap-2 items-center flex-wrap p-3 border rounded-md relative group">
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setInvoices(invoices.filter((_, i) => i !== index))} className="absolute top-1 right-1 h-6 w-6 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"><X className="h-4 w-4" /></Button>
+                      <Input placeholder="Date (e.g. Mar 15)" value={inv.date} onChange={e => { const m = [...invoices]; m[index].date = e.target.value; setInvoices(m); }} className="w-1/3" />
+                      <Input placeholder="Amount ($299)" value={inv.amount} onChange={e => { const m = [...invoices]; m[index].amount = e.target.value; setInvoices(m); }} className="w-1/3" />
+                      <Input placeholder="Status (Paid)" value={inv.status} onChange={e => { const m = [...invoices]; m[index].status = e.target.value; setInvoices(m); }} className="w-1/4" />
+                      <Input placeholder="Description" value={inv.description} onChange={e => { const m = [...invoices]; m[index].description = e.target.value; setInvoices(m); }} className="w-[48%]" />
+                      <Input placeholder="Download Link" value={inv.link} onChange={e => { const m = [...invoices]; m[index].link = e.target.value; setInvoices(m); }} className="w-[48%]" />
+                    </div>
+                  ))}
+                  <Button type="button" variant="outline" size="sm" onClick={() => setInvoices([...invoices, { date: '', amount: '', description: '', status: 'Paid', link: '' }])} className="w-full border-dashed">+ Add Invoice</Button>
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div className="grid grid-cols-4 items-start gap-4">
+                <label className="text-right text-sm font-medium mt-2">Messages</label>
+                <div className="col-span-3 space-y-3">
+                  {messages.map((msg, index) => (
+                    <div key={index} className="flex gap-2 items-start flex-wrap p-3 border rounded-md relative group">
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setMessages(messages.filter((_, i) => i !== index))} className="absolute top-1 right-1 h-6 w-6 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"><X className="h-4 w-4" /></Button>
+                      <textarea placeholder="Message content..." value={msg.content} onChange={e => { const m = [...messages]; m[index].content = e.target.value; setMessages(m); }} className="w-full flex min-h-[60px] rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                    </div>
+                  ))}
+                  <Button type="button" variant="outline" size="sm" onClick={() => setMessages([...messages, { sender: 'System Admin', content: '', date: new Date().toISOString(), isRead: false }])} className="w-full border-dashed">+ Send Message to Inbox</Button>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
                 <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
                   Cancel
                 </Button>
