@@ -215,6 +215,7 @@
 
                             const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/send-consultation', {
                                 method: 'POST',
+                                credentials: 'include',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
