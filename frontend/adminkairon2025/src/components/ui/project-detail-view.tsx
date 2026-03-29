@@ -239,8 +239,12 @@ export function ProjectDetailView({
                 <div className="h-4 w-px bg-border hidden md:block" />
                 <div className="flex items-center gap-2">
 
-                <Button variant="ghost" size="icon" onClick={onEdit}><Edit2 className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={onBack}><X className="h-4 w-4" /></Button>
+                <Button variant="default" size="sm" onClick={onEdit} className="gap-2 bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20">
+                  <Edit2 className="h-4 w-4" /> Edit Project
+                </Button>
+                <Button variant="ghost" size="icon" onClick={onBack} className="hover:bg-red-500/10 hover:text-red-500 transition-colors">
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           </motion.div>

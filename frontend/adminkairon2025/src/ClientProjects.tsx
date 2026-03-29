@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Monitor, Search, Briefcase } from "lucide-react";
+import { Monitor, Search, Briefcase, Users, MessageSquare, Plus, Activity, CheckCircle2, Calendar as CalendarIcon, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/ui/modern-side-bar";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,16 @@ interface Client {
   }[];
 }
 
+interface ScheduleItem {
+  id: string;
+  type: 'call' | 'todo' | 'remark';
+  title: string;
+  datetime?: string;
+  description?: string;
+  completed?: boolean;
+}
 
+const STORAGE_KEY = "mkavs_admin_schedule_v1";
 
 const container = {
   hidden: { opacity: 0 },
@@ -62,6 +71,8 @@ const item = {
 export default function ClientProjects({ onViewProject, onLogout, adminAgent }: ClientProjectsProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
+  const [rawUsers, setRawUsers] = useState<User[]>([]);
+  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState("dashboard");
 
@@ -69,6 +80,7 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
     const loadUsers = async () => {
       try {
         const users = await fetchUsers();
+        setRawUsers(users);
         // Map API users to Client interface
         const mappedClients: Client[] = users
           .filter(user => user.adminData) // Show all users with project data (even if name is empty)
@@ -91,6 +103,14 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
     };
 
     loadUsers();
+
+    // Load schedules from local storage
+    const savedSchedules = localStorage.getItem(STORAGE_KEY);
+    if (savedSchedules) {
+      try {
+        setSchedules(JSON.parse(savedSchedules));
+      } catch (e) {}
+    }
   }, []);
 
   // Keyboard shortcut for search
@@ -119,10 +139,25 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background text-foreground">
-        Loading...
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+          <p className="text-zinc-400 font-medium tracking-wide animate-pulse">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
+
+  // Calculate Stats
+  const totalUsers = rawUsers.length;
+  const totalConsultations = rawUsers.reduce((sum, user) => sum + (user.consultations?.length || 0), 0);
+  const activeProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'Active' || u.adminData?.projectStatus === 'Progress').length;
+  const completedProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'Completed').length;
+  const futureProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'On Hold').length;
+
+  // Upcoming Schedules
+  const upcomingSchedules = schedules
+    .filter(s => s.type === 'call' || (s.type === 'todo' && !s.completed))
+    .slice(0, 5);
 
   const renderContent = () => {
     if (currentView === "analytics") {
@@ -163,14 +198,14 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
           >
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 shadow-lg shadow-blue-500/5">
-                  <Briefcase className="w-8 h-8 text-blue-500" />
+                  <Activity className="w-8 h-8 text-blue-500" />
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-                    Client Projects
+                    Overview Dashboard
                   </h1>
                   <p className="text-zinc-400 mt-1 font-medium italic">
-                    Manage and monitor your active client collaborations.
+                    Welcome back. Here's what's happening today.
                   </p>
                 </div>
               </div>
@@ -196,12 +231,58 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
               </div>
           </motion.header>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            layout
-          >
-            <AnimatePresence>
-              {filteredClients.map((client, index) => (
+          {/* Top Stats Cards */}
+          <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
+                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                    <Users className="w-6 h-6 text-purple-500 mb-1" />
+                    <span className="text-2xl font-bold text-white">{totalUsers}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Total Users</span>
+                 </CardContent>
+             </Card>
+             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
+                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                    <MessageSquare className="w-6 h-6 text-green-500 mb-1" />
+                    <span className="text-2xl font-bold text-white">{totalConsultations}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Consultations</span>
+                 </CardContent>
+             </Card>
+             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
+                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                    <Activity className="w-6 h-6 text-amber-500 mb-1" />
+                    <span className="text-2xl font-bold text-white">{activeProjects}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Active Projects</span>
+                 </CardContent>
+             </Card>
+             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
+                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                    <Clock className="w-6 h-6 text-zinc-400 mb-1" />
+                    <span className="text-2xl font-bold text-white">{futureProjects}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Future / On Hold</span>
+                 </CardContent>
+             </Card>
+             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
+                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
+                    <CheckCircle2 className="w-6 h-6 text-blue-500 mb-1" />
+                    <span className="text-2xl font-bold text-white">{completedProjects}</span>
+                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Completed</span>
+                 </CardContent>
+             </Card>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <motion.div 
+              className="lg:col-span-3 space-y-6"
+              layout
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-blue-500" /> Active Managed Projects
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <AnimatePresence>
+                  {filteredClients.map((client, index) => (
                 <motion.div
                   key={`${client.name}-${index}`}
                   variants={item}
@@ -255,20 +336,72 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
                   </Card>
                 </motion.div>
               ))}
-            </AnimatePresence>
-          </motion.div>
-          
-          {filteredClients.length === 0 && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12 text-muted-foreground"
-            >
-              <Search className="mx-auto h-12 w-12 opacity-20 mb-4" />
-              <p className="text-lg font-medium">No results found</p>
-              <p className="text-sm">Try adjusting your search query</p>
+                </AnimatePresence>
+              </div>
+              
+              {filteredClients.length === 0 && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-12 border border-zinc-800/50 rounded-2xl bg-zinc-900/20"
+                >
+                  <Search className="mx-auto h-12 w-12 text-zinc-700 mb-4" />
+                  <p className="text-lg font-bold text-zinc-400">No projects found</p>
+                  <p className="text-sm text-zinc-500">Try adjusting your search query</p>
+                </motion.div>
+              )}
             </motion.div>
-          )}
+
+            {/* Right Side Panel: Upcoming Schedules */}
+            <motion.div variants={item} className="lg:col-span-1 space-y-6">
+               <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <CalendarIcon className="w-5 h-5 text-purple-500" /> Upcoming
+               </h2>
+               
+               <div className="space-y-4">
+                 {upcomingSchedules.length === 0 ? (
+                   <div className="p-8 text-center border border-zinc-800/50 rounded-2xl bg-zinc-900/20">
+                      <CheckCircle2 className="w-8 h-8 text-zinc-700 mx-auto mb-3" />
+                      <p className="text-sm font-bold text-zinc-500">You're all caught up!</p>
+                      <p className="text-xs text-zinc-600 mt-1">No pending calls or tasks.</p>
+                   </div>
+                 ) : (
+                   upcomingSchedules.map(schedule => (
+                     <Card key={schedule.id} className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 transition-colors">
+                        <CardHeader className="p-4 pb-2">
+                          <div className="flex justify-between items-start">
+                            <CardTitle className="text-sm font-bold text-white">{schedule.title}</CardTitle>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 bg-zinc-800/80 px-2 py-0.5 rounded">
+                              {schedule.type}
+                            </span>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0">
+                          {schedule.type === 'call' && schedule.datetime && (
+                            <div className="flex items-center gap-1.5 text-xs text-blue-400 mt-2 font-medium bg-blue-500/10 w-fit px-2 py-1 rounded">
+                              <Clock className="w-3.5 h-3.5" />
+                              {new Date(schedule.datetime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                            </div>
+                          )}
+                          {schedule.description && (
+                            <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                              {schedule.description}
+                            </p>
+                          )}
+                        </CardContent>
+                     </Card>
+                   ))
+                 )}
+                 <Button 
+                   variant="outline" 
+                   className="w-full bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800 hover:text-white"
+                   onClick={() => setCurrentView('schedule')}
+                 >
+                    View Full Schedule
+                 </Button>
+               </div>
+            </motion.div>
+          </div>
         </motion.div>
     );
   };

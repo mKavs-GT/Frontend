@@ -100,6 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         } catch(e) {}
                     }
                 });
+
+                // Redirect "Book Us" buttons in toolbars or everywhere to Login if unauthenticated
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
+                bookUsLinks.forEach(link => {
+                    try {
+                        const currentPath = window.location.pathname;
+                        const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
+                        link.href = isRoot ? './loginpg/login.html' : '../loginpg/login.html';
+                    } catch(e) {}
+                });
+
+                // Actively kick out users who navigate directly to consult.html while unauthenticated
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('consult.html')) {
+                    window.location.href = '../loginpg/login.html';
+                }
             }
         } catch (error) {
             console.error('Error checking auth status (global):', error);
