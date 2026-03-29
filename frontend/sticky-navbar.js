@@ -65,10 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         try {
                             const currentPath = window.location.pathname;
                             const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
-                            // Update href to profile based on relative path if needed, though they already have href usually
-                            if (parent.getAttribute('href') === '#' || parent.getAttribute('href') === '') {
-                                parent.href = isRoot ? './profile/profile.html' : '../profile/profile.html';
-                            }
+                            // Always update href to profile based on relative path
+                            parent.href = isRoot ? './profile/profile.html' : '../profile/profile.html';
                         } catch(e) {}
                     }
                     if (data.user) {
@@ -92,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             } else {
-                // User is NOT logged in - redirect profile icons to login
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {

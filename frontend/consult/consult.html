@@ -212,8 +212,6 @@
                                 plan: document.querySelector('input[name="plan"]:checked') ? document.querySelector('input[name="plan"]:checked').value : 'Not specified',
                                 projectInfo: document.getElementById('projectInfo') ? document.getElementById('projectInfo').value : ''
                             };
-                            
-                            console.log('Sending formData:', formData);
 
                             const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/send-consultation', {
                                 method: 'POST',
@@ -224,47 +222,28 @@
                             });
 
                             const result = await response.json();
-                            console.log('Server response:', result);
 
-                            // Reset button state immediately after response
                             btn.disabled = false;
                             btn.innerText = originalBtnText;
 
                             if (response.ok) {
-                                // Show Modal instead of alert
-                                const modal = document.getElementById('thankYouModal');
-                                if (modal) modal.classList.add('show');
-                                this.reset();
+                                alert('Consultation request sent successfully! You can view it in your Profile.');
+                                window.location.href = '../profile/profile.html';
                             } else {
                                 alert('Error: ' + (result.message || 'Failed to send request.'));
                             }
                         } catch (error) {
                             console.error('Submission Error:', error);
-                            // Reset on error too
                             btn.disabled = false;
                             btn.innerText = originalBtnText;
                             alert('An error occurred while sending your request. Detailed error: ' + error.message);
                         }
                     });
-
-                    // Logic to show/hide connection preference based on Discord selection
-                    const discordRadios = document.querySelectorAll('input[name="discord"]');
-                    const connectPrefGroup = document.getElementById('connect-preference-group');
-
-                    discordRadios.forEach(radio => {
-                        radio.addEventListener('change', (e) => {
-                            if (e.target.value === 'yes') {
-                                connectPrefGroup.style.display = 'block';
-                            } else {
-                                connectPrefGroup.style.display = 'none';
-                            }
-                        });
-                    });
                 </script>
             </section>
         </main>
         <footer style="text-align: center; padding: 20px; font-size: 0.8rem; color: #666; margin-top: 40px;">
-            &copy; COPYRIGHT MKAVS GLOBAL TECH/ MKAVS2025@GMAIL.COM
+            &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
         </footer>
     </div>
 
@@ -311,14 +290,6 @@
     </div>
     <script src="../chatbot/kairon-widget.js"></script>
 
-    <!-- Thank You Modal -->
-    <div id="thankYouModal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Thank You!</h2>
-            <p>Our team will reach out to you when we are ready.</p>
-            <button class="modal-btn" onclick="window.location.href='../index.html'">Back to Home</button>
-        </div>
-    </div>
 </body>
 
 </html>
