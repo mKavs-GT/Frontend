@@ -227,8 +227,9 @@
                             btn.innerText = originalBtnText;
 
                             if (response.ok) {
-                                alert('Consultation request sent successfully! You can view it in your Profile.');
-                                window.location.href = '../profile/profile.html';
+                                document.getElementById('bookingForm').reset();
+                                const modal = document.getElementById('thankYouModal');
+                                if (modal) modal.classList.add('show');
                             } else {
                                 alert('Error: ' + (result.message || 'Failed to send request.'));
                             }
@@ -290,6 +291,15 @@
     </div>
     <script src="../chatbot/kairon-widget.js"></script>
 
+    <!-- Thank You Modal -->
+    <div id="thankYouModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Request Sent!</h2>
+            <p>Your consultation form has been saved to your profile.</p>
+            <button class="modal-btn" style="margin-top: 20px; padding: 10px 20px; background: #c7f908; color: #000; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="window.location.href='../profile/profile.html'">Go to Profile</button>
+            <button class="modal-btn" style="margin-top: 10px; padding: 10px 20px; background: transparent; color: #fff; border: 1px solid #fff; border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;" onclick="document.getElementById('thankYouModal').classList.remove('show');">Close</button>
+        </div>
+    </div>
 </body>
 
 </html>
