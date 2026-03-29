@@ -91,6 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon.parentElement.replaceChild(imgEl, icon);
                     }
                 });
+            } else {
+                // User is NOT logged in - redirect profile icons to login
+                userIcons.forEach(icon => {
+                    const parent = icon.parentElement;
+                    if (parent) {
+                        try {
+                            const currentPath = window.location.pathname;
+                            const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
+                            parent.href = isRoot ? './loginpg/login.html' : '../loginpg/login.html';
+                        } catch(e) {}
+                    }
+                });
             }
         } catch (error) {
             console.error('Error checking auth status (global):', error);
