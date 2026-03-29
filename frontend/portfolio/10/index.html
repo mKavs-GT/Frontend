@@ -1073,22 +1073,32 @@
                     .add(driftOut(), "<55%");
             };
 
-            initPreloaderAnimation();
-
             // Control Loading State & Progress Bar
             const preloader = document.getElementById('preloader');
             const progressBar = document.getElementById('loaderProgressBar');
+            
+            if (sessionStorage.getItem('preloaderShown')) {
+                if (preloader) {
+                    preloader.style.display = 'none';
+                }
+            } else {
+                initPreloaderAnimation();
 
-            // Animate progress bar
-            gsap.to(progressBar, {
-                width: "100%",
-                duration: 3,
-                ease: "none"
-            });
+                // Animate progress bar
+                gsap.to(progressBar, {
+                    width: "100%",
+                    duration: 3,
+                    ease: "none"
+                });
 
-            setTimeout(() => {
-                preloader.classList.add('fade-out');
-            }, 3000);
+                setTimeout(() => {
+                    preloader.classList.add('fade-out');
+                    sessionStorage.setItem('preloaderShown', 'true');
+                    setTimeout(() => {
+                       preloader.style.display = 'none'; 
+                    }, 500);
+                }, 3000);
+            }
 
             const radios = document.querySelectorAll('input[name="slider"]');
             radios.forEach(radio => {

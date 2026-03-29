@@ -202,17 +202,17 @@
                         btn.disabled = true;
                         btn.innerText = 'Sending...';
 
-                        const formData = {
-                            name: document.getElementById('name').value,
-                            email: document.getElementById('email').value,
-                            phone: document.getElementById('phone').value,
-                            discord: document.querySelector('input[name="discord"]:checked')?.value || 'Not specified',
-                            connectPreference: document.querySelector('input[name="connect"]:checked')?.value || 'Not specified',
-                            plan: document.querySelector('input[name="plan"]:checked')?.value || 'Not specified',
-                            projectInfo: document.getElementById('projectInfo').value
-                        };
-
                         try {
+                            const formData = {
+                                name: document.getElementById('name') ? document.getElementById('name').value : '',
+                                email: document.getElementById('email') ? document.getElementById('email').value : '',
+                                phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
+                                discord: document.querySelector('input[name="discord"]:checked') ? document.querySelector('input[name="discord"]:checked').value : 'Not specified',
+                                connectPreference: document.querySelector('input[name="connect"]:checked') ? document.querySelector('input[name="connect"]:checked').value : 'Not specified',
+                                plan: document.querySelector('input[name="plan"]:checked') ? document.querySelector('input[name="plan"]:checked').value : 'Not specified',
+                                projectInfo: document.getElementById('projectInfo') ? document.getElementById('projectInfo').value : ''
+                            };
+
                             const response = await fetch(MKAVS_CONFIG.API_BASE_URL + '/api/send-consultation', {
                                 method: 'POST',
                                 headers: {
@@ -223,39 +223,22 @@
 
                             const result = await response.json();
 
-                            // Reset button state immediately after response
                             btn.disabled = false;
                             btn.innerText = originalBtnText;
 
                             if (response.ok) {
-                                // Show Modal instead of alert
+                                document.getElementById('bookingForm').reset();
                                 const modal = document.getElementById('thankYouModal');
-                                modal.classList.add('show');
-                                this.reset();
+                                if (modal) modal.classList.add('show');
                             } else {
                                 alert('Error: ' + (result.message || 'Failed to send request.'));
                             }
                         } catch (error) {
-                            console.error('Error:', error);
-                            // Reset on error too
+                            console.error('Submission Error:', error);
                             btn.disabled = false;
                             btn.innerText = originalBtnText;
-                            alert('An error occurred while sending your request. Please try again.');
+                            alert('An error occurred while sending your request. Detailed error: ' + error.message);
                         }
-                    });
-
-                    // Logic to show/hide connection preference based on Discord selection
-                    const discordRadios = document.querySelectorAll('input[name="discord"]');
-                    const connectPrefGroup = document.getElementById('connect-preference-group');
-
-                    discordRadios.forEach(radio => {
-                        radio.addEventListener('change', (e) => {
-                            if (e.target.value === 'yes') {
-                                connectPrefGroup.style.display = 'block';
-                            } else {
-                                connectPrefGroup.style.display = 'none';
-                            }
-                        });
                     });
                 </script>
             </section>
@@ -311,9 +294,10 @@
     <!-- Thank You Modal -->
     <div id="thankYouModal" class="modal-overlay">
         <div class="modal-content">
-            <h2>Thank You!</h2>
-            <p>Our team will reach out to you when we are ready.</p>
-            <button class="modal-btn" onclick="window.location.href='../index.html'">Back to Home</button>
+            <h2>Request Sent!</h2>
+            <p>Your consultation form has been saved to your profile.</p>
+            <button class="modal-btn" style="margin-top: 20px; padding: 10px 20px; background: #c7f908; color: #000; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="window.location.href='../profile/profile.html'">Go to Profile</button>
+            <button class="modal-btn" style="margin-top: 10px; padding: 10px 20px; background: transparent; color: #fff; border: 1px solid #fff; border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;" onclick="document.getElementById('thankYouModal').classList.remove('show');">Close</button>
         </div>
     </div>
 </body>

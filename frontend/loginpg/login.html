@@ -267,8 +267,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .signup-prompt {
@@ -379,9 +386,29 @@
             }
         }
 
+        .character-base {
+            position: fixed;
+            top: 87vh;
+            left: 0;
+            width: 100vw;
+            height: 30vh;
+            background: #20201f;
+            z-index: 2;
+            pointer-events: none;
+            animation: baseFade 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes baseFade {
+            to {
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 850px) {
 
             .char,
+            .character-base,
             .marquee-tape {
                 display: none;
             }
@@ -421,6 +448,7 @@
         <img src="../images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
+    <div class="character-base"></div>
     <div class="auth-container">
         <!-- Exact Character Placement -->
         <img src="images/1.png" class="char left-1" alt="char 1">
@@ -469,7 +497,7 @@
                 <div class="form-group" style="margin-bottom: 1rem;">
                     <div class="g-recaptcha" data-sitekey="6LeaoVQsAAAAACMcbKlK2aoHOVeeZUNna08MTlP8" data-theme="dark"
                         data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired" role="group"
-                        aria-label="reCAPTCHA verification">
+                        aria-label="reCAPTCHA verification" style="transform: scale(0.88); transform-origin: 0 0;">
                     </div>
                     <p id="recaptcha-error"
                         style="color: #ff4444; font-size: 0.85rem; margin-top: 0.5rem; display: none;">
@@ -515,7 +543,7 @@
         // Wire up Google Sign-In button
         document.getElementById('googleSignInBtn').addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login';
+            window.location.href = MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=login&source=desktop';
         });
 
         // Check for error parameters in URL (Google Auth redirects)

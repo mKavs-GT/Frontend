@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesGrid = document.getElementById('favoritesGrid');
     const favoriteFontsGrid = document.getElementById('favoriteFontsGrid');
     const palettesSection = document.getElementById('palettes');
-    const userNameElement = document.querySelector('.user-name');
+    // Removed single querySelector for userNameElement, now uses querySelectorAll inside loadUserProfile
 
     // Check if PALETTE_DATA adheres to global window object
     const paletteData = window.PALETTE_DATA || [];
@@ -18,13 +18,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const user = await response.json();
-                // Update UI with user data
-                if (userNameElement && user.displayName) {
-                    userNameElement.textContent = user.displayName.split(' ')[0]; // First name only
+                const userNameElements = document.querySelectorAll('.user-name');
+                if (userNameElements.length > 0 && user.displayName) {
+                    const firstName = user.displayName.split(' ')[0];
+                    userNameElements.forEach(el => el.textContent = firstName);
+                }
+                const userEmailEl = document.getElementById('userEmail');
+                if (userEmailEl) {
+                    userEmailEl.textContent = user.email || user.username || 'user@mkavs.com';
+                }
+                const userPhotoEl = document.getElementById('userProfilePhoto');
+                if (userPhotoEl) {
+                    userPhotoEl.src = user.image || user.picture || user.profileImageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                 }
 
                 // Render Project Details
                 renderProjectDetails(user.adminData);
+
+                // Render Consultations
+                renderConsultations(user.consultations);
 
                 // Store user data for potential later use
                 window.currentUser = user;
@@ -46,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadFontFavorites();
             } else if (response.status === 401) {
                 // Not authenticated - redirect to login
-                window.location.href = '/loginpg/login.html';
+                window.location.href = '../loginpg/login.html';
             }
         } catch (error) {
             console.error('Error loading user profile:', error);
@@ -82,6 +94,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="meta">Status: ${progress}% complete</p>
             </div>
         `;
+    }
+
+    // Render Consultations
+    function renderConsultations(consultations) {
+        const container = document.getElementById('consultationContainer');
+        if (!container) return;
+
+        if (!consultations || consultations.length === 0) {
+            container.innerHTML = `
+                <div class="empty-consultation">
+                    <i class="fa-solid fa-file-contract"></i>
+                    <p>No active consultations requested.</p>
+                    <a href="../consult/consult.html" class="request-btn" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #c7f908; color: #000; border-radius: 8px; text-decoration: none; font-weight: 600;">Request Now</a>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '<div class="consultation-list" style="display:flex; flex-direction:column; gap:15px; width: 100%;">';
+        
+        // Sort by timestamp descending
+        const sorted = [...consultations].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        sorted.forEach(c => {
+            const date = c.timestamp ? new Date(c.timestamp).toLocaleDateString() : 'N/A';
+            const planDisplay = c.plan || 'Not selected';
+            html += `
+                <div class="consultation-item" style="padding: 15px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display:flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="color: #c7f908; font-weight: 600;">${planDisplay.toUpperCase()}</span>
+                        <span style="color: var(--text-muted, #9ca3af); font-size: 0.85rem;">${date}</span>
+                    </div>
+                    <p style="margin-bottom: 8px; font-size: 0.95rem; color: #fff;">${c.projectInfo || 'No project description provided.'}</p>
+                    <p style="margin-bottom: 0; font-size: 0.85rem; color: var(--text-muted, #9ca3af);">Preference: ${c.connectPreference || 'Not specified'}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+        
+        container.innerHTML = html;
     }
 
     // Initialize profile
@@ -196,26 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // Hamburger Menu Logic
-    const menuToggle = document.getElementById('menuToggle');
-    const menuDropdown = document.getElementById('menuDropdown');
-
-    if (menuToggle && menuDropdown) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuDropdown.classList.toggle('active');
-        });
-
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !menuDropdown.contains(e.target)) {
-                menuDropdown.classList.remove('active');
-            }
-        });
-    }
+    // Profile image upload handling removed as per user request
 
     // Logout and local storage clearing
-    const logoutLinks = document.querySelectorAll('a[href="/auth/logout"]');
+    const logoutLinks = document.querySelectorAll('.logout-header-btn.with-text, a[href="/auth/logout"]');
     logoutLinks.forEach(link => {
         link.addEventListener('click', () => {
             localStorage.removeItem('mKavs_palette_likes');

@@ -400,9 +400,29 @@
       }
     }
 
+    .character-base {
+      position: fixed;
+      top: 85svh;
+      left: 0;
+      width: 100vw;
+      height: 25vh;
+      background: #20201F;
+      z-index: 2;
+      pointer-events: none;
+      animation: baseFade 1s ease 0.5s forwards;
+      opacity: 0;
+    }
+
+    @keyframes baseFade {
+      to {
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 850px) {
 
       .char,
+      .character-base,
       .marquee-tape {
         display: none;
       }
@@ -615,6 +635,7 @@
     <img src="../images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
+  <div class="character-base"></div>
   <div class="auth-container">
     <!-- Exact Character Placement -->
     <img src="images/1.png" class="char left-1" alt="char 1" />
@@ -896,7 +917,7 @@
           <div class="form-group" style="margin-bottom: 1rem">
             <div class="g-recaptcha" data-sitekey="6LeaoVQsAAAAACMcbKlK2aoHOVeeZUNna08MTlP8" data-theme="dark"
               data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired" role="group"
-              aria-label="reCAPTCHA verification"></div>
+              aria-label="reCAPTCHA verification" style="transform: scale(0.88); transform-origin: 0 0;"></div>
             <p id="recaptcha-error" style="
                   color: #ff4444;
                   font-size: 0.85rem;

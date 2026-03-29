@@ -1113,7 +1113,7 @@ p {
 
 .mr-a .char-img {
     /* Individual positioning for Mr. V image */
-    left: 35%;
+    left: 20%;
     top: 13%;
     transform: scale(1.6);
 }
@@ -1558,18 +1558,18 @@ p {
 
 .footer-socials {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 4rem;
-    /* More spacing inside curve */
+    gap: 1.25rem;
+    padding-top: 3rem;
     padding-bottom: 2rem;
 }
 
 .social-links {
     display: flex;
-    gap: 4rem;
-    font-size: 3.75rem;
-    /* text-6xl */
+    gap: 2.5rem;
+    font-size: 2rem;
 }
 
 .social-link {
@@ -1581,8 +1581,28 @@ p {
 
 .social-link:hover {
     color: #4F46E5;
-    /* indigo-600 */
 }
+
+.about-policy-links {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.about-policy-links a {
+    color: #0e0e0e;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+}
+
+.about-policy-links a:hover {
+    color: #0C1AC1;
+}
+
 
 .copyright-text {
     position: absolute;
@@ -2209,6 +2229,18 @@ p {
     }
 }
 
+@keyframes float-mrz {
+
+    0%,
+    100% {
+        transform: scale(1.5) translateY(0);
+    }
+
+    50% {
+        transform: scale(1.5) translateY(-15px);
+    }
+}
+
 .mr-v .char-img {
     animation: float-mrv 6s ease-in-out infinite;
 }
@@ -2229,4 +2261,10 @@ p {
     animation: float-mra 6s ease-in-out infinite;
     animation-delay: 3s;
     /* Offset for natural feel */
+}
+
+.mr-z .char-img {
+    animation: float-mrz 6s ease-in-out infinite;
+    animation-delay: 0.5s;
+    /* Unique offset for natural stagger */
 }
