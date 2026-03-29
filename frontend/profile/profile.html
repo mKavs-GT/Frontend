@@ -29,6 +29,10 @@
             </a>
 
             <div class="header-actions" style="display: flex; gap: 0.8rem; align-items: center;">
+                <button class="notification-btn" title="Notifications" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.05)';" onmouseout="this.style.background='transparent';">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge" style="position: absolute; top: -2px; right: -2px; background: #ff3b30; color: #fff; font-size: 0.6rem; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center;">3</span>
+                </button>
                 <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/logout'" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; transition: color 0.3s;" onmouseover="this.style.color='#ff3b30'" onmouseout="this.style.color='var(--text-muted)'" title="Logout">
                     <span>Logout</span>
                 </a>
@@ -42,65 +46,264 @@
                     <h1>Welcome, <span class="user-name">{user_name}</span>!</h1>
                 </div>
 
-                <div class="quick-links-grid">
-                    <a href="../booking/booking.html" class="quick-link-card">
-                        <i class="fa-regular fa-calendar-check"></i>
-                        <span>Book Slot</span>
-                    </a>
-                    <a href="../pricing/pricing.html" class="quick-link-card">
-                        <i class="fa-solid fa-tags"></i>
-                        <span>View Pricing</span>
-                    </a>
-                    <a href="../brandpg/colopg/color.html" class="quick-link-card">
-                        <i class="fa-solid fa-palette"></i>
-                        <span>Color Palettes</span>
-                    </a>
-                    <a href="../brandpg/fontspg/fonts.html" class="quick-link-card">
-                        <i class="fa-solid fa-font"></i>
-                        <span>Font Styles</span>
-                    </a>
+                <!-- Tabs Navigation -->
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-target="tab-overview">Overview</button>
+                    <button class="tab-btn" data-target="tab-assets">Assets</button>
+                    <button class="tab-btn" data-target="tab-schedule">Schedule</button>
+                    <button class="tab-btn" data-target="tab-billing">Billing</button>
+                    <button class="tab-btn" data-target="tab-messages">Messages</button>
+                    <button class="tab-btn" data-target="tab-settings">Settings</button>
                 </div>
 
-                <!-- Active Projects -->
-                <div class="section-container">
-                    <h2 class="section-title">Active Projects</h2>
-                    <div class="card projects-card">
-                        <div id="activeProjectContainer">
-                            <div class="loading-state">Loading project details...</div>
+                <!-- Tab: Overview -->
+                <div class="tab-content active" id="tab-overview">
+                    <div class="quick-links-grid">
+                        <a href="../booking/booking.html" class="quick-link-card">
+                            <i class="fa-regular fa-calendar-check"></i>
+                            <span>Book Slot</span>
+                        </a>
+                        <a href="../pricing/pricing.html" class="quick-link-card">
+                            <i class="fa-solid fa-tags"></i>
+                            <span>View Pricing</span>
+                        </a>
+                        <a href="../brandpg/colopg/color.html" class="quick-link-card">
+                            <i class="fa-solid fa-palette"></i>
+                            <span>Color Palettes</span>
+                        </a>
+                        <a href="../brandpg/fontspg/fonts.html" class="quick-link-card">
+                            <i class="fa-solid fa-font"></i>
+                            <span>Font Styles</span>
+                        </a>
+                    </div>
+
+                    <!-- Active Projects -->
+                    <div class="section-container mt-2">
+                        <h2 class="section-title">Active Projects</h2>
+                        <div class="card projects-card">
+                            <div id="activeProjectContainer">
+                                <div class="loading-state">Loading project details...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requested Consultation -->
+                    <div class="section-container consultation-section mt-2">
+                        <h2 class="section-title">Requested Consultation</h2>
+                        <div class="card consultation-card" id="consultationContainer">
+                            <div class="empty-consultation">
+                                <i class="fa-solid fa-file-contract"></i>
+                                <p>No active consultations requested.</p>
+                                <a href="../booking/booking.html" class="request-btn">Request Now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Favorites / Palettes -->
-                <div class="section-container palettes-section" id="palettes">
-                    <h2 class="section-title">Favorite Palettes</h2>
-                    <div class="palettes-grid" id="favoritesGrid">
-                        <!-- Palettes will be populated by script.js -->
-                        <a href="../brandpg/colopg/color.html" class="palette-card add-new">
-                            <i class="fa-solid fa-plus"></i>
-                        </a>
+                <!-- Tab: Library & Assets -->
+                <div class="tab-content" id="tab-assets">
+                    <div class="section-container">
+                        <h2 class="section-title">Deliverables Hub</h2>
+                        <p class="section-subtitle">Download your final project files delivered by our team.</p>
+                        <div class="card asset-card">
+                            <i class="fa-solid fa-cloud-arrow-down asset-icon color-blue"></i>
+                            <div class="asset-info">
+                                <h4>Brand Guidelines.pdf</h4>
+                                <p>Updated 2 days ago</p>
+                            </div>
+                            <button class="btn-icon" title="Download"><i class="fa-solid fa-download"></i></button>
+                        </div>
+                        <div class="card asset-card">
+                            <i class="fa-solid fa-file-zipper asset-icon color-accent"></i>
+                            <div class="asset-info">
+                                <h4>Logo_Pack_Final.zip</h4>
+                                <p>Updated 1 week ago</p>
+                            </div>
+                            <button class="btn-icon" title="Download"><i class="fa-solid fa-download"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="section-container mt-3">
+                        <h2 class="section-title">Upload Portal</h2>
+                        <p class="section-subtitle">Upload requirements, mood boards, or existing brand assets.</p>
+                        <div class="upload-area" onclick="document.getElementById('fileUploadInput').click()">
+                            <input type="file" id="fileUploadInput" style="display: none;" multiple>
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            <p>Drag & drop reference files, or <span class="text-accent">browse</span></p>
+                            <span class="upload-hint">Max file size: 50MB</span>
+                        </div>
+                    </div>
+
+                    <!-- Favorites / Palettes -->
+                    <div class="section-container palettes-section mt-3" id="palettes">
+                        <h2 class="section-title">Favorite Palettes</h2>
+                        <div class="palettes-grid" id="favoritesGrid">
+                            <!-- Palettes will be populated by script.js -->
+                            <a href="../brandpg/colopg/color.html" class="palette-card add-new">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Favorite Fonts Section -->
+                    <div class="section-container fonts-section mt-3">
+                        <h2 class="section-title">Favorite Fonts</h2>
+                        <div class="palettes-grid" id="favoriteFontsGrid">
+                            <!-- Populated by script.js -->
+                            <a href="../brandpg/fontspg/fonts.html" class="palette-card add-new">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Favorite Fonts Section -->
-                <div class="section-container fonts-section">
-                    <h2 class="section-title">Favorite Fonts</h2>
-                    <div class="palettes-grid" id="favoriteFontsGrid">
-                        <!-- Populated by script.js -->
-                        <a href="../brandpg/fontspg/fonts.html" class="palette-card add-new">
-                            <i class="fa-solid fa-plus"></i>
-                        </a>
+                <!-- Tab: Schedule & Meetings -->
+                <div class="tab-content" id="tab-schedule">
+                    <div class="section-container">
+                        <div class="header-flex">
+                            <h2 class="section-title">Upcoming Meetings</h2>
+                        </div>
+                        <div class="meeting-card">
+                            <div class="meeting-date">
+                                <span class="month">APR</span>
+                                <span class="day">12</span>
+                            </div>
+                            <div class="meeting-details">
+                                <h4>Project Kickoff Call</h4>
+                                <p>10:00 AM - 11:00 AM via <i class="fa-brands fa-google text-muted"></i> Meet</p>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-primary join-btn">Join Now</button>
+                                <button class="btn-icon text-muted" title="Reschedule"><i class="fa-regular fa-calendar-minus"></i></button>
+                                <button class="btn-icon text-danger" title="Cancel"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-container mt-3">
+                        <h2 class="section-title">Meeting History</h2>
+                        <div class="meeting-history-list">
+                            <div class="history-item">
+                                <div>
+                                    <h5>Initial Consultation</h5>
+                                    <p class="meta">March 15, 2026</p>
+                                </div>
+                                <button class="notes-btn"><i class="fa-regular fa-file-lines"></i> View Notes</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Requested Consultation -->
-                <div class="section-container consultation-section">
-                    <h2 class="section-title">Requested Consultation</h2>
-                    <div class="card consultation-card" id="consultationContainer">
-                        <div class="empty-consultation">
-                            <i class="fa-solid fa-file-contract"></i>
-                            <p>No active consultations requested.</p>
-                            <a href="../booking/booking.html" class="request-btn">Request Now</a>
+                <!-- Tab: Billing & Invoices -->
+                <div class="tab-content" id="tab-billing">
+                    <div class="billing-grid">
+                        <div class="card billing-card active-plan">
+                            <h4>Active Subscription</h4>
+                            <div class="plan-price"><h2>$299</h2><span>/mo</span></div>
+                            <p class="plan-name">Pro Business Tier</p>
+                            <p class="renewal">Next billing: Apr 15, 2026</p>
+                            <button class="btn-outline-primary mt-1 w-100">Manage Plan</button>
+                        </div>
+                    </div>
+
+                    <div class="section-container mt-3">
+                        <h2 class="section-title">Payment History</h2>
+                        <div class="invoice-list">
+                            <div class="invoice-item">
+                                <span class="inv-date">Mar 15, 2026</span>
+                                <span class="inv-desc">Pro Business Tier - March</span>
+                                <span class="inv-amount">$299.00</span>
+                                <span class="status status-paid">Paid</span>
+                                <button class="btn-icon" title="Download PDF"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <div class="invoice-item">
+                                <span class="inv-date">Feb 15, 2026</span>
+                                <span class="inv-desc">Pro Business Tier - February</span>
+                                <span class="inv-amount">$299.00</span>
+                                <span class="status status-paid">Paid</span>
+                                <button class="btn-icon" title="Download PDF"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Messages -->
+                <div class="tab-content" id="tab-messages">
+                    <div class="section-container">
+                        <h2 class="section-title">Inbox</h2>
+                        <div class="message-list">
+                            <div class="message-item unread">
+                                <div class="msg-avatar"><img src="../images/LOGOI.png" alt="Admin"></div>
+                                <div class="msg-content">
+                                    <div class="msg-header">
+                                        <h5>System Admin</h5>
+                                        <span class="time">10:30 AM</span>
+                                    </div>
+                                    <p>Your brand guidelines are ready! You can download them from the Assets tab.</p>
+                                </div>
+                            </div>
+                            <div class="message-item">
+                                <div class="msg-avatar"><img src="../images/LOGOI.png" alt="Admin"></div>
+                                <div class="msg-content">
+                                    <div class="msg-header">
+                                        <h5>System Admin</h5>
+                                        <span class="time">Yesterday</span>
+                                    </div>
+                                    <p>Meeting notes from our kickoff call have been uploaded.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Settings -->
+                <div class="tab-content" id="tab-settings">
+                    <div class="settings-grid">
+                        <div class="section-container">
+                            <h2 class="section-title">Edit Profile Information</h2>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" class="input-modern" placeholder="John Doe" value="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company / Organization</label>
+                                    <input type="text" class="input-modern" placeholder="Acme Corp">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="input-modern" placeholder="+1 234 567 8900">
+                                </div>
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" class="input-modern" placeholder="CEO">
+                                </div>
+                                <button type="button" class="btn-primary mt-1" onclick="alert('Profile Updated Successfully!')">Save Profile</button>
+                            </form>
+                        </div>
+                        <div class="section-container mt-3">
+                            <h2 class="section-title">Security Settings</h2>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" class="input-modern" placeholder="••••••••">
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" class="input-modern" placeholder="••••••••">
+                                </div>
+                                <button type="button" class="btn-outline-primary mt-1" onclick="alert('Password Changed!')">Change Password</button>
+                            </form>
+                            <div class="security-option mt-3 card">
+                                <div class="sec-text">
+                                    <h5 style="margin-bottom: 0.2rem;">Two-Factor Authentication (2FA)</h5>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Enhance your account security.</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
