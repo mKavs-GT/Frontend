@@ -13,30 +13,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// --- TYPE DEFINITIONS ---
-type StatusVariant = "active" | "inProgress" | "onHold" | "completed";
-
-export interface Project {
-  id: string;
-  name: string;
-  repository: string;
-  team: string;
-  tech: string;
-  createdAt: string;
-  status: {
-    text: string;
-    variant: StatusVariant;
-  };
-  originalData?: User; // To pass back to edit handler
-}
+import { type Project } from "@/lib/api";
 
 // --- PROPS INTERFACE ---
 interface ProjectDataTableProps {
-  projects: Project[];
-  visibleColumns: Set<keyof Project>;
-  onEdit?: (project: Project) => void;
+  projects: any[]; // Use any initially to bypass strict object shape for complex table data
+  visibleColumns: Set<string>;
+  onEdit?: (project: any) => void;
 }
+
+
 
 // --- STATUS BADGE VARIANTS ---
 const badgeVariants = cva("capitalize text-white text-[10px] px-2 py-0 h-5", {
@@ -102,8 +88,9 @@ export const ProjectDataTable = ({ projects, visibleColumns, onEdit }: ProjectDa
                   custom={index}
                   initial="hidden"
                   animate="visible"
-                  variants={rowVariants as Record<string, unknown>}
+                  variants={rowVariants as any}
                   className="group border-b border-border/40 transition-all hover:bg-primary/5"
+
                 >
                   {visibleColumns.has("name") && (
                     <TableCell className="font-medium text-sm py-4">

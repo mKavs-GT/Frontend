@@ -131,8 +131,9 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
     }
     
     if (currentView === "profile") {
-      return <ProfileView adminAgent={adminAgent} />;
+      return <ProfileView adminAgent={adminAgent || null} />;
     }
+
     
     return (
       <motion.div

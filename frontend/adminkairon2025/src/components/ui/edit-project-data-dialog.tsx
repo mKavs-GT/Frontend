@@ -5,7 +5,7 @@ import { X, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { type Project, type User } from "@/lib/api";
+import { type Project, type User, type ProjectStatus } from "@/lib/api";
 
 interface EditProjectDataDialogProps {
   isOpen: boolean;
@@ -25,7 +25,8 @@ export function EditProjectDataDialog({ isOpen, onClose, project, onSave }: Edit
   const [repository, setRepository] = useState("");
   const [team, setTeam] = useState("");
   const [tech, setTech] = useState("");
-  const [status, setStatus] = useState<Project["status"]>("Active");
+  const [status, setStatus] = useState<ProjectStatus>("Active");
+
   
   // UI state
   const [isLoading, setIsLoading] = useState(false);
@@ -125,18 +126,20 @@ export function EditProjectDataDialog({ isOpen, onClose, project, onSave }: Edit
       {isOpen && (
         <>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 } as any}
+            animate={{ opacity: 1 } as any}
+            exit={{ opacity: 0 } as any}
             onClick={onClose}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
           />
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 } as any}
+            animate={{ opacity: 1, scale: 1, y: 0 } as any}
+            exit={{ opacity: 0, scale: 0.95, y: 20 } as any}
             className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg"
           >
+
             <div className="flex flex-col space-y-1.5 text-center sm:text-left">
               <h2 className="text-lg font-semibold leading-none tracking-tight">Edit Database Project</h2>
               <p className="text-sm text-muted-foreground">
@@ -190,7 +193,7 @@ export function EditProjectDataDialog({ isOpen, onClose, project, onSave }: Edit
               <div className="grid grid-cols-4 items-center gap-4">
                 <label htmlFor="status" className="text-right text-sm font-medium">Status</label>
                 <div className="col-span-3">
-                  <Select value={status} onValueChange={(val: Project["status"]) => setStatus(val)}>
+                  <Select value={status} onValueChange={(val: ProjectStatus) => setStatus(val)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -203,6 +206,7 @@ export function EditProjectDataDialog({ isOpen, onClose, project, onSave }: Edit
                   </Select>
                 </div>
               </div>
+
 
               <div className="flex justify-end gap-3 mt-4">
                 <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>Cancel</Button>

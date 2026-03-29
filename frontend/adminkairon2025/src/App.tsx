@@ -47,7 +47,8 @@ function App() {
 
         if (response.ok) {
           const data = await response.json();
-          setAdminAgent(data.agent || JSON.parse(storedAgent));
+          // Safety: storedAgent is guaranteed to be a string here because of the check above
+          setAdminAgent(data.agent || (storedAgent ? JSON.parse(storedAgent) : null));
           setIsAuthenticated(true);
         } else {
           // Token is invalid/expired, clear storage
@@ -73,7 +74,10 @@ function App() {
   }
 
   const handleLogin = (token: string, agent: AdminAgent) => {
-    // Add a slight delay for transition effect
+    // Save to session storage
+    sessionStorage.setItem('adminToken', token);
+    sessionStorage.setItem('adminAgent', JSON.stringify(agent));
+    
     setAdminAgent(agent);
     setIsAuthenticated(true);
   }
@@ -125,7 +129,7 @@ function App() {
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="w-full h-screen"
           >
-            <LoginDemo onLogin={handleLogin} />
+            <LoginDemo onLogin={(token, agent) => handleLogin(token, agent)} />
           </motion.div>
         ) : (
           <motion.div
@@ -138,6 +142,7 @@ function App() {
             <AnimatedBackground />
             <div className="relative z-10 w-full h-full">
               <AnimatePresence mode="wait">
+
                 {showDashboard && selectedUser ? (
                   <motion.div
                     key="dashboard"

@@ -88,7 +88,8 @@ export const Demo = ({ onBack, user, onUserUpdated, onLogout, adminAgent }: Demo
           />
         );
       case "profile":
-        return <ProfileView adminAgent={adminAgent} />;
+        return <ProfileView adminAgent={adminAgent || null} />;
+
       default:
         return (
           <>

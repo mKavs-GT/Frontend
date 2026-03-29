@@ -27,10 +27,11 @@ export interface User {
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 // Helper to get token from storage
-const getAuthHeaders = () => {
+const getAuthHeaders = (): Record<string, string> => {
   const token = sessionStorage.getItem('adminToken');
   return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
+
 
 export const fetchUsers = async (): Promise<User[]> => {
   try {
@@ -157,6 +158,8 @@ export interface Contributor {
   avatarUrl?: string;
 }
 
+export type ProjectStatus = 'Active' | 'Progress' | 'On Hold' | 'Completed';
+
 export interface Project {
   _id: string;
   name: string;
@@ -165,12 +168,14 @@ export interface Project {
   tech: string;
   createdAt: string;
   contributors: Contributor[];
-  status: 'Active' | 'Progress' | 'On Hold' | 'Completed';
+  status: ProjectStatus;
   userId?: string;
   description?: string;
   tags?: string[];
   lastUpdated?: string;
+  originalData?: User;
 }
+
 
 export const fetchProjects = async (): Promise<Project[]> => {
   try {

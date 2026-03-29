@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { ProjectDataTable, type Project } from "@/components/ui/project-data-table";
+import { ProjectDataTable } from "@/components/ui/project-data-table";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -13,10 +13,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ListFilter, Columns, Loader2 } from "lucide-react";
-import { fetchUsers, type User, updateUser } from "@/lib/api";
+import { fetchUsers, type User, updateUser, type Project, type ProjectStatus } from "@/lib/api";
+
 import { EditProjectDataDialog } from "@/components/ui/edit-project-data-dialog";
 
 const allColumns: (keyof Project)[] = ["name", "repository", "team", "tech", "createdAt", "status"];
+
 
 const ProjectDataDemo = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -38,24 +40,20 @@ const ProjectDataDemo = () => {
         const mappedProjects: Project[] = users
           .filter(user => user.adminData?.activeProjects) // Only users with active projects
           .map((user: User) => {
-          let variant: "active" | "inProgress" | "onHold" | "completed" = "active";
-          const status = user.adminData?.projectStatus;
-          if (status === "Progress") variant = "inProgress";
-          else if (status === "On Hold") variant = "onHold";
-          else if (status === "Completed") variant = "completed";
-          else if (user.adminData?.projectProgress === 100) variant = "completed";
+          let variant: ProjectStatus = "Active";
+          const statusVal = user.adminData?.projectStatus;
+          if (statusVal) variant = statusVal;
+          else if (user.adminData?.projectProgress === 100) variant = "Completed";
           
           return {
-            id: user._id,
+            _id: user._id,
             name: user.adminData?.activeProjects || "Untitled",
             repository: "N/A", // Not in adminData
             team: user.displayName || "Unknown",
             tech: "N/A", // Not in adminData
             createdAt: user.adminData?.projectStartDate || (user.createdAt ? new Date(user.createdAt).toLocaleDateString() : new Date().toLocaleDateString()),
-            status: {
-              text: status || (variant === "completed" ? "Completed" : "Active"),
-              variant: variant
-            },
+            contributors: [],
+            status: variant,
             originalData: user as User // Store full user to allow potential editing if needed
           };
         });
@@ -73,7 +71,7 @@ const ProjectDataDemo = () => {
   }, []);
 
   const handleEditClick = (project: Project) => {
-    setProjectToEdit(project.originalData);
+    setProjectToEdit(project.originalData || null);
     setIsEditDialogOpen(true);
   };
 
@@ -99,10 +97,11 @@ const ProjectDataDemo = () => {
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const techMatch = techFilter === "" || project.tech.toLowerCase().includes(techFilter.toLowerCase());
-      const statusMatch = statusFilter === "all" || project.status.variant === statusFilter;
+      const statusMatch = statusFilter === "all" || project.status === statusFilter;
       return techMatch && statusMatch;
     });
   }, [projects, techFilter, statusFilter]);
+
 
   const toggleColumn = (column: keyof Project) => {
     setVisibleColumns((prev) => {
@@ -189,9 +188,10 @@ const ProjectDataDemo = () => {
         {/* Table */}
         <ProjectDataTable 
           projects={filteredProjects} 
-          visibleColumns={visibleColumns} 
+          visibleColumns={visibleColumns as any} 
           onEdit={handleEditClick}
         />
+
 
         {/* Edit Dialog */}
         <EditProjectDataDialog
