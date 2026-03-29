@@ -6,6 +6,9 @@ import { type User, updateUser } from "@/lib/api";
 import { EditProjectDialog } from "@/components/ui/edit-project-dialog";
 import { AnalyticsView } from "@/components/ui/analytics-view";
 import { ProfileView } from "@/components/ui/ProfileView";
+import { UsersView } from "@/components/ui/users-view";
+import { ConsultationsView } from "@/components/ui/consultations-view";
+import { ScheduleView } from "@/components/ui/schedule-view";
 
 interface AdminAgent {
   email: string;
@@ -90,6 +93,19 @@ export const Demo = ({ onBack, user, onUserUpdated, onLogout, adminAgent }: Demo
       case "profile":
         return <ProfileView adminAgent={adminAgent || null} />;
 
+      case "users":
+        return (
+          <UsersView 
+             onViewProject={(targetUser) => {
+               onUserUpdated(targetUser);
+               setActiveView("dashboard");
+             }} 
+          />
+        );
+      case "consultations":
+        return <ConsultationsView />;
+      case "schedule":
+        return <ScheduleView />;
       default:
         return (
           <>

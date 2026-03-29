@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Us - mKavs Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- MAIN TOOLBAR (Fixed on top, split layout for mobile) -->
+    <nav id="main-toolbar"
+        class="absolute top-0 left-0 right-0 p-2 pt-4 w-full bg-transparent z-[70] transform transition-transform duration-700 ease-out">
+        <div
+            class="max-w-7xl mx-auto flex justify-center items-center overflow-x-auto whitespace-nowrap no-scrollbar px-2">
+
+            <!-- Links & Icon -->
+            <div
+                class="flex items-center space-x-4 text-[10px] sm:text-xs font-medium text-white uppercase tracking-wider">
+                <a href="../index.html" class="hover:text-[#c7f908] transition-colors">Home</a>
+                <a href="../about/about.html" class="hover:text-[#c7f908] transition-colors">About</a>
+                <a href="../brandpg/brnd.html" class="hover:text-[#c7f908] transition-colors">Branding</a>
+                <a href="../pricingpage/pricing.html" class="hover:text-[#c7f908] transition-colors">Pricing</a>
+                <a href="#" class="hover:text-[#c7f908] transition-colors">Book Us</a>
+
+                <!-- Profile Icon -->
+                <a href="../profile/profile.html" class="hover:text-[#c7f908] transition-colors text-base ml-2">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+
+        <main class="split-layout">
+            <!-- Left Panel -->
+            <section class="info-panel">
+                <h1 class="headline">
+                    WE ONLY TAKE<br>
+                    <span>4 PROJECTS</span>
+                    PER MONTH
+                </h1>
+
+                <div class="info-content">
+                    <p><strong>Quality over Quantity.</strong><br>
+                        We're not a factory; we're a creative studio.</p>
+
+                    <p>To give every brand the attention it truly deserves, we limit ourselves to just 4 projects per
+                        month.</p>
+
+                    <p>This means:</p>
+                    <ul class="info-list">
+                        <li>Deeper focus</li>
+                        <li>Smarter strategy</li>
+                        <li>Stronger design</li>
+                        <li>Faster communication</li>
+                    </ul>
+
+                    <p>And a final product that doesn't feel rushed, recycled, or "just another website."</p>
+
+                    <p>If we work together, your project gets priority treatment.<br>
+                        Pure creativity. No shortcuts. No copy-paste templates.</p>
+                </div>
+            </section>
+
+            <!-- Right Panel -->
+            <section class="form-panel">
+                <div class="form-header">
+                    <h2 class="form-label" style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--accent-color);">
+                        Book Your Slot</h2>
+                </div>
+
+                <form class="booking-form" id="bookingForm" onsubmit="event.preventDefault();">
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label class="form-label">What's your name?</label>
+                        <div class="form-input-container">
+                            <input type="text" id="name" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <div class="form-input-container">
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="form-input-container">
+                            <input type="tel" id="phone">
+                        </div>
+                    </div>
+
+                    <!-- Discord (Radio) -->
+                    <div class="form-group">
+                        <label class="form-label">Do you have Discord?</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="discord" value="yes">
+                                <span class="radio-label">Yes</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="discord" value="no">
+                                <span class="radio-label">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contact Preference (Radio) -->
+                    <div class="form-group" id="connect-preference-group" style="display: none;">
+                        <label class="form-label" style="margin-bottom: 20px;">Where do you prefer to connect?</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="connect" value="discord">
+                                <span class="radio-label">Discord</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="connect" value="meet">
+                                <span class="radio-label">Google Meet</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Selected Plan (Radio) -->
+                    <div class="form-group">
+                        <label class="form-label">Selected Plan</label>
+                        <div class="radio-group"
+                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <label>
+                                <input type="radio" name="plan" value="tier1">
+                                <span class="radio-label" style="display: block; text-align: center;">Tier 1 –
+                                    Starter</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="plan" value="tier2">
+                                <span class="radio-label" style="display: block; text-align: center;">Tier 2 –
+                                    Growth</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="plan" value="tier3">
+                                <span class="radio-label" style="display: block; text-align: center;">Tier 3 –
+                                    Business</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="plan" value="tier4">
+                                <span class="radio-label" style="display: block; text-align: center;">Tier 4 –
+                                    E-Com</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Project Info -->
+                    <div class="form-group">
+                        <label class="form-label">Tell us a bit about your project</label>
+                        <div class="form-input-container">
+                            <textarea rows="2" id="projectInfo"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">Send Request</button>
+                </form>
+                <script>
+                    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+                        e.preventDefault();
+
+                        const btn = document.getElementById('submitBtn');
+                        const originalBtnText = btn.innerText;
+                        btn.disabled = true;
+                        btn.innerText = 'Sending...';
+
+                        const formData = {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value,
+                            phone: document.getElementById('phone').value,
+                            discord: document.querySelector('input[name="discord"]:checked')?.value || 'Not specified',
+                            connectPreference: document.querySelector('input[name="connect"]:checked')?.value || 'Not specified',
+                            plan: document.querySelector('input[name="plan"]:checked')?.value || 'Not specified',
+                            projectInfo: document.getElementById('projectInfo').value
+                        };
+
+                        try {
+                            const response = await fetch('/api/send-consultation', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formData)
+                            });
+
+                            const result = await response.json();
+
+                            // Reset button state immediately after response
+                            btn.disabled = false;
+                            btn.innerText = originalBtnText;
+
+                            if (response.ok) {
+                                // Show Modal instead of alert
+                                const modal = document.getElementById('thankYouModal');
+                                modal.classList.add('show');
+                                this.reset();
+                            } else {
+                                alert('Error: ' + (result.message || 'Failed to send request.'));
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            // Reset on error too
+                            btn.disabled = false;
+                            btn.innerText = originalBtnText;
+                            alert('An error occurred while sending your request. Please try again.');
+                        }
+                    });
+
+                    // Logic to show/hide connection preference based on Discord selection
+                    const discordRadios = document.querySelectorAll('input[name="discord"]');
+                    const connectPrefGroup = document.getElementById('connect-preference-group');
+
+                    discordRadios.forEach(radio => {
+                        radio.addEventListener('change', (e) => {
+                            if (e.target.value === 'yes') {
+                                connectPrefGroup.style.display = 'block';
+                            } else {
+                                connectPrefGroup.style.display = 'none';
+                            }
+                        });
+                    });
+                </script>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer Section (Added) -->
+    <section class="relative w-full bg-[#181818] overflow-hidden mt-10">
+        <div class="relative w-full flex flex-col justify-between">
+            <!-- Footer Full Width -->
+            <div class="relative w-full h-[300px] bg-[#0C1AC1]">
+                <div class="absolute top-[0px] left-0 right-0 p-5 bg-transparent text-center">
+                    <h2 class="text-2xl font-extrabold tracking-widest text-white uppercase drop-shadow-md">
+                        JOIN OUR COMMUNITY
+                    </h2>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 h-[70%] bg-[#C7F908]" style="
+                    border-top-left-radius: 50% 50px; 
+                    border-top-right-radius: 50% 50px;
+                    box-shadow: inset 0 10px 15px -10px rgba(0, 0, 0, 0.3);
+                ">
+                    <div class="flex justify-center items-center space-x-12 pt-8">
+                        <div class="flex space-x-10 text-3xl">
+                            <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="#" class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                <i class="fa-brands fa-discord"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Footer Links -->
+                    <div
+                        class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 mt-6 text-[11px] font-bold text-[#0E0E0E] tracking-wider uppercase opacity-80">
+                        <a href="../about/about.html" class="hover:text-[#4F46E5] transition-colors">About</a>
+                        <a href="mailto:support@mkavs.com" class="hover:text-[#4F46E5] transition-colors">Contact Us</a>
+                        <a href="#" class="hover:text-[#4F46E5] transition-colors">Terms of Use</a>
+                        <a href="#" class="hover:text-[#4F46E5] transition-colors">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full text-center text-[9px] text-gray-400 font-bold py-2 bg-[#181818]">
+                &copy; COPYRIGHT MKAVS GLOBAL TECH / SUPPORT@MKAVS.COM
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <!-- Kairon Chat Widget Integration -->
+    <link rel="stylesheet" href="../chatbot/kairon-widget.css">
+    <script>window.KAIRON_BASE_PATH = "../chatbot/";</script>
+    <div id="kairon">
+        <button id="kairon-button" aria-label="Open chat">
+            <img src="../chatbot/kairon-logo.png" alt="Kairon">
+        </button>
+        <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
+            <div class="panel-header">
+                <div class="left-section">
+                    <div class="logo-placeholder">
+                        <img src="../chatbot/kairon-logo.png" alt="Logo">
+                    </div>
+                    <div class="title">Kairon</div>
+                </div>
+                <select id="agent-selector" class="agent-selector" style="display:none">
+                    <option value="" disabled selected>Talk to Agent</option>
+                    <option value="Mr.K">Mr.K</option>
+                </select>
+                <button id="kairon-close" class="close-btn" aria-label="Close chat">×</button>
+            </div>
+            <div id="kairon-messages" class="messages"></div>
+            <div class="interactive-area">
+                <div id="kairon-controls" class="kairon-controls">
+                    <div id="kairon-categories" class="kairon-categories"></div>
+                </div>
+                <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+            </div>
+            <form id="kairon-form" class="composer" autocomplete="off">
+                <input id="kairon-input" type="text" aria-label="Message" />
+                <button type="submit" aria-label="Send">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="../chatbot/kairon-widget.js"></script>
+
+    <!-- Thank You Modal -->
+    <div id="thankYouModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Thank You!</h2>
+            <p>Our team will reach out to you when we are ready.</p>
+            <button class="modal-btn" onclick="window.location.href='../../index.html'">Back to Home</button>
+        </div>
+    </div>
+</body>
+
+</html>

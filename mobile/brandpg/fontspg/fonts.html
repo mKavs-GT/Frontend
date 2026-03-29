@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (window.innerWidth > 768) {
+            window.location.replace("../../../brandpg/fontspg/fonts.html");
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <title>Font Gallery - Typography Collection</title>
+    <meta name="description"
+        content="Explore expertly curated font collections for your next creative project by mKavs">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #333333 0%, #222222 100%);
+            min-height: 100vh;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: calc(50vh - 8rem);
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @media (max-width:768px) {
+            .header {
+                min-height: calc(40vh - 6rem);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .header h1 span {
+            color: #C6FF00;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+            max-width: 600px;
+        }
+
+        .filter-section {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .filter-rows-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 0.8rem;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            justify-content: flex-start;
+        }
+
+        .filter-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-row-1 {
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .filter-row-1 {
+                justify-content: flex-start;
+            }
+        }
+
+        .filter-row-2 {
+            justify-content: center;
+            /* Removed scaling to keep consistent size */
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .filter-btn:hover {
+            border-color: #C6FF00;
+            color: #C6FF00;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #C6FF00;
+            color: #0012FF;
+            border-color: #C6FF00;
+            box-shadow: 0 0 30px rgba(198, 255, 0, 0.4);
+        }
+
+        .fonts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .font-tile {
+            position: relative;
+            min-height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .font-tile:hover {
+            transform: translateY(-8px);
+            border-color: #C6FF00;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .font-display {
+            font-size: 3rem;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.2;
+            word-wrap: break-word;
+            max-width: 100%;
+            position: relative;
+            z-index: 101;
+        }
+
+        .font-category {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+            z-index: 101;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 3rem;
+            background: #C6FF00;
+            color: #0012FF;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 30px rgba(198, 255, 0, 0.4);
+            background: white;
+            color: #0012FF;
+        }
+
+        .font-tile.hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .fonts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .font-tile {
+                padding: 1.5rem;
+                min-height: 160px;
+                gap: 1rem;
+            }
+
+            .font-display {
+                font-size: 1.5rem;
+            }
+
+            .font-category {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Like Button (Heart) */
+        .like-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        /* Adjust for mobile specific tile size */
+        @media (max-width: 600px) {
+            .like-btn {
+                top: 5px;
+                right: 5px;
+            }
+            .like-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .like-btn:hover {
+            color: #C6FF00;
+            transform: scale(1.2);
+        }
+
+        .like-btn.active {
+            color: #C6FF00;
+        }
+        
+        .like-btn.active svg {
+            fill: currentColor;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #C6FF00;
+            color: #0012FF;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            z-index: 2000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(198, 255, 0, 0.5);
+            opacity: 0;
+            text-transform: uppercase;
+            width: max-content;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        /* ===== PROFILE LINK ===== */
+        .profile-link {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            z-index: 100;
+            font-size: 2rem;
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.8;
+        }
+
+        .profile-link:hover {
+            color: #C6FF00;
+            transform: scale(1.1);
+            opacity: 1;
+            filter: drop-shadow(0 0 10px rgba(198, 255, 0, 0.5));
+        }
+
+        @media (max-width: 768px) {
+            .profile-link {
+                top: 1.5rem;
+                right: 1.5rem;
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Sans Serif Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abel&family=Archivo:wght@400;700&family=Archivo+Narrow&family=Arimo&family=Asap&family=Assistant&family=Barlow:wght@400;700&family=Barlow+Condensed&family=Cabin&family=Cairo&family=Catamaran&family=Cuprum&family=DM+Sans&family=Didact+Gothic&family=Dosis&family=Exo+2&family=Fjalla+One&family=Francois+One&family=Heebo&family=Hind&family=IBM+Plex+Sans&family=Inter:wght@400;700&family=Istok+Web&family=Josefin+Sans&family=Kanit&family=Karla&family=Lato:wght@400;700&family=Libre+Franklin&family=Manrope&family=Maven+Pro&family=Merriweather+Sans&family=Montserrat:wght@400;700&family=Mukta&family=Mulish&family=Noto+Sans&family=Nunito&family=Nunito+Sans&family=Open+Sans:wght@400;700&family=Oswald&family=Oxygen&family=PT+Sans&family=PT+Sans+Narrow&family=Pathway+Gothic+One&family=Poppins:wght@400;700&family=Prompt&family=Public+Sans&family=Quicksand&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Rubik&family=Slabo+27px&family=Source+Sans+Pro&family=Teko&family=Titillium+Web&family=Ubuntu:wght@400;700&family=Work+Sans&family=Yanone+Kaffeesatz&display=swap"
+        rel="stylesheet">
+    <!-- Serif Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alice&family=Amiri&family=Arvo:wght@400;700&family=Bitter&family=Bree+Serif&family=Cardo&family=Caudex&family=Cinzel&family=Coda&family=Cormorant+Garamond&family=Crete+Round&family=Crimson+Text&family=Domine&family=EB+Garamond&family=Frank+Ruhl+Libre&family=Gentium+Basic&family=Josefin+Slab&family=Kameron&family=Ledger&family=Libre+Baskerville&family=Lora:wght@400;700&family=Lusitana&family=Lustria&family=Merriweather:wght@400;700&family=Neuton&family=Noto+Serif&family=Old+Standard+TT&family=Patua+One&family=Petrona&family=Playfair+Display:wght@400;700&family=PT+Serif&family=Roboto+Slab&family=Rokkitt&family=Sanchez&family=Slabo+13px&family=Sorts+Mill+Goudy&family=Spectral&family=Tinos&family=Vidaloka&family=Vollkorn&display=swap"
+        rel="stylesheet">
+    <!-- Display, Script, Handwriting, Mono Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Amatic+SC:wght@400;700&family=Anonymous+Pro&family=Anton&family=Audiowide&family=Bad+Script&family=Baloo+2&family=Bangers&family=Bebas+Neue&family=Black+Ops+One&family=Bungee&family=Carter+One&family=Caveat&family=Cedarville+Cursive&family=Chewy&family=Comfortaa&family=Cookie&family=Courier+Prime&family=Covered+By+Your+Grace&family=Creepster&family=Cutive+Mono&family=Damion&family=Dancing+Script&family=Fira+Code&family=Fira+Mono&family=Fontdiner+Swanky&family=Fredericka+the+Great&family=Fredoka+One&family=Gloria+Hallelujah&family=Gochi+Hand&family=Great+Vibes&family=Gruppo&family=Handlee&family=Homemade+Apple&family=IBM+Plex+Mono&family=Inconsolata&family=Indie+Flower&family=Just+Another+Hand&family=Kaushan+Script&family=Lobster&family=Love+Ya+Like+A+Sister&family=Luckiest+Guy&family=Monoton&family=Mr+Dafoe&family=Neucha&family=Nothing+You+Could+Do&family=Nova+Mono&family=Orbitron&family=Over+the+Rainbow&family=Overpass+Mono&family=Oxygen+Mono&family=Pacifico&family=Parisienne&family=Passion+One&family=Patrick+Hand&family=Paytone+One&family=Permanent+Marker&family=Pinyon+Script&family=Press+Start+2P&family=PT+Mono&family=Reenie+Beanie&family=Righteous&family=Roboto+Mono&family=Rock+Salt&family=Russo+One&family=Sacramento&family=Satisfy&family=Shadows+Into+Light&family=Share+Tech+Mono&family=Sigmar+One&family=Source+Code+Pro&family=Space+Mono&family=Special+Elite&family=Syncopate&family=Tangerine&family=Ubuntu+Mono&family=Ultra&family=Unica+One&family=VT323&family=Walter+Turncoat&family=Yellowtail&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <a href="../../../index.html" class="nav-logo"
+            style="position: absolute; top: 1.5rem; left: 1.5rem; z-index: 10; display: block;">
+            <img src="../../../images/MKAVS.png" alt="MKAVS" style="height: 32px; width: auto;">
+        </a>
+
+        <!-- Profile Icon -->
+        <a href="../../../profile/profile.html" class="profile-link">
+            <i class="fa-solid fa-circle-user"></i>
+        </a>
+        <div class="header">
+            <h1>LET'S <span style="color: #C6FF00;">TYPOGRAPHY</span></h1>
+            <p>Curated fonts that match your vibe.</p>
+        </div>
+        <div class="filter-section">
+            <div class="filter-rows-container">
+                <!-- Row 1 -->
+                <div class="filter-row filter-row-1">
+                    <button class="filter-btn active" data-category="All">All</button>
+                    <button class="filter-btn" data-category="Sans-serif">Sans</button>
+                    <button class="filter-btn" data-category="Serif">Serif</button>
+                    <button class="filter-btn" data-category="Display">Display</button>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="filter-row filter-row-2">
+                    <button class="filter-btn" data-category="Script">Script</button>
+                    <button class="filter-btn" data-category="Handwriting">Hand</button>
+                    <button class="filter-btn" data-category="Monospace">Mono</button>
+                    <button class="filter-btn" data-category="Favorites">Fav</button>
+                </div>
+            </div>
+        </div>
+        <div class="fonts-grid" id="font-grid"></div>
+        <div style="text-align:center;">
+            <a href="../brnd.html" class="back-link">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    style="margin-right: 8px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Brand Page
+            </a>
+        </div>
+    </div>
+
+
+    <script src="../../../brandpg/fontspg/fonts_data.js"></script>
+    <script src="../../../brandpg/fontspg/script.js"></script>
+    <!-- Kairon Chat Widget Integration -->
+    <link rel="stylesheet" href="../../chatbot/kairon-widget.css">
+    <script>window.KAIRON_BASE_PATH = "../../chatbot/";</script>
+    <div id="kairon">
+        <button id="kairon-button" aria-label="Open chat">
+            <img src="../../chatbot/kairon-logo.png" alt="Kairon">
+        </button>
+        <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
+            <div class="panel-header">
+                <div class="left-section">
+                    <div class="logo-placeholder">
+                        <img src="../../chatbot/kairon-logo.png" alt="Logo">
+                    </div>
+                    <div class="title">Kairon</div>
+                </div>
+                <select id="agent-selector" class="agent-selector" style="display:none">
+                    <option value="" disabled selected>Talk to Agent</option>
+                    <option value="Mr.K">Mr.K</option>
+                </select>
+                <button id="kairon-close" class="close-btn" aria-label="Close chat">×</button>
+            </div>
+            <div id="kairon-messages" class="messages"></div>
+            <div class="interactive-area">
+                <div id="kairon-controls" class="kairon-controls">
+                    <div id="kairon-categories" class="kairon-categories"></div>
+                </div>
+                <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+            </div>
+            <form id="kairon-form" class="composer" autocomplete="off">
+                <input id="kairon-input" type="text" aria-label="Message" />
+                <button type="submit" aria-label="Send">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="../../chatbot/kairon-widget.js"></script>
+</body>
+
+</html>

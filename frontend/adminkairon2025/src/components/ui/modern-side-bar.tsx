@@ -9,6 +9,9 @@ import {
   ChevronLeft, 
   ChevronRight,
   BarChart3,
+  Users,
+  MessageSquare,
+  Calendar
 } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -38,6 +41,9 @@ interface SidebarProps {
 // Updated navigation items - remove logout from here
 const navigationItems: NavigationItem[] = [
   { id: "dashboard", name: "Dashboard", icon: Home, href: "/dashboard" },
+  { id: "users", name: "Users", icon: Users, href: "/users" },
+  { id: "consultations", name: "Consultations", icon: MessageSquare, href: "/consultations" },
+  { id: "schedule", name: "Schedule", icon: Calendar, href: "/schedule" },
   { id: "analytics", name: "Analytics", icon: BarChart3, href: "/analytics" },
   { id: "profile", name: "Profile", icon: User, href: "/profile" },
 ];

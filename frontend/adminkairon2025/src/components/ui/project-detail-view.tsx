@@ -11,7 +11,10 @@ import {
   ArrowRight,
   FileText,
   Plus,
-  Trash2
+  Trash2,
+  Palette,
+  Type,
+  MessageSquare
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -74,6 +77,7 @@ export type ProjectDetailViewProps = {
   onEdit?: () => void;
   userEmail?: string;
   onUserUpdated?: (user: User) => void;
+  userData?: User;
 };
 
 // Helper component for status badges
@@ -121,7 +125,8 @@ export function ProjectDetailView({
   onBack,
   onEdit,
   userEmail,
-  onUserUpdated
+  onUserUpdated,
+  userData
 }: ProjectDetailViewProps) {
   const [isTaskDialogOpen, setIsTaskDialogOpen] = React.useState(false);
   const [taskDialogMode, setTaskDialogMode] = React.useState<"add" | "edit">("add");
@@ -336,10 +341,67 @@ export function ProjectDetailView({
                 </div>
             </motion.div>
 
+            {/* Extra User Info Layer */}
+            {userData && (
+               <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-border">
+                  {/* Fav Palettes */}
+                  <div className="space-y-3">
+                     <div className="flex items-center gap-2">
+                        <Palette className="w-4 h-4 text-purple-500" />
+                        <h4 className="font-semibold text-sm">Favorite Palettes</h4>
+                     </div>
+                     <div className="flex flex-wrap gap-2">
+                       {userData.favoritePalettes && userData.favoritePalettes.length > 0 ? (
+                         userData.favoritePalettes.map(p => (
+                             <Badge key={p} variant="outline" className="bg-purple-500/10 text-purple-400 border-purple-500/30">
+                               {p}
+                             </Badge>
+                         ))
+                       ) : <span className="text-xs text-muted-foreground italic">None selected</span>}
+                     </div>
+                  </div>
+
+                  {/* Fav Fonts */}
+                  <div className="space-y-3">
+                     <div className="flex items-center gap-2">
+                        <Type className="w-4 h-4 text-pink-500" />
+                        <h4 className="font-semibold text-sm">Favorite Fonts</h4>
+                     </div>
+                     <div className="flex flex-wrap gap-2">
+                       {userData.favoriteFonts && userData.favoriteFonts.length > 0 ? (
+                         userData.favoriteFonts.map(f => (
+                             <Badge key={f} variant="outline" className="bg-pink-500/10 text-pink-400 border-pink-500/30">
+                               {f}
+                             </Badge>
+                         ))
+                       ) : <span className="text-xs text-muted-foreground italic">None selected</span>}
+                     </div>
+                  </div>
+
+                  {/* Consultations */}
+                  <div className="space-y-3 md:border-l md:border-border md:pl-6 border-t md:border-t-0 pt-4 md:pt-0">
+                     <div className="flex items-center gap-2">
+                        <MessageSquare className="w-4 h-4 text-green-500" />
+                        <h4 className="font-semibold text-sm">Consutations History</h4>
+                     </div>
+                     <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
+                       {userData.consultations && userData.consultations.length > 0 ? (
+                         [...userData.consultations].reverse().map((c, i) => (
+                             <div key={i} className="p-2 bg-muted/40 rounded border border-border text-xs">
+                               <div className="font-medium text-foreground mb-1">{c.plan || "General Request"}</div>
+                               <div className="text-muted-foreground mb-1">{new Date(c.timestamp).toLocaleDateString()}</div>
+                               {c.projectInfo && <div className="truncate text-muted-foreground/70">"{c.projectInfo}"</div>}
+                             </div>
+                         ))
+                       ) : <span className="text-xs text-muted-foreground italic">No booking requests</span>}
+                     </div>
+                  </div>
+               </motion.div>
+            )}
 
             
             {/* Task List Section */}
-            <motion.div variants={itemVariants} className="space-y-4">
+            <motion.div variants={itemVariants} className="space-y-4 pt-4 border-t border-border">
                 <div className="flex justify-between items-center">
                     <h3 className="font-semibold">Task List</h3>
                     <Button onClick={handleAddTask} size="sm" className="gap-2">

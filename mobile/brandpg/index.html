@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MKAVS - Branding</title>
+  <!-- Circular Favicon -->
+  <link rel="icon" type="image/png" href="../../../images/LOGOI.png">
+  <style>
+    #main-toolbar.nav-scrolled {
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(8px);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<body>
+  <!-- MAIN TOOLBAR (Fixed on top) -->
+  <nav id="main-toolbar"
+    class="fixed top-0 left-0 right-0 p-2 pt-4 md:p-4 md:pt-7 w-full bg-transparent z-[70] transition-all duration-300 ease-out">
+    <div class="flex justify-between items-center max-w-7xl mx-auto">
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <!-- Logo/Home links -->
+          <a href="../index.html" id="toolbar-home-link"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Home</a>
+          <a href="../about/about.html" class="text-lg text-white hover:text-[#c7f908] transition-colors">About</a>
+          <a href="../index.html#our-works" class="text-lg text-white hover:text-[#c7f908] transition-colors">Our
+            Work</a>
+        </div>
+      </div>
+      <button class="md:hidden text-lg ml-auto pointer-events-auto text-white">&#x2261;</button>
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <a href="../pricingpage/pricing.html" target="_blank"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Pricing</a>
+          <a href="../consult/consult.html" target="_blank"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Book Us</a>
+          <!-- Login Button Styled -->
+          <a href="../loginpg/login.html"
+            class="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">Login</a>
+        </div>
+        <div class="flex space-x-4 text-xl">
+          <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-discord"></i></a>
+          <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div id="root" class="min-h-screen"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('main-toolbar');
+      if (window.scrollY > 20) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+
+</html>

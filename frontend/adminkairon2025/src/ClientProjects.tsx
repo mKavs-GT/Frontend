@@ -16,6 +16,9 @@ import { AnalyticsView } from "@/components/ui/analytics-view";
 import { ProfileView } from "@/components/ui/ProfileView";
 import { fetchUsers, type User } from "@/lib/api";
 import ProjectDataDemo from "@/ProjectDataDemo";
+import { UsersView } from "@/components/ui/users-view";
+import { ConsultationsView } from "@/components/ui/consultations-view";
+import { ScheduleView } from "@/components/ui/schedule-view";
 
 interface AdminAgent {
   email: string;
@@ -132,6 +135,18 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
     
     if (currentView === "profile") {
       return <ProfileView adminAgent={adminAgent || null} />;
+    }
+    
+    if (currentView === "users") {
+      return <UsersView onViewProject={onViewProject} />;
+    }
+    
+    if (currentView === "consultations") {
+      return <ConsultationsView />;
+    }
+    
+    if (currentView === "schedule") {
+      return <ScheduleView />;
     }
 
     

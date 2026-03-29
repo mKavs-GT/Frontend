@@ -6,6 +6,17 @@ export interface User {
   phone?: string;
   country?: string;
   createdAt?: string;
+  favoritePalettes?: string[];
+  favoriteFonts?: string[];
+  consultations?: {
+    name: string;
+    phone?: string;
+    discord?: string;
+    connectPreference?: string;
+    plan?: string;
+    projectInfo?: string;
+    timestamp: string;
+  }[];
   adminData?: {
     activeProjects?: string;
     projectProgress?: number;

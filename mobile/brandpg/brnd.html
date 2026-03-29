@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spline-project (redirect)</title>
+  <!-- Redirect to the built static site so Live Server serves the production bundle -->
+  <meta http-equiv="refresh" content="0;url=./brnd_static/index.html">
+  <script>
+    // Fallback JS redirect
+    try {
+      if (location.pathname.endsWith('/brnd.html') || location.pathname.endsWith('/brnd')) {
+        location.replace('./brnd_static/index.html');
+      }
+    } catch (e) {
+      // ignore
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Clean redirect page -->
+</body>
+
+</html>
