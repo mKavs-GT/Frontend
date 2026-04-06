@@ -1,6 +1,14 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { User, Mail, Shield, Code2, Sparkles, Coffee, Bug, Moon } from "lucide-react";
-import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { User, Mail, Phone, Building, Briefcase, MapPin, Calendar, Clock, Play, Square, CheckCircle2, Circle, AlertCircle } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
+// Image Imports
+import mraImg from '../../images/mra.png';
+import mrkImg from '../../images/mrk.png';
+import mrmImg from '../../images/mrm.png';
+import mrssImg from '../../images/mrss.png';
+import mrvImg from '../../images/mrv.png';
+import mrzImg from '../../images/mrz.png';
 
 interface AdminAgent {
   email: string;
@@ -13,17 +21,19 @@ interface AgentProfile {
   displayName: string;
   role: string;
   title: string;
-  description: string[];
-  quote: string;
-  email?: string;
+  email: string;
+  phone: string;
+  company: string;
   image: string;
-  funFacts: {
-    coffee: string;
-    bugs: string;
-    lateNights: string;
-  };
   specialization: string;
-  skills: string[];
+  hireDate: string;
+  employeeId: string;
+  ssn: string;
+  birthDate: string;
+  address: string;
+  city: string;
+  jobType: string;
+  department: string;
 }
 
 interface ProfileViewProps {
@@ -33,557 +43,707 @@ interface ProfileViewProps {
 const agentProfiles: Record<string, AgentProfile> = {
   "MRK": {
     name: "MRK",
-    displayName: "Meet MR K",
+    displayName: "MR. K",
     role: "Founder",
     title: "FOUNDER",
-    description: [
-      "If there's one person who can take your wild idea, debug your dreams, and still ship a website that looks like it walked out of a sci-fi movie, it's Mr K — our full-stack developer, creative nitpicker, and unofficial electrician because he \"fixes everything\"",
-      "From front-end magic (React, GSAP, Framer Motion) to backend wizardry (Node, Express, database sorcery), he's the guy who makes sure everything runs smooth… even when the WiFi doesn't.",
-      "With over 40+ projects crafted this year, he's turned late-night coffees and questionable life choices into high-performing websites loved by clients everywhere. He doesn't just build websites — he builds experiences, brands, and occasional \"wow how the hell did you do that?\" moments."
-    ],
-    quote: "Building digital experiences that make people say 'wow, how did you do that?'",
-    image: "/founder.png",
-    funFacts: {
-      coffee: "2,847",
-      bugs: "1,293",
-      lateNights: "156"
-    },
+    email: "mrk@mkavs.com",
+    phone: "+1 (555) 123-4567",
+    company: "MKAVS Studio",
+    image: mrkImg,
     specialization: "Full-Stack",
-    skills: ["React", "Node.js", "GSAP", "Framer Motion", "Express", "MongoDB"]
+    hireDate: "August 28, 2020",
+    employeeId: "1156",
+    ssn: "XXX-XX-3561",
+    birthDate: "12/12/90",
+    address: "123 Creative Lane",
+    city: "Seattle, WA",
+    jobType: "Full-Time",
+    department: "Engineering"
   },
   "MRV": {
     name: "MRV",
     displayName: "MR. V",
     role: "CTO & Admin",
     title: "CTO & ADMIN",
-    description: [
-      "The engine that drives this studio forward. Leading with strategic vision and technical excellence to deliver cutting-edge solutions.",
-      "Cutting through the noise of generic web design to deliver something fresher and cleaner.",
-      "Focused on building unforgettable digital futures by stopping to play it safe and starting to build bold experiences."
-    ],
-    quote: "I oversee the engine that drives this studio forward. We cut through the noise of generic web design to deliver something fresher and cleaner. Let's stop playing it safe and start building your unforgettable digital future.",
-    image: "/mrv.png",
-    funFacts: {
-      coffee: "4,521",
-      bugs: "2,847",
-      lateNights: "298"
-    },
+    email: "mrv@mkavs.com",
+    phone: "+1 (555) 987-6543",
+    company: "MKAVS Studio",
+    image: mrvImg,
     specialization: "Architecture",
-    skills: ["Leadership", "System Design", "Cloud", "DevOps", "Strategy", "Management"]
+    hireDate: "May 15, 2021",
+    employeeId: "1203",
+    ssn: "XXX-XX-4892",
+    birthDate: "05/08/88",
+    address: "456 Tech Blvd",
+    city: "Austin, TX",
+    jobType: "Full-Time",
+    department: "Management"
   },
   "MRS": {
     name: "MRS",
     displayName: "MRS. S",
     role: "Senior Designer",
     title: "SENIOR DESIGNER",
-    description: [
-      "Design is about identity — a visual language that feels elite and intentional.",
-      "Bringing personality and energy back into brands, ensuring every pixel serves a purpose and every layout tells a story.",
-      "Crafting visual experiences that resonate with audiences and elevate brand presence."
-    ],
-    quote: "Design is about identity, a visual language that feels elite and intentional. I'm here to bring personality and energy back into your brand, ensuring every pixel serves a purpose and every layout tells a story.",
-    image: "/mrss.png",
-    funFacts: {
-      coffee: "3,145",
-      bugs: "892",
-      lateNights: "187"
-    },
+    email: "mrss@mkavs.com",
+    phone: "+1 (555) 456-7890",
+    company: "MKAVS Studio",
+    image: mrssImg,
     specialization: "UI/UX Design",
-    skills: ["Figma", "Adobe XD", "Branding", "UI Design", "UX Research", "Prototyping"]
+    hireDate: "January 10, 2022",
+    employeeId: "1352",
+    ssn: "XXX-XX-1234",
+    birthDate: "03/24/92",
+    address: "789 Design Ave",
+    city: "New York, NY",
+    jobType: "Full-Time",
+    department: "Design"
   },
   "MRM": {
     name: "MRM",
     displayName: "MR. M",
     role: "Senior Developer",
     title: "SENIOR DEVELOPER",
-    description: [
-      "Ensuring that every site is robust, scalable, and powerful. Good development is the backbone of an unforgettable digital experience.",
-      "Building websites with precision and logic, focusing on performance and reliability.",
-      "Transforming architectural plans into solid, maintainable codebases that stand the test of time."
-    ],
-    quote: "Ensuring that every site is robust, scalable, and powerful. Good development is the backbone of an unforgettable digital experience. I make sure your website is built with precision and logic.",
-    image: "/mrm.png",
-    funFacts: {
-      coffee: "3,892",
-      bugs: "2,145",
-      lateNights: "234"
-    },
+    email: "mrm@mkavs.com",
+    phone: "+1 (555) 234-5678",
+    company: "MKAVS Studio",
+    image: mrmImg,
     specialization: "Backend",
-    skills: ["Python", "Django", "PostgreSQL", "API Design", "Microservices", "Security"]
+    hireDate: "September 05, 2021",
+    employeeId: "1290",
+    ssn: "XXX-XX-8765",
+    birthDate: "11/15/89",
+    address: "321 Backend St",
+    city: "San Francisco, CA",
+    jobType: "Full-Time",
+    department: "Engineering"
   },
   "MRA": {
     name: "MRA",
     displayName: "MR. A",
     role: "Frontend Developer",
     title: "FRONTEND DEVELOPER",
-    description: [
-      "Bringing the design to life through fluid animations and seamless interactions.",
-      "Bridging the gap between static art and human experience through cutting-edge frontend development.",
-      "Creating engaging user interfaces that feel alive and responsive to every interaction."
-    ],
-    quote: "Bringing the design to life through fluid animations and seamless interactions. I bridge the gap between static art and human experience.",
-    image: "/mra.png",
-    funFacts: {
-      coffee: "2,654",
-      bugs: "1,567",
-      lateNights: "178"
-    },
+    email: "mra@mkavs.com",
+    phone: "+1 (555) 876-5432",
+    company: "MKAVS Studio",
+    image: mraImg,
     specialization: "Frontend",
-    skills: ["React", "TypeScript", "Three.js", "WebGL", "CSS", "Animations"]
+    hireDate: "March 20, 2023",
+    employeeId: "1489",
+    ssn: "XXX-XX-5678",
+    birthDate: "07/30/95",
+    address: "654 Frontend Blvd",
+    city: "Chicago, IL",
+    jobType: "Full-Time",
+    department: "Engineering"
+  },
+  "MRZ": {
+    name: "MRZ",
+    displayName: "MR. Z",
+    role: "Creative Tech",
+    title: "CREATIVE TECH",
+    email: "mrz@mkavs.com",
+    phone: "+1 (555) 345-6789",
+    company: "MKAVS Studio",
+    image: mrzImg,
+    specialization: "Creative Code",
+    hireDate: "July 12, 2022",
+    employeeId: "1405",
+    ssn: "XXX-XX-9012",
+    birthDate: "09/18/93",
+    address: "987 Code Lane",
+    city: "Los Angeles, CA",
+    jobType: "Full-Time",
+    department: "Creative"
   }
 };
 
-export function ProfileView({ adminAgent }: ProfileViewProps) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+// Extracted Agent matching logic
+function getAgentKey(adminAgent: AdminAgent | null): string {
+  let agentKey = "MRK";
+  if (!adminAgent) return agentKey;
 
-  // Smooth springs for tilt/parallax
-  const springConfig = { damping: 20, stiffness: 100 };
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [10, -10]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-10, 10]), springConfig);
+  if (adminAgent.name) {
+    const exactName = adminAgent.name.toUpperCase().trim();
+    if (agentProfiles[exactName]) {
+      return exactName;
+    } else {
+      const nameKey = exactName.substring(0, 3);
+      if (agentProfiles[nameKey]) return nameKey;
+    }
+  }
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      const x = clientX - innerWidth / 2;
-      const y = clientY - innerHeight / 2;
-      mouseX.set(x);
-      mouseY.set(y);
+  if (adminAgent.email) {
+    const emailMatch = adminAgent.email.match(/agent\d+(\w{3})/i);
+    if (emailMatch && emailMatch[1]) {
+      const emailKey = emailMatch[1].toUpperCase();
+      if (agentProfiles[emailKey]) return emailKey;
+    }
+  }
+
+  if (adminAgent.role) {
+    const roleMap: Record<string, string> = {
+      'founder': 'MRK',
+      'cto': 'MRV',
+      'designer': 'MRS',
+      'senior developer': 'MRM',
+      'frontend developer': 'MRA',
+      'creative': 'MRZ',
+      'backend': 'MRM',
+      'frontend': 'MRA',
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  // Get profile based on admin agent - try multiple detection methods
-  let agentKey = "MRK"; // Default to founder
-  
-  console.log("🔍 ProfileView - adminAgent received:", adminAgent);
-  
-  if (adminAgent) {
-    // Method 1: Try exact match from name field
-    if (adminAgent.name) {
-      const exactName = adminAgent.name.toUpperCase().trim();
-      console.log("📝 Checking exact name:", exactName);
-      
-      // Check if it's exactly one of our agent keys
-      if (agentProfiles[exactName]) {
-        agentKey = exactName;
-        console.log("✅ Matched by exact name:", agentKey);
-      } else {
-        // Try first 3 characters
-        const nameKey = exactName.substring(0, 3);
-        console.log("📝 Checking name prefix (first 3):", nameKey);
-        if (agentProfiles[nameKey]) {
-          agentKey = nameKey;
-          console.log("✅ Matched by name prefix:", agentKey);
-        }
-      }
-    }
     
-    // Method 2: Try from email pattern (agent05mrm@gmail.com -> MRM)
-    if (agentKey === "MRK" && adminAgent.email) { // Only if not found yet
-      const emailMatch = adminAgent.email.match(/agent\d+(\w{3})/i);
-      console.log("📧 Email regex match:", emailMatch);
-      
-      if (emailMatch && emailMatch[1]) {
-        const emailKey = emailMatch[1].toUpperCase();
-        console.log("📧 Email key extracted:", emailKey);
-        
-        if (agentProfiles[emailKey]) {
-          agentKey = emailKey;
-          console.log("✅ Matched by email pattern:", agentKey);
-        }
-      }
-    }
-    
-    // Method 3: Try from role field as last resort
-    if (agentKey === "MRK" && adminAgent.role) {
-      console.log("👔 Checking role:", adminAgent.role);
-      
-      // Map common role names to agent keys
-      const roleMap: Record<string, string> = {
-        'founder': 'MRK',
-        'cto': 'MRV',
-        'designer': 'MRS',
-        'senior developer': 'MRM',
-        'frontend developer': 'MRA',
-        'backend': 'MRM',
-        'frontend': 'MRA',
-      };
-      
-      const roleLower = adminAgent.role.toLowerCase();
-      for (const [key, value] of Object.entries(roleMap)) {
-        if (roleLower.includes(key)) {
-          agentKey = value;
-          console.log("✅ Matched by role:", agentKey);
-          break;
-        }
+    const roleLower = adminAgent.role.toLowerCase();
+    for (const [key, value] of Object.entries(roleMap)) {
+      if (roleLower.includes(key)) {
+        return value;
       }
     }
   }
-  
-  console.log("🎯 Final agentKey selected:", agentKey);
+  return agentKey;
+}
+
+export function ProfileView({ adminAgent }: ProfileViewProps) {
+  const agentKey = getAgentKey(adminAgent);
   const profile = agentProfiles[agentKey] || agentProfiles["MRK"];
-  console.log("👤 Profile loaded:", profile.displayName, "-", profile.title);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.05
+  // ===============================
+  // REAL-TIME CLOCK & TIME TRACKING
+  // ===============================
+  const [isTracking, setIsTracking] = useState(false);
+  const [currentSessionElapsed, setCurrentSessionElapsed] = useState(0); // in ms
+  const [lastStart, setLastStart] = useState<number | null>(null);
+  
+  const [timeStats, setTimeStats] = useState({
+    today: 0,
+    week: 0,
+    month: 0
+  });
+
+  // Load Tracking State
+  useEffect(() => {
+    const storageKey = `time_tracking_${agentKey}`;
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        if (data.isTracking && data.lastStart) {
+          setIsTracking(true);
+          setLastStart(data.lastStart);
+          setCurrentSessionElapsed(Date.now() - data.lastStart);
+        }
+      } catch (e) {
+        console.error("Error parsing stored tracking state", e);
       }
+    }
+    calculateAggregates();
+  }, [agentKey]);
+
+  // Live Elapsed Timer
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isTracking && lastStart) {
+      interval = setInterval(() => {
+        setCurrentSessionElapsed(Date.now() - lastStart);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isTracking, lastStart]);
+
+  const calculateAggregates = () => {
+    const historyKey = `time_history_${agentKey}`;
+    const historyStored = localStorage.getItem(historyKey);
+    let history: { start: number; duration: number }[] = [];
+    if (historyStored) {
+      try {
+        history = JSON.parse(historyStored);
+      } catch (e) {}
+    }
+
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    
+    // Week start (Sunday)
+    const startOfWeek = new Date(startOfToday);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    
+    // Month start
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+
+    let todayTotal = 0;
+    let weekTotal = 0;
+    let monthTotal = 0;
+
+    history.forEach(log => {
+      if (log.start >= startOfToday) todayTotal += log.duration;
+      if (log.start >= startOfWeek.getTime()) weekTotal += log.duration;
+      if (log.start >= startOfMonth) monthTotal += log.duration;
+    });
+
+    setTimeStats({
+      today: todayTotal,
+      week: weekTotal,
+      month: monthTotal
+    });
+  };
+
+  const handleToggleTracking = () => {
+    const storageKey = `time_tracking_${agentKey}`;
+    const historyKey = `time_history_${agentKey}`;
+
+    if (isTracking) {
+      // Stop tracking
+      localStorage.removeItem(storageKey);
+      
+      // Save session to history
+      if (lastStart) {
+        const duration = Date.now() - lastStart;
+        const historyStored = localStorage.getItem(historyKey);
+        let history = historyStored ? JSON.parse(historyStored) : [];
+        history.push({ start: lastStart, duration });
+        localStorage.setItem(historyKey, JSON.stringify(history));
+      }
+      
+      setIsTracking(false);
+      setLastStart(null);
+      setCurrentSessionElapsed(0);
+      calculateAggregates();
+    } else {
+      // Start tracking
+      const startTime = Date.now();
+      localStorage.setItem(storageKey, JSON.stringify({ isTracking: true, lastStart: startTime }));
+      setIsTracking(true);
+      setLastStart(startTime);
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+  const formatMs = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+    return `${minutes}m ${seconds}s`;
   };
+
+  const formatHours = (ms: number) => {
+    const totalHours = (ms / (1000 * 60 * 60)).toFixed(1);
+    return `${totalHours}h`;
+  };
+
+  // ===============================
+  // ONLINE USERS HEARTBEAT
+  // ===============================
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const PING_INTERVAL = 5000;
+    const TIMEOUT_MS = 15000;
+    const presenceKey = "mkavs_admin_presence";
+
+    const pingPresence = () => {
+      try {
+        const stored = localStorage.getItem(presenceKey);
+        const presence = stored ? JSON.parse(stored) : {};
+        const now = Date.now();
+        
+        // Update my own presence
+        presence[agentKey] = now;
+        
+        // Clean up stale users and compute active ones
+        const active: string[] = [];
+        Object.keys(presence).forEach(key => {
+          if (now - presence[key] < TIMEOUT_MS) {
+            active.push(key);
+          } else {
+            delete presence[key];
+          }
+        });
+        
+        localStorage.setItem(presenceKey, JSON.stringify(presence));
+        setOnlineUsers(active);
+      } catch (e) {}
+    };
+
+    pingPresence();
+    const interval = setInterval(pingPresence, PING_INTERVAL);
+    
+    // Monitor localstorage events to update UI instantly when other tabs ping
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === presenceKey && e.newValue) {
+         try {
+           const presence = JSON.parse(e.newValue);
+           const now = Date.now();
+           const active = Object.keys(presence).filter(k => now - presence[k] < TIMEOUT_MS);
+           setOnlineUsers(active);
+         } catch(e) {}
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [agentKey]);
+
+
+  // Mock Onboarding Tasks
+  const onboardingTasks = [
+    { title: "Prepare workspace, software, access", assigneeId: "MRV", dueDate: "07/25/2026", done: true, attachment: "-" },
+    { title: "Meeting with Head PM", assigneeId: "MRK", dueDate: "07/26/2026", done: false, attachment: "meetingkit.zip" },
+    { title: "Project code structural review", assigneeId: "MRS", dueDate: "07/26/2026", done: false, attachment: "-" },
+    { title: "Company vision sync", assigneeId: "MRK", dueDate: "07/28/2026", done: false, attachment: "company.zip" },
+  ];
+
+  const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   return (
-    <div className="relative min-h-screen">
-      {/* Animated Background Grid & Parallax Orbs */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-20" />
-        
-        {/* Grain Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-
-        <motion.div
-          className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px]"
-          style={{
-            x: useSpring(useTransform(mouseX, [-500, 500], [50, -50])),
-            y: useSpring(useTransform(mouseY, [-500, 500], [50, -50])),
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]"
-          style={{
-            x: useSpring(useTransform(mouseX, [-500, 500], [-50, 50])),
-            y: useSpring(useTransform(mouseY, [-500, 500], [-50, 50])),
-          }}
-        />
+    <div className="min-h-screen pb-12 w-full text-zinc-100 font-sans selection:bg-blue-500/30">
+      
+      {/* Background styling for the dark/neon theme */}
+      <div className="fixed inset-0 -z-10 bg-[#060606]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(59,130,246,0.1),transparent_100%)]" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04]" />
       </div>
 
-      <motion.div
-        className="max-w-7xl mx-auto space-y-6 px-4 py-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Hero Section */}
-        <motion.div
-          variants={itemVariants}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-black/90 border border-white/10 backdrop-blur-2xl shadow-2xl"
-        >
-          {/* Animated gradient overlay */}
-          <motion.div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)"
-            }}
-            animate={{
-              backgroundPosition: ["0% 0%", "100% 100%"],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          />
+      <div className="max-w-[1400px] mx-auto space-y-6">
+        
+        {/* Top Header Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 md:p-12">
-            <motion.div 
-              className="relative group flex items-center justify-center perspective-1000"
-              style={{ rotateX, rotateY }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20 rounded-3xl blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              
-              <div className="relative w-full max-w-md aspect-square transform-gpu">
-                {/* Visual Depth Stack */}
-                <div className="absolute -inset-4 bg-white/[0.02] rounded-[40px] blur-sm border border-white/[0.05]" />
-                
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl overflow-hidden">
-                   <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,1)_0%,transparent_70%)]" />
-                </div>
+          {/* Main User Card (Takes 8 columns on large screens) */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+            className="lg:col-span-8 bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start md:items-center relative overflow-hidden"
+          >
+            {/* Subtle Neon Accents */}
+            <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px]" />
 
-                <motion.img
-                  src={profile.image}
-                  alt={profile.displayName}
-                  className="relative w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-500 z-10"
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                />
-                
-                {/* Floating badge */}
-                <motion.div
-                  className="absolute top-4 right-4 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl flex items-center gap-2 shadow-lg shadow-emerald-500/20"
-                  animate={{
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                  }}
-                >
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Online</span>
-                </motion.div>
-              </div>
-            </motion.div>
+            <div className="relative group shrink-0">
+               <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border border-zinc-700/50 bg-zinc-800 p-2 shadow-2xl relative z-10 transition-transform duration-300 group-hover:scale-105">
+                 <div className="w-full h-full rounded-full overflow-hidden relative bg-black/50">
+                   <img src={profile.image} alt={profile.displayName} className="w-full h-full object-cover object-top" />
+                 </div>
+               </div>
+               {/* Online Indicator */}
+               <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-5 h-5 bg-emerald-500 border-2 border-zinc-900 rounded-full z-20 shadow-[0_0_15px_rgba(16,185,129,0.5)] animate-pulse" />
+            </div>
 
-            {/* Info */}
-            <div className="flex flex-col justify-center space-y-6">
-              <div className="space-y-4">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-blue-200">
-                    {profile.displayName}
-                  </h1>
-                </motion.div>
-                
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="px-6 py-2.5 rounded-full text-base font-bold bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30 shadow-lg shadow-blue-900/30 backdrop-blur-xl">
-                    {profile.title}
+            <div className="flex-1 space-y-4 relative z-10 w-full">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{profile.displayName}</h1>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded font-semibold text-xs uppercase tracking-wider">
+                    Active
                   </span>
                 </div>
                 
-                <div className="flex items-center gap-2 text-zinc-400">
-                  <Mail className="w-4 h-4" />
-                  <span className="text-sm">{adminAgent?.email || "admin@mkavs.com"}</span>
+                {/* Time Tracking Widget embedded in Header for prominence */}
+                <div className="flex flex-col items-end gap-2 bg-black/40 border border-zinc-800 p-3 rounded-2xl w-full sm:w-auto">
+                   <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Current Session</p>
+                        <p className={`text-xl font-mono font-bold ${isTracking ? 'text-blue-400 animate-pulse' : 'text-zinc-300'}`}>
+                           {formatMs(currentSessionElapsed)}
+                        </p>
+                      </div>
+                      <button 
+                         onClick={handleToggleTracking}
+                         className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 shadow-lg ${
+                           isTracking 
+                            ? 'bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/30 shadow-red-500/20' 
+                            : 'bg-emerald-500 text-black hover:bg-emerald-400 shadow-emerald-500/20'
+                         }`}
+                      >
+                         {isTracking ? <Square fill="currentColor" className="w-5 h-5" /> : <Play fill="currentColor" className="w-5 h-5 ml-1" />}
+                      </button>
+                   </div>
                 </div>
               </div>
 
-              {/* Quote with better styling */}
-              <div className="relative pl-6 py-6 rounded-2xl bg-gradient-to-br from-blue-950/30 to-purple-950/30 border-l-4 border-blue-500/50">
-                <Sparkles className="absolute top-6 left-2 w-4 h-4 text-blue-400 opacity-50" />
-                <blockquote className="text-lg text-zinc-300 italic leading-relaxed">
-                  "{profile.quote}"
-                </blockquote>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 pt-2 border-t border-zinc-800 text-sm">
+                <div className="flex items-center gap-3 text-zinc-400">
+                  <Briefcase className="w-4 h-4 text-zinc-500" />
+                  <span className="w-16 font-medium text-zinc-500">Role:</span>
+                  <span className="text-zinc-200">{profile.role}</span>
+                </div>
+                <div className="flex items-center gap-3 text-zinc-400">
+                  <Building className="w-4 h-4 text-zinc-500" />
+                  <span className="w-16 font-medium text-zinc-500">Dept:</span>
+                  <span className="text-zinc-200">{profile.department}</span>
+                </div>
+                <div className="flex items-center gap-3 text-zinc-400">
+                  <Mail className="w-4 h-4 text-zinc-500" />
+                  <span className="w-16 font-medium text-zinc-500">E-mail:</span>
+                  <span className="text-zinc-200 truncate">{profile.email}</span>
+                </div>
+                <div className="flex items-center gap-3 text-zinc-400">
+                  <Phone className="w-4 h-4 text-zinc-500" />
+                  <span className="w-16 font-medium text-zinc-500">Phone:</span>
+                  <span className="text-zinc-200">{profile.phone}</span>
+                </div>
               </div>
             </div>
+          </motion.div>
+
+          {/* Time Tracking Stats Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
+            className="lg:col-span-4 bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6 flex flex-col relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-[50px]" />
+            <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-purple-400" /> Work Log Metrics
+            </h2>
+            
+            <div className="flex-1 flex flex-col justify-center space-y-6">
+               <div className="space-y-1">
+                 <div className="flex justify-between items-end">
+                   <span className="text-sm font-medium text-zinc-400">Today</span>
+                   <span className="text-2xl font-bold text-white">{formatHours(timeStats.today + (isTracking ? currentSessionElapsed : 0))}</span>
+                 </div>
+                 <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-blue-500 transition-all duration-1000" style={{ width: `${Math.min(100, ((timeStats.today + currentSessionElapsed) / (8 * 3600 * 1000)) * 100)}%` }} />
+                 </div>
+               </div>
+
+               <div className="space-y-1">
+                 <div className="flex justify-between items-end">
+                   <span className="text-sm font-medium text-zinc-400">This Week</span>
+                   <span className="text-2xl font-bold text-white">{formatHours(timeStats.week + (isTracking ? currentSessionElapsed : 0))}</span>
+                 </div>
+                 <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-purple-500 transition-all duration-1000" style={{ width: `${Math.min(100, ((timeStats.week + currentSessionElapsed) / (40 * 3600 * 1000)) * 100)}%` }} />
+                 </div>
+               </div>
+
+               <div className="space-y-1">
+                 <div className="flex justify-between items-end">
+                   <span className="text-sm font-medium text-zinc-400">This Month</span>
+                   <span className="text-2xl font-bold text-white">{formatHours(timeStats.month + (isTracking ? currentSessionElapsed : 0))}</span>
+                 </div>
+                 <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 transition-all duration-1000" style={{ width: `${Math.min(100, ((timeStats.month + currentSessionElapsed) / (160 * 3600 * 1000)) * 100)}%` }} />
+                 </div>
+               </div>
+            </div>
+          </motion.div>
+
+        </div>
+
+        {/* Middle Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* Detailed Info Card */}
+          <motion.div 
+             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
+             className="lg:col-span-8 bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6 md:p-8"
+          >
+             <div className="space-y-8">
+                {/* Basic Information */}
+                <div>
+                   <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                     <User className="w-5 h-5 text-blue-400" /> Basic Information <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-500 uppercase tracking-widest ml-2">Non-Editable</span>
+                   </h3>
+                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                     <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-1">Hire Date</p>
+                        <p className="text-sm text-zinc-200 font-semibold">{profile.hireDate}</p>
+                     </div>
+                     <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-1">Worked For</p>
+                        <p className="text-sm text-zinc-200 font-semibold">{(new Date().getFullYear() - new Date(profile.hireDate).getFullYear())} years</p>
+                     </div>
+                     <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-1">Employee ID</p>
+                        <p className="text-sm text-zinc-200 font-semibold">{profile.employeeId}</p>
+                     </div>
+                     <div className="bg-black/30 border border-zinc-800 p-4 rounded-xl">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-1">SSN</p>
+                        <p className="text-sm text-zinc-200 font-semibold">{profile.ssn}</p>
+                     </div>
+                   </div>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent md:from-zinc-800 via-zinc-800 to-transparent" />
+
+                {/* Personal Information */}
+                <div>
+                   <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                     <MapPin className="w-5 h-5 text-emerald-400" /> Personal Information <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-widest ml-2 cursor-pointer hover:bg-blue-500/20">Edit</span>
+                   </h3>
+                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                     <div className="sm:col-span-1 border-b border-zinc-800 pb-2">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-2">Birth Date</p>
+                        <p className="text-sm text-zinc-200">{profile.birthDate}</p>
+                     </div>
+                     <div className="sm:col-span-3 border-b border-zinc-800 pb-2">
+                        <p className="text-xs text-zinc-500 font-bold uppercase mb-2">Address</p>
+                        <div className="flex justify-between items-center text-sm text-zinc-200">
+                           <span>{profile.address}</span>
+                           <span>{profile.city}</span>
+                        </div>
+                     </div>
+                   </div>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent md:from-zinc-800 via-zinc-800 to-transparent" />
+
+                {/* Occupation Information */}
+                <div>
+                   <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                     <Briefcase className="w-5 h-5 text-purple-400" /> Occupation Info <span className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-500 uppercase tracking-widest ml-2">Non-Editable</span>
+                   </h3>
+                   <div className="flex flex-wrap gap-4">
+                      <div className="flex items-center gap-3 bg-black/30 border border-zinc-800 px-5 py-3 rounded-xl border-l-2 border-l-blue-500">
+                         <div className="p-2 bg-blue-500/10 rounded-lg"><Clock className="w-4 h-4 text-blue-400" /></div>
+                         <span className="text-sm font-semibold text-zinc-200">{profile.jobType}</span>
+                      </div>
+                      <div className="flex items-center gap-3 bg-black/30 border border-zinc-800 px-5 py-3 rounded-xl border-l-2 border-l-purple-500">
+                         <div className="p-2 bg-purple-500/10 rounded-lg"><Building className="w-4 h-4 text-purple-400" /></div>
+                         <span className="text-sm font-semibold text-zinc-200">{profile.department}</span>
+                      </div>
+                      <div className="flex items-center gap-3 bg-black/30 border border-zinc-800 px-5 py-3 rounded-xl border-l-2 border-l-emerald-500">
+                         <div className="p-2 bg-emerald-500/10 rounded-lg"><MapPin className="w-4 h-4 text-emerald-400" /></div>
+                         <span className="text-sm font-semibold text-zinc-200">{profile.city}</span>
+                      </div>
+                   </div>
+                </div>
+
+             </div>
+          </motion.div>
+
+          {/* Right Column Stack */}
+          <div className="lg:col-span-4 space-y-6">
+             
+             {/* Calendar Mock Card */}
+             <motion.div 
+               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }}
+               className="bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6"
+             >
+                <div className="flex justify-between items-center mb-6">
+                   <h3 className="text-white font-bold">{currentDate}</h3>
+                   <div className="flex gap-2">
+                     <button className="w-6 h-6 rounded bg-zinc-800 text-zinc-400 flex items-center justify-center hover:bg-zinc-700">&lt;</button>
+                     <button className="w-6 h-6 rounded bg-zinc-800 text-zinc-400 flex items-center justify-center hover:bg-zinc-700">&gt;</button>
+                   </div>
+                </div>
+                <div className="grid grid-cols-7 text-center gap-2 text-xs font-semibold mb-2 text-zinc-500">
+                   <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                </div>
+                <div className="grid grid-cols-7 text-center gap-2 text-sm text-zinc-300">
+                   {/* Dummy days just to fill the aesthetic */}
+                   <div className="py-1 text-zinc-700">28</div><div className="py-1 text-zinc-700">29</div><div className="py-1 text-zinc-700">30</div>
+                   <div className="py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold border border-blue-500/30">1</div>
+                   <div className="py-1">2</div><div className="py-1">3</div><div className="py-1">4</div>
+                   <div className="py-1">5</div><div className="py-1">6</div><div className="py-1">7</div>
+                   <div className="py-1">8</div><div className="py-1">9</div><div className="py-1">10</div><div className="py-1">11</div>
+                </div>
+             </motion.div>
+
+             {/* Online Admin Users */}
+             <motion.div 
+               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}
+               className="bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6"
+             >
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-emerald-400" /> Active Teammates
+                </h3>
+                <div className="space-y-4">
+                   {Object.values(agentProfiles).map((p) => {
+                     if (p.name === agentKey) return null; // Skip self
+                     const isOnline = onlineUsers.includes(p.name);
+                     return (
+                        <div key={p.name} className="flex items-center justify-between group">
+                          <div className="flex items-center gap-3">
+                             <div className="relative">
+                               <img src={p.image} alt={p.displayName} className="w-10 h-10 rounded-full border border-zinc-700 bg-zinc-800 object-cover" />
+                               <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-zinc-900 ${isOnline ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-zinc-600'}`} />
+                             </div>
+                             <div>
+                               <p className="text-sm font-bold text-zinc-200 group-hover:text-blue-400 transition-colors">{p.displayName}</p>
+                               <p className="text-xs text-zinc-500">{p.title}</p>
+                             </div>
+                          </div>
+                        </div>
+                     )
+                   })}
+                </div>
+             </motion.div>
+
+          </div>
+        </div>
+
+        {/* Bottom Row - Onboarding/Tasks */}
+        <motion.div 
+           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}
+           className="bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6 md:p-8"
+        >
+          <div className="flex justify-between items-center mb-6 border-b border-zinc-800 pb-4">
+             <h3 className="text-lg font-bold text-white flex items-center gap-2">
+               <CheckCircle2 className="w-5 h-5 text-blue-400" /> Onboarding & Tasks
+             </h3>
+             <span className="text-sm font-semibold text-zinc-400 bg-black/40 px-3 py-1 rounded-full border border-zinc-800">
+               {onboardingTasks.filter(t => t.done).length}/{onboardingTasks.length} Completed
+             </span>
+          </div>
+
+          <div className="overflow-x-auto">
+             <table className="w-full text-sm text-left">
+               <thead className="text-xs text-zinc-500 uppercase tracking-wider hidden md:table-header-group">
+                 <tr>
+                   <th className="px-4 py-3 font-semibold w-12"></th>
+                   <th className="px-4 py-3 font-semibold">Task</th>
+                   <th className="px-4 py-3 font-semibold text-center">Assigned To</th>
+                   <th className="px-4 py-3 font-semibold">Due Date</th>
+                   <th className="px-4 py-3 font-semibold">Attachments</th>
+                   <th className="px-4 py-3 font-semibold text-right">Actions</th>
+                 </tr>
+               </thead>
+               <tbody className="divide-y divide-zinc-800/50 flex md:table-row-group flex-col gap-4">
+                 {onboardingTasks.map((task, i) => {
+                   const assignee = agentProfiles[task.assigneeId] || agentProfiles["MRK"];
+                   return (
+                     <tr key={i} className="hover:bg-zinc-800/20 transition-colors bg-black/20 md:bg-transparent rounded-xl md:rounded-none block md:table-row p-4 md:p-0">
+                       <td className="px-4 py-4 block md:table-cell align-middle text-center md:text-left mb-2 md:mb-0">
+                          {task.done ? 
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 inline-block" /> : 
+                            <Circle className="w-5 h-5 text-zinc-600 inline-block" />
+                          }
+                       </td>
+                       <td className={`px-4 py-4 block md:table-cell font-medium ${task.done ? 'text-zinc-500 line-through' : 'text-zinc-200'}`}>
+                         {task.title}
+                       </td>
+                       <td className="px-4 py-4 block md:table-cell">
+                          <div className="flex items-center gap-2 md:justify-center">
+                            <img src={assignee.image} alt={assignee.name} className="w-6 h-6 rounded-full border border-zinc-700 bg-zinc-800" />
+                            <span className="text-zinc-400">{assignee.displayName}</span>
+                          </div>
+                       </td>
+                       <td className="px-4 py-4 block md:table-cell text-zinc-400">{task.dueDate}</td>
+                       <td className="px-4 py-4 block md:table-cell text-blue-400 hover:text-blue-300 font-medium cursor-pointer">
+                         {task.attachment !== "-" ? task.attachment : <span className="text-zinc-600">-</span>}
+                       </td>
+                       <td className="px-4 py-4 block md:table-cell text-right">
+                          <button className="text-xs font-bold text-zinc-400 hover:text-white px-3 py-1 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors mr-2">
+                            View
+                          </button>
+                       </td>
+                     </tr>
+                   )
+                 })}
+               </tbody>
+             </table>
+          </div>
+          
+          <div className="mt-6 flex justify-end">
+            <button className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-black font-bold uppercase tracking-wider text-sm rounded-lg transition-colors shadow-lg shadow-blue-500/20">
+              Add New Task
+            </button>
           </div>
         </motion.div>
 
-        {/* Fun Facts Grid with Power Level Bars */}
-        <motion.div
-          variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          {/* Coffee Fact */}
-          <motion.div
-            whileHover={{ scale: 1.02, y: -5 }}
-            className="relative overflow-hidden rounded-3xl bg-zinc-900/60 border border-white/5 backdrop-blur-xl p-8 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(245,158,11,0.1)]">
-                  <Coffee className="w-8 h-8 text-amber-500" />
-                </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Caffeine Intake</p>
-                  <p className="text-3xl font-black text-white">{profile.funFacts.coffee}</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase text-amber-500/70 tracking-widest">
-                  <span>Energy Level</span>
-                  <span>94%</span>
-                </div>
-                <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-amber-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: "94%" }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Bugs Fact */}
-          <motion.div
-            whileHover={{ scale: 1.02, y: -5 }}
-            className="relative overflow-hidden rounded-3xl bg-zinc-900/60 border border-white/5 backdrop-blur-xl p-8 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                  <Bug className="w-8 h-8 text-emerald-500" />
-                </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Bugs Neutralized</p>
-                  <p className="text-3xl font-black text-white">{profile.funFacts.bugs}</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase text-emerald-500/70 tracking-widest">
-                  <span>Precision Rate</span>
-                  <span>88%</span>
-                </div>
-                <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-emerald-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: "88%" }}
-                    transition={{ duration: 1.5, delay: 0.7 }}
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Late Nights Fact */}
-          <motion.div
-            whileHover={{ scale: 1.02, y: -5 }}
-            className="relative overflow-hidden rounded-3xl bg-zinc-900/60 border border-white/5 backdrop-blur-xl p-8 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(99,102,241,0.1)]">
-                  <Moon className="w-8 h-8 text-indigo-500" />
-                </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Nocturnal Mastery</p>
-                  <p className="text-3xl font-black text-white">{profile.funFacts.lateNights}</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-black uppercase text-indigo-500/70 tracking-widest">
-                  <span>Focus Intensity</span>
-                  <span>96%</span>
-                </div>
-                <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-indigo-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: "96%" }}
-                    transition={{ duration: 1.5, delay: 0.9 }}
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Skills Section */}
-        <motion.div
-          variants={itemVariants}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900/80 via-zinc-900/60 to-black/80 border border-white/10 backdrop-blur-2xl p-8"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Code2 className="w-6 h-6 text-blue-400" />
-            <h2 className="text-2xl font-bold text-white">Tech Stack & Skills</h2>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {profile.skills.map((skill, index) => (
-              <motion.span
-                key={skill}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-zinc-800/80 to-zinc-900/80 border border-zinc-700/50 text-zinc-300 font-semibold text-sm hover:border-blue-500/50 hover:text-blue-300 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-default"
-              >
-                {skill}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Description Cards */}
-        <motion.div
-          variants={itemVariants}
-          className="grid grid-cols-1 gap-4"
-        >
-          {profile.description.map((paragraph, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ x: 5 }}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900/60 to-zinc-900/40 border border-white/5 backdrop-blur-xl p-8 group"
-            >
-              {/* Side accent bar */}
-              <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-blue-500 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/0 to-purple-600/0 group-hover:from-blue-600/5 group-hover:to-purple-600/5 transition-all duration-500" />
-              <p className="relative z-10 text-zinc-300 leading-relaxed text-lg">
-                {paragraph}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Info Cards Grid */}
-        <motion.div
-          variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black border border-white/5 backdrop-blur-xl p-6 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/0 to-blue-600/10 group-hover:from-blue-600/10 group-hover:to-blue-600/20 transition-all duration-500" />
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                <User className="w-7 h-7 text-blue-400" />
-              </div>
-              <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Role</h3>
-              <p className="text-xl font-bold text-white">{profile.role}</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: -1 }}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black border border-white/5 backdrop-blur-xl p-6 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-purple-600/10 group-hover:from-purple-600/10 group-hover:to-purple-600/20 transition-all duration-500" />
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                <Code2 className="w-7 h-7 text-purple-400" />
-              </div>
-              <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Specialization</h3>
-              <p className="text-xl font-bold text-white">{profile.specialization}</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900/80 to-black border border-white/5 backdrop-blur-xl p-6 group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/0 to-emerald-600/10 group-hover:from-emerald-600/10 group-hover:to-emerald-600/20 transition-all duration-500" />
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                <Shield className="w-7 h-7 text-emerald-400" />
-              </div>
-              <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Status</h3>
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-                <p className="text-xl font-bold text-white">Active</p>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -87,7 +87,7 @@ p {
 
 /* Toolbar Styles */
 .main-toolbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -95,6 +95,8 @@ p {
     padding: 1.5rem 2rem;
     font-family: var(--font-header);
     background: transparent;
+    backdrop-filter: blur(0px);
+    transition: transform 0.3s ease-in-out;
 }
 
 .toolbar-container {
@@ -330,123 +332,200 @@ p {
     }
 }
 
-/* Our Story */
-/* Our Story */
-/* Our Story */
-.our-story {
-    background-color: #D8D8D8;
-    /* Light Grey Background */
-    padding: 5rem 2rem;
+/* How We Work */
+.how-we-work {
+    background-color: #fafafa;
+    padding: 6rem 2rem;
     position: relative;
-    color: #333;
-}
-
-.story-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-}
-
-.story-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    flex-shrink: 0;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-}
-
-.section-title {
-    font-size: 3.5rem;
-    font-weight: 900;
-    border-left: none;
-    padding-left: 0;
-    margin-bottom: 10px;
-    color: #000;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 6px;
-    background-color: var(--color-btn-green);
-    margin: 10px auto 0;
-}
-
-.story-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 3rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.story-col {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    padding: 3rem;
-    transition: all 0.4s ease;
-    position: relative;
+    color: #111;
     overflow: hidden;
 }
 
-.story-col:hover {
-    transform: translateY(-10px);
-    border-color: var(--color-btn-green);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+.hww-header {
+    max-width: 1400px;
+    margin: 0 auto 5rem;
+    text-align: left;
+    padding-left: 2rem;
+    position: relative;
 }
 
-.story-col::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(204, 255, 0, 0.05), transparent 40%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.story-col:hover::before {
-    opacity: 1;
-}
-
-.story-col h3 {
-    color: #000;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    border-bottom: 2px solid var(--color-btn-green);
-    padding-bottom: 0.5rem;
+.hww-tag {
     display: inline-block;
-    position: relative;
-    z-index: 1;
+    padding: 0.3rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #555;
+    background: transparent;
 }
 
-.story-col p {
-    line-height: 1.8;
-    color: #444;
-    font-size: 1.15rem;
-    position: relative;
-    z-index: 1;
+.hww-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: #111;
+    text-transform: none;
+    /* Override uppercase */
 }
 
-/* Highlight Text Effect */
-/* Highlight Text Effect */
-/* Highlight Text Effect - Bold Only */
-.highlight-text {
-    background: none;
-    color: black;
-    /* Explicitly setting to black for light background */
-    font-weight: bold;
+/* Optional swirl positioning */
+.hww-swirl {
+    position: absolute;
+    right: 20%;
+    bottom: -20px;
+    transform: rotate(20deg);
+}
+
+.hww-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 4rem;
+    /* Buffer for hover and arrow */
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 2rem;
+    background-image:
+        linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+        linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+    background-size: 100px 100px;
+    background-position: center;
+}
+
+.hww-line {
+    display: none;
+    /* Hide background line as it's horizontal now */
+}
+
+.hww-card {
+    background: #ffffff;
+    border: 2px solid #eaeaea;
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    width: 320px;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 10px 20px 40px rgba(0, 0, 0, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hww-card:hover {
+    transform: translateY(-10px) rotate(0deg) !important;
+    box-shadow: 15px 25px 50px rgba(0, 0, 0, 0.12);
+    border-color: #ccc;
+}
+
+.hww-hole {
+    width: 16px;
+    height: 16px;
+    background: #333;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), 0 0 0 4px #f5f5f5;
+}
+
+.hww-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.hww-card h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #111;
+    text-transform: none;
+    border: none;
     padding: 0;
+}
+
+.hww-card p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.hww-arrow {
+    position: absolute;
+    bottom: -30px;
+    right: -20px;
+    font-size: 1.1rem;
+    color: #555;
+    transform: rotate(-10deg);
+    font-weight: 600;
+}
+
+/* Card positions and slight rotations */
+.card-1 {
+    transform: rotate(2deg);
+}
+
+.card-2 {
+    transform: rotate(-2deg);
+}
+
+.card-3 {
+    transform: rotate(3deg);
+}
+
+.card-4 {
+    transform: rotate(-1deg);
+}
+
+@media (max-width: 1300px) {
+    .hww-container {
+        flex-wrap: wrap;
+        /* Let it wrap on smaller screens so boxes stay same size */
+        height: auto;
+    }
+}
+
+@media (max-width: 900px) {
+    .hww-container {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+        padding-top: 2rem;
+        background-image: none;
+    }
+
+    .hww-line {
+        display: none;
+    }
+
+    .hww-card {
+        position: relative;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .hww-title {
+        font-size: 2.5rem;
+    }
+
+    .hww-header {
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .hww-swirl {
+        display: none;
+    }
 }
 
 /* Tools We Use */
@@ -462,12 +541,12 @@ p {
 /* ... existing code ... */
 
 .small-story-image {
-    width: 250px;
+    width: 200px;
     height: auto;
     object-fit: contain;
     /* Absolute positioning to sit "on" the container */
     position: absolute;
-    top: -220px;
+    top: -175px;
     right: 1%;
     border-radius: 8px;
     z-index: 10;
@@ -772,496 +851,194 @@ p {
     margin-bottom: 1.5rem;
 }
 
-/* Horizontal Scroll Team Section */
-.team-scroll-container {
-    height: 400vh;
-    /* 100vh per slide */
-    position: relative;
-    background-color: #7E8599;
-}
-
-.team-sticky-viewport {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+/* ARCANE TEAM SECTION */
+.arcane-team-section {
     width: 100%;
-    overflow: hidden;
+    padding: 6rem 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    background-color: transparent;
 }
 
-.team-horizontal-track {
+.arcane-accordion {
     display: flex;
-    height: 100%;
-    width: 500%;
-    /* 5 sections */
-    will-change: transform;
-}
-
-.team-horizontal-track .character-section {
-    width: 20%;
-    /* 1/4 of 400% = 100% of viewport */
-    height: 100vh;
-    flex-shrink: 0;
-    display: flex;
-    /* Ensure inner content centers */
-    align-items: center;
-    justify-content: center;
-    background-color: #7E8599;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Role Styling (Horizontal) */
-.grade-role,
-.horizontal-role {
-    font-family: var(--font-header);
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
-    display: block;
-    margin-top: -10px;
-    /* Pull closer to name */
-    margin-bottom: 2rem;
-}
-
-.char-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* Left align for most, or context specific */
-}
-
-/* Diagonal Panel Design */
-.char-image-container::before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    bottom: -10%;
-    left: -5%;
-    /* Adjusted to center the wider panel */
+    gap: 0;
+    height: 700px;
     width: 100%;
-    /* 2x wider (from 60%) */
-    background-color: var(--panel-color, );
-    transform: skewX(30deg);
-    /* Increased tilt to the left */
-    z-index: -1;
     border-radius: 20px;
+    overflow: hidden;
 }
 
-.char-img {
-    z-index: 2;
+.arcane-item {
+    flex: 1;
     position: relative;
-    left: -15%;
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    background: linear-gradient(to top, var(--accent) 0%, var(--accent) 75%, #F0F0F0 75%, #F0F0F0 100%);
 }
 
-/* Text Styling Updates for Light BG */
-.team-horizontal-track .char-text {
-    transform: translateY(-20%);
-    /* Move text block higher as requested */
+.arcane-item:hover {
+    flex: 6;
 }
 
-.team-horizontal-track .char-text h2 {
-    color: #333;
-}
-
-.team-horizontal-track .char-text p {
-    color: #555;
-    background: none;
-    border-color: var(--panel-color);
-    border-left: 4px solid var(--panel-color);
-    padding-left: 1rem;
-}
-
-.horizontal-role {
-    color: #666;
-}
-
-
-/* Individual Character Styles adjusted for Horizontal Flow */
-.mr-v {
-    --panel-color: var(--color-green-v);
-}
-
-
-.mr-v .char-img {
-    /* Individual positioning for Mr. V image */
-    left: 20%;
-    bottom: 0;
-    top: 60%;
-    transform-origin: bottom center;
+.arcane-item img {
     position: absolute;
-    transform: scale(1.8);
+    top: 0;
+    right: 0;
+    left: unset;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
+    z-index: 1;
 }
 
-.mr-v .char-text {
-    /* Individual positioning for Mr. V text */
-    transform: translateY(-180%);
-
+.arcane-item:hover img {
+    transform: none;
+    width: 100%;
+    object-position: right center;
+    object-fit: contain;
 }
 
-.mr-v .char-image-container::before {
-    left: 18%;
-    width: 120%;
-    transform: skewX(45deg);
-}
-
-.mr-v .char-text h2 {
-    color: #000;
-    position: relative;
-    right: 100%;
-    transform: rotate(14deg);
-}
-
-.mr-v .horizontal-role {
-    color: #000;
-}
-
-.mr-v .side-role {
+.arcane-item .arcane-vertical-name {
     position: absolute;
-    top: 40%;
-    right: -650px;
-    transform: rotate(45deg);
-    font-weight: 900;
-    /* Bold as requested */
-    font-size: 6rem;
-    letter-spacing: 5px;
-    color: #CCFF00;
-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
-    color: #CCFF00;
-    white-space: nowrap;
-    z-index: 0;
-}
-
-.mr-v .mrv-quote {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
-}
-
-.mr-v .char-text p {
-    color: #000;
-    background: rgba(255, 255, 255, 0.5);
-    border-color: #000;
-}
-
-
-.mrs-s {
-    --panel-color: var(--color-silver-s);
-}
-
-.mrs-s .char-image-container::before {
-    left: 30%;
-    width: 120%;
-    transform: skewX(40deg);
-}
-
-.mrs-s .char-img {
-    /* Individual positioning for Mr. V image */
-    left: 30%;
-    top: 13%;
-    transform: scale(1.3);
-}
-
-.mrs-s .char-text {
-    /* Individual positioning for Mr. V text */
-    transform: translateY(330%);
-
-}
-
-.mrs-s .char-text h2 {
-    color: #ffffff;
-    position: relative;
-    right: 120%;
-
-}
-
-.mrs-s .horizontal-role {
-    color: #000;
-}
-
-.mrs-s .side-role {
-    position: absolute;
-    top: 40%;
-    right: -770px;
-    transform: rotate(50deg);
-    font-weight: 900;
-    /* Bold as requested */
-    font-size: 6rem;
-    letter-spacing: 2px;
-    color: #C0C0C0;
-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
-    color: #C0C0C0;
-    white-space: nowrap;
-    z-index: 0;
-}
-
-.mrs-s .mrss-quote {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
-}
-
-.mrs-s .char-text p {
-    color: #000;
-    background: rgba(255, 255, 255, 0.5);
-    border-color: #000;
-}
-
-
-.mr-m {
-    --panel-color: var(--color-cyan-m);
-}
-
-.mr-m .char-image-container::before {
-    left: 42%;
-    width: 120%;
-    transform: skewX(45deg);
-}
-
-.mr-m .char-img {
-    /* Individual positioning for Mr. V image */
-    left: 25%;
-    top: 13%;
-    transform: scale(1.3);
-}
-
-.mr-m .char-text {
-    /* Individual positioning for Mr. V text */
-    transform: translateY(330%);
-
-}
-
-.mr-m .char-text h2 {
-    color: #ffffff;
-    position: relative;
-    right: 100%;
-    right: 120%;
-}
-
-.mr-m .horizontal-role {
-    color: #000;
-}
-
-.mr-m .side-role {
-    position: absolute;
-    top: 40%;
-    right: -845px;
-    transform: rotate(45deg);
-    font-weight: 900;
-    /* Bold as requested */
-    font-size: 5.5rem;
-    letter-spacing: 1px;
-    color: #161a1a;
-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
-    color: #00FFFF;
-    white-space: nowrap;
-    z-index: 0;
-}
-
-.mr-m .mrm-quote {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
-}
-
-.mr-m .char-text p {
-    color: #000;
-    background: rgba(255, 255, 255, 0.5);
-    border-color: #000;
-}
-
-
-.mr-a {
-    --panel-color: #5539a2;
-}
-
-.mr-a .char-image-container::before {
+    bottom: 2rem;
     left: 50%;
-    width: 120%;
-    transform: skewX(45deg);
-}
-
-.mr-a .char-img {
-    /* Individual positioning for Mr. V image */
-    left: 20%;
-    top: 13%;
-    transform: scale(1.6);
-}
-
-
-.mr-a .char-text {
-    /* Individual positioning for Mr. V text */
-    transform: translateY(330%);
-
-}
-
-.mr-a .char-text h2 {
-    color: #000;
-    position: relative;
-    right: 130%;
-}
-
-.mr-a .horizontal-role {
-    color: #000;
-}
-
-.mr-a .side-role {
-    position: absolute;
-    top: 40%;
-    right: -890px;
-    transform: rotate(45deg);
+    transform: translateX(-50%) rotate(-90deg);
+    transform-origin: left bottom;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 900;
-    /* Bold as requested */
-    font-size: 5rem;
-    letter-spacing: 1px;
-    color: #5539A2;
-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
-    color: #5539A2;
+    font-family: var(--font-header);
+    font-size: 2rem;
+    letter-spacing: 5px;
+    z-index: 4;
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
     white-space: nowrap;
-    z-index: 0;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.mr-a .mra-quote {
+.arcane-item:hover .arcane-vertical-name {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) rotate(-90deg) translateY(-20px);
+}
+
+.arcane-item .arcane-content {
     position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
+    bottom: 3rem;
+    left: 3rem;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: 0s;
+    pointer-events: none;
+    width: 40%;
+    max-width: 500px;
+}
+
+.arcane-item:hover .arcane-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+    pointer-events: auto;
+}
+
+.arcane-item .arcane-role {
+    font-family: var(--font-header);
     font-size: 1.2rem;
-    line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
-}
-
-.mr-z {
-    --panel-color: #8a1e1e;
-}
-
-.mr-z .char-image-container::before {
-    left: 40%;
-    width: 120%;
-    transform: skewX(45deg);
-}
-
-.mr-z .char-img {
-    /* Individual positioning for Mr. V image */
-    left: 38%;
-    top: 1%;
-    transform: scale(1.5);
-}
-
-
-.mr-z .char-text {
-    /* Individual positioning for Mr. V text */
-    transform: translateY(330%);
-
-}
-
-.mr-z .char-text h2 {
-    color: #000;
-    position: relative;
-    right: 120%;
-}
-
-.mr-z .horizontal-role {
-    color: #000;
-}
-
-.mr-z .side-role {
-    position: absolute;
-    top: 30%;
-    right: -586px;
-    transform: rotate(45deg);
     font-weight: 900;
-    /* Bold as requested */
-    font-size: 5rem;
-    letter-spacing: 1px;
-    color: #8a1e1e;
-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
-    color: #8a1e1e;
-    white-space: nowrap;
-    z-index: 0;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
-.mr-z .mra-quote {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
-    font-size: 1.2rem;
+.arcane-item .arcane-name {
+    font-size: 4rem;
+    font-weight: 900;
+    font-family: var(--font-header);
+    color: #fff;
+    margin: 0 0 1rem 0;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.arcane-item .arcane-desc {
+    font-size: 1.15rem;
+    color: #eee;
     line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
+    max-width: 500px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
+    font-weight: 400;
 }
 
-.mr-z .char-text p {
-    color: #000;
-    background: rgba(255, 255, 255, 0.5);
-    border-color: #000;
+@media (max-width: 900px) {
+    .arcane-team-section {
+        padding: 3rem 1rem;
+    }
+
+    .arcane-accordion {
+        flex-direction: column;
+        height: 800px;
+    }
+
+    .arcane-item {
+        border-right: none;
+    }
+
+    .arcane-item:hover img {
+        width: 100%;
+        height: 50%;
+        top: 0;
+        object-position: center top;
+        transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .arcane-item .arcane-vertical-name {
+        transform: translate(-50%, -50%) rotate(0deg);
+        top: 50%;
+        bottom: auto;
+        left: 50%;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .arcane-item:hover .arcane-vertical-name {
+        transform: translate(-50%, -50%) rotate(0deg) scale(0.8);
+    }
+
+    .arcane-item:hover {
+        flex: 3;
+    }
+
+    .arcane-item .arcane-content {
+        left: 1.5rem;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        width: 100%;
+        transform: translateY(10px);
+        max-width: none;
+    }
+
+    .arcane-item .arcane-name {
+        font-size: 2.5rem;
+    }
+
+    .arcane-item .arcane-desc {
+        font-size: 0.95rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 }
-
-
-.mr-z .mrz-quote {
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    max-width: 400px;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #333;
-    text-align: right;
-    font-weight: 500;
-    z-index: 10;
-    padding-right: 1.5rem;
-    border-right: 4px solid #d3d3d3;
-    /* Light grey bar */
-}
-
-.mr-z .char-text p {
-    color: #000;
-    background: rgba(255, 255, 255, 0.5);
-    border-color: #000;
-}
-
 
 /* CTA Section */
 .cta-section {

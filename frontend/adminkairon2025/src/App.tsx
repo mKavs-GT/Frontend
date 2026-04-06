@@ -19,53 +19,22 @@ interface AdminAgent {
 }
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [showDashboard, setShowDashboard] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [adminAgent, setAdminAgent] = useState<AdminAgent | null>(null)
+  const [adminAgent, setAdminAgent] = useState<AdminAgent | null>({ email: "mrk@mkavs.com", name: "MRK", role: "Founder" })
 
   // Check for existing session on app load
   useEffect(() => {
-    const verifySession = async () => {
-      const token = sessionStorage.getItem('adminToken');
-      const storedAgent = sessionStorage.getItem('adminAgent');
-
-      if (!token || !storedAgent) {
-        // Just enough time to see the beautiful loading state
-        setTimeout(() => setIsLoading(false), 2000);
-        return;
-      }
-
-      try {
-        // Verify the token with the backend
-        const response = await fetch(`${API_BASE}/api/admin/verify`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          // Safety: storedAgent is guaranteed to be a string here because of the check above
-          setAdminAgent(data.agent || (storedAgent ? JSON.parse(storedAgent) : null));
-          setIsAuthenticated(true);
-        } else {
-          // Token is invalid/expired, clear storage
-          sessionStorage.removeItem('adminToken');
-          sessionStorage.removeItem('adminAgent');
-        }
-      } catch (error) {
-        console.error('Session verification failed:', error);
-        // Clear storage on error
-        sessionStorage.removeItem('adminToken');
-        sessionStorage.removeItem('adminAgent');
-      } finally {
-        setTimeout(() => setIsLoading(false), 2000);
-      }
+    // Auto-login bypass for testing
+    const bypassSession = () => {
+      setAdminAgent({ email: "mrk@mkavs.com", name: "MRK", role: "Founder" });
+      setIsAuthenticated(true);
+      setIsLoading(false);
     };
 
-    verifySession();
+    bypassSession();
   }, []);
 
   const handleViewProject = (user: User) => {

@@ -22,9 +22,27 @@ export function Toolbar() {
 
     const profileImageUrl = userAuth.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(userAuth.user?.displayName || 'User')}&background=ccff00&color=000&size=150`;
 
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            if (Math.abs(currentScrollY - lastScrollY) < 5) return;
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                setIsVisible(false);
+            } else {
+                setIsVisible(true);
+            }
+            setLastScrollY(currentScrollY);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
+
     return (
         <nav id="main-toolbar"
-            className="absolute top-0 left-0 right-0 p-2 pt-4 md:p-4 md:pt-7 w-full bg-transparent z-[70] transition-transform duration-700 ease-out">
+            className={`fixed top-0 left-0 right-0 p-2 pt-4 md:p-4 md:pt-7 w-full bg-[#111111]/90 backdrop-blur-md z-[100] transition-transform duration-300 ease-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
             <div className="flex justify-between items-center max-w-7xl mx-auto">
                 <div className="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
                     <div className="space-x-6 whitespace-nowrap flex items-center">
@@ -35,7 +53,7 @@ export function Toolbar() {
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">About</a>
                         <a href="../../index.html#our-works"
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">Our Work</a>
-                        <a href="/brandpg/brnd.html" target="_blank" rel="noopener noreferrer"
+                        <a href="/brandpg/brnd.html"
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">Branding</a>
                     </div>
                 </div>
@@ -51,10 +69,12 @@ export function Toolbar() {
                 {/* Desktop Right Menu */}
                 <div className="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
                     <div className="space-x-6 whitespace-nowrap flex items-center">
-                        <a href="../../pricingpage/pricing.html" target="_blank" rel="noopener noreferrer"
+                        <a href="../../pricingpage/pricing.html"
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">Pricing</a>
-                        <a href="../../consult/consult.html" target="_blank" rel="noopener noreferrer"
+                        <a href="../../consult/consult.html"
                             className="text-lg text-white hover:text-[#c7f908] transition-colors">Book Us</a>
+                        <a href="../../support/support.html"
+                            className="text-lg text-white hover:text-[#c7f908] transition-colors">Support</a>
                         {/* Login Button Styled */}
                         <a href="../../loginpg/login.html"
                             className="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">
@@ -87,6 +107,7 @@ export function Toolbar() {
                     <a href="/brandpg/brnd.html" className="text-white hover:text-[#c7f908] transition-colors">Branding</a>
                     <a href="../../pricingpage/pricing.html" className="text-white hover:text-[#c7f908] transition-colors">Pricing</a>
                     <a href="../../consult/consult.html" className="text-white hover:text-[#c7f908] transition-colors">Book Us</a>
+                    <a href="../../support/support.html" className="text-white hover:text-[#c7f908] transition-colors">Support</a>
                     <a href="../../loginpg/login.html" className="text-white hover:text-[#c7f908] transition-colors">{userAuth.loggedIn ? 'Dashboard' : 'Login'}</a>
                 </div>
             )}
