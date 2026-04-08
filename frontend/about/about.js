@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('MKAVS Website Loaded');
 
-    // Star Mouse Repulsion Effect
+    // Star & Tools Mouse Repulsion Effect
     const stars = document.querySelectorAll('.star-placeholder');
+    const toolIcons = document.querySelectorAll('.tool-icon');
 
     document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
         stars.forEach(star => {
             const rect = star.getBoundingClientRect();
             const starX = rect.left + rect.width / 2;
             const starY = rect.top + rect.height / 2;
-
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
 
             const diffX = mouseX - starX;
             const diffY = mouseY - starY;
@@ -28,6 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 star.style.transform = `translate(${moveX}px, ${moveY}px)`;
             } else {
                 star.style.transform = `translate(0, 0)`;
+            }
+        });
+
+        toolIcons.forEach(icon => {
+            const rect = icon.getBoundingClientRect();
+            const iconX = rect.left + rect.width / 2;
+            const iconY = rect.top + rect.height / 2;
+
+            const diffX = mouseX - iconX;
+            const diffY = mouseY - iconY;
+            const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+            // Repulsion radius for tools
+            const maxDistance = 150;
+
+            if (distance < maxDistance) {
+                const force = (maxDistance - distance) / maxDistance;
+                const moveX = -(diffX * force * 0.7); 
+                const moveY = -(diffY * force * 0.7);
+
+                icon.style.setProperty('--repel-x', `${moveX}px`);
+                icon.style.setProperty('--repel-y', `${moveY}px`);
+            } else {
+                icon.style.setProperty('--repel-x', `0px`);
+                icon.style.setProperty('--repel-y', `0px`);
             }
         });
     });
