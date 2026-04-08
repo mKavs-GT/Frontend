@@ -643,10 +643,10 @@ p {
 
 /* Meet The Team */
 .meet-team {
-    background-color: #FAFAFA;
+    background-color: #fafafa00;
     padding: 6rem 2rem;
     position: relative;
-    min-height: 80vh;
+    min-height: 117vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -675,7 +675,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background-color: #FAFAFA;
     z-index: 1;
     opacity: 0;
     animation: fade-in 1.5s ease-out forwards;
@@ -957,7 +957,7 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: var(--pos-default, center);
     transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
     z-index: 1;
 }
@@ -965,8 +965,13 @@ p {
 .arcane-item:hover img {
     transform: none;
     width: 100%;
-    object-position: right center;
+    object-position: var(--pos-active, right center);
     object-fit: contain;
+}
+
+/* Position for items when another item is hovered */
+.arcane-accordion:hover .arcane-item:not(:hover) img {
+    object-position: var(--pos-collapsed, center);
 }
 
 .arcane-item .arcane-vertical-name {
@@ -1466,9 +1471,13 @@ p {
     height: 400vh;
     /* Adjust length of scroll */
     position: relative;
-    background-color: #111827;
-    /* Requested Color */
+    background-color: #1a1a1a;
+    /* Match Founder Section Color */
     color: #fff;
+    border-top-left-radius: 10% 80px;
+    border-top-right-radius: 10% 80px;
+    margin-top: -20px;
+    z-index: 10;
 }
 
 .process-sticky-viewport {
@@ -1502,7 +1511,7 @@ p {
     /* Ensure it spans full width to center text */
     margin-bottom: 4rem;
     /* Gap after title */
-    margin-top: -5vh;
+    margin-top: 10vh;
     /* Slight adjustment to keep vertical balance */
 }
 
@@ -1512,7 +1521,7 @@ p {
     width: 60px;
     /* Match Our Story underline width */
     height: 6px;
-    background-color: var(--color-btn-green);
+    background-color: #ffffff;
     margin: 10px auto 0;
     /* Center underline */
 }
@@ -1538,9 +1547,9 @@ p {
     width: 35vw;
     /* Increased width as requested */
     height: 100%;
-    background-color: #1f2937;
-    border: 1px solid #374151;
-    border-radius: 12px;
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 20px;
     padding: 3rem;
     display: flex;
     flex-direction: column;
@@ -1553,7 +1562,7 @@ p {
 
 .process-card:hover {
     transform: translateY(-15px);
-    border-color: var(--color-btn-green);
+    border-color: var(--accent, var(--color-btn-green));
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
@@ -1564,7 +1573,7 @@ p {
     left: 0;
     width: 100%;
     height: 6px;
-    background: var(--color-btn-green);
+    background: var(--accent, var(--color-btn-green));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s ease;
@@ -1589,7 +1598,7 @@ p {
 }
 
 .process-card:hover .p-number {
-    color: var(--color-btn-green);
+    color: var(--accent, var(--color-btn-green));
     opacity: 0.8;
 }
 
