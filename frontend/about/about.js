@@ -74,47 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Horizontal Scroll Logic
-    const scrollContainer = document.querySelector('.team-scroll-container');
-    const stickyViewport = document.querySelector('.team-sticky-viewport');
-    const horizontalTrack = document.querySelector('.team-horizontal-track');
 
-    if (scrollContainer && stickyViewport && horizontalTrack) {
-        window.addEventListener('scroll', () => {
-            const containerRect = scrollContainer.getBoundingClientRect();
-            const containerTop = containerRect.top;
-            const containerHeight = containerRect.height;
-            const viewportHeight = window.innerHeight;
-
-            // Calculate how far we've scrolled into the container
-            // We start scrolling when container hits top of viewport (containerTop <= 0)
-            // We stop when the bottom of container hits bottom of viewport approx
-
-            // The effective scrollable distance is containerHeight - viewportHeight
-            const scrollDist = containerHeight - viewportHeight;
-
-            if (scrollDist <= 0) return;
-
-            // How much have we scrolled down from the top of the container?
-            // containerTop is typically negative when we are scrolling through it
-            let scrollY = -containerTop;
-
-            // Clamp between 0 and scrollDist
-            if (scrollY < 0) scrollY = 0;
-            if (scrollY > scrollDist) scrollY = scrollDist;
-
-            // Percentage scrolled (0 to 1)
-            const progress = scrollY / scrollDist;
-
-            // We want to move the track horizontally.
-            // Track width is 500% (5 items). We want to show the last one at the end.
-            // So we translate from 0% to -80% (showing 5th item which starts at 80%)
-            const maxTranslate = 80; // %
-            const translateX = -(progress * maxTranslate);
-
-            horizontalTrack.style.transform = `translateX(${translateX}%)`;
-        });
-    }
 
     // Process Scroll Logic (Similar to Team)
     const procScrollContainer = document.querySelector('.process-scroll-wrapper');

@@ -1,17 +1,12 @@
 mKavs Testing Number 1
 
 kairon when refreshed is gone
-remove that gemini looking logo in why choose mkavs
 adjust the margins of phone video
 footer sitesh quality
-remove language , Facebook , twitter.
 sitesh in header
-remove signature
 accordian fix
 sitesh quality
-documents in about page
 Our works
-about page pricing
 profile button redirects
 profile notification
 upload in profile not happening

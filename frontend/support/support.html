@@ -49,18 +49,19 @@
             transform: rotate(180deg);
         }
         .faq-accordion.active .faq-content {
-            max-height: 500px;
+            grid-template-rows: 1fr;
         }
         .faq-accordion.active {
             border-color: #c7f908;
         }
         .faq-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .faq-inner {
             overflow: hidden;
+            min-height: 0;
         }
 
         .pill-contact:hover {
@@ -189,7 +190,7 @@
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium">
+                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
                                     Our team is active from 9AM to 6PM EST on weekdays. Kairon bot is available 24/7 for automated assistance.
                                 </div>
                             </div>
@@ -204,7 +205,7 @@
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium">
+                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
                                     Log into your dashboard and navigate to your profile. You'll see real-time status sliders and links to your files.
                                 </div>
                             </div>
@@ -219,7 +220,7 @@
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium">
+                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
                                     If your site is down or facing critical errors, please mark URGENT in your Discord ticket or Email subject line.
                                 </div>
                             </div>
