@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Threshold to avoid jitter on small scrolls
         if (Math.abs(currentScrollY - lastScrollY) < 5) return;
 
+        if (currentScrollY > window.innerHeight * 0.6) {
+            toolbar.classList.add('scrolled-past-header');
+        } else {
+            toolbar.classList.remove('scrolled-past-header');
+        }
+
         if (currentScrollY > lastScrollY && currentScrollY > 50) {
             // Scrolling DOWN -> Hide Toolbar
             // Move it up by its own height or 100%

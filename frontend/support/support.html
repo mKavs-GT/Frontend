@@ -49,15 +49,15 @@
             transform: rotate(180deg);
         }
         .faq-accordion.active .faq-content {
-            grid-template-rows: 1fr;
+            max-height: 500px;
         }
         .faq-accordion.active {
             border-color: #c7f908;
         }
         .faq-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .faq-inner {
             overflow: hidden;
@@ -127,11 +127,7 @@
                     We're here to help you navigate your digital journey. Reach out to our team, chat with Kairon, or
                     browse the FAQs below for quick answers.
                 </p>
-                <div class="flex gap-4">
-                    <div class="h-1 w-12 bg-[#c7f908] rounded-full"></div>
-                    <div class="h-1 w-12 bg-white/40 rounded-full"></div>
-                    <div class="h-1 w-12 bg-white/40 rounded-full"></div>
-                </div>
+
             </div>
             <!-- Decorative character or video -->
             <div class="absolute right-0 bottom-0 pointer-events-none md:opacity-100">

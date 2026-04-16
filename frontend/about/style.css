@@ -546,7 +546,7 @@ p {
     object-fit: contain;
     /* Absolute positioning to sit "on" the container */
     position: absolute;
-    top: -175px;
+    top: -140px;
     right: 1%;
     border-radius: 8px;
     z-index: 10;
@@ -798,6 +798,18 @@ p {
 }
 
 /* Founder Specific */
+
+/* Scrolled Past Header Colors */
+.main-toolbar.scrolled-past-header .nav-link,
+.main-toolbar.scrolled-past-header .social-icons a,
+.main-toolbar.scrolled-past-header .mobile-menu-btn {
+    color: #111;
+}
+
+.main-toolbar.scrolled-past-header .nav-link:hover,
+.main-toolbar.scrolled-past-header .social-icons a:hover {
+    color: #0c19ad;
+}
 .founder {
     background-color: #1a1a1a;
     position: relative;

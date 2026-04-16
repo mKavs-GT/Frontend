@@ -715,6 +715,7 @@ async function checkAuthStatus() {
         const loginBtn = document.getElementById('desktop-login-btn');
         const userIcon = document.querySelector('.fa-regular.fa-user')?.parentElement;
         const getStartedBtn = document.getElementById('get-started-button');
+        const authConsultBtns = document.querySelectorAll('.auth-consult-btn');
 
         if (data.loggedIn) {
             // User is logged in
@@ -740,6 +741,7 @@ async function checkAuthStatus() {
             if (getStartedBtn) {
                 getStartedBtn.href = './consult/consult.html';
             }
+            authConsultBtns.forEach(btn => btn.href = './consult/consult.html');
         } else {
             // User is not logged in
             if (loginBtn) {
@@ -755,6 +757,7 @@ async function checkAuthStatus() {
             if (getStartedBtn) {
                 getStartedBtn.href = './loginpg/login.html';
             }
+            authConsultBtns.forEach(btn => btn.href = './loginpg/login.html');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);
