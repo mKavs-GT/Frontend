@@ -1,20 +1,29 @@
 mKavs Testing Number 1
 
-kairon when refreshed is gone
+Current Prompt - 
+1. I want the preloader to loaader for a minimum of 7 seconds everytime the user refreshes the page. The preloader should start only after the mascot.mp4 starts working.
+2. When anything is opened within the page on giving back it shdnt load from the top of the page again. For example after taping on book consultation and then going back the page shd be at the same section (book consultation) that the user was before they got redirected to a new page.
+3.  
+
+Frontend -
 adjust the margins of phone video
-footer sitesh quality
-sitesh in header
 accordian fix
-sitesh quality
-Our works
-profile button redirects
-profile notification
-upload in profile not happening
-remove security settings
-to do
-support faqs
-remove 3 lines header
+
+Image Quality -
+Footer sitesh quality
+Sitesh in header
+Sitesh quality
+
+Admin Panel -
+Admin redesgin
+Sprint planning
+To Do List
+Authorization Of SPrint Owner and Manager
+
+Backend - 
 Kairon chatbot
-frontend code in inspect
-sprint planning
-admin
+Frontend code in inspect
+Our works redirect
+Profile notification
+Upload in profile not happening
+Remove security settings
