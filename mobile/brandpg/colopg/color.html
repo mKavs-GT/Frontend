@@ -4,11 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        if (window.innerWidth > 768) {
-            window.location.replace("../../../brandpg/colopg/color.html");
-        }
-    </script>
     <title>Color Palettes - mKavs</title>
     <meta name="description"
         content="Explore 2,000 expertly curated color palettes for your next creative project by mKavs">
@@ -43,13 +38,13 @@
 <body>
     <div class="container">
         <!-- Logo -->
-        <a href="../../../index.html" class="nav-logo"
+        <a href="../../../../frontend/index.html" class="nav-logo"
             style="position: absolute; top: 1.5rem; left: 1.5rem; z-index: 10; display: block;">
-            <img src="../../../images/MKAVS.png" alt="MKAVS" style="height: 32px; width: auto;">
+            <img src="../../../../frontend/images/MKAVS.png" alt="MKAVS" style="height: 32px; width: auto;">
         </a>
         
         <!-- Profile Icon -->
-        <a href="../../../profile/profile.html" class="profile-link">
+        <a href="../../../../frontend/profile/profile.html" class="profile-link">
             <i class="fa-solid fa-circle-user"></i>
         </a>
 
@@ -92,7 +87,7 @@
 
     <!-- Back Button -->
     <div style="text-align: center; margin-bottom: 4rem;">
-        <a href="../../../branding.html" style="
+        <a href="../../../../frontend/branding.html" style="
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
@@ -120,20 +115,20 @@
     <!-- Footer -->
     <!-- Footer Removed -->
 
-    <script src="../../../services/data-service.js"></script>
+    <script src="palette_data.js"></script>
     <script src="script.js"></script>
     <!-- Kairon Chat Widget Integration -->
-    <link rel="stylesheet" href="../../chatbot/kairon-widget.css">
-    <script>window.KAIRON_BASE_PATH = "../../chatbot/";</script>
+    <link rel="stylesheet" href="../../../chatbot/kairon-widget.css">
+    <script>window.KAIRON_BASE_PATH = "../../../chatbot/";</script>
     <div id="kairon">
         <button id="kairon-button" aria-label="Open chat">
-            <img src="../../chatbot/kairon-logo.png" alt="Kairon">
+            <img src="../../../chatbot/kairon-logo.png" alt="Kairon">
         </button>
         <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
             <div class="panel-header">
                 <div class="left-section">
                     <div class="logo-placeholder">
-                        <img src="../../chatbot/kairon-logo.png" alt="Logo">
+                        <img src="../../../chatbot/kairon-logo.png" alt="Logo">
                     </div>
                     <div class="title">Kairon</div>
                 </div>
@@ -160,7 +155,7 @@
             </form>
         </div>
     </div>
-    <script src="../../chatbot/kairon-widget.js"></script>
+    <script src="../../../chatbot/kairon-widget.js"></script>
 </body>
 
 </html>

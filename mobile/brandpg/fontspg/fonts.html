@@ -4,11 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        if (window.innerWidth > 768) {
-            window.location.replace("../../../brandpg/fontspg/fonts.html");
-        }
-    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -421,13 +416,13 @@
 <body>
     <div class="container">
         <!-- Logo -->
-        <a href="../../../index.html" class="nav-logo"
+        <a href="../../../../frontend/index.html" class="nav-logo"
             style="position: absolute; top: 1.5rem; left: 1.5rem; z-index: 10; display: block;">
-            <img src="../../../images/MKAVS.png" alt="MKAVS" style="height: 32px; width: auto;">
+            <img src="../../../../frontend/images/MKAVS.png" alt="MKAVS" style="height: 32px; width: auto;">
         </a>
 
         <!-- Profile Icon -->
-        <a href="../../../profile/profile.html" class="profile-link">
+        <a href="../../../../frontend/profile/profile.html" class="profile-link">
             <i class="fa-solid fa-circle-user"></i>
         </a>
         <div class="header">
@@ -455,7 +450,7 @@
         </div>
         <div class="fonts-grid" id="font-grid"></div>
         <div style="text-align:center;">
-            <a href="../../../branding.html" class="back-link">
+            <a href="../../../../frontend/branding.html" class="back-link">
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     style="margin-right: 8px;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
@@ -467,20 +462,20 @@
     </div>
 
 
-    <script src="../../../brandpg/fontspg/fonts_data.js"></script>
-    <script src="../../../brandpg/fontspg/script.js"></script>
+    <script src="fonts_data.js"></script>
+    <script src="script.js"></script>
     <!-- Kairon Chat Widget Integration -->
-    <link rel="stylesheet" href="../../chatbot/kairon-widget.css">
-    <script>window.KAIRON_BASE_PATH = "../../chatbot/";</script>
+    <link rel="stylesheet" href="../../../chatbot/kairon-widget.css">
+    <script>window.KAIRON_BASE_PATH = "../../../chatbot/";</script>
     <div id="kairon">
         <button id="kairon-button" aria-label="Open chat">
-            <img src="../../chatbot/kairon-logo.png" alt="Kairon">
+            <img src="../../../chatbot/kairon-logo.png" alt="Kairon">
         </button>
         <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
             <div class="panel-header">
                 <div class="left-section">
                     <div class="logo-placeholder">
-                        <img src="../../chatbot/kairon-logo.png" alt="Logo">
+                        <img src="../../../chatbot/kairon-logo.png" alt="Logo">
                     </div>
                     <div class="title">Kairon</div>
                 </div>
@@ -507,7 +502,7 @@
             </form>
         </div>
     </div>
-    <script src="../../chatbot/kairon-widget.js"></script>
+    <script src="../../../chatbot/kairon-widget.js"></script>
 </body>
 
 </html>
