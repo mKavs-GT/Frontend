@@ -285,11 +285,11 @@
         <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none z-10 px-8 text-black"
             id="sun-text">
             <div class="relative w-full max-w-5xl flex items-center justify-center">
-                <img src="frontend/images/iconnn.png" class="absolute -top-16 md:-top-24 left-0 md:-left-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 translate-y-10 pointer-events-auto">
-                <img src="frontend/images/iconnn.png" class="absolute -top-16 md:-top-24 right-0 md:-right-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 translate-y-10 pointer-events-auto">
+                <img src="frontend/images/iconnn.png" class="absolute -top-16 md:-top-24 left-0 md:-left-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 scale-0 pointer-events-auto brightness-0">
+                <img src="frontend/images/iconnn.png" class="absolute -top-16 md:-top-24 right-0 md:-right-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 scale-0 pointer-events-auto brightness-0">
                 
                 <h3 class="text-2xl md:text-3xl lg:text-4xl leading-relaxed md:leading-normal font-black font-body text-black uppercase tracking-[0.1em] text-center w-full relative z-10"
-                    id="scrub-text">Your website deserves a look that hits instantly. <br>We don't guess. We design with
+                    id="scrub-text">Your website deserves a look that hits differently. <br>We don't guess. We design with
                     intention.</h3>
             </div>
         </div>
@@ -299,24 +299,24 @@
     <div id="color-wrapper" class="bg-[#c7f908] w-full relative z-10 -mt-[30vh] pt-10 pb-20">
 
         <!-- Dynamic Mockup Fan-out -->
-        <section class="px-4 relative flex justify-center items-center h-[400px] md:h-[600px] max-w-7xl mx-auto"
+        <section class="-mt-24 md:-mt-40 px-4 relative flex justify-center items-center h-[400px] md:h-[600px] max-w-7xl mx-auto"
             id="bottles-section">
             <!-- Left Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-[9/16] opacity-90 z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
+            <div class="absolute w-[250px] md:w-[350px] aspect-square z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
                 id="bottle-left" style="background:#000;">
-                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80" alt="Brand Assets"
-                    class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500 hover-target">
+                <img src="frontend/images/si1.png" alt="Brand Assets"
+                    class="w-full h-full object-cover transition-all duration-500 hover-target">
             </div>
             <!-- Right Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-[9/16] opacity-90 z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
+            <div class="absolute w-[250px] md:w-[350px] aspect-square z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
                 id="bottle-right" style="background:#000;">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" alt="Wireframes"
-                    class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500 hover-target">
+                <img src="frontend/images/si3.png" alt="Wireframes"
+                    class="w-full h-full object-cover transition-all duration-500 hover-target">
             </div>
             <!-- Center Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-[9/16] z-10 scale-110 border-4 border-black rounded-[40px] overflow-hidden shadow-2xl bg-black"
+            <div class="absolute w-[250px] md:w-[350px] aspect-square z-10 scale-110 border-4 border-black rounded-[40px] overflow-hidden shadow-2xl bg-black"
                 id="bottle-center">
-                <img src="https://images.unsplash.com/photo-1541560052-5e137f229371?w=800&q=80" alt="Mobile UI"
+                <img src="frontend/images/si2.png" alt="Mobile UI"
                     class="w-full h-full object-cover transition-transform duration-700 hover:scale-110 hover-target">
             </div>
         </section>
@@ -464,9 +464,9 @@
             })
             .to(".repel-star", {
                 opacity: 1,
-                y: 0,
-                duration: 0.5,
-                ease: "power2.out"
+                scale: 1,
+                duration: 0.6,
+                ease: "back.out(1.7)"
             }, "<")
             .to("#sun", {
                 scale: 30,
