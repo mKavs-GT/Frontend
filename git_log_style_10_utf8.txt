@@ -1,0 +1,1912 @@
+﻿commit ba61ffd59a76b8d7d45b366c86ff9efb423b847e
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 12:36:52 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index a12edd6..2d063da 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -642,82 +642,7 @@ p {
+ }
+ 
+ /* Meet The Team */
+-.meet-team {
+-    background-color: #fafafa00;
+-    padding: 6rem 2rem;
+-    position: relative;
+-    min-height: 117vh;
+-    display: flex;
+-    flex-direction: column;
+-    align-items: center;
+-    overflow: hidden;
+-    /* Ensure images stay within bounds */
+-}
+-
+-.meet-team .section-title {
+-    position: relative;
+-    z-index: 10;
+-    /* Keep title above images */
+-}
+-
+-.team-visuals {
+-    position: absolute;
+-    top: 0;
+-    left: 0;
+-    width: 100%;
+-    height: 100%;
+-    margin-top: 0;
+-}
+-
+-.team-bg-img {
+-    position: absolute;
+-    top: 0;
+-    left: 0;
+-    width: 100%;
+-    height: 100%;
+-    background-color: #FAFAFA;
+-    z-index: 1;
+-    opacity: 0;
+-    animation: fade-in 1.5s ease-out forwards;
+-}
+-
+-.team-fg-img {
+-    position: absolute;
+-    top: 0;
+-    left: 0;
+-    width: 100%;
+-    height: 100%;
+-    object-fit: cover;
+-    z-index: 2;
+-    opacity: 0;
+-    animation: slide-up-fg 1s ease-out forwards;
+-    animation-delay: 0.5s;
+-    /* Slight delay for FG */
+-}
+-
+-@keyframes fade-in {
+-    from {
+-        opacity: 0;
+-    }
+-
+-    to {
+-        opacity: 1;
+-    }
+-}
+-
+-@keyframes slide-up-fg {
+-    from {
+-        transform: translateY(100px);
+-        opacity: 0;
+-    }
+-
+-    to {
+-        transform: translateY(0);
+-        opacity: 1;
+-    }
+-}
+ 
+-.char-content {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+commit 179982e1198e57a4a70bb140ee90fb3eb47bf5b1
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 11:47:23 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index 71a5c80..a12edd6 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -546,7 +546,7 @@ p {
+     object-fit: contain;
+     /* Absolute positioning to sit "on" the container */
+     position: absolute;
+-    top: -175px;
++    top: -140px;
+     right: 1%;
+     border-radius: 8px;
+     z-index: 10;
+@@ -798,6 +798,18 @@ p {
+ }
+ 
+ /* Founder Specific */
++
++/* Scrolled Past Header Colors */
++.main-toolbar.scrolled-past-header .nav-link,
++.main-toolbar.scrolled-past-header .social-icons a,
++.main-toolbar.scrolled-past-header .mobile-menu-btn {
++    color: #111;
++}
++
++.main-toolbar.scrolled-past-header .nav-link:hover,
++.main-toolbar.scrolled-past-header .social-icons a:hover {
++    color: #0c19ad;
++}
+ .founder {
+     background-color: #1a1a1a;
+     position: relative;
+
+commit 424d278a5a5798d48e02df836f19887d8973f1fa
+Author: NUSHRAFATHIMA0511 <nushrafathima5115@gmail.com>
+Date:   Wed Apr 8 09:06:05 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index 8bba863..71a5c80 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -643,10 +643,10 @@ p {
+ 
+ /* Meet The Team */
+ .meet-team {
+-    background-color: #FAFAFA;
++    background-color: #fafafa00;
+     padding: 6rem 2rem;
+     position: relative;
+-    min-height: 80vh;
++    min-height: 117vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+@@ -675,7 +675,7 @@ p {
+     left: 0;
+     width: 100%;
+     height: 100%;
+-    object-fit: cover;
++    background-color: #FAFAFA;
+     z-index: 1;
+     opacity: 0;
+     animation: fade-in 1.5s ease-out forwards;
+@@ -957,7 +957,7 @@ p {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+-    object-position: center;
++    object-position: var(--pos-default, center);
+     transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
+     z-index: 1;
+ }
+@@ -965,10 +965,15 @@ p {
+ .arcane-item:hover img {
+     transform: none;
+     width: 100%;
+-    object-position: right center;
++    object-position: var(--pos-active, right center);
+     object-fit: contain;
+ }
+ 
++/* Position for items when another item is hovered */
++.arcane-accordion:hover .arcane-item:not(:hover) img {
++    object-position: var(--pos-collapsed, center);
++}
++
+ .arcane-item .arcane-vertical-name {
+     position: absolute;
+     bottom: 2rem;
+@@ -1466,9 +1471,13 @@ p {
+     height: 400vh;
+     /* Adjust length of scroll */
+     position: relative;
+-    background-color: #111827;
+-    /* Requested Color */
++    background-color: #1a1a1a;
++    /* Match Founder Section Color */
+     color: #fff;
++    border-top-left-radius: 10% 80px;
++    border-top-right-radius: 10% 80px;
++    margin-top: -20px;
++    z-index: 10;
+ }
+ 
+ .process-sticky-viewport {
+@@ -1502,7 +1511,7 @@ p {
+     /* Ensure it spans full width to center text */
+     margin-bottom: 4rem;
+     /* Gap after title */
+-    margin-top: -5vh;
++    margin-top: 10vh;
+     /* Slight adjustment to keep vertical balance */
+ }
+ 
+@@ -1512,7 +1521,7 @@ p {
+     width: 60px;
+     /* Match Our Story underline width */
+     height: 6px;
+-    background-color: var(--color-btn-green);
++    background-color: #ffffff;
+     margin: 10px auto 0;
+     /* Center underline */
+ }
+@@ -1538,9 +1547,9 @@ p {
+     width: 35vw;
+     /* Increased width as requested */
+     height: 100%;
+-    background-color: #1f2937;
+-    border: 1px solid #374151;
+-    border-radius: 12px;
++    background-color: #222;
++    border: 1px solid #333;
++    border-radius: 20px;
+     padding: 3rem;
+     display: flex;
+     flex-direction: column;
+@@ -1553,7 +1562,7 @@ p {
+ 
+ .process-card:hover {
+     transform: translateY(-15px);
+-    border-color: var(--color-btn-green);
++    border-color: var(--accent, var(--color-btn-green));
+     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+ }
+ 
+@@ -1564,7 +1573,7 @@ p {
+     left: 0;
+     width: 100%;
+     height: 6px;
+-    background: var(--color-btn-green);
++    background: var(--accent, var(--color-btn-green));
+     transform: scaleX(0);
+     transform-origin: left;
+     transition: transform 0.4s ease;
+@@ -1589,7 +1598,7 @@ p {
+ }
+ 
+ .process-card:hover .p-number {
+-    color: var(--color-btn-green);
++    color: var(--accent, var(--color-btn-green));
+     opacity: 0.8;
+ }
+ 
+
+commit 3ad359107563b5db762dccfa0e788baaece9ce21
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Wed Apr 8 08:11:01 2026 +0530
+
+    c
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index cb723af..8bba863 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -530,8 +530,8 @@ p {
+ 
+ /* Tools We Use */
+ .tools-section {
+-    background-color: var(--color-dark-tools);
+-    color: white;
++    background-color: #fafafa;
++    color: #111;
+     padding: 3rem 2rem 0 2rem;
+     text-align: center;
+     position: relative;
+@@ -552,11 +552,6 @@ p {
+     z-index: 10;
+ }
+ 
+-.tools-section .section-title {
+-    border: none;
+-    margin-bottom: 2rem;
+-    color: white;
+-}
+ 
+ .tools-grid {
+     display: grid;
+@@ -568,37 +563,45 @@ p {
+ }
+ 
+ .tools-container-bg {
+-    background-color: #333;
+-    /* Lighter grey container */
++    background-color: transparent;
++    background-image:
++        linear-gradient(to right, #f0f0f0 1px, transparent 1px),
++        linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
++    background-size: 100px 100px;
++    background-position: center;
+     padding: 3rem 3rem 6rem 3rem;
+-    border-radius: 20px 20px 0 0;
+-    max-width: 1400px;
++    border-radius: 0;
++    max-width: 1500px;
+     margin: 0 auto;
+-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
++    box-shadow: none;
+     min-height: 100%;
+ }
+ 
+ .tool-icon {
+     width: 80px;
+     height: 80px;
+-    background-color: #333;
++    background-color: #ffffff;
+     border-radius: 12px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+-    border: 1px solid #555;
+-    transition: transform 0.2s, background-color 0.2s;
++    border: 2px solid #eaeaea;
++    transition: transform 0.1s ease-out, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+     font-size: 0.8rem;
+     padding: 5px;
+     text-align: center;
+     overflow: hidden;
+     position: relative;
++    --repel-x: 0px;
++    --repel-y: 0px;
++    transform: translate(var(--repel-x), var(--repel-y));
++    box-shadow: 5px 10px 20px rgba(0, 0, 0, 0.04);
+ }
+ 
+ .tool-icon svg {
+     width: 60%;
+     height: 60%;
+-    fill: white;
++    fill: #333;
+     transition: transform 0.2s;
+ }
+ 
+@@ -607,6 +610,7 @@ p {
+     height: 70%;
+     object-fit: contain;
+     transition: transform 0.2s;
++    filter: invert(1);
+ }
+ 
+ .tool-icon img.large-img {
+@@ -615,7 +619,7 @@ p {
+ }
+ 
+ .tool-icon svg path {
+-    fill: white !important;
++    fill: #333 !important;
+ }
+ 
+ .tool-icon:hover svg {
+@@ -623,7 +627,7 @@ p {
+ }
+ 
+ .tool-icon span {
+-    color: white;
++    color: #333;
+     font-size: 0.75rem;
+     line-height: 1.2;
+     display: block;
+@@ -631,14 +635,15 @@ p {
+ }
+ 
+ .tool-icon:hover {
+-    transform: scale(1.1);
+-    background-color: #444;
+-    border-color: var(--color-btn-green);
++    transform: translate(var(--repel-x), var(--repel-y)) scale(1.1);
++    background-color: #fafafa;
++    border-color: #ccc;
++    box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.08);
+ }
+ 
+ /* Meet The Team */
+ .meet-team {
+-    background-color: var(--color-yellow-team);
++    background-color: #FAFAFA;
+     padding: 6rem 2rem;
+     position: relative;
+     min-height: 80vh;
+@@ -789,11 +794,7 @@ p {
+ .char-text p {
+     font-size: 1.1rem;
+     line-height: 1.6;
+-    background: rgba(0, 0, 0, 0.3);
+-    padding: 1.5rem;
+-    border-radius: 8px;
+     margin-bottom: 1rem;
+-    border-left: 4px solid;
+ }
+ 
+ /* Founder Specific */
+@@ -832,8 +833,8 @@ p {
+     margin-left: -4rem;
+ }
+ 
+-.founder .char-text h2 {
+-    color: var(--color-gold-founder);
++.founder-title {
++    color: var(--color-gold-founder, #DCAE5B);
+     font-size: 5rem;
+     font-weight: 900;
+     text-transform: uppercase;
+@@ -842,13 +843,79 @@ p {
+     line-height: 1;
+ }
+ 
+-.founder .char-text p {
+-    background: none;
++.founder-subtitle {
++    font-size: 2.5rem;
++    color: #fff;
++    font-weight: 800;
++    margin-bottom: 1rem;
++    text-transform: uppercase;
++    letter-spacing: 1px;
++}
++
++.founder-divider {
+     border: none;
++    border-top: 1px solid rgba(255, 255, 255, 0.2);
++    margin: 1.5rem 0;
++}
++
++.founder-desc {
++    color: #ccc;
++    font-size: 1.1rem;
++    line-height: 1.6;
++    margin-bottom: 2rem;
++    background: transparent;
+     padding: 0;
++    border: none;
++}
++
++.founder-quote-box {
++    position: relative;
++    padding: 1rem 3rem;
++    margin-top: 1rem;
++    background: transparent;
++    border: none;
++}
++
++.quote-mark {
++    font-family: serif;
++    font-size: 6rem;
++    color: rgba(220, 174, 91, 0.2);
++    position: absolute;
++    line-height: 1;
++}
++
++.open-quote {
++    top: -20px;
++    left: 10px;
++}
++
++.close-quote {
++    bottom: -60px;
++    right: 15px;
++}
++
++.founder-quote-text {
+     color: #fff;
+-    font-size: 1.1rem;
+-    margin-bottom: 1.5rem;
++    font-size: 1.25rem;
++    font-style: italic;
++    line-height: 1.8;
++    position: relative;
++    z-index: 2;
++    margin: 0;
++}
++
++.founder-signature-container {
++    display: flex;
++    justify-content: flex-end;
++    margin-top: 2rem;
++}
++
++.founder-signature-image {
++    width: 200px;
++    height: auto;
++    object-fit: contain;
++    filter: brightness(0) invert(1);
++    /* Assuming sign.png is black or needs to be white/gold, adjust as needed */
+ }
+ 
+ /* ARCANE TEAM SECTION */
+@@ -879,7 +946,7 @@ p {
+ }
+ 
+ .arcane-item:hover {
+-    flex: 6;
++    flex: 4.5;
+ }
+ 
+ .arcane-item img {
+@@ -890,7 +957,7 @@ p {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+-    object-position: center top;
++    object-position: center;
+     transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
+     z-index: 1;
+ }
+
+commit 9b1c6073f495540019c42a738baf706311b13694
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Mon Apr 6 10:01:29 2026 +0530
+
+    commit
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index 852e4e5..cb723af 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -87,7 +87,7 @@ p {
+ 
+ /* Toolbar Styles */
+ .main-toolbar {
+-    position: absolute;
++    position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+@@ -95,6 +95,8 @@ p {
+     padding: 1.5rem 2rem;
+     font-family: var(--font-header);
+     background: transparent;
++    backdrop-filter: blur(0px);
++    transition: transform 0.3s ease-in-out;
+ }
+ 
+ .toolbar-container {
+@@ -330,123 +332,200 @@ p {
+     }
+ }
+ 
+-/* Our Story */
+-/* Our Story */
+-/* Our Story */
+-.our-story {
+-    background-color: #D8D8D8;
+-    /* Light Grey Background */
+-    padding: 5rem 2rem;
++/* How We Work */
++.how-we-work {
++    background-color: #fafafa;
++    padding: 6rem 2rem;
+     position: relative;
+-    color: #333;
++    color: #111;
++    overflow: hidden;
+ }
+ 
+-.story-header {
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    gap: 2rem;
+-    margin-bottom: 3rem;
++.hww-header {
++    max-width: 1400px;
++    margin: 0 auto 5rem;
++    text-align: left;
++    padding-left: 2rem;
++    position: relative;
+ }
+ 
+-.story-logo {
+-    width: 60px;
+-    height: 60px;
+-    object-fit: contain;
+-    flex-shrink: 0;
+-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
++.hww-tag {
++    display: inline-block;
++    padding: 0.3rem 1rem;
++    border: 1px solid #ccc;
++    border-radius: 20px;
++    font-size: 0.9rem;
++    font-weight: 500;
++    margin-bottom: 1.5rem;
++    color: #555;
++    background: transparent;
+ }
+ 
+-.section-title {
++.hww-title {
+     font-size: 3.5rem;
+     font-weight: 900;
+-    border-left: none;
+-    padding-left: 0;
+-    margin-bottom: 10px;
+-    color: #000;
+-    text-transform: uppercase;
+-    letter-spacing: 2px;
+-    position: relative;
+-    padding-bottom: 10px;
++    line-height: 1.2;
++    margin-bottom: 1rem;
++    color: #111;
++    text-transform: none;
++    /* Override uppercase */
+ }
+ 
+-.section-title::after {
+-    content: '';
+-    display: block;
+-    width: 60px;
+-    height: 6px;
+-    background-color: var(--color-btn-green);
+-    margin: 10px auto 0;
++/* Optional swirl positioning */
++.hww-swirl {
++    position: absolute;
++    right: 20%;
++    bottom: -20px;
++    transform: rotate(20deg);
+ }
+ 
+-.story-grid {
+-    display: grid;
+-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+-    gap: 3rem;
+-    max-width: 1400px;
++.hww-container {
++    max-width: 1500px;
+     margin: 0 auto;
++    position: relative;
++    padding-bottom: 4rem;
++    /* Buffer for hover and arrow */
++    display: flex;
++    flex-wrap: nowrap;
++    justify-content: center;
++    gap: 2rem;
++    background-image:
++        linear-gradient(to right, #f0f0f0 1px, transparent 1px),
++        linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
++    background-size: 100px 100px;
++    background-position: center;
+ }
+ 
+-.story-col {
++.hww-line {
++    display: none;
++    /* Hide background line as it's horizontal now */
++}
++
++.hww-card {
+     background: #ffffff;
+-    border: 1px solid rgba(0, 0, 0, 0.1);
+-    border-radius: 20px;
+-    padding: 3rem;
+-    transition: all 0.4s ease;
++    border: 2px solid #eaeaea;
++    border-radius: 24px;
++    padding: 3rem 2.5rem;
++    width: 320px;
++    flex-shrink: 0;
+     position: relative;
+-    overflow: hidden;
++    box-shadow: 10px 20px 40px rgba(0, 0, 0, 0.08);
++    transition: transform 0.4s ease, box-shadow 0.4s ease;
+ }
+ 
+-.story-col:hover {
+-    transform: translateY(-10px);
+-    border-color: var(--color-btn-green);
+-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
++.hww-card:hover {
++    transform: translateY(-10px) rotate(0deg) !important;
++    box-shadow: 15px 25px 50px rgba(0, 0, 0, 0.12);
++    border-color: #ccc;
+ }
+ 
+-.story-col::before {
+-    content: '';
++.hww-hole {
++    width: 16px;
++    height: 16px;
++    background: #333;
++    border-radius: 50%;
+     position: absolute;
+-    top: 0;
+-    left: 0;
+-    width: 100%;
+-    height: 100%;
+-    background: radial-gradient(circle at top right, rgba(204, 255, 0, 0.05), transparent 40%);
+-    opacity: 0;
+-    transition: opacity 0.4s ease;
++    top: 15px;
++    left: 50%;
++    transform: translateX(-50%);
++    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), 0 0 0 4px #f5f5f5;
+ }
+ 
+-.story-col:hover::before {
+-    opacity: 1;
++.hww-number {
++    font-size: 1.2rem;
++    font-weight: 700;
++    margin-bottom: 0.5rem;
++    color: #333;
+ }
+ 
+-.story-col h3 {
+-    color: #000;
+-    margin-bottom: 1.5rem;
+-    font-size: 1.8rem;
+-    border-bottom: 2px solid var(--color-btn-green);
+-    padding-bottom: 0.5rem;
+-    display: inline-block;
+-    position: relative;
+-    z-index: 1;
++.hww-card h3 {
++    font-size: 2rem;
++    font-weight: 800;
++    margin-bottom: 1rem;
++    color: #111;
++    text-transform: none;
++    border: none;
++    padding: 0;
+ }
+ 
+-.story-col p {
+-    line-height: 1.8;
+-    color: #444;
+-    font-size: 1.15rem;
+-    position: relative;
+-    z-index: 1;
++.hww-card p {
++    font-size: 1rem;
++    color: #666;
++    line-height: 1.6;
++    margin: 0;
+ }
+ 
+-/* Highlight Text Effect */
+-/* Highlight Text Effect */
+-/* Highlight Text Effect - Bold Only */
+-.highlight-text {
+-    background: none;
+-    color: black;
+-    /* Explicitly setting to black for light background */
+-    font-weight: bold;
+-    padding: 0;
++.hww-arrow {
++    position: absolute;
++    bottom: -30px;
++    right: -20px;
++    font-size: 1.1rem;
++    color: #555;
++    transform: rotate(-10deg);
++    font-weight: 600;
++}
++
++/* Card positions and slight rotations */
++.card-1 {
++    transform: rotate(2deg);
++}
++
++.card-2 {
++    transform: rotate(-2deg);
++}
++
++.card-3 {
++    transform: rotate(3deg);
++}
++
++.card-4 {
++    transform: rotate(-1deg);
++}
++
++@media (max-width: 1300px) {
++    .hww-container {
++        flex-wrap: wrap;
++        /* Let it wrap on smaller screens so boxes stay same size */
++        height: auto;
++    }
++}
++
++@media (max-width: 900px) {
++    .hww-container {
++        height: auto;
++        display: flex;
++        flex-direction: column;
++        align-items: center;
++        gap: 3rem;
++        padding-top: 2rem;
++        background-image: none;
++    }
++
++    .hww-line {
++        display: none;
++    }
++
++    .hww-card {
++        position: relative;
++        top: 0 !important;
++        left: 0 !important;
++        transform: none !important;
++        width: 100%;
++        max-width: 400px;
++    }
++
++    .hww-title {
++        font-size: 2.5rem;
++    }
++
++    .hww-header {
++        padding-left: 0;
++        text-align: center;
++    }
++
++    .hww-swirl {
++        display: none;
++    }
+ }
+ 
+ /* Tools We Use */
+@@ -462,12 +541,12 @@ p {
+ /* ... existing code ... */
+ 
+ .small-story-image {
+-    width: 250px;
++    width: 200px;
+     height: auto;
+     object-fit: contain;
+     /* Absolute positioning to sit "on" the container */
+     position: absolute;
+-    top: -220px;
++    top: -175px;
+     right: 1%;
+     border-radius: 8px;
+     z-index: 10;
+@@ -772,497 +851,195 @@ p {
+     margin-bottom: 1.5rem;
+ }
+ 
+-/* Horizontal Scroll Team Section */
+-.team-scroll-container {
+-    height: 400vh;
+-    /* 100vh per slide */
+-    position: relative;
+-    background-color: #7E8599;
+-}
+-
+-.team-sticky-viewport {
+-    position: sticky;
+-    top: 0;
+-    height: 100vh;
++/* ARCANE TEAM SECTION */
++.arcane-team-section {
+     width: 100%;
+-    overflow: hidden;
+-}
+-
+-.team-horizontal-track {
+-    display: flex;
+-    height: 100%;
+-    width: 500%;
+-    /* 5 sections */
+-    will-change: transform;
+-}
+-
+-.team-horizontal-track .character-section {
+-    width: 20%;
+-    /* 1/4 of 400% = 100% of viewport */
+-    height: 100vh;
+-    flex-shrink: 0;
+-    display: flex;
+-    /* Ensure inner content centers */
+-    align-items: center;
+-    justify-content: center;
+-    background-color: #7E8599;
+-    position: relative;
+-    overflow: hidden;
+-}
+-
+-/* Role Styling (Horizontal) */
+-.grade-role,
+-.horizontal-role {
+-    font-family: var(--font-header);
+-    font-size: 1.5rem;
+-    font-weight: bold;
+-    text-transform: uppercase;
+-    color: rgba(255, 255, 255, 0.8);
+-    display: block;
+-    margin-top: -10px;
+-    /* Pull closer to name */
+-    margin-bottom: 2rem;
++    padding: 6rem 2rem;
++    max-width: 1600px;
++    margin: 0 auto;
++    background-color: transparent;
+ }
+ 
+-.char-header {
++.arcane-accordion {
+     display: flex;
+-    flex-direction: column;
+-    align-items: flex-start;
+-    /* Left align for most, or context specific */
+-}
+-
+-/* Diagonal Panel Design */
+-.char-image-container::before {
+-    content: '';
+-    position: absolute;
+-    top: -10%;
+-    bottom: -10%;
+-    left: -5%;
+-    /* Adjusted to center the wider panel */
++    gap: 0;
++    height: 700px;
+     width: 100%;
+-    /* 2x wider (from 60%) */
+-    background-color: var(--panel-color, );
+-    transform: skewX(30deg);
+-    /* Increased tilt to the left */
+-    z-index: -1;
+     border-radius: 20px;
++    overflow: hidden;
+ }
+ 
+-.char-img {
+-    z-index: 2;
++.arcane-item {
++    flex: 1;
+     position: relative;
+-    left: -15%;
+-}
+-
+-/* Text Styling Updates for Light BG */
+-.team-horizontal-track .char-text {
+-    transform: translateY(-20%);
+-    /* Move text block higher as requested */
+-}
+-
+-.team-horizontal-track .char-text h2 {
+-    color: #333;
+-}
+-
+-.team-horizontal-track .char-text p {
+-    color: #555;
+-    background: none;
+-    border-color: var(--panel-color);
+-    border-left: 4px solid var(--panel-color);
+-    padding-left: 1rem;
+-}
+-
+-.horizontal-role {
+-    color: #666;
++    overflow: hidden;
++    cursor: pointer;
++    transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
++    background: linear-gradient(to top, var(--accent) 0%, var(--accent) 75%, #F0F0F0 75%, #F0F0F0 100%);
+ }
+ 
+-
+-/* Individual Character Styles adjusted for Horizontal Flow */
+-.mr-v {
+-    --panel-color: var(--color-green-v);
++.arcane-item:hover {
++    flex: 6;
+ }
+ 
+-
+-.mr-v .char-img {
+-    /* Individual positioning for Mr. V image */
+-    left: 20%;
+-    bottom: 0;
+-    top: 60%;
+-    transform-origin: bottom center;
++.arcane-item img {
+     position: absolute;
+-    transform: scale(1.8);
+-}
+-
+-.mr-v .char-text {
+-    /* Individual positioning for Mr. V text */
+-    transform: translateY(-180%);
+-
+-}
+-
+-.mr-v .char-image-container::before {
+-    left: 18%;
+-    width: 120%;
+-    transform: skewX(45deg);
+-}
+-
+-.mr-v .char-text h2 {
+-    color: #000;
+-    position: relative;
+-    right: 100%;
+-    transform: rotate(14deg);
++    top: 0;
++    right: 0;
++    left: unset;
++    width: 100%;
++    height: 100%;
++    object-fit: cover;
++    object-position: center top;
++    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
++    z-index: 1;
+ }
+ 
+-.mr-v .horizontal-role {
+-    color: #000;
++.arcane-item:hover img {
++    transform: none;
++    width: 100%;
++    object-position: right center;
++    object-fit: contain;
+ }
+ 
+-.mr-v .side-role {
++.arcane-item .arcane-vertical-name {
+     position: absolute;
+-    top: 40%;
+-    right: -650px;
+-    transform: rotate(45deg);
++    bottom: 2rem;
++    left: 50%;
++    transform: translateX(-50%) rotate(-90deg);
++    transform-origin: left bottom;
++    color: rgba(255, 255, 255, 0.6);
+     font-weight: 900;
+-    /* Bold as requested */
+-    font-size: 6rem;
++    font-family: var(--font-header);
++    font-size: 2rem;
+     letter-spacing: 5px;
+-    color: #CCFF00;
+-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+-    color: #CCFF00;
++    z-index: 4;
++    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
+     white-space: nowrap;
+-    z-index: 0;
+-}
+-
+-.mr-v .mrv-quote {
+-    position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
+-    font-size: 1.2rem;
+-    line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
+-
+-.mr-v .char-text p {
+-    color: #000;
+-    background: rgba(255, 255, 255, 0.5);
+-    border-color: #000;
+-}
+-
+-
+-.mrs-s {
+-    --panel-color: var(--color-silver-s);
+-}
+-
+-.mrs-s .char-image-container::before {
+-    left: 30%;
+-    width: 120%;
+-    transform: skewX(40deg);
+-}
+-
+-.mrs-s .char-img {
+-    /* Individual positioning for Mr. V image */
+-    left: 30%;
+-    top: 13%;
+-    transform: scale(1.3);
+-}
+-
+-.mrs-s .char-text {
+-    /* Individual positioning for Mr. V text */
+-    transform: translateY(330%);
+-
+-}
+-
+-.mrs-s .char-text h2 {
+-    color: #ffffff;
+-    position: relative;
+-    right: 120%;
+-
+-}
+-
+-.mrs-s .horizontal-role {
+-    color: #000;
++    text-transform: uppercase;
++    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+ }
+ 
+-.mrs-s .side-role {
+-    position: absolute;
+-    top: 40%;
+-    right: -770px;
+-    transform: rotate(50deg);
+-    font-weight: 900;
+-    /* Bold as requested */
+-    font-size: 6rem;
+-    letter-spacing: 2px;
+-    color: #C0C0C0;
+-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+-    color: #C0C0C0;
+-    white-space: nowrap;
+-    z-index: 0;
++.arcane-item:hover .arcane-vertical-name {
++    opacity: 0;
++    pointer-events: none;
++    transform: translateX(-50%) rotate(-90deg) translateY(-20px);
+ }
+ 
+-.mrs-s .mrss-quote {
++.arcane-item .arcane-content {
+     position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
+-    font-size: 1.2rem;
+-    line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
+-
+-.mrs-s .char-text p {
+-    color: #000;
+-    background: rgba(255, 255, 255, 0.5);
+-    border-color: #000;
+-}
+-
+-
+-.mr-m {
+-    --panel-color: var(--color-cyan-m);
+-}
+-
+-.mr-m .char-image-container::before {
+-    left: 42%;
+-    width: 120%;
+-    transform: skewX(45deg);
+-}
+-
+-.mr-m .char-img {
+-    /* Individual positioning for Mr. V image */
+-    left: 25%;
+-    top: 13%;
+-    transform: scale(1.3);
+-}
+-
+-.mr-m .char-text {
+-    /* Individual positioning for Mr. V text */
+-    transform: translateY(330%);
+-
+-}
+-
+-.mr-m .char-text h2 {
+-    color: #ffffff;
+-    position: relative;
+-    right: 100%;
+-    right: 120%;
+-}
+-
+-.mr-m .horizontal-role {
+-    color: #000;
++    bottom: 3rem;
++    left: 3rem;
++    z-index: 5;
++    opacity: 0;
++    transform: translateY(30px);
++    transition: opacity 0.4s ease, transform 0.4s ease;
++    transition-delay: 0s;
++    pointer-events: none;
++    width: 40%;
++    max-width: 500px;
+ }
+ 
+-.mr-m .side-role {
+-    position: absolute;
+-    top: 40%;
+-    right: -845px;
+-    transform: rotate(45deg);
+-    font-weight: 900;
+-    /* Bold as requested */
+-    font-size: 5.5rem;
+-    letter-spacing: 1px;
+-    color: #161a1a;
+-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+-    color: #00FFFF;
+-    white-space: nowrap;
+-    z-index: 0;
++.arcane-item:hover .arcane-content {
++    opacity: 1;
++    transform: translateY(0);
++    transition-delay: 0.3s;
++    pointer-events: auto;
+ }
+ 
+-.mr-m .mrm-quote {
+-    position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
++.arcane-item .arcane-role {
++    font-family: var(--font-header);
+     font-size: 1.2rem;
+-    line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
+-
+-.mr-m .char-text p {
+-    color: #000;
+-    background: rgba(255, 255, 255, 0.5);
+-    border-color: #000;
+-}
+-
+-
+-.mr-a {
+-    --panel-color: #5539a2;
+-}
+-
+-.mr-a .char-image-container::before {
+-    left: 50%;
+-    width: 120%;
+-    transform: skewX(45deg);
+-}
+-
+-.mr-a .char-img {
+-    /* Individual positioning for Mr. V image */
+-    left: 20%;
+-    top: 13%;
+-    transform: scale(1.6);
+-}
+-
+-
+-.mr-a .char-text {
+-    /* Individual positioning for Mr. V text */
+-    transform: translateY(330%);
+-
+-}
+-
+-.mr-a .char-text h2 {
+-    color: #000;
+-    position: relative;
+-    right: 130%;
+-}
+-
+-.mr-a .horizontal-role {
+-    color: #000;
++    font-weight: 900;
++    color: var(--accent);
++    letter-spacing: 3px;
++    text-transform: uppercase;
++    display: block;
++    margin-bottom: 0.5rem;
++    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+ }
+ 
+-.mr-a .side-role {
+-    position: absolute;
+-    top: 40%;
+-    right: -890px;
+-    transform: rotate(45deg);
++.arcane-item .arcane-name {
++    font-size: 4rem;
+     font-weight: 900;
+-    /* Bold as requested */
+-    font-size: 5rem;
+-    letter-spacing: 1px;
+-    color: #5539A2;
+-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+-    color: #5539A2;
+-    white-space: nowrap;
+-    z-index: 0;
++    font-family: var(--font-header);
++    color: #fff;
++    margin: 0 0 1rem 0;
++    line-height: 1;
++    text-transform: uppercase;
++    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+ }
+ 
+-.mr-a .mra-quote {
+-    position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
+-    font-size: 1.2rem;
++.arcane-item .arcane-desc {
++    font-size: 1.15rem;
++    color: #eee;
+     line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
+-
+-.mr-z {
+-    --panel-color: #8a1e1e;
+-}
+-
+-.mr-z .char-image-container::before {
+-    left: 40%;
+-    width: 120%;
+-    transform: skewX(45deg);
++    max-width: 500px;
++    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
++    font-weight: 400;
+ }
+ 
+-.mr-z .char-img {
+-    /* Individual positioning for Mr. V image */
+-    left: 38%;
+-    top: 1%;
+-    transform: scale(1.5);
+-}
+-
+-
+-.mr-z .char-text {
+-    /* Individual positioning for Mr. V text */
+-    transform: translateY(330%);
++@media (max-width: 900px) {
++    .arcane-team-section {
++        padding: 3rem 1rem;
++    }
+ 
+-}
++    .arcane-accordion {
++        flex-direction: column;
++        height: 800px;
++    }
+ 
+-.mr-z .char-text h2 {
+-    color: #000;
+-    position: relative;
+-    right: 120%;
+-}
++    .arcane-item {
++        border-right: none;
++    }
+ 
+-.mr-z .horizontal-role {
+-    color: #000;
+-}
++    .arcane-item:hover img {
++        width: 100%;
++        height: 50%;
++        top: 0;
++        object-position: center top;
++        transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
++    }
+ 
+-.mr-z .side-role {
+-    position: absolute;
+-    top: 30%;
+-    right: -586px;
+-    transform: rotate(45deg);
+-    font-weight: 900;
+-    /* Bold as requested */
+-    font-size: 5rem;
+-    letter-spacing: 1px;
+-    color: #8a1e1e;
+-    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
+-    color: #8a1e1e;
+-    white-space: nowrap;
+-    z-index: 0;
+-}
++    .arcane-item .arcane-vertical-name {
++        transform: translate(-50%, -50%) rotate(0deg);
++        top: 50%;
++        bottom: auto;
++        left: 50%;
++        color: rgba(255, 255, 255, 0.9);
++    }
+ 
+-.mr-z .mra-quote {
+-    position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
+-    font-size: 1.2rem;
+-    line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
++    .arcane-item:hover .arcane-vertical-name {
++        transform: translate(-50%, -50%) rotate(0deg) scale(0.8);
++    }
+ 
+-.mr-z .char-text p {
+-    color: #000;
+-    background: rgba(255, 255, 255, 0.5);
+-    border-color: #000;
+-}
++    .arcane-item:hover {
++        flex: 3;
++    }
+ 
++    .arcane-item .arcane-content {
++        left: 1.5rem;
++        right: 1.5rem;
++        bottom: 1.5rem;
++        width: 100%;
++        transform: translateY(10px);
++        max-width: none;
++    }
+ 
+-.mr-z .mrz-quote {
+-    position: absolute;
+-    top: 10%;
+-    right: 5%;
+-    max-width: 400px;
+-    font-size: 1.2rem;
+-    line-height: 1.6;
+-    color: #333;
+-    text-align: right;
+-    font-weight: 500;
+-    z-index: 10;
+-    padding-right: 1.5rem;
+-    border-right: 4px solid #d3d3d3;
+-    /* Light grey bar */
+-}
++    .arcane-item .arcane-name {
++        font-size: 2.5rem;
++    }
+ 
+-.mr-z .char-text p {
+-    color: #000;
+-    background: rgba(255, 255, 255, 0.5);
+-    border-color: #000;
++    .arcane-item .arcane-desc {
++        font-size: 0.95rem;
++        display: -webkit-box;
++        -webkit-line-clamp: 2;
++        line-clamp: 2;
++        -webkit-box-orient: vertical;
++        overflow: hidden;
++    }
+ }
+ 
+-
+ /* CTA Section */
+ .cta-section {
+     background-color: var(--color-dark-cta);
+
+commit 85121ef51a9319503ed0c1146c32a2af2fb4f4f0
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Tue Mar 24 07:59:42 2026 +0530
+
+    bug
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index b2d781b..852e4e5 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -1113,7 +1113,7 @@ p {
+ 
+ .mr-a .char-img {
+     /* Individual positioning for Mr. V image */
+-    left: 35%;
++    left: 20%;
+     top: 13%;
+     transform: scale(1.6);
+ }
+@@ -1558,18 +1558,18 @@ p {
+ 
+ .footer-socials {
+     display: flex;
++    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+-    padding-top: 4rem;
+-    /* More spacing inside curve */
++    gap: 1.25rem;
++    padding-top: 3rem;
+     padding-bottom: 2rem;
+ }
+ 
+ .social-links {
+     display: flex;
+-    gap: 4rem;
+-    font-size: 3.75rem;
+-    /* text-6xl */
++    gap: 2.5rem;
++    font-size: 2rem;
+ }
+ 
+ .social-link {
+@@ -1581,9 +1581,29 @@ p {
+ 
+ .social-link:hover {
+     color: #4F46E5;
+-    /* indigo-600 */
+ }
+ 
++.about-policy-links {
++    display: flex;
++    gap: 2rem;
++    font-size: 0.8rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 0.05em;
++}
++
++.about-policy-links a {
++    color: #0e0e0e;
++    text-decoration: underline;
++    text-underline-offset: 3px;
++    transition: color 0.3s ease;
++}
++
++.about-policy-links a:hover {
++    color: #0C1AC1;
++}
++
++
+ .copyright-text {
+     position: absolute;
+     bottom: 0.25rem;
+@@ -2209,6 +2229,18 @@ p {
+     }
+ }
+ 
++@keyframes float-mrz {
++
++    0%,
++    100% {
++        transform: scale(1.5) translateY(0);
++    }
++
++    50% {
++        transform: scale(1.5) translateY(-15px);
++    }
++}
++
+ .mr-v .char-img {
+     animation: float-mrv 6s ease-in-out infinite;
+ }
+@@ -2229,4 +2261,10 @@ p {
+     animation: float-mra 6s ease-in-out infinite;
+     animation-delay: 3s;
+     /* Offset for natural feel */
++}
++
++.mr-z .char-img {
++    animation: float-mrz 6s ease-in-out infinite;
++    animation-delay: 0.5s;
++    /* Unique offset for natural stagger */
+ }
+\ No newline at end of file
+
+commit e3629eff43f64aba819dc70eac0092dce6e2e524
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Thu Feb 12 14:00:55 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index 540cda8..b2d781b 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -13,7 +13,7 @@
+     --color-purple-a: #9933ff;
+     --color-dark-cta: #111;
+     --color-blue-footer: #1a1aff;
+-    --color-btn-green: #ccff00;
++    --color-btna-green: #ccff00;
+ }
+ 
+ * {
+@@ -791,13 +791,13 @@ p {
+ .team-horizontal-track {
+     display: flex;
+     height: 100%;
+-    width: 400%;
+-    /* 4 sections */
++    width: 500%;
++    /* 5 sections */
+     will-change: transform;
+ }
+ 
+ .team-horizontal-track .character-section {
+-    width: 25%;
++    width: 20%;
+     /* 1/4 of 400% = 100% of viewport */
+     height: 100vh;
+     flex-shrink: 0;
+@@ -886,7 +886,10 @@ p {
+ .mr-v .char-img {
+     /* Individual positioning for Mr. V image */
+     left: 20%;
+-    top: 13%;
++    bottom: 0;
++    top: 60%;
++    transform-origin: bottom center;
++    position: absolute;
+     transform: scale(1.8);
+ }
+ 
+@@ -1103,18 +1106,19 @@ p {
+ }
+ 
+ .mr-a .char-image-container::before {
+-    left: 40%;
++    left: 50%;
+     width: 120%;
+     transform: skewX(45deg);
+ }
+ 
+ .mr-a .char-img {
+     /* Individual positioning for Mr. V image */
+-    left: 25%;
++    left: 35%;
+     top: 13%;
+     transform: scale(1.6);
+ }
+ 
++
+ .mr-a .char-text {
+     /* Individual positioning for Mr. V text */
+     transform: translateY(330%);
+@@ -1124,7 +1128,7 @@ p {
+ .mr-a .char-text h2 {
+     color: #000;
+     position: relative;
+-    right: 120%;
++    right: 130%;
+ }
+ 
+ .mr-a .horizontal-role {
+@@ -1134,7 +1138,7 @@ p {
+ .mr-a .side-role {
+     position: absolute;
+     top: 40%;
+-    right: -832px;
++    right: -890px;
+     transform: rotate(45deg);
+     font-weight: 900;
+     /* Bold as requested */
+@@ -1163,12 +1167,102 @@ p {
+     /* Light grey bar */
+ }
+ 
+-.mr-a .char-text p {
++.mr-z {
++    --panel-color: #8a1e1e;
++}
++
++.mr-z .char-image-container::before {
++    left: 40%;
++    width: 120%;
++    transform: skewX(45deg);
++}
++
++.mr-z .char-img {
++    /* Individual positioning for Mr. V image */
++    left: 38%;
++    top: 1%;
++    transform: scale(1.5);
++}
++
++
++.mr-z .char-text {
++    /* Individual positioning for Mr. V text */
++    transform: translateY(330%);
++
++}
++
++.mr-z .char-text h2 {
++    color: #000;
++    position: relative;
++    right: 120%;
++}
++
++.mr-z .horizontal-role {
++    color: #000;
++}
++
++.mr-z .side-role {
++    position: absolute;
++    top: 30%;
++    right: -586px;
++    transform: rotate(45deg);
++    font-weight: 900;
++    /* Bold as requested */
++    font-size: 5rem;
++    letter-spacing: 1px;
++    color: #8a1e1e;
++    /* Subtle or bold? User said 'in bold'. I'll make it visible but maybe distinct */
++    color: #8a1e1e;
++    white-space: nowrap;
++    z-index: 0;
++}
++
++.mr-z .mra-quote {
++    position: absolute;
++    top: 10%;
++    right: 5%;
++    max-width: 400px;
++    font-size: 1.2rem;
++    line-height: 1.6;
++    color: #333;
++    text-align: right;
++    font-weight: 500;
++    z-index: 10;
++    padding-right: 1.5rem;
++    border-right: 4px solid #d3d3d3;
++    /* Light grey bar */
++}
++
++.mr-z .char-text p {
+     color: #000;
+     background: rgba(255, 255, 255, 0.5);
+     border-color: #000;
+ }
+ 
++
++.mr-z .mrz-quote {
++    position: absolute;
++    top: 10%;
++    right: 5%;
++    max-width: 400px;
++    font-size: 1.2rem;
++    line-height: 1.6;
++    color: #333;
++    text-align: right;
++    font-weight: 500;
++    z-index: 10;
++    padding-right: 1.5rem;
++    border-right: 4px solid #d3d3d3;
++    /* Light grey bar */
++}
++
++.mr-z .char-text p {
++    color: #000;
++    background: rgba(255, 255, 255, 0.5);
++    border-color: #000;
++}
++
++
+ /* CTA Section */
+ .cta-section {
+     background-color: var(--color-dark-cta);
+@@ -1464,7 +1558,6 @@ p {
+ 
+ .footer-socials {
+     display: flex;
+-    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding-top: 4rem;
+@@ -1850,7 +1943,6 @@ p {
+ 
+ .footer-socials {
+     display: flex;
+-    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding-top: 4rem;
+@@ -2137,34 +2229,4 @@ p {
+     animation: float-mra 6s ease-in-out infinite;
+     animation-delay: 3s;
+     /* Offset for natural feel */
+-}
+-
+-/* Policy Buttons Styling */
+-.policy-links {
+-    display: flex;
+-    gap: 1.5rem;
+-    margin-top: 1rem;
+-    margin-bottom: 3.5rem;
+-    justify-content: center;
+-}
+-
+-.policy-btn {
+-    padding: 0.5rem 1.25rem;
+-    border: 1px solid rgba(14, 14, 14, 0.3);
+-    border-radius: 9999px;
+-    font-size: 0.875rem;
+-    font-weight: 600;
+-    color: #0E0E0E;
+-    text-decoration: none !important;
+-    transition: all 0.3s ease;
+-    background: rgba(255, 255, 255, 0.2);
+-    backdrop-filter: blur(4px);
+-}
+-
+-.policy-btn:hover {
+-    background: #0C1AC1;
+-    color: white !important;
+-    border-color: #0C1AC1;
+-    transform: translateY(-2px);
+-    box-shadow: 0 4px 12px rgba(12, 26, 193, 0.2);
+ }
+\ No newline at end of file
+
+commit 90ebc0014d0d960aa4243a12710ccd86fafc3352
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Tue Feb 3 22:50:37 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index c11026a..540cda8 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -1464,6 +1464,7 @@ p {
+ 
+ .footer-socials {
+     display: flex;
++    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding-top: 4rem;
+@@ -1849,6 +1850,7 @@ p {
+ 
+ .footer-socials {
+     display: flex;
++    flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding-top: 4rem;
+
+commit 562c7870df9a609d3285d295266006a369be6716
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Tue Jan 27 13:51:28 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index 84a602e..c11026a 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -2141,7 +2141,7 @@ p {
+ .policy-links {
+     display: flex;
+     gap: 1.5rem;
+-    margin-top: 3rem;
++    margin-top: 1rem;
+     margin-bottom: 3.5rem;
+     justify-content: center;
+ }
+
+commit c11015f3fdb51ee57fa4533da0836e6d2b04df4a
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Tue Jan 27 12:32:51 2026 +0530
+
+    .
+
+diff --git a/frontend/about/style.css b/frontend/about/style.css
+index c201ebd..84a602e 100644
+--- a/frontend/about/style.css
++++ b/frontend/about/style.css
+@@ -1833,8 +1833,8 @@ p {
+ 
+ @media (min-width: 1000px) {
+     .footer-curve {
+-        border-top-left-radius: 50% 100px;
+-        border-top-right-radius: 50% 100px;
++        border-top-left-radius: 50% 100%;
++        border-top-right-radius: 50% 100%;
+     }
+ }
+ 

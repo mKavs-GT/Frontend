@@ -1254,6 +1254,8 @@ async function checkAuthStatus() {
         const data = await response.json();
 
         const userIconLink = document.querySelector('a[href="./profile/profile.html"], a[href="./loginpg/login.html"]');
+        const authConsultBtns = document.querySelectorAll('.auth-consult-btn');
+        const authPricingBtns = document.querySelectorAll('.auth-pricing-btn');
         
         if (data.loggedIn) {
             console.log('User is logged in:', data.user.displayName);
@@ -1264,12 +1266,16 @@ async function checkAuthStatus() {
                 const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                 userIconLink.innerHTML = `<img src="${profileImageUrl}" alt="Profile" class="w-6 h-6 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover inline-block" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150';">`;
             }
+            authConsultBtns.forEach(btn => btn.href = 'consult/consult.html');
+            authPricingBtns.forEach(btn => btn.href = 'pricingpage/pricing.html');
         } else {
             console.log('User is not logged in');
             if (userIconLink) {
                 userIconLink.href = './loginpg/login.html';
                 userIconLink.title = 'Login';
             }
+            authConsultBtns.forEach(btn => btn.href = './loginpg/login.html');
+            authPricingBtns.forEach(btn => btn.href = './loginpg/login.html');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);

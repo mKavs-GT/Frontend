@@ -1,0 +1,91 @@
+﻿commit ba61ffd59a76b8d7d45b366c86ff9efb423b847e
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 12:36:52 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index fb6325c..3f49940 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -380,9 +380,7 @@
+                 </div>
+ 
+ 
+-                <div class="founder-signature-container">
+-                    <img src="images/sign.png" alt="Signature" class="founder-signature-image">
+-                </div>
++
+             </div>
+         </div>
+     </section>
+@@ -607,9 +605,9 @@
+                             </a>
+                         </div>
+                         <div class="about-policy-links">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf" rel="noopener noreferrer">Privacy
++                            <a href="../docs/T&C and Privacy Policy.pdf" rel="noopener noreferrer">Privacy
+                                 Policy</a>
+-                            <a href="../docs/Refund%20Policy.pdf"
++                            <a href="../docs/Refund Policy.pdf"
+                                 rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+
+commit 179982e1198e57a4a70bb140ee90fb3eb47bf5b1
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 11:47:23 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index b5c9721..fb6325c 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -564,7 +564,7 @@
+                                 BOOK NOW
+                             </button>
+                         </a>
+-                        <a href="./pricingpage/pricing.html" rel="noopener noreferrer">
++                        <a href="../pricingpage/pricing.html" rel="noopener noreferrer">
+                             <button class="btn-dj btn-dj-secondary">
+                                 VIEW PLANS
+                             </button>
+@@ -607,9 +607,9 @@
+                             </a>
+                         </div>
+                         <div class="about-policy-links">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" rel="noopener noreferrer">Privacy
++                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf" rel="noopener noreferrer">Privacy
+                                 Policy</a>
+-                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf"
++                            <a href="../docs/Refund%20Policy.pdf"
+                                 rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+
+commit 50547d283726db1ed335450f636e20f168533269
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Thu Apr 9 06:01:06 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index e47eb94..b5c9721 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -349,14 +349,6 @@
+         </div>
+     </section>
+ 
+-    <!-- Meet The Team -->
+-    <section class="meet-team">
+-        <div class="team-visuals">
+-            <div class="team-bg-img"></div>
+-            <img src="images/fg.png" alt="Team Foreground" class="team-fg-img">
+-        </div>
+-    </section>
+-
+     <!-- Founder -->
+     <section class="character-section founder">
+         <div class="char-content">

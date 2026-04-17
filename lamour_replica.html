@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MKAVS Branding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Notable&family=Outfit:wght@300;400;600;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-base: #1a1a1a;
+            --color-accent: #c7f908;
+            --color-dark: #000000;
+            --font-display: 'Notable', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--color-base);
+            color: #ffffff;
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* Portfolio Marquee Overlay */
+        @keyframes marquee-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes marquee-down {
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .animate-scroll-up {
+            animation: marquee-up 50s linear infinite;
+        }
+
+        .animate-scroll-down {
+            animation: marquee-down 50s linear infinite;
+        }
+
+        h1,
+        h2,
+        h3,
+        .display-font {
+            font-family: var(--font-display);
+        }
+
+        /* Navbar Overlay */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transition: right 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            border-left: 2px solid var(--color-accent);
+        }
+
+        @media(min-width: 768px) {
+            .overlay-menu {
+                width: 50vw;
+            }
+        }
+
+        .overlay-menu.active {
+            right: 0;
+        }
+
+        /* Intro Circle Sequence */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .accent-circle {
+            position: absolute;
+            width: 40vmin;
+            height: 40vmin;
+            background-color: var(--color-accent);
+            border-radius: 50%;
+            z-index: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            mix-blend-mode: difference;
+        }
+
+        .content-section {
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Moving Portfolio Grid Background -->
+    <div class="fixed inset-0 z-[0] pointer-events-none overflow-hidden opacity-[0.12]">
+        <div
+            class="absolute w-[200vw] h-[250vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] scale-[1.5] md:scale-[1.8] flex gap-6 md:gap-10 justify-center">
+            <!-- Column 1 -->
+            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-up -mt-[10vh]">
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
+                <!-- Duplicates for loop -->
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
+            </div>
+            <!-- Column 2 -->
+            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-down mt-[15vh]">
+                <img src="frontend/images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+                <!-- Duplicates for loop -->
+                <img src="frontend/images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+            </div>
+            <!-- Column 3 -->
+            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-up mt-[5vh]">
+                <img src="frontend/images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+                <!-- Duplicates for loop -->
+                <img src="frontend/images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+            </div>
+            <!-- Column 4 -->
+            <div class="hidden md:flex flex-col gap-4 w-[20vw] animate-scroll-down -mt-[5vh]">
+                <img src="frontend/images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
+                <!-- Duplicates for loop -->
+                <img src="frontend/images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
+                <img src="frontend/images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Toolbar -->
+    <nav id="main-nav"
+        class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-12 bg-transparent text-white font-body transition-all duration-500">
+        <!-- Left Side Links -->
+        <div class="hidden md:flex gap-8 items-center text-sm tracking-widest uppercase font-bold">
+            <a href="frontend/index.html" class="hover:text-[#c7f908] transition-colors">Home</a>
+            <a href="frontend/about/about.html" class="hover:text-[#c7f908] transition-colors">About</a>
+            <a href="frontend/index.html#our-works" class="hover:text-[#c7f908] transition-colors">Our Work</a>
+            <a href="lamour_replica.html" class="text-[#c7f908]">Branding</a>
+        </div>
+
+        <!-- Logo Area -->
+        <div class="flex items-center justify-center">
+            <!-- Emulating the MKAVS text logo style if real image not available -->
+            <div class="text-2xl md:text-3xl font-black font-body tracking-wider uppercase text-white hover-target">
+                MKAVS.</div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="md:hidden text-2xl hover-target focus:outline-none">&#x2261;</button>
+
+        <!-- Right Side Links -->
+        <div class="hidden md:flex gap-8 items-center text-sm tracking-widest uppercase font-bold">
+            <a href="frontend/pricingpage/pricing.html" class="hover:text-[#c7f908] transition-colors">Pricing</a>
+            <a href="frontend/consult/consult.html" class="hover:text-[#c7f908] transition-colors">Book Us</a>
+            <a href="frontend/support/support.html" class="hover:text-[#c7f908] transition-colors">Support</a>
+            <a href="frontend/loginpg/login.html"
+                class="px-6 py-2 bg-white text-black rounded-full hover:bg-[#c7f908] hover:text-black transition-all">Login</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Overlay Menu (Unchanged from original structure, just adjusted slightly) -->
+    <div id="overlay" class="overlay-menu flex flex-col justify-center items-start p-10 md:p-20 gap-8">
+        <a href="frontend/index.html"
+            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Home</a>
+        <a href="frontend/about/about.html"
+            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">About</a>
+        <a href="lamour_replica.html"
+            class="text-3xl display-font text-[#c7f908] hover-target transition-colors">Branding</a>
+        <a href="frontend/pricingpage/pricing.html"
+            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Pricing</a>
+        <a href="frontend/consult/consult.html"
+            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Book Us</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="accent-circle" id="sun"></div>
+        <div class="hero-text opacity-0 translate-y-10" id="hero-title">
+            <h1 class="text-6xl md:text-9xl display-font uppercase tracking-tighter text-white">VISUAL</h1>
+            <p class="text-lg md:text-2xl tracking-[0.4em] uppercase mt-4 text-[#c7f908] font-bold">Leverage</p>
+        </div>
+        <!-- TEXT ON CIRCLE -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none z-10 px-8 text-black"
+            id="sun-text">
+            <h3 class="text-2xl md:text-4xl lg:text-5xl leading-relaxed md:leading-normal font-black font-body text-black uppercase tracking-tight text-center max-w-5xl"
+                id="scrub-text">Your website deserves a look that hits instantly. <br>We don't guess. We design with
+                intention.</h3>
+        </div>
+    </section>
+
+    <!-- Section 2: Neon Wrapper -->
+    <div id="color-wrapper" class="bg-[#c7f908] w-full relative z-10 -mt-[30vh] pt-10 pb-20">
+
+        <!-- Dynamic Mockup Fan-out -->
+        <section class="px-4 relative flex justify-center items-center h-[400px] md:h-[600px] max-w-7xl mx-auto"
+            id="bottles-section">
+            <!-- Left Mockup -->
+            <div class="absolute w-[200px] md:w-[300px] opacity-90 z-0 border border-black/10 rounded-2xl overflow-hidden shadow-xl"
+                id="bottle-left" style="background:#000;">
+                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80" alt="Brand Assets"
+                    class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500 hover-target">
+            </div>
+            <!-- Right Mockup -->
+            <div class="absolute w-[200px] md:w-[300px] opacity-90 z-0 border border-black/10 rounded-2xl overflow-hidden shadow-xl"
+                id="bottle-right" style="background:#000;">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" alt="Wireframes"
+                    class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-500 hover-target">
+            </div>
+            <!-- Center Mockup -->
+            <div class="absolute w-[250px] md:w-[350px] z-10 scale-110 border-4 border-black rounded-[40px] overflow-hidden shadow-2xl bg-black"
+                id="bottle-center">
+                <img src="https://images.unsplash.com/photo-1541560052-5e137f229371?w=800&q=80" alt="Mobile UI"
+                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-110 hover-target">
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Section 3: The Overlapping Black Slide -->
+    <div id="blue-slide-container"
+        class="relative z-[50] bg-black text-white overflow-hidden rounded-t-[50px] md:rounded-t-[100px]">
+        <section class="min-h-screen flex flex-col items-center justify-center py-32 px-4 max-w-5xl mx-auto gs-reveal">
+            <!-- Text Header -->
+            <div class="text-center space-y-4 mb-20">
+                <p class="text-sm md:text-base font-bold tracking-widest text-[#c7f908] uppercase">Custom Branding</p>
+                <h2 class="text-5xl md:text-7xl font-black display-font uppercase tracking-tighter">LETS BRAND<br>YOUR
+                    WEBSITE</h2>
+            </div>
+
+            <!-- Bento Boxes Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto gs-reveal">
+
+                <!-- Color Palette Box -->
+                <div
+                    class="bg-[#111] rounded-[40px] p-10 md:p-14 shadow-[0_0_40px_rgba(199,249,8,0.05)] border border-white/5 hover:border-[#c7f908]/50 transition-colors flex flex-col justify-between group h-full">
+                    <div>
+                        <h3
+                            class="text-3xl md:text-4xl font-black mb-6 text-[#c7f908] display-font uppercase tracking-tight">
+                            Color Palettes</h3>
+                        <p class="text-lg md:text-xl text-white/80 leading-relaxed mb-6 font-body font-light">We craft
+                            custom palettes based on your energy, your audience, and the message you wanna send.</p>
+                        <p class="text-xl md:text-2xl font-bold text-white mb-6 tracking-wide">Bold? Minimal? Playful?
+                            Premium?</p>
+                        <p class="text-lg text-white/60 mb-10 font-body">We build colors that define your brand — not
+                            just decorate it.</p>
+                    </div>
+                    <a href="#"
+                        class="inline-flex items-center text-[#c7f908] font-bold tracking-widest uppercase group-hover:gap-4 transition-all">Check
+                        Color Palette <span
+                            class="ml-2 bg-[#c7f908] text-black w-8 h-8 flex items-center justify-center rounded-full">→</span></a>
+                </div>
+
+                <!-- Typography Box -->
+                <div
+                    class="bg-[#111] rounded-[40px] p-10 md:p-14 shadow-[0_0_40px_rgba(199,249,8,0.05)] border border-white/5 hover:border-[#c7f908]/50 transition-colors flex flex-col justify-between group h-full">
+                    <div>
+                        <h3
+                            class="text-3xl md:text-4xl font-black mb-6 text-[#c7f908] display-font uppercase tracking-tight">
+                            Typography</h3>
+                        <p class="text-lg md:text-xl text-white/80 leading-relaxed mb-10 font-body font-light">
+                            Typography sets the tone.<br><br>Clean, modern, classy, loud, soft — we pick fonts that
+                            match your brand's personality.</p>
+                    </div>
+                    <a href="#"
+                        class="inline-flex items-center text-[#c7f908] font-bold tracking-widest uppercase group-hover:gap-4 transition-all mt-auto">Check
+                        Fonts <span
+                            class="ml-2 bg-[#c7f908] text-black w-8 h-8 flex items-center justify-center rounded-full">→</span></a>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const overlay = document.getElementById('overlay');
+        let menuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            if (menuOpen) {
+                overlay.classList.add('active');
+                menuBtn.innerText = 'CLOSE';
+            } else {
+                overlay.classList.remove('active');
+                menuBtn.innerText = 'MENU';
+            }
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navbar Scroller
+        let lastScrollY = window.scrollY;
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                // Scrolling Down -> Hide
+                mainNav.style.transform = 'translateY(-100%)';
+                mainNav.style.opacity = '0';
+            } else {
+                // Scrolling Up -> Show
+                mainNav.style.transform = 'translateY(0)';
+                mainNav.style.opacity = '1';
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // Smart Nav Color Toggle (Light vs Dark Backgrounds)
+        ScrollTrigger.create({
+            trigger: "#hero",
+            start: "top+=" + window.innerHeight + " top", // Sun scales up over the screen
+            endTrigger: "#color-wrapper",
+            end: "bottom top", // End of neon section
+            onToggle: self => {
+                if (self.isActive) {
+                    mainNav.classList.remove('text-white');
+                    mainNav.classList.add('text-black');
+                } else {
+                    mainNav.classList.remove('text-black');
+                    mainNav.classList.add('text-white');
+                }
+            }
+        });
+
+        // Initial Title Animation
+        gsap.to("#hero-title", { y: 0, opacity: 1, duration: 1.5, ease: "power4.out", delay: 0.5 });
+
+        // Sun Expanding Sequence
+        let sunTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero",
+                start: "top top",
+                end: "+=150%",
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1
+            }
+        });
+
+        sunTimeline.to("#sun", {
+            scale: 3,
+            ease: "none",
+            duration: 1
+        }).fromTo("#hero-title", {
+            opacity: 1,
+            y: 0
+        }, {
+            opacity: 0,
+            y: -50,
+            ease: "none",
+            duration: 1
+        }, "<")
+            .to("#sun-text", {
+                opacity: 1,
+                duration: 0.5,
+                ease: "none"
+            })
+            .to("#sun", {
+                scale: 30,
+                ease: "none",
+                duration: 1
+            }, "-=0.5");
+
+        // The background color of color-wrapper is already perfectly matched (#c7f908)!
+        // So as it naturally scrolls up, it perfectly blends with the zoomed-in sun!
+
+        // The Sliding Overlap Effect
+        ScrollTrigger.create({
+            trigger: "#color-wrapper",
+            start: "top top",
+            end: () => "+=" + document.querySelector("#blue-slide-container").offsetHeight,
+            pin: true,
+            pinSpacing: false
+        });
+
+        // Typographical Scroll Scrub (Gradient-like filling animation)
+        const scrubText = document.getElementById("scrub-text");
+        if (scrubText) {
+            const htmlContent = scrubText.innerHTML;
+            const parts = htmlContent.split(/(<[^>]*>|\s+)/);
+            scrubText.innerHTML = "";
+            parts.forEach(part => {
+                if (!part) return;
+                if (part.match(/<br\s*\/?>/i)) {
+                    scrubText.appendChild(document.createElement("br"));
+                } else if (part.match(/^\s+$/)) {
+                    scrubText.appendChild(document.createTextNode(" "));
+                } else if (!part.match(/<[^>]*>/)) {
+                    const span = document.createElement("span");
+                    span.innerHTML = part;
+                    span.className = "text-word opacity-20 transition-opacity duration-75 inline-block";
+                    scrubText.appendChild(span);
+                }
+            });
+
+            // Animate words INSIDE the sunTimeline since they are on the pinned circle
+            sunTimeline.to(".text-word", {
+                opacity: 1, // Ends solid black
+                stagger: 0.05,
+                ease: "none",
+                duration: 1
+            }, "-=0.5");
+        }
+
+        // Mockups Fan Out Scrub Animation
+        let tlBottles = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#bottles-section",
+                start: "top 80%",
+                end: "top 30%",
+                scrub: 1
+            }
+        });
+
+        gsap.set("#bottle-left", { xPercent: 0, rotation: 0, y: 0 });
+        gsap.set("#bottle-right", { xPercent: 0, rotation: 0, y: 0 });
+        gsap.set("#bottle-center", { y: 150, opacity: 0 });
+
+        tlBottles.to("#bottle-center", { y: 0, opacity: 1, duration: 1 }, 0)
+            .to("#bottle-left", { xPercent: -100, rotation: -8, y: 40, duration: 1 }, 0)
+            .to("#bottle-right", { xPercent: 100, rotation: 8, y: 40, duration: 1 }, 0);
+
+        // Standard GS-Reveal Elements
+        const revealElements = document.querySelectorAll(".gs-reveal");
+        revealElements.forEach(elem => {
+            gsap.fromTo(elem,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+
+</html>

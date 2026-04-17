@@ -546,7 +546,7 @@ p {
     object-fit: contain;
     /* Absolute positioning to sit "on" the container */
     position: absolute;
-    top: -140px;
+    top: 0px;
     right: 1%;
     border-radius: 8px;
     z-index: 10;
@@ -642,6 +642,7 @@ p {
 }
 
 /* Meet The Team */
+.char-content {
 
     display: flex;
     align-items: center;
@@ -735,6 +736,7 @@ p {
 .main-toolbar.scrolled-past-header .social-icons a:hover {
     color: #0c19ad;
 }
+
 .founder {
     background-color: #1a1a1a;
     position: relative;
@@ -767,7 +769,7 @@ p {
 }
 
 .founder .char-image-container {
-    margin-left: -4rem;
+    margin-left: -10rem;
 }
 
 .founder-title {
@@ -879,36 +881,51 @@ p {
     overflow: hidden;
     cursor: pointer;
     transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    background: linear-gradient(to top, var(--accent) 0%, var(--accent) 75%, #F0F0F0 75%, #F0F0F0 100%);
+    background: linear-gradient(to top, var(--accent) 0%, var(--accent) 50%, #F0F0F0 50%, #F0F0F0 100%);
+}
+
+.arcane-accordion:hover .arcane-item {
+    transition: flex 1.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .arcane-item:hover {
-    flex: 4.5;
+    flex: 100;
+}
+
+.arcane-accordion:hover .arcane-item:not(:hover) {
+    flex: 0;
+    min-width: 0;
 }
 
 .arcane-item img {
     position: absolute;
     top: 0;
-    right: 0;
-    left: unset;
-    width: 100%;
+
+    left: var(--pos-default, 50%);
+    transform: translateX(calc(-1 * var(--pos-default, 50%)));
+
     height: 100%;
+    width: auto;
+    max-width: none;
     object-fit: cover;
-    object-position: var(--pos-default, center);
-    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), object-position 0.6s ease;
+
+    transition: left 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 1;
 }
 
+.arcane-accordion:hover .arcane-item img {
+    transition: left 1.8s cubic-bezier(0.25, 1, 0.5, 1), transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .arcane-item:hover img {
-    transform: none;
-    width: 100%;
-    object-position: var(--pos-active, right center);
-    object-fit: contain;
+    left: var(--pos-active, 100%);
+    transform: translateX(calc(-1 * var(--pos-active, 100%)));
 }
 
 /* Position for items when another item is hovered */
 .arcane-accordion:hover .arcane-item:not(:hover) img {
-    object-position: var(--pos-collapsed, center);
+    left: var(--pos-collapsed, 50%);
+    transform: translateX(calc(-1 * var(--pos-collapsed, 50%)));
 }
 
 .arcane-item .arcane-vertical-name {
@@ -923,7 +940,7 @@ p {
     font-size: 2rem;
     letter-spacing: 5px;
     z-index: 4;
-    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
+    transition: opacity 1.8s ease, transform 1.8s ease, color 1.8s;
     white-space: nowrap;
     text-transform: uppercase;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
@@ -937,16 +954,21 @@ p {
 
 .arcane-item .arcane-content {
     position: absolute;
-    bottom: 3rem;
+    top: calc(50% + 2rem);
+    bottom: auto;
     left: 3rem;
     z-index: 5;
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
     transition-delay: 0s;
     pointer-events: none;
     width: 40%;
     max-width: 500px;
+}
+
+.arcane-accordion:hover .arcane-item .arcane-content {
+    transition: opacity 1.8s ease, transform 1.8s ease;
 }
 
 .arcane-item:hover .arcane-content {
@@ -958,9 +980,9 @@ p {
 
 .arcane-item .arcane-role {
     font-family: var(--font-header);
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: 900;
-    color: var(--accent);
+    color: white;
     letter-spacing: 3px;
     text-transform: uppercase;
     display: block;
@@ -1007,7 +1029,7 @@ p {
         height: 50%;
         top: 0;
         object-position: center top;
-        transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: height 1.8s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .arcane-item .arcane-vertical-name {
@@ -1023,13 +1045,19 @@ p {
     }
 
     .arcane-item:hover {
-        flex: 3;
+        flex: 100;
+    }
+
+    .arcane-accordion:hover .arcane-item:not(:hover) {
+        flex: 0;
+        min-height: 0;
     }
 
     .arcane-item .arcane-content {
         left: 1.5rem;
         right: 1.5rem;
         bottom: 1.5rem;
+        top: auto;
         width: 100%;
         transform: translateY(10px);
         max-width: none;

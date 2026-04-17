@@ -84,7 +84,7 @@ export function Toolbar() {
                     <div className="flex space-x-4 text-xl items-center">
                         <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" rel="noopener noreferrer"
                             className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-instagram"></i></a>
-                        <a href="#" className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-discord"></i></a>
+                        <a href="https://discord.gg/KhnQfB6MrH" target="_blank" className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-discord"></i></a>
                         <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" rel="noopener noreferrer"
                             className="text-white hover:text-[#c7f908]"><i className="fa-brands fa-linkedin-in"></i></a>
                         <a href="../../profile/profile.html" className="text-white hover:text-[#c7f908] ml-2 flex items-center" title={userAuth.loggedIn ? `Logged in as ${userAuth.user?.displayName}` : 'Login'}>

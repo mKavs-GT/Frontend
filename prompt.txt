@@ -1,14 +1,3 @@
-mKavs Testing Number 1
-
-Current Prompt - 
-1. I want the preloader to loaader for a minimum of 7 seconds everytime the user refreshes the page. The preloader should start only after the mascot.mp4 starts working.
-2. When anything is opened within the page on giving back it shdnt load from the top of the page again. For example after taping on book consultation and then going back the page shd be at the same section (book consultation) that the user was before they got redirected to a new page.
-3.  
-
-Frontend -
-adjust the margins of phone video
-accordian fix
-
 Image Quality -
 Footer sitesh quality
 Sitesh in header
@@ -25,5 +14,5 @@ Kairon chatbot
 Frontend code in inspect
 Our works redirect
 Profile notification
-Upload in profile not happening
+Upload in profile not  happening
 Remove security settings

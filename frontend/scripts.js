@@ -445,6 +445,11 @@ function updateScrollState(newGlobalY) {
 
     // 5. Update Scrollbar Thumb
     updateScrollbarVisuals();
+
+    // 6. Save scroll position to resume if navigating back
+    try {
+        sessionStorage.setItem('mKavs_saved_scroll', newGlobalY);
+    } catch(e) {}
 }
 
 function handleVideoPlayback(index) {
@@ -716,6 +721,7 @@ async function checkAuthStatus() {
         const userIcon = document.querySelector('.fa-regular.fa-user')?.parentElement;
         const getStartedBtn = document.getElementById('get-started-button');
         const authConsultBtns = document.querySelectorAll('.auth-consult-btn');
+        const authPricingBtns = document.querySelectorAll('.auth-pricing-btn');
 
         if (data.loggedIn) {
             // User is logged in
@@ -742,6 +748,7 @@ async function checkAuthStatus() {
                 getStartedBtn.href = './consult/consult.html';
             }
             authConsultBtns.forEach(btn => btn.href = './consult/consult.html');
+            authPricingBtns.forEach(btn => btn.href = './pricingpage/pricing.html');
         } else {
             // User is not logged in
             if (loginBtn) {
@@ -758,6 +765,7 @@ async function checkAuthStatus() {
                 getStartedBtn.href = './loginpg/login.html';
             }
             authConsultBtns.forEach(btn => btn.href = './loginpg/login.html');
+            authPricingBtns.forEach(btn => btn.href = './loginpg/login.html');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);
@@ -1148,52 +1156,83 @@ document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const progressFill = document.getElementById('loader-progress');
         const progressText = document.getElementById('loader-text');
+        const mascotVideo = document.getElementById('mascot-preloader-video');
 
-        if (sessionStorage.getItem('preloaderShown')) {
+        const navEntries = performance.getEntriesByType('navigation');
+        const navType = navEntries.length > 0 ? navEntries[0].type : '';
+        const isReload = navType === 'reload';
+        const isBackForward = navType === 'back_forward';
+
+        if (isReload) {
+            sessionStorage.removeItem('preloaderShown');
+            sessionStorage.removeItem('mKavs_saved_scroll');
+        }
+
+        if (sessionStorage.getItem('preloaderShown') || isBackForward) {
             if (preloader) {
                 preloader.style.display = 'none';
             }
-            activateInitialSlide();
+            const savedScroll = sessionStorage.getItem('mKavs_saved_scroll');
+            if (savedScroll && parseFloat(savedScroll) > 10) {
+                globalScrollY = parseFloat(savedScroll);
+                targetScrollY = parseFloat(savedScroll);
+                // Give layout time to calculate heights before snapping
+                setTimeout(() => {
+                    updateScrollState(globalScrollY);
+                }, 100);
+            } else {
+                activateInitialSlide();
+            }
             return;
         }
 
         if (!preloader || !progressFill || !progressText) {
-            // If no preloader, trigger immediately
             activateInitialSlide();
             return;
         }
 
         let progress = 0;
-        let isLoaded = document.readyState === 'complete';
-        window.addEventListener('load', () => { isLoaded = true; });
+        let videoStarted = false;
 
-        const updateLoader = () => {
-            // If already fully loaded, still animate steadily so it takes ~1 second
-            if (isLoaded) progress += 1.5; 
-            // If still downloading, crawl smoothly up to 90%
-            else if (progress < 90) progress += 0.5;
+        const startLoading = () => {
+             videoStarted = true;
+             requestAnimationFrame(updateLoader);
+        };
 
-            if (progress > 100) progress = 100;
+        if (mascotVideo) {
+            if (mascotVideo.readyState >= 3 && !mascotVideo.paused) {
+                startLoading();
+            } else {
+                mascotVideo.addEventListener('playing', startLoading, { once: true });
+                setTimeout(() => { if (!videoStarted) startLoading(); }, 2000); // 2s fallback
+            }
+        } else {
+            startLoading();
+        }
+
+        let startTime = null;
+        const MIN_DURATION = 7000;
+
+        function updateLoader(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            
+            progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+
             progressFill.style.width = `${progress}%`;
             progressText.innerText = `${Math.floor(progress)}%`;
 
             if (progress < 100) {
                 requestAnimationFrame(updateLoader);
             } else {
-                // Loaded! Remove preloader then trigger animations.
                 sessionStorage.setItem('preloaderShown', 'true');
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');
-                    // Start Entrance Animations simulataneously with fade out or just after?
-                    // User said "happen simmulataneowulsy after the pre loading scrren".
-                    // Let's trigger it as the preloader fades out.
                     activateInitialSlide();
-
                     setTimeout(() => preloader.remove(), 500);
                 }, 500);
             }
-        };
-        requestAnimationFrame(updateLoader);
+        }
     };
     initPreloader();
 

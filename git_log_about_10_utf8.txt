@@ -1,0 +1,768 @@
+﻿commit ba61ffd59a76b8d7d45b366c86ff9efb423b847e
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 12:36:52 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index fb6325c..3f49940 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -380,9 +380,7 @@
+                 </div>
+ 
+ 
+-                <div class="founder-signature-container">
+-                    <img src="images/sign.png" alt="Signature" class="founder-signature-image">
+-                </div>
++
+             </div>
+         </div>
+     </section>
+@@ -607,9 +605,9 @@
+                             </a>
+                         </div>
+                         <div class="about-policy-links">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf" rel="noopener noreferrer">Privacy
++                            <a href="../docs/T&C and Privacy Policy.pdf" rel="noopener noreferrer">Privacy
+                                 Policy</a>
+-                            <a href="../docs/Refund%20Policy.pdf"
++                            <a href="../docs/Refund Policy.pdf"
+                                 rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+
+commit 179982e1198e57a4a70bb140ee90fb3eb47bf5b1
+Author: Kubra Baig <reach.kubraaa@gmail.com>
+Date:   Thu Apr 16 11:47:23 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index b5c9721..fb6325c 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -564,7 +564,7 @@
+                                 BOOK NOW
+                             </button>
+                         </a>
+-                        <a href="./pricingpage/pricing.html" rel="noopener noreferrer">
++                        <a href="../pricingpage/pricing.html" rel="noopener noreferrer">
+                             <button class="btn-dj btn-dj-secondary">
+                                 VIEW PLANS
+                             </button>
+@@ -607,9 +607,9 @@
+                             </a>
+                         </div>
+                         <div class="about-policy-links">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" rel="noopener noreferrer">Privacy
++                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf" rel="noopener noreferrer">Privacy
+                                 Policy</a>
+-                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf"
++                            <a href="../docs/Refund%20Policy.pdf"
+                                 rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+
+commit 50547d283726db1ed335450f636e20f168533269
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Thu Apr 9 06:01:06 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index e47eb94..b5c9721 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -349,14 +349,6 @@
+         </div>
+     </section>
+ 
+-    <!-- Meet The Team -->
+-    <section class="meet-team">
+-        <div class="team-visuals">
+-            <div class="team-bg-img"></div>
+-            <img src="images/fg.png" alt="Team Foreground" class="team-fg-img">
+-        </div>
+-    </section>
+-
+     <!-- Founder -->
+     <section class="character-section founder">
+         <div class="char-content">
+
+commit d411a6ec8061045573dd66e5d269d92683f869a3
+Author: NUSHRAFATHIMA0511 <nushrafathima5115@gmail.com>
+Date:   Wed Apr 8 09:14:48 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index 4a880ec..e47eb94 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -399,7 +399,8 @@
+     <section class="arcane-team-section">
+         <div class="arcane-accordion">
+             <!-- Mr. V -->
+-            <div class="arcane-item" style="--accent: #CCFF00; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
++            <div class="arcane-item"
++                style="--accent: #CCFF00; --pos-default: 65% 50%; --pos-active: 90% 100%; --pos-collapsed: 50% 50%;">
+                 <img src="images/mrv.png" alt="Mr. V">
+ 
+                 <div class="arcane-vertical-name">MR. V</div>
+@@ -413,7 +414,8 @@
+             </div>
+ 
+             <!-- Mr. Z -->
+-            <div class="arcane-item" style="--accent: #8A1E1E; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
++            <div class="arcane-item"
++                style="--accent: #8A1E1E; --pos-default: 55% 50%; --pos-active: 100% 100%; --pos-collapsed: 50% 50%;">
+                 <img src="images/mrz.png" alt="Mr. Z">
+ 
+                 <div class="arcane-vertical-name">MR. Z</div>
+@@ -426,7 +428,8 @@
+             </div>
+ 
+             <!-- Mrs. S -->
+-            <div class="arcane-item" style="--accent: #C0C0C0; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
++            <div class="arcane-item"
++                style="--accent: #C0C0C0; --pos-default: 50% 50%; --pos-active: 100% 50%; --pos-collapsed: 50% 50%;">
+                 <img src="images/mrss.png" alt="Mrs. S">
+ 
+                 <div class="arcane-vertical-name">MRS. S</div>
+@@ -440,7 +443,8 @@
+             </div>
+ 
+             <!-- Mr. M -->
+-            <div class="arcane-item" style="--accent: #00FFFF; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
++            <div class="arcane-item"
++                style="--accent: #00FFFF; --pos-default: 50% 50%; --pos-active: 100% 50%; --pos-collapsed: 50% 50%;">
+                 <img src="images/mrm.png" alt="Mr. M">
+ 
+                 <div class="arcane-vertical-name">MR. M</div>
+@@ -454,7 +458,8 @@
+             </div>
+ 
+             <!-- Mr. A -->
+-            <div class="arcane-item" style="--accent: #5539A2; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
++            <div class="arcane-item"
++                style="--accent: #5539A2; --pos-default: 50% 50%; --pos-active: 100% 50%; --pos-collapsed: 50% 50%;">
+                 <img src="images/mra.png" alt="Mr. A">
+ 
+                 <div class="arcane-vertical-name">MR. A</div>
+
+commit 424d278a5a5798d48e02df836f19887d8973f1fa
+Author: NUSHRAFATHIMA0511 <nushrafathima5115@gmail.com>
+Date:   Wed Apr 8 09:06:05 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index 4132269..4a880ec 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -352,7 +352,7 @@
+     <!-- Meet The Team -->
+     <section class="meet-team">
+         <div class="team-visuals">
+-            <img src="images/bg.png" class="team-bg-img">
++            <div class="team-bg-img"></div>
+             <img src="images/fg.png" alt="Team Foreground" class="team-fg-img">
+         </div>
+     </section>
+@@ -399,7 +399,7 @@
+     <section class="arcane-team-section">
+         <div class="arcane-accordion">
+             <!-- Mr. V -->
+-            <div class="arcane-item" style="--accent: #CCFF00;">
++            <div class="arcane-item" style="--accent: #CCFF00; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
+                 <img src="images/mrv.png" alt="Mr. V">
+ 
+                 <div class="arcane-vertical-name">MR. V</div>
+@@ -413,7 +413,7 @@
+             </div>
+ 
+             <!-- Mr. Z -->
+-            <div class="arcane-item" style="--accent: #8A1E1E;">
++            <div class="arcane-item" style="--accent: #8A1E1E; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
+                 <img src="images/mrz.png" alt="Mr. Z">
+ 
+                 <div class="arcane-vertical-name">MR. Z</div>
+@@ -426,7 +426,7 @@
+             </div>
+ 
+             <!-- Mrs. S -->
+-            <div class="arcane-item" style="--accent: #C0C0C0;">
++            <div class="arcane-item" style="--accent: #C0C0C0; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
+                 <img src="images/mrss.png" alt="Mrs. S">
+ 
+                 <div class="arcane-vertical-name">MRS. S</div>
+@@ -440,7 +440,7 @@
+             </div>
+ 
+             <!-- Mr. M -->
+-            <div class="arcane-item" style="--accent: #00FFFF;">
++            <div class="arcane-item" style="--accent: #00FFFF; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
+                 <img src="images/mrm.png" alt="Mr. M">
+ 
+                 <div class="arcane-vertical-name">MR. M</div>
+@@ -454,7 +454,7 @@
+             </div>
+ 
+             <!-- Mr. A -->
+-            <div class="arcane-item" style="--accent: #5539A2;">
++            <div class="arcane-item" style="--accent: #5539A2; --pos-default: center; --pos-active: right center; --pos-collapsed: center;">
+                 <img src="images/mra.png" alt="Mr. A">
+ 
+                 <div class="arcane-vertical-name">MR. A</div>
+@@ -473,7 +473,7 @@
+             <h2 class="process-section-title">OUR PROCESS</h2>
+             <div class="process-horizontal-track">
+                 <!-- Slide 1 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #CCFF00;">
+                     <div class="p-number">01</div>
+                     <div class="p-content">
+                         <h3>Connect & Understand</h3>
+@@ -485,7 +485,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 2 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #8A1E1E;">
+                     <div class="p-number">02</div>
+                     <div class="p-content">
+                         <h3>Moodboard & Direction</h3>
+@@ -495,7 +495,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 3 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #C0C0C0;">
+                     <div class="p-number">03</div>
+                     <div class="p-content">
+                         <h3>Wireframes & Structure</h3>
+@@ -505,7 +505,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 4 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #00FFFF;">
+                     <div class="p-number">04</div>
+                     <div class="p-content">
+                         <h3>Design & Development</h3>
+@@ -516,7 +516,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 5 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #5539A2;">
+                     <div class="p-number">05</div>
+                     <div class="p-content">
+                         <h3>Revisions & Final Touches</h3>
+@@ -525,7 +525,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 6 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #DCAE5B;">
+                     <div class="p-number">06</div>
+                     <div class="p-content">
+                         <h3>Terms, Handover & Launch</h3>
+@@ -535,7 +535,7 @@
+                     </div>
+                 </div>
+                 <!-- Slide 7 -->
+-                <div class="process-card">
++                <div class="process-card" style="--accent: #FF3366;">
+                     <div class="p-number">07</div>
+                     <div class="p-content">
+                         <h3>Support After Launch</h3>
+
+commit 3ad359107563b5db762dccfa0e788baaece9ce21
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Wed Apr 8 08:11:01 2026 +0530
+
+    c
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index 1ba84f2..4132269 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -126,7 +126,10 @@
+     <!-- Tools We Use -->
+     <section class="tools-section">
+         <img src="images/little.png" class="small-story-image" alt="Little Story Image">
+-        <h2 class="section-title hidden">TOOLS WE USE</h2>
++        <div class="hww-header hidden delay-100" style="margin-bottom: 3rem;">
++            <span class="hww-tag">Our tech stack</span>
++            <h2 class="hww-title">TOOLS WE USE</h2>
++        </div>
+         <div class="tools-container-bg">
+             <div class="tools-grid hidden delay-200">
+                 <div class="tool-icon" title="Angular"><svg role="img" viewBox="0 0 24 24"
+@@ -349,7 +352,7 @@
+     <!-- Meet The Team -->
+     <section class="meet-team">
+         <div class="team-visuals">
+-            <img src="images/bg.png" alt="Team Background" class="team-bg-img">
++            <img src="images/bg.png" class="team-bg-img">
+             <img src="images/fg.png" alt="Team Foreground" class="team-fg-img">
+         </div>
+     </section>
+@@ -361,16 +364,33 @@
+                 <img src="images/founder.png" class="char-img" alt="Founder">
+             </div>
+             <div class="char-text hidden delay-200">
+-                <h2>FOUNDER</h2><br>
+-                <h3>Meet MR K</h3><br><br>
+-                <p>If thereΓÇÖs one person who can take your wild idea, debug your dreams, and still ship a website that
+-                    looks like it walked out of a sci-fi movie, itΓÇÖs Mr K ΓÇö our full-stack developer, creative
+-                    nitpicker, and unofficial electrician because he ΓÇ£fixes everythingΓÇ¥</p>
+-                <p>From front-end magic (React, GSAP, Framer Motion) to backend wizardry (Node, Express, database
+-                    sorcery), heΓÇÖs the guy who makes sure everything runs smoothΓÇª even when the WiFi doesnΓÇÖt.</p>
+-                <p>With over 40+ projects crafted this year, heΓÇÖs turned late-night coffees and questionable life
+-                    choices into high-performing websites loved by clients everywhere. He doesnΓÇÖt just build websites ΓÇö
+-                    he builds experiences, brands, and occasional ΓÇ£wow how the hell did you do that?ΓÇ¥ moments.</p>
++                <h2 class="founder-title">FOUNDER</h2>
++                <h3 class="founder-subtitle">MEET MR K</h3>
++                <hr class="founder-divider">
++
++                <p class="founder-desc">Mr K is the architectural force bridging wild vision with flawless execution. A
++                    master of complexity and nit-picker by design, he doesn't settle for "good enough"ΓÇöhe demands
++                    "unbelievable."</p>
++                <p class="founder-desc" style="margin-top: 2rem;">
++                    Here to :<br>
++                    ΓÇô review your design,<br>
++                    ΓÇô optimize your backend,<br>
++                    ΓÇô sneak in an animation because it felt right.
++                </p>
++                <br>
++
++                <div class="founder-quote-box">
++                    <span class="quote-mark open-quote">ΓÇ£</span>
++                    <p class="founder-quote-text">We donΓÇÖt just build websites; we craft digital experiences that
++                        resonate. By merging performance with a relentless command, we ensure our partners don't just
++                        competeΓÇöthey lead.</p>
++                    <span class="quote-mark close-quote">ΓÇ¥</span>
++                </div>
++
++
++                <div class="founder-signature-container">
++                    <img src="images/sign.png" alt="Signature" class="founder-signature-image">
++                </div>
+             </div>
+         </div>
+     </section>
+
+commit 9b1c6073f495540019c42a738baf706311b13694
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Mon Apr 6 10:01:29 2026 +0530
+
+    commit
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index ddbdffc..1ba84f2 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -23,11 +23,11 @@
+         <div class="toolbar-container">
+             <!-- Left Side Links -->
+             <div class="toolbar-left">
+-                <a href="../index.html" class="nav-link" target="_blank" rel="noopener noreferrer">Home</a>
++                <a href="../index.html" class="nav-link" rel="noopener noreferrer">Home</a>
+                 <a href="#" class="nav-link active">About</a>
+-                <a href="../index.html#our-works" class="nav-link" target="_blank" rel="noopener noreferrer">Our
++                <a href="../index.html#our-works" class="nav-link" rel="noopener noreferrer">Our
+                     Work</a>
+-                <a href="../brandpg/brnd.html" class="nav-link" target="_blank" rel="noopener noreferrer">Branding</a>
++                <a href="../brandpg/brnd.html" class="nav-link" rel="noopener noreferrer">Branding</a>
+             </div>
+ 
+             <!-- Mobile Menu Button (Hidden on Desktop via CSS) -->
+@@ -38,11 +38,10 @@
+ 
+             <!-- Right Side Links -->
+             <div class="toolbar-right">
+-                <a href="../pricingpage/pricing.html" class="nav-link" target="_blank"
+-                    rel="noopener noreferrer">Pricing</a>
+-                <a href="../consult/consult.html" class="nav-link" target="_blank" rel="noopener noreferrer">Book Us</a>
+-                <a href="../loginpg/login.html" class="nav-link login-btn" target="_blank"
+-                    rel="noopener noreferrer">Login</a>
++                <a href="../pricingpage/pricing.html" class="nav-link" rel="noopener noreferrer">Pricing</a>
++                <a href="../consult/consult.html" class="nav-link" rel="noopener noreferrer">Book Us</a>
++                <a href="../support/support.html" class="nav-link" rel="noopener noreferrer">Support</a>
++                <a href="../loginpg/login.html" class="nav-link login-btn" rel="noopener noreferrer">Login</a>
+ 
+                 <!-- Social Icons -->
+                 <div class="social-icons">
+@@ -52,8 +51,7 @@
+                             class="fa-brands fa-discord"></i></a>
+                     <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                         rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+-                    <a href="../profile/profile.html" target="_blank" rel="noopener noreferrer"><i
+-                            class="fa-regular fa-user"></i></a>
++                    <a href="../profile/profile.html" rel="noopener noreferrer"><i class="fa-regular fa-user"></i></a>
+                 </div>
+             </div>
+         </div>
+@@ -77,37 +75,50 @@
+         </div>
+     </header>
+ 
+-    <!-- Our Story -->
+-    <section class="our-story">
+-        <div class="story-header hidden">
++    <!-- How We Work -->
++    <section class="how-we-work">
++        <div class="hww-header hidden delay-100">
++            <span class="hww-tag">How we work</span>
++            <h2 class="hww-title">OUR STORY</h2>
+ 
+-            <h2 class="section-title">OUR STORY</h2>
+         </div>
+-        <div class="story-grid">
+-            <div class="story-col hidden delay-100">
++
++        <div class="hww-container">
++
++            <!-- Card 1 -->
++            <div class="hww-card card-1 hidden delay-100">
++                <div class="hww-hole"></div>
++                <div class="hww-number">01</div>
+                 <h3>WHY WE STARTED</h3>
+-                <p>We didnΓÇÖt start this studio to just ΓÇ£make websites.ΓÇ¥ We started because we were tired of seeing
+-                    brands settle for basic, boring, template-looking sites.</p>
+-                <p>We wanted to create something different ΓÇö <span class="highlight-text">modern, clean, animated,
+-                        intentional, and actually built
+-                        with love.</span></p>
++                <p>WeΓÇÖre done with boring.<br>Brands deserve more than basic templates and forgettable layouts.</p>
+             </div>
+-            <div class="story-col hidden delay-200">
+-                <h3>WHAT WE DO</h3>
+-                <p>We want every creator, brand, and business to know this: <span class="highlight-text">Your online
+-                        presence is your identity</span> ΓÇö and
+-                    it deserves to look elite.</p>
+-                <p>No shortcuts. No generic designs. No ΓÇ£good enough.ΓÇ¥</p>
+-                <p>WeΓÇÖre here to bring <span class="highlight-text">personality, energy, and quality</span> back into
+-                    web design.</p>
++
++            <!-- Card 2 -->
++            <div class="hww-card card-2 hidden delay-200">
++                <div class="hww-hole"></div>
++                <div class="hww-number">02</div>
++                <h3>WHAT <br>WE DO</h3>
++                <p>We design with soul.<br>WeΓÇÖre here to bring personality, energy, and quality back into web design.
++                </p>
+             </div>
+-            <div class="story-col hidden delay-300">
++
++            <!-- Card 3 -->
++            <div class="hww-card card-3 hidden delay-300">
++                <div class="hww-hole"></div>
++                <div class="hww-number">03</div>
+                 <h3>WHAT DRIVES US</h3>
+-                <p>WeΓÇÖre driven by improvement, challenge, and pure curiosity. Every project teaches us something new.
+-                </p>
+-                <p>Every client pushes us to create better. Every website is an opportunity to make something fresher,
+-                    smoother, cleaner.</p>
+-                <p>We donΓÇÖt just work. <span class="highlight-text">We evolve.</span></p>
++                <p>Every client pushes us to create better.<br>Every project is a chance to build something smoother,
++                    cleaner, and better than before.</p>
++            </div>
++
++            <!-- Card 4 -->
++            <div class="hww-card card-4 hidden delay-100">
++                <div class="hww-hole"></div>
++                <div class="hww-number">04</div>
++                <h3>WHERE WE'RE HEADED</h3>
++                <p>WeΓÇÖre not just following trends; weΓÇÖre setting them.<br>Our goal is to redefine digital experiences
++                    by blending elite tech with human intuition.</p>
++
+             </div>
+         </div>
+     </section>
+@@ -364,112 +375,78 @@
+         </div>
+     </section>
+ 
+-    <!-- Horizontal Scroll Section -->
+-    <div class="team-scroll-container">
+-        <div class="team-sticky-viewport">
+-            <div class="team-horizontal-track">
+-                <!-- Mr. V -->
+-                <section class="character-section mr-v">
+-                    <div class="char-content">
+-                        <div class="char-image-container hidden">
+-                            <img src="images/mrv.png" class="char-img" alt="Mr. V">
+-                            <div class="side-role">CTO &nbsp;& &nbsp;ADMIN</div>
+-                        </div>
+-                        <div class="char-text hidden delay-200">
+-                            <div class="char-header">
+-                                <h2>MR. V</h2>
+-                            </div>
+-                        </div>
+-                    </div>
+-                    <div class="mrv-quote">
+-                        I oversee the engine that drives this studio forward. We cut through the noise of generic web
+-                        design to deliver something fresher and cleaner. LetΓÇÖs stop playing it safe and start building
+-                        your unforgettable digital future.
+-                    </div>
+-                </section>
+-
+-                <!-- Mrs. S -->
+-                <section class="character-section mrs-s">
+-                    <div class="char-content">
+-                        <div class="char-image-container hidden">
+-                            <img src="images/mrss.png" class="char-img" alt="Mrs. S">
+-                            <div class="side-role"> SENIOR&nbsp;DESIGNER</div>
+-                        </div>
+-                        <div class="char-text hidden delay-200">
+-                            <div class="char-header">
+-                                <h2>MRS. S</h2>
+-                            </div>
+-                        </div>
+-                    </div>
+-                    <div class="mrss-quote">
+-                        Design is about identity, A visual language that feels elite and intentional.
++    <!-- Arcane-style Team Accordion Section -->
++    <section class="arcane-team-section">
++        <div class="arcane-accordion">
++            <!-- Mr. V -->
++            <div class="arcane-item" style="--accent: #CCFF00;">
++                <img src="images/mrv.png" alt="Mr. V">
++
++                <div class="arcane-vertical-name">MR. V</div>
++                <div class="arcane-content">
++                    <span class="arcane-role">CTO & ADMIN</span>
++                    <h2 class="arcane-name">MR. V</h2>
++                    <p class="arcane-desc">I oversee the engine that drives this studio forward. We cut through the
++                        noise of generic web design to deliver something fresher and cleaner. LetΓÇÖs stop playing it safe
++                        and start building your unforgettable digital future.</p>
++                </div>
++            </div>
++
++            <!-- Mr. Z -->
++            <div class="arcane-item" style="--accent: #8A1E1E;">
++                <img src="images/mrz.png" alt="Mr. Z">
++
++                <div class="arcane-vertical-name">MR. Z</div>
++                <div class="arcane-content">
++                    <span class="arcane-role">CREATIVE TECH</span>
++                    <h2 class="arcane-name">MR. Z</h2>
++                    <p class="arcane-desc">Where creativity meets code, I shape ideas into digital experiences.
++                        Technology is my tool to make innovation feel natural and powerful.</p>
++                </div>
++            </div>
++
++            <!-- Mrs. S -->
++            <div class="arcane-item" style="--accent: #C0C0C0;">
++                <img src="images/mrss.png" alt="Mrs. S">
++
++                <div class="arcane-vertical-name">MRS. S</div>
++                <div class="arcane-content">
++                    <span class="arcane-role">SENIOR DESIGNER</span>
++                    <h2 class="arcane-name">MRS. S</h2>
++                    <p class="arcane-desc">Design is about identity, A visual language that feels elite and intentional.
+                         IΓÇÖm here to bring personality and energy back into your brand, ensuring every pixel serves a
+-                        purpose and every layout tells a story.
+-                    </div>
+-                </section>
+-
+-                <!-- Mr. M -->
+-                <section class="character-section mr-m">
+-                    <div class="char-content">
+-                        <div class="char-image-container hidden">
+-                            <img src="images/mrm.png" class="char-img" alt="Mr. M">
+-                            <div class="side-role">SENIOR &nbsp; DEVELOPER</div>
+-                        </div>
+-                        <div class="char-text hidden delay-200">
+-                            <div class="char-header">
+-                                <h2>MR. M</h2>
+-                            </div>
+-                        </div>
+-                    </div>
+-                    <div class="mrm-quote">
+-                        Ensuring that every site is robust, scalable, and
+-                        powerful. Good development is the backbone of an unforgettable digital experience. I make sure
+-                        your website is built with precision and logic.
+-                    </div>
+-                </section>
+-
+-                <!-- Mr. A -->
+-                <section class="character-section mr-a">
+-                    <div class="char-content">
+-                        <div class="char-image-container hidden">
+-                            <img src="images/mra.png" class="char-img" alt="Mr. A">
+-                            <div class="side-role">FRONTEND DEVELOPER</div>
+-                        </div>
+-                        <div class="char-text hidden delay-200">
+-                            <div class="char-header">
+-                                <h2>MR. A</h2>
+-                            </div>
+-                        </div>
+-                    </div>
+-                    <div class="mra-quote">
+-                        Bringing the design to life through fluid animations and seamless interactions.<br>I bridge the
+-                        gap
+-                        between static art and human experience.
+-                    </div>
+-                </section>
+-
+-                <!-- Mr. A (Duplicate) -->
+-                <section class="character-section mr-z">
+-                    <div class="char-content">
+-                        <div class="char-image-container hidden">
+-                            <img src="images/mrz.png" class="char-img" alt="Mr. A">
+-                            <div class="side-role">CREATIVE TECH</div>
+-                        </div>
+-                        <div class="char-text hidden delay-200">
+-                            <div class="char-header">
+-                                <h2>MR. Z</h2>
+-                            </div>
+-                        </div>
+-                    </div>
+-                    <div class="mrz-quote">
+-                        Where creativity meets code, I shape ideas into digital experiences. Technology is my tool to
+-                        make innovation feel natural and powerful.
+-                    </div>
+-                </section>
++                        purpose and every layout tells a story.</p>
++                </div>
++            </div>
+ 
++            <!-- Mr. M -->
++            <div class="arcane-item" style="--accent: #00FFFF;">
++                <img src="images/mrm.png" alt="Mr. M">
++
++                <div class="arcane-vertical-name">MR. M</div>
++                <div class="arcane-content">
++                    <span class="arcane-role">SENIOR DEVELOPER</span>
++                    <h2 class="arcane-name">MR. M</h2>
++                    <p class="arcane-desc">Ensuring that every site is robust, scalable, and powerful. Good development
++                        is the backbone of an unforgettable digital experience. I make sure your website is built with
++                        precision and logic.</p>
++                </div>
++            </div>
++
++            <!-- Mr. A -->
++            <div class="arcane-item" style="--accent: #5539A2;">
++                <img src="images/mra.png" alt="Mr. A">
++
++                <div class="arcane-vertical-name">MR. A</div>
++                <div class="arcane-content">
++                    <span class="arcane-role">FRONTEND DEVELOPER</span>
++                    <h2 class="arcane-name">MR. A</h2>
++                    <p class="arcane-desc">Bringing the design to life through fluid animations and seamless
++                        interactions. I bridge the gap between static art and human experience.</p>
++                </div>
+             </div>
+         </div>
+-    </div>
++    </section>
+     <!-- Process Scroll Section -->
+     <div class="process-scroll-wrapper">
+         <div class="process-sticky-viewport">
+@@ -565,12 +542,12 @@
+                     </h1>
+ 
+                     <div class="dj-buttons">
+-                        <a href="../consult/consult.html" target="_blank" rel="noopener noreferrer">
++                        <a href="../consult/consult.html" rel="noopener noreferrer">
+                             <button class="btn-dj btn-dj-primary">
+                                 BOOK NOW
+                             </button>
+                         </a>
+-                        <a href="./pricingpage/pricing.html" target="_blank" rel="noopener noreferrer">
++                        <a href="./pricingpage/pricing.html" rel="noopener noreferrer">
+                             <button class="btn-dj btn-dj-secondary">
+                                 VIEW PLANS
+                             </button>
+@@ -613,8 +590,10 @@
+                             </a>
+                         </div>
+                         <div class="about-policy-links">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+-                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf" target="_blank" rel="noopener noreferrer">Refund Policy</a>
++                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" rel="noopener noreferrer">Privacy
++                                Policy</a>
++                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf"
++                                rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+                 </div>
+
+commit a0344fce079a89066286b5310ea794f3d9341e72
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Sat Mar 28 22:37:25 2026 +0530
+
+    .
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index 7cbb293..ddbdffc 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -666,7 +666,7 @@
+         </div>
+     </div>
+     <script src="../sticky-navbar.js"></script>
+-    <!-- <script src="../chatbot/kairon-widget.js"></script> -->
++    <script src="../chatbot/kairon-widget.js"></script>
+ </body>
+ 
+ </html>
+\ No newline at end of file
+
+commit 78de0188c2775af6f80054a32475dafb9f4f8362
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Sat Mar 28 22:21:25 2026 +0530
+
+    /.
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index ddbdffc..7cbb293 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -666,7 +666,7 @@
+         </div>
+     </div>
+     <script src="../sticky-navbar.js"></script>
+-    <script src="../chatbot/kairon-widget.js"></script>
++    <!-- <script src="../chatbot/kairon-widget.js"></script> -->
+ </body>
+ 
+ </html>
+\ No newline at end of file
+
+commit 85121ef51a9319503ed0c1146c32a2af2fb4f4f0
+Author: Sofia-Stalance <sofiastalance@gmail.com>
+Date:   Tue Mar 24 07:59:42 2026 +0530
+
+    bug
+
+diff --git a/frontend/about/about.html b/frontend/about/about.html
+index 8a1b861..ddbdffc 100644
+--- a/frontend/about/about.html
++++ b/frontend/about/about.html
+@@ -612,18 +612,9 @@
+                                 <i class="fa-brands fa-linkedin-in"></i>
+                             </a>
+                         </div>
+-                        <div class="policy-links"
+-                            style="display: flex; gap: 2rem; margin-top: 1rem; font-size: 0.875rem; font-weight: 500;">
+-                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" target="_blank"
+-                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
+-                                style="text-decoration: underline;" rel="noopener noreferrer">
+-                                Privacy Policy
+-                            </a>
+-                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf" target="_blank"
+-                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
+-                                style="text-decoration: underline;" rel="noopener noreferrer">
+-                                Refund Policy
+-                            </a>
++                        <div class="about-policy-links">
++                            <a href="../docs/T%26C%20and%20Privacy%20Policy.pdf.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
++                            <a href="../docs/Refund%20and%20Cancellation%20Policy.pdf.pdf" target="_blank" rel="noopener noreferrer">Refund Policy</a>
+                         </div>
+                     </div>
+                 </div>
