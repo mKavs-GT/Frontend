@@ -1,7 +1,8 @@
 {
   "name": "MKAVS Admin Panel",
   "short_name": "MKAVS Admin",
-  "description": "Production-ready Admin Panel for MKAVS Global Tech",
+  "gcm_sender_id": "103953800507",
+  "description": "Secure administrative dashboard for MKAVS project management.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0C1AC1",

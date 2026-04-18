@@ -216,8 +216,18 @@ const PWAControls: React.FC = () => {
           <div className="space-y-1">
             {debugLog.map((log, i) => <div key={i} className="border-b border-white/5 pb-1">{log}</div>)}
           </div>
-          <div className="mt-6 flex gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             <button onClick={() => handlePushSubscription(false)} className="p-2 bg-blue-600 text-white rounded">Retry Subscribe</button>
+            <button 
+                onClick={async () => {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for(let registration of registrations) { await registration.unregister(); }
+                    logDebug('SW Unregistered. Please refresh the page.');
+                }} 
+                className="p-2 bg-red-600 text-white rounded"
+            >
+                Reset Service Worker
+            </button>
             <button onClick={() => setDebugLog([])} className="p-2 bg-white/10 rounded">Clear Log</button>
           </div>
         </div>
