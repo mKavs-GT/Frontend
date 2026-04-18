@@ -77,10 +77,17 @@ const PWAControls: React.FC = () => {
         setIsSubscribing(true);
         const registration = await navigator.serviceWorker.ready;
         
-        // Subscription logic
+        // --- THE FIX: Clean up any old, broken subscriptions first ---
+        const existingSub = await registration.pushManager.getSubscription();
+        if (existingSub) {
+            console.log('[PWA] Found existing subscription, cleaning up...');
+            await existingSub.unsubscribe();
+        }
+        // -------------------------------------------------------------
+
         const publicVapidKey = 'BCIx6QgWUCAP5Dce_gNwW7vqfCw3AhU_WRoBFClOIqJZlJtIFNMZaZQC_q8jLZnl1H2zkYvDE6YOoitbbn1XEsQ';
         
-        console.log('[PWA] Creating subscription with NEW VAPID key...');
+        console.log('[PWA] Creating fresh subscription...');
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
