@@ -7,10 +7,24 @@ const PWAControls: React.FC = () => {
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [debugLog, setDebugLog] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
 
   const logDebug = (msg: string) => {
     console.log(`[DEBUG-PWA] ${msg}`);
     setDebugLog(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${msg}`]);
+  };
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    try {
+        await installPrompt.prompt();
+        const { outcome } = await installPrompt.userChoice;
+        if (outcome === 'accepted') {
+            setInstallPrompt(null);
+        }
+    } catch (err) {
+        logDebug('Install error: ' + err);
+    }
   };
 
   useEffect(() => {
