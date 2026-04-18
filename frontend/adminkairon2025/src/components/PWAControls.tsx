@@ -5,25 +5,37 @@ import { Wifi, WifiOff, Download, Bell, BellOff, X } from 'lucide-react';
 const PWAControls: React.FC = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
-  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(
-    'serviceWorker' in navigator ? Notification.permission : 'denied'
-  );
-  const [showStatus, setShowStatus] = useState(false);
-  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [debugLog, setDebugLog] = useState<string[]>([]);
+  const [showDebug, setShowDebug] = useState(false);
+
+  const logDebug = (msg: string) => {
+    console.log(`[DEBUG-PWA] ${msg}`);
+    setDebugLog(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${msg}`]);
+  };
 
   useEffect(() => {
-    // Check if we already have a subscription on mount
+    logDebug(`Permission on mount: ${Notification.permission}`);
+    if ('serviceWorker' in navigator) {
+        logDebug(`SW Controller: ${navigator.serviceWorker.controller ? 'Present' : 'Missing'}`);
+        navigator.serviceWorker.ready.then(reg => {
+            logDebug(`SW Ready: ${reg.active ? 'Active' : 'Inactive'} (Scope: ${reg.scope})`);
+        });
+    }
+
     const checkSubscription = async () => {
       if ('serviceWorker' in navigator && Notification.permission === 'granted') {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.getSubscription();
         if (!subscription) {
-            // If permission is granted but no subscription, try to resubscribe silently
+            logDebug('Granted but no subscription found. Attempting silent recovery...');
             handlePushSubscription(true);
+        } else {
+            logDebug('Active subscription found on mount');
         }
       }
     };
     checkSubscription();
+    // ... rest of useEffect
     
     const handleOnline = () => {
       setIsOnline(true);
@@ -50,55 +62,50 @@ const PWAControls: React.FC = () => {
     };
   }, []);
 
-  const handleInstall = async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setInstallPrompt(null);
-    }
-  };
-
   const handlePushSubscription = async (silent = false) => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-        if (!silent) alert('Push notifications are not supported in this browser.');
+        logDebug('Push not supported by browser');
         return;
     }
 
     try {
       let permission = Notification.permission;
+      logDebug(`Starting subscription flow. Permission: ${permission}`);
       
       if (permission === 'default' && !silent) {
         permission = await Notification.requestPermission();
-        setNotificationPermission(permission);
+        logDebug(`Requested permission. Result: ${permission}`);
       }
       
       if (permission === 'granted') {
-        setIsSubscribing(true);
         const registration = await navigator.serviceWorker.ready;
+        logDebug(`SW ready for subscribe. Active: ${registration.active ? 'Yes' : 'No'}`);
         
-        // --- THE FIX: Clean up any old, broken subscriptions first ---
+        // --- Clean up ---
         const existingSub = await registration.pushManager.getSubscription();
         if (existingSub) {
-            console.log('[PWA] Found existing subscription, cleaning up...');
+            logDebug('Found existing sub, cleaning up...');
             await existingSub.unsubscribe();
         }
-        // -------------------------------------------------------------
 
         const publicVapidKey = 'BCIx6QgWUCAP5Dce_gNwW7vqfCw3AhU_WRoBFClOIqJZlJtIFNMZaZQC_q8jLZnl1H2zkYvDE6YOoitbbn1XEsQ';
+        logDebug(`VAPID Key Length: ${publicVapidKey.length}`);
         
-        console.log('[PWA] Creating fresh subscription...');
+        const convertedKey = urlBase64ToUint8Array(publicVapidKey);
+        logDebug(`Converted Key (Uint8Array) Length: ${convertedKey.byteLength}`);
+
+        logDebug('Calling pushManager.subscribe()...');
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+          applicationServerKey: convertedKey
         });
 
-        console.log('[PWA] Subscription created:', JSON.stringify(subscription));
+        logDebug(`Subscribe success! Endpoint: ${subscription.endpoint.substring(0, 30)}...`);
 
         const token = sessionStorage.getItem('adminToken');
-        const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
 
-        console.log('[PWA] Sending subscription to backend:', `${API_BASE}/api/push/subscribe`);
+        logDebug(`Syncing with backend: ${API_BASE}`);
         const response = await fetch(`${API_BASE}/api/push/subscribe`, {
           method: 'POST',
           body: JSON.stringify({
@@ -112,39 +119,35 @@ const PWAControls: React.FC = () => {
         });
 
         if (response.ok) {
-            console.log('[PWA] Subscription successfully saved on backend');
+            logDebug('Backend sync complete');
         } else {
-            const errorText = await response.text();
-            console.error('[PWA] Backend failed to save subscription:', response.status, errorText);
+            logDebug(`Backend sync FAILED: ${response.status}`);
         }
       }
-    } catch (error) {
-      console.error('[PWA] End-to-end subscription error:', error);
-    } finally {
-      setIsSubscribing(false);
+    } catch (error: any) {
+      logDebug(`CRITICAL ERROR: ${error.name} - ${error.message}`);
+      console.error('[DEBUG-PWA] Full error:', error);
     }
   };
 
   const handleTestPush = async () => {
     try {
         const token = sessionStorage.getItem('adminToken');
-        const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
         
-        console.log('[PWA] Requesting test push...');
+        logDebug('Triggering test push...');
         const response = await fetch(`${API_BASE}/api/push/test`, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: { 'Authorization': `Bearer ${token}` }
         });
         
         if (response.ok) {
-            console.log('[PWA] Test push request sent successfully');
+            logDebug('Test push requested');
         } else {
-            console.error('[PWA] Test push request failed');
+            logDebug(`Test push failed: ${response.status}`);
         }
-    } catch (error) {
-        console.error('[PWA] Error triggering test push:', error);
+    } catch (error: any) {
+        logDebug(`Test push error: ${error.message}`);
     }
   };
 
@@ -154,7 +157,7 @@ const PWAControls: React.FC = () => {
           const subscription = await registration.pushManager.getSubscription();
           if (subscription) {
               const token = sessionStorage.getItem('adminToken');
-              const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+              const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
 
               await fetch(`${API_BASE}/api/push/unsubscribe`, {
                   method: 'POST',
@@ -165,14 +168,13 @@ const PWAControls: React.FC = () => {
                   }
               });
               await subscription.unsubscribe();
-              console.log('Unsubscribed successfully');
+              logDebug('Unsubscribed');
           }
-      } catch (error) {
-          console.error('Unsubscribe error:', error);
+      } catch (error: any) {
+          logDebug(`Unsubscribe error: ${error.message}`);
       }
   };
 
-  // Helper function for VAPID key conversion
   function urlBase64ToUint8Array(base64String: string) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -190,6 +192,23 @@ const PWAControls: React.FC = () => {
 
   return (
     <>
+      {/* Debug Panel Overlay */}
+      {showDebug && (
+        <div className="fixed inset-0 bg-black/90 z-[9999] p-6 font-mono text-[10px] text-green-400 overflow-auto">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm font-bold">PWA DEBUG LOG</h2>
+            <button onClick={() => setShowDebug(false)} className="p-2 bg-white/10 rounded">CLOSE</button>
+          </div>
+          <div className="space-y-1">
+            {debugLog.map((log, i) => <div key={i} className="border-b border-white/5 pb-1">{log}</div>)}
+          </div>
+          <div className="mt-6 flex gap-2">
+            <button onClick={() => handlePushSubscription(false)} className="p-2 bg-blue-600 text-white rounded">Retry Subscribe</button>
+            <button onClick={() => setDebugLog([])} className="p-2 bg-white/10 rounded">Clear Log</button>
+          </div>
+        </div>
+      )}
+
       {/* Network Status Banner */}
       <AnimatePresence>
         {(showStatus || !isOnline) && (
@@ -217,6 +236,14 @@ const PWAControls: React.FC = () => {
 
       {/* Floating PWA Controls */}
       <div className="fixed bottom-6 right-6 z-[500] flex flex-col items-end gap-3">
+        {/* Debug Toggle */}
+        <button 
+          onClick={() => setShowDebug(true)}
+          className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all"
+        >
+          <X size={14} className="rotate-45" />
+        </button>
+
         {/* Install Button */}
         {installPrompt && (
           <motion.button
@@ -234,7 +261,7 @@ const PWAControls: React.FC = () => {
 
         {/* Push Notification Controls */}
         <div className="flex flex-col items-end gap-2">
-            {notificationPermission === 'denied' ? (
+            {Notification.permission === 'denied' ? (
                 <div className="bg-red-500/10 border border-red-500/20 backdrop-blur-md p-3 rounded-2xl text-[10px] text-red-400 font-bold max-w-[200px] text-center">
                     Notifications blocked. Please enable them in site settings to receive alerts.
                 </div>
@@ -244,30 +271,23 @@ const PWAControls: React.FC = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    disabled={isSubscribing}
-                    onClick={() => notificationPermission === 'granted' ? handleUnsubscribe() : handlePushSubscription(false)}
+                    onClick={() => Notification.permission === 'granted' ? handleUnsubscribe() : handlePushSubscription(false)}
                     className={`p-3 rounded-full shadow-lg flex items-center gap-2 font-bold text-sm transition-all ${
-                        notificationPermission === 'granted' 
+                        Notification.permission === 'granted' 
                         ? 'bg-blue-600 text-white shadow-blue-600/20' 
                         : 'bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20'
                     }`}
                 >
-                    {isSubscribing ? (
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : notificationPermission === 'granted' ? (
-                        <Bell size={18} />
-                    ) : (
-                        <BellOff size={18} />
-                    )}
+                    {Notification.permission === 'granted' ? <Bell size={18} /> : <BellOff size={18} />}
                     <span>
-                        {notificationPermission === 'granted' 
+                        {Notification.permission === 'granted' 
                             ? 'Notifications Enabled' 
                             : 'Enable Notifications'}
                     </span>
                 </motion.button>
             )}
 
-            {notificationPermission === 'granted' && (
+            {Notification.permission === 'granted' && (
                 <motion.button
                     initial={{ x: 100, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
