@@ -125,17 +125,32 @@ self.addEventListener('push', event => {
 // Notification Click Event
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
+  
+  // Get the URL from notification data or default to dashboard
+  const relativeUrl = event.notification.data.url || '/';
+  const urlToOpen = new URL(relativeUrl, self.location.origin).href;
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // If a window is already open, focus it and navigate
+      // Check if there is already a window open with this URL
       for (let client of windowClients) {
         if (client.url === urlToOpen && 'focus' in client) {
           return client.focus();
         }
       }
-      // Otherwise open a new window
+      
+      // If no window is open with the exact URL, check for any admin panel window
+      for (let client of windowClients) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          // Navigate existing window to the specific consultation
+          if ('navigate' in client) {
+            return client.navigate(urlToOpen).then(c => c.focus());
+          }
+          return client.focus();
+        }
+      }
+
+      // If no admin window at all, open a new one
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
