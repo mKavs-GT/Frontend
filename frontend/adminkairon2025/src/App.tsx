@@ -7,6 +7,7 @@ import ClientProjects from './ClientProjects'
 import LoginDemo from './LoginDemo'
 import { AnimatedBackground } from './components/ui/animated-background'
 import { LoadingPage } from './components/ui/loading-page'
+import PWAControls from './components/PWAControls'
 
 // API endpoint for admin authentication
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -150,6 +151,7 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      <PWAControls />
     </div>
   )
 }
