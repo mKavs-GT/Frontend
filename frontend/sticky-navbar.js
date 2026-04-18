@@ -57,17 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const loginBtns = document.querySelectorAll('.login-btn, #desktop-login-btn');
             const userIcons = document.querySelectorAll('.fa-regular.fa-user');
             
-            // Helper to get relative prefix based on depth
-            const currentPath = window.location.pathname;
-            const isInSubfolder = currentPath.includes('/about/') || 
-                                currentPath.includes('/pricingpage/') || 
-                                currentPath.includes('/consult/') || 
-                                currentPath.includes('/support/') || 
-                                currentPath.includes('/loginpg/') || 
-                                currentPath.includes('/profile/');
-            
-            const prefix = isInSubfolder ? '../' : './';
-
             if (data.loggedIn) {
                 loginBtns.forEach(btn => {
                     // Only change if it's currently showing "Login"
@@ -85,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {
-                        parent.href = prefix + 'profile/profile.html';
+                        parent.href = '/profile/profile.html';
                     }
                     if (data.user) {
                         const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
@@ -115,26 +104,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginBtns.forEach(btn => {
                     if (btn.textContent.trim().toLowerCase() === 'logout') {
                         btn.textContent = 'Login';
-                        btn.href = prefix + 'loginpg/login.html';
+                        btn.href = '/loginpg/login.html';
                     }
                 });
 
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {
-                        parent.href = prefix + 'loginpg/login.html';
+                        parent.href = '/loginpg/login.html';
                     }
                 });
 
                 // Update "Book Us" links to point to login if they require auth
                 const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
                 bookUsLinks.forEach(link => {
-                    link.href = prefix + 'loginpg/login.html';
+                    link.href = '/loginpg/login.html';
                 });
 
                 // Actively protect the consult page
-                if (currentPath.includes('consult/consult.html')) {
-                    window.location.href = '../loginpg/login.html';
+                if (window.location.pathname.includes('consult/consult.html')) {
+                    window.location.href = '/loginpg/login.html';
                 }
             }
         } catch (error) {
