@@ -35,7 +35,7 @@
             <!-- Video Container -->
             <div class="relative">
                 <video autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
-                    <source src="../images/mascot.mp4" type="video/mp4">
+                    <source src="/images/mascot.mp4" type="video/mp4">
                 </video>
                 <!-- Progress Bar Overlapping Base -->
                 <div
@@ -90,18 +90,20 @@
         <div class="slide-wrapper-corner">
             <div id="slide-1"
                 class="slide bg-gradient-to-br from-[#0c19ad] to-[#0C1AC1] z-10 slide-transition concave-inner-slide">
+                <!-- Star Constellation Canvas -->
+                <canvas id="constellation-canvas" class="absolute inset-0 z-10 pointer-events-none"></canvas>
 
-                <img class="star absolute w-20 h-20 top-[15%] left-[80%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[15%] left-[80%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
-                <img class="star absolute w-20 h-20 top-[45%] left-[10%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[45%] left-[10%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFC300/000000?text=*;';">
-                <img class="star absolute w-20 h-20 top-[45%] right-[10%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[45%] right-[10%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFE5A0/000000?text=*;';">
-                <img class="star absolute w-20 h-20 top-[50%] right-[40%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[50%] right-[40%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFD700/000000?text=*;';">
-                <img class="star absolute w-20 h-20 top-[15%] left-[10%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[15%] left-[10%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/000000?text=*;';">
-                <img class="star absolute w-20 h-20 top-[10%] right-[40%] z-20 object-contain" src="../images/star.png"
+                <img class="star absolute w-20 h-20 top-[10%] right-[40%] z-20 object-contain" src="/images/star.png"
                     alt="*" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFA500/000000?text=*;';">
                 <br><br><br><br>
                 <!-- FLEX CONTAINER instead of Absolute chaos -->
@@ -109,11 +111,11 @@
 
                     <!-- Main Image Layer -->
                     <div class="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px]">
-                        <img id="slide-1-image" src="../images/MKAVS.png" alt="Base Image"
+                        <img id="slide-1-image" src="/images/MKAVS.png" alt="Base Image"
                             class="absolute inset-0 w-full h-full object-contain opacity-0 transform scale-50 -translate-y-8 transition-all duration-700 ease-out"
                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/1E40AF/FFFFFF?text=LOGO+LAYER+1';">
                         <div class="absolute inset-0 w-full h-full flex items-center justify-center">
-                            <img id="slide-1-overlay-image" src="../images/heroimg.png" alt="Overlay Image"
+                            <img id="slide-1-overlay-image" src="/images/heroimg.png" alt="Overlay Image"
                                 class="w-[80%] h-auto object-contain slide-up-transition translate-y-full opacity-0 duration-[2000ms] transition-all"
                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/DC2626/FFFFFF?text=HERO+LAYER+3';">
                         </div>
@@ -143,27 +145,27 @@
 
                             <div class="flex items-center space-x-4 animate-scroll-left w-max py-2 h-full">
                                 <!-- Duplicated images for seamless loop -->
-                                <img src="../images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 1">
-                                <img src="../images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 2">
-                                <img src="../images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 3">
-                                <img src="../images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 4">
-                                <img src="../images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 5">
 
                                 <!-- Duplicate Set -->
-                                <img src="../images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb1.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 1">
-                                <img src="../images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb2.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 2">
-                                <img src="../images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb3.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 3">
-                                <img src="../images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb4.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 4">
-                                <img src="../images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
+                                <img src="/images/thumb5.png" class="h-16 w-24 object-cover rounded-md shadow-md"
                                     alt="Work 5">
                             </div>
                         </div>
@@ -215,7 +217,7 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10 transition-opacity duration-300">
                             </div>
-                            <img src="../images/1.jpeg" alt="Web Design"
+                            <img src="/images/1.jpeg" alt="Web Design"
                                 class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
                             <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
                                 <h3 class="text-[10px] font-black text-white mb-0.5 uppercase leading-none">
@@ -226,7 +228,7 @@
                         <div id="slide-2-card-2"
                             class="group relative h-32 w-1/3 bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-lg overflow-hidden scale-0 opacity-0 z-20">
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
-                            <img src="../images/2.jpeg" alt="Full Stack"
+                            <img src="/images/2.jpeg" alt="Full Stack"
                                 class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
                             <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
                                 <h3 class="text-[10px] font-black text-[#c7f908] mb-0.5 uppercase leading-none">
@@ -238,7 +240,7 @@
                         <div id="slide-2-card-3"
                             class="group relative h-32 w-1/3 bg-gray-900/50 border border-white hover:border-[#c7f908] transition-all duration-700 ease-out rounded-lg overflow-hidden scale-0 opacity-0 z-10">
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
-                            <img src="../images/3.jpeg" alt="Branding"
+                            <img src="/images/3.jpeg" alt="Branding"
                                 class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
                             <div class="absolute bottom-0 left-0 p-2 z-20 w-full">
                                 <h3 class="text-[10px] font-black text-white mb-0.5 uppercase leading-none">
@@ -323,7 +325,7 @@
                         <!-- Video Row (With margins) -->
                         <div class="w-full relative mt-12 px-6 mb-12">
                             <video class="w-full h-[350px] object-cover rounded-xl" autoplay muted loop playsinline>
-                                <source src="../images/why.mp4" type="video/mp4">
+                                <source src="/images/why.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
@@ -504,9 +506,9 @@
                     class="preserve-3d relative w-11/12 max-w-md aspect-[3/2] pointer-events-auto transition-transform duration-700 ease-out">
                     <div id="zoom-image-flipper"
                         class="transform-style-preserve-3d w-full h-full cursor-pointer pointer-events-auto">
-                        <img id="zoom-image-front" src="../images/4.jpeg" alt="Zoom Target Front"
+                        <img id="zoom-image-front" src="/images/4.jpeg" alt="Zoom Target Front"
                             class="flip-face flip-face-front w-full h-full object-cover rounded-xl shadow-2xl">
-                        <img id="zoom-image-back" src="../images/thumb1.png" alt="Zoom Target Back"
+                        <img id="zoom-image-back" src="/images/thumb1.png" alt="Zoom Target Back"
                             class="flip-face flip-face-back w-full h-full object-cover rounded-xl shadow-2xl">
                     </div>
                 </div>
@@ -517,43 +519,43 @@
                 class="absolute bottom-24 left-0 w-full flex justify-center gap-3 z-20 opacity-0 pointer-events-none transition-all duration-500 transform translate-y-[20px] flex-wrap px-4">
 
                 <!-- Portfolio Thumbnails (1-3) -->
-                <img src="../images/thumb1.png" data-category="portfolio" data-image="../images/thumb1.png"
+                <img src="/images/thumb1.png" data-category="portfolio" data-image="/images/thumb1.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
                     alt="Portfolio 1">
-                <img src="../images/thumb2.png" data-category="portfolio" data-image="../images/thumb2.png"
+                <img src="/images/thumb2.png" data-category="portfolio" data-image="/images/thumb2.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
                     alt="Portfolio 2">
-                <img src="../images/thumb3.png" data-category="portfolio" data-image="../images/thumb3.png"
+                <img src="/images/thumb3.png" data-category="portfolio" data-image="/images/thumb3.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg"
                     alt="Portfolio 3">
 
                 <!-- Company Thumbnails (4-6) - Hidden initially via JS logic/CSS -->
-                <img src="../images/thumb4.png" data-category="company" data-image="../images/thumb4.png"
+                <img src="/images/thumb4.png" data-category="company" data-image="/images/thumb4.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Company 1">
-                <img src="../images/thumb5.png" data-category="company" data-image="../images/thumb5.png"
+                <img src="/images/thumb5.png" data-category="company" data-image="/images/thumb5.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Company 2">
-                <img src="../images/thumb6.png" data-category="company" data-image="../images/thumb6.png"
+                <img src="/images/thumb6.png" data-category="company" data-image="/images/thumb6.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Company 3">
 
                 <!-- Ecommerce Thumbnails (7-9) - Hidden initially via JS logic/CSS -->
-                <img src="../images/thumb7.png" data-category="ecommerce" data-image="../images/thumb7.png"
+                <img src="/images/thumb7.png" data-category="ecommerce" data-image="/images/thumb7.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Ecommerce 1">
-                <img src="../images/thumb8.png" data-category="ecommerce" data-image="../images/thumb8.png"
+                <img src="/images/thumb8.png" data-category="ecommerce" data-image="/images/thumb8.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Ecommerce 2">
-                <img src="../images/thumb9.png" data-category="ecommerce" data-image="../images/thumb9.png"
+                <img src="/images/thumb9.png" data-category="ecommerce" data-image="/images/thumb9.png"
                     data-url="https://example.com"
                     class="thumbnail-item w-20 h-14 object-cover rounded-lg border-2 border-transparent hover:border-[#c7f908] transition-all cursor-pointer shadow-lg hidden"
                     alt="Ecommerce 3">
@@ -567,7 +569,7 @@
             <div class="relative w-full max-w-lg mt-12 pb-20">
                 <!-- Mascot sitting on the edge (smaller for mobile) -->
                 <div class="absolute -top-12 right-4 z-20">
-                    <img src="../images/mid.png" class="h-24 object-contain" alt="">
+                    <img src="/images/mid.png" class="h-24 object-contain" alt="">
                 </div>
 
                 <div class="rounded-expertise-container p-6 flex flex-col items-center gap-10">
@@ -608,9 +610,9 @@
                                         </div>
                                         <p class="text-xs text-gray-600 font-bold leading-tight">ur an emoji</p>
                                         <div class="flex gap-2 mt-2">
-                                            <div class="bg-blue-100 p-1.5 rounded-lg"><img src="../images/leftbot.png"
+                                            <div class="bg-blue-100 p-1.5 rounded-lg"><img src="/images/leftbot.png"
                                                     class="h-6" alt=""></div>
-                                            <div class="bg-blue-100 p-1.5 rounded-lg"><img src="../images/rightbot.png"
+                                            <div class="bg-blue-100 p-1.5 rounded-lg"><img src="/images/rightbot.png"
                                                     class="h-6" alt=""></div>
                                         </div>
                                     </div>
@@ -637,8 +639,8 @@
         <div id="slide-5" onclick="window.open('../branding.html', '_blank')"
             class="slide bg-black z-50 translate-y-full slide-transition flex items-center justify-center overflow-hidden cursor-pointer relative">
             <video id="end-cap-video" class="w-full h-full object-cover" autoplay muted playsinline preload="auto"
-                poster="../images/video-poster.jpg">
-                <source src="../images/mobvid.mp4" type="video/mp4">
+                poster="/images/video-poster.jpg">
+                <source src="/images/mobvid.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
 
@@ -691,11 +693,11 @@
 
             <!-- CHARACTER WATERMARKS -->
             <div class="footer-characters-container">
-                <img src="../images/back.png" class="footer-char char-back" alt="">
-                <img src="../images/left.png" class="footer-char char-left" alt="">
-                <img src="../images/mid.png" id="mid-char-mobile" class="footer-char char-mid" alt="">
-                <img src="../images/right.png" class="footer-char char-right" alt="">
-                <img src="../images/end.png" class="footer-char char-end" alt="">
+                <img src="/images/back.png" class="footer-char char-back" alt="">
+                <img src="/images/left.png" class="footer-char char-left" alt="">
+                <img src="/images/mid.png" id="mid-char-mobile" class="footer-char char-mid" alt="">
+                <img src="/images/right.png" class="footer-char char-right" alt="">
+                <img src="/images/end.png" class="footer-char char-end" alt="">
             </div>
 
             <!-- DISCORD-STYLE FOOTER (MOBILE) -->
@@ -765,7 +767,7 @@
                 </div>
 
                 <div class="footer-watermark-container mt-12 pt-8">
-                    <img src="../images/LOGO.png" alt="MKAVS LOGO" class="footer-watermark-image opacity-10">
+                    <img src="/images/LOGO.png" alt="MKAVS LOGO" class="footer-watermark-image opacity-10">
                 </div>
             </footer>
         </section>
@@ -779,20 +781,20 @@
                 .then(data => console.log(data))
                 .catch(err => console.error(err));
         </script>
-        <script src="/mobile/scripts.js"></script>
+        <script src="/mobile/scripts.js" defer></script>
 
         <!-- Kairon Chat Widget Integration -->
-        <link rel="stylesheet" href="./chatbot/kairon-widget.css">
-        <script>window.KAIRON_BASE_PATH = "./chatbot/";</script>
+        <link rel="stylesheet" href="/chatbot/kairon-widget.css">
+        <script>window.KAIRON_BASE_PATH = "/chatbot/";</script>
         <div id="kairon">
             <button id="kairon-button" aria-label="Open chat">
-                <img src="./chatbot/kairon-logo.png" alt="Kairon">
+                <img src="/chatbot/kairon-logo.png" alt="Kairon">
             </button>
             <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" style="display:none;">
                 <div class="panel-header">
                     <div class="left-section">
                         <div class="logo-placeholder">
-                            <img src="./chatbot/kairon-logo.png" alt="Logo">
+                            <img src="/chatbot/kairon-logo.png" alt="Logo">
                         </div>
                         <div class="title">Kairon</div>
                     </div>
@@ -819,7 +821,7 @@
                 </form>
             </div>
         </div>
-        <script src="./chatbot/kairon-widget.js"></script>
+        <script src="/chatbot/kairon-widget.js"></script>
 
         <script>
             document.addEventListener('DOMContentLoaded', async () => {

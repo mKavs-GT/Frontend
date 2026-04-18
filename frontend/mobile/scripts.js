@@ -34,6 +34,7 @@ const IMG_MAX_PUSH = 50;
 let starImages;
 
 function updateImageStars(currentMouseX, currentMouseY) {
+    if (!starImages) return;
     starImages.forEach(star => {
         if (star.style.opacity !== '1') return;
 
@@ -54,6 +55,59 @@ function updateImageStars(currentMouseX, currentMouseY) {
         }
         star.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
     });
+    drawConstellation();
+}
+
+// --- Constellation Drawing Logic ---
+let constellationCanvas, constellationCtx;
+
+function initConstellation() {
+    constellationCanvas = document.getElementById('constellation-canvas');
+    if (!constellationCanvas) return;
+    constellationCtx = constellationCanvas.getContext('2d');
+    resizeConstellation();
+}
+
+function resizeConstellation() {
+    if (!constellationCanvas) return;
+    constellationCanvas.width = window.innerWidth;
+    constellationCanvas.height = window.innerHeight;
+}
+
+function drawConstellation() {
+    if (!constellationCtx || !starImages) return;
+    constellationCtx.clearRect(0, 0, constellationCanvas.width, constellationCanvas.height);
+    
+    const stars = Array.from(starImages);
+    const maxDistance = 250;
+
+    constellationCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    constellationCtx.lineWidth = 1;
+
+    for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+            const rect1 = stars[i].getBoundingClientRect();
+            const rect2 = stars[j].getBoundingClientRect();
+            
+            const x1 = rect1.left + rect1.width / 2;
+            const y1 = rect1.top + rect1.height / 2;
+            const x2 = rect2.left + rect2.width / 2;
+            const y2 = rect2.top + rect2.height / 2;
+
+            const dx = x1 - x2;
+            const dy = y1 - y2;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < maxDistance) {
+                const opacity = 1 - (dist / maxDistance);
+                constellationCtx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                constellationCtx.beginPath();
+                constellationCtx.moveTo(x1, y1);
+                constellationCtx.lineTo(x2, y2);
+                constellationCtx.stroke();
+            }
+        }
+    }
 }
 
 // --- Metric Counting Logic (Slide 1) ---
@@ -638,6 +692,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollbarTrack = document.getElementById('custom-scrollbar-track');
     scrollbarThumb = document.getElementById('custom-scrollbar-thumb');
 
+    initConstellation();
+
     // --- SETUP SCROLLING ---
     // --- SETUP SCROLLING ---
     calculateSlideHeights();
@@ -647,6 +703,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         calculateSlideHeights();
         updateScrollState(globalScrollY);
+        resizeConstellation();
+        drawConstellation();
     });
 
     // ResizeObserver to handle dynamic content changes (images loading, etc.)
@@ -1215,6 +1273,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
         if (currentSlideIndex === 0) updateImageStars(e.clientX, e.clientY);
     });
+
+    window.addEventListener('touchmove', (e) => {
+        if (currentSlideIndex === 0 && e.touches.length > 0) {
+            updateImageStars(e.touches[0].clientX, e.touches[0].clientY);
+        }
+    }, { passive: true });
 
     // --- Slide 3 Works List Logic ---
     worksListItems = worksListColumn ? worksListColumn.querySelectorAll('ul > li') : [];
