@@ -14,8 +14,68 @@
       "destination": "/frontend/config.js"
     },
     {
-      "source": "/:path*",
-      "destination": "/frontend/:path*"
+      "source": "/scripts.js",
+      "destination": "/frontend/scripts.js"
+    },
+    {
+      "source": "/sticky-navbar.js",
+      "destination": "/frontend/sticky-navbar.js"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/frontend/styles.css"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/branding.html",
+      "destination": "/frontend/branding.html"
+    },
+    {
+      "source": "/branding",
+      "destination": "/frontend/branding.html"
+    },
+    {
+      "source": "/brandpg/:path*",
+      "destination": "/mobile/brandpg/:path*"
+    },
+    {
+      "source": "/about/:path*",
+      "destination": "/frontend/about/:path*"
+    },
+    {
+      "source": "/pricingpage/:path*",
+      "destination": "/frontend/pricingpage/:path*"
+    },
+    {
+      "source": "/consult/:path*",
+      "destination": "/frontend/consult/:path*"
+    },
+    {
+      "source": "/support/:path*",
+      "destination": "/frontend/support/:path*"
+    },
+    {
+      "source": "/loginpg/:path*",
+      "destination": "/frontend/loginpg/:path*"
+    },
+    {
+      "source": "/profile/:path*",
+      "destination": "/frontend/profile/:path*"
+    },
+    {
+      "source": "/portfolio/:path*",
+      "destination": "/frontend/portfolio/:path*"
+    },
+    {
+      "source": "/signpg/:path*",
+      "destination": "/frontend/signpg/:path*"
     }
   ]
 }
