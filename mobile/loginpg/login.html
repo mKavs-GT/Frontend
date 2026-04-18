@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <!-- Google reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="../../config.js"></script>
+    <script src="/config.js"></script>
     <style>
         :root {
             --primary: #CCFF00;
@@ -409,8 +409,8 @@
 </head>
 
 <body>
-    <a href="../index.html" class="auth-logo">
-        <img src="../../images/MKAVS.png" alt="MKAVS Global Tech">
+    <a href="/mobile/index.html" class="auth-logo">
+        <img src="/images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
     <div class="auth-container">
@@ -476,7 +476,7 @@
             </form>
 
             <footer class="signup-prompt">
-                Don't have an account? <a href="../signpg/signup.html" class="signup-link">Sign up</a>
+                Don't have an account? <a href="/mobile/signpg/signup.html" class="signup-link">Sign up</a>
             </footer>
         </main>
     </div>
@@ -503,7 +503,7 @@
             const errorDiv = document.getElementById('login-error');
             errorDiv.style.display = 'block';
             if (error === 'no_account') {
-                errorDiv.innerHTML = 'Account doesnt exists, <a href="../signpg/signup.html" style="color: #CCFF00; text-decoration: underline;">click here to create an acc</a>';
+                errorDiv.innerHTML = 'Account doesnt exists, <a href="/mobile/signpg/signup.html" style="color: #CCFF00; text-decoration: underline;">click here to create an acc</a>';
             } else if (error === 'auth_failed') {
                 errorDiv.textContent = 'Google Authentication failed. Please try again.';
             }
@@ -561,12 +561,12 @@
                 if (response.ok) {
                     // Success
                     // Redirect to home
-                    window.location.href = '../index.html';
+                    window.location.href = '/mobile/index.html';
                 } else {
                     // Error
                     errorDiv.style.display = 'block';
                     if (data.error === 'User not found') {
-                        errorDiv.innerHTML = 'Account doesnt exists, <a href="../signpg/signup.html" style="color: #CCFF00; text-decoration: underline;">click here to create an acc</a>';
+                        errorDiv.innerHTML = 'Account doesnt exists, <a href="/mobile/signpg/signup.html" style="color: #CCFF00; text-decoration: underline;">click here to create an acc</a>';
                     } else {
                         errorDiv.textContent = data.error || 'Login failed';
                     }
