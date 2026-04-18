@@ -2,10 +2,6 @@
   "cleanUrls": false,
   "rewrites": [
     {
-      "source": "/mobile/:path*",
-      "destination": "/mobile/:path*"
-    },
-    {
       "source": "/images/:path*",
       "destination": "/frontend/images/:path*"
     },
