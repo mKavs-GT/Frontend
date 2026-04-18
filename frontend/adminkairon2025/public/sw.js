@@ -98,11 +98,14 @@ self.addEventListener('fetch', event => {
 
 // Push Event - Show Notifications
 self.addEventListener('push', event => {
+  console.log('[SW] Push received:', event);
+  
   let data = { title: 'MKAVS Admin', body: 'New notification' };
   try {
     data = event.data.json();
+    console.log('[SW] Push data parsed:', data);
   } catch (e) {
-    console.warn('Push event without JSON data');
+    console.warn('[SW] Push event without JSON data or parse error:', e);
   }
 
   const options = {

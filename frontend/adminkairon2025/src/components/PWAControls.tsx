@@ -78,17 +78,21 @@ const PWAControls: React.FC = () => {
         const registration = await navigator.serviceWorker.ready;
         
         // Subscription logic
-        const publicVapidKey = 'BEDvTRHa3VABRMWaaSfyHbOaK7-GA_7Cd9ycWs2LhBozFqkI-u-7LCdh6QEp39j8dwutujrHjyKokECuD6rcRSg';
+        const publicVapidKey = 'BCIx6QgWUCAP5Dce_gNwW7vqfCw3AhU_WRoBFClOIqJZlJtIFNMZaZQC_q8jLZnl1H2zkYvDE6YOoitbbn1XEsQ';
         
+        console.log('[PWA] Creating subscription with NEW VAPID key...');
         const subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
         });
 
+        console.log('[PWA] Subscription created:', JSON.stringify(subscription));
+
         const token = sessionStorage.getItem('adminToken');
         const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-        await fetch(`${API_BASE}/api/push/subscribe`, {
+        console.log('[PWA] Sending subscription to backend:', `${API_BASE}/api/push/subscribe`);
+        const response = await fetch(`${API_BASE}/api/push/subscribe`, {
           method: 'POST',
           body: JSON.stringify({
             subscription,
@@ -100,12 +104,40 @@ const PWAControls: React.FC = () => {
           }
         });
 
-        console.log('Push subscription successful');
+        if (response.ok) {
+            console.log('[PWA] Subscription successfully saved on backend');
+        } else {
+            const errorText = await response.text();
+            console.error('[PWA] Backend failed to save subscription:', response.status, errorText);
+        }
       }
     } catch (error) {
-      console.error('Error in push subscription:', error);
+      console.error('[PWA] End-to-end subscription error:', error);
     } finally {
       setIsSubscribing(false);
+    }
+  };
+
+  const handleTestPush = async () => {
+    try {
+        const token = sessionStorage.getItem('adminToken');
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+        
+        console.log('[PWA] Requesting test push...');
+        const response = await fetch(`${API_BASE}/api/push/test`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            console.log('[PWA] Test push request sent successfully');
+        } else {
+            console.error('[PWA] Test push request failed');
+        }
+    } catch (error) {
+        console.error('[PWA] Error triggering test push:', error);
     }
   };
 
@@ -225,6 +257,19 @@ const PWAControls: React.FC = () => {
                             ? 'Notifications Enabled' 
                             : 'Enable Notifications'}
                     </span>
+                </motion.button>
+            )}
+
+            {notificationPermission === 'granted' && (
+                <motion.button
+                    initial={{ x: 100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleTestPush}
+                    className="p-2 px-4 rounded-full bg-white/5 border border-white/10 text-white text-[10px] font-bold hover:bg-white/10 transition-all"
+                >
+                    Send Test Push
                 </motion.button>
             )}
         </div>
