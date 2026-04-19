@@ -72,7 +72,7 @@ export interface User {
   };
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
 
 // Helper to get token from storage
 const getAuthHeaders = (): Record<string, string> => {

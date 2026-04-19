@@ -209,7 +209,7 @@ interface LoginFormProps {
 }
 
 // API endpoint for admin authentication
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
 
 export function LoginForm({ onLogin }: LoginFormProps) {
   const { login } = useAuth();
