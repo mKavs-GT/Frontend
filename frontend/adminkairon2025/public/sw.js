@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mkavs-admin-shell-v1';
+const CACHE_NAME = 'mkavs-admin-shell-v2';
 const RUNTIME_CACHE = 'mkavs-admin-runtime';
 const IMAGE_CACHE = 'mkavs-admin-images';
 
@@ -46,8 +46,14 @@ self.addEventListener('fetch', event => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
-  // 1. Cache-First for App Shell assets
-  if (SHELL_ASSETS.some(asset => event.request.url.includes(asset.replace('./', '')))) {
+  // 1. App Shell assets (excluding index.html which should be checked for updates)
+  const isShellAsset = SHELL_ASSETS.some(asset => 
+    asset !== './' && 
+    asset !== './index.html' && 
+    event.request.url.includes(asset.replace('./', ''))
+  );
+
+  if (isShellAsset) {
     event.respondWith(
       caches.match(event.request).then(response => {
         return response || fetch(event.request);
@@ -56,7 +62,26 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 2. Stale-While-Revalidate for other assets and safe API calls
+  // 2. Navigation requests (index.html) - Network-First with Offline Fallback
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(networkResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          return caches.match(event.request).then(cachedResponse => {
+            return cachedResponse || caches.match('./offline.html');
+          });
+        })
+    );
+    return;
+  }
+
+  // 3. Stale-While-Revalidate for other assets and safe API calls
   if (
     url.origin === self.location.origin || 
     url.pathname.startsWith('/api/') ||
