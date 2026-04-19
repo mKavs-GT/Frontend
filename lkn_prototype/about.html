@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | WeGrow</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <style>
+        /* Specific About Page Styles to match High-Fidelity Screenshot */
+        .breadcrumbs-about {
+            padding: 15px 0;
+            font-size: 13px;
+            color: #666;
+            background: #fff;
+        }
+
+        .breadcrumbs-about span {
+            margin: 0 8px;
+            color: #ccc;
+        }
+
+        .breadcrumbs-about a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .about-hero-new {
+            background: linear-gradient(135deg, #89D1EE 0%, #B6E6FB 100%);
+            padding: 80px 0;
+            overflow: hidden;
+        }
+
+        .about-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-hero-new h1 {
+            font-size: 56px;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-hero-img img {
+            width: 100%;
+            max-width: 500px;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+        }
+
+        .founder-block {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .founder-grid-new {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .founder-frame {
+            position: relative;
+            border-radius: 24px;
+            overflow: visible;
+        }
+
+        .founder-frame img.founder-main {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .crafted-badge {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .crafted-badge img {
+            width: 100%;
+            animation: spin 15s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .founder-text-new h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #1a1a1a;
+        }
+
+        .founder-text-new p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .story-section-new {
+            padding-bottom: 100px;
+        }
+
+        .story-grid-new {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .stat-box h3 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-box p {
+            font-size: 14px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        .marketplace-strip {
+            padding: 40px 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .marketplace-strip p {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .market-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .market-logos img {
+            height: 35px;
+            opacity: 0.8;
+            transition: 0.3s;
+            filter: grayscale(1);
+        }
+
+        .market-logos img:hover {
+            opacity: 1;
+            filter: grayscale(0);
+        }
+
+        .store-pill-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 30px 0 40px;
+        }
+
+        .store-pill {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #F1FDF6;
+            color: #004D2C;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .store-pill:hover,
+        .store-pill.active {
+            background: #004D2C;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+        <span>We have launched a <strong>new ABC Malt !!</strong> Don't miss out | <strong>Shop Now</strong></span>
+    </div>
+
+    <!-- 2. HEADER -->
+    <header class="header-wrapper">
+        <div class="container">
+            <div class="header-main">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.png" alt="WeGrow Logo">
+                </a>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="What are you looking for?">
+                    <i class='bx bx-search search-icon'></i>
+                </div>
+                <div class="header-utils">
+                    <button class="util-btn" onclick="openLoginModal()">
+                        <i class='bx bx-user'></i>
+                        <span>Sign in/ Register</span>
+                    </button>
+                    <button class="util-btn" onclick="openCart()">
+                        <div class="cart-icon-wrapper">
+                            <i class='bx bx-shopping-bag'></i>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </div>
+                <div class="nav-item">
+                    <a href="all-products.html" class="nav-link">Shop All</a>
+                </div>
+                <div class="nav-item">
+                    <a href="index.html#shop-by-concern" class="nav-link">Shop by Concern</a>
+                </div>
+                <div class="nav-item">
+                    <a href="about.html" class="nav-link active" style="color:var(--primary-color)">About Us</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs-about">
+            <div class="container">
+                <a href="index.html">Home</a> <span>|</span> <a href="#" class="active">About Us</a>
+            </div>
+        </div>
+
+        <!-- HERO SECTION (High-Fidelity Banner) -->
+        <section class="about-hero-new" style="padding: 0; background: none; overflow: hidden;">
+            <div class="about-banner-wrap" style="width: 100%; line-height: 0;">
+                <img src="assets/about_hero.png" alt="About Us Banner"
+                    style="width: 100%; height: auto; display: block;">
+            </div>
+        </section>
+
+        <!-- DYNAMIC BACKGROUND AREA -->
+        <div style="background: #CAEBF4;">
+            <!-- FOUNDER SECTION -->
+            <section class="founder-block" style="padding: 60px 0 100px;">
+                <div class="container">
+                    <div class="founder-grid-new">
+                        <div class="founder-frame">
+                            <img src="assets/image.png" alt="Mohan P" class="founder-main">
+
+                        </div>
+                        <div class="founder-text-new">
+                            <img src="assets/favicon.png" alt="WeGrow" style="height: 60px; margin-bottom: 30px;">
+                            <p>WeGrow Natural Homemade Products was founded by Parthiban Mohan. It was launched on March
+                                5, 2018, as a natural homemade cosmetic product hub. It was first started for their
+                                family purpose due to skin and hair issues, but ultimately ended up as a startup
+                                business that grew organically from his home itself.</p>
+                            <p>Our commitment remains simple: pure ingredients, traditional wisdom, and modern results
+                                that empower everyone to feel confident in their natural skin.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- FADE TO WHITE SECTION -->
+        <div style="background: linear-gradient(to bottom, #CAEBF4 0%, #ffffff 100%); height: 100px;"></div>
+
+        <!-- STORY & STATS -->
+        <section class="story-section-new">
+            <div class="container">
+                <div class="story-grid-new">
+                    <div class="story-content-new">
+                        <p style="font-size: 17px; line-height: 1.8; color: #444;">
+                            They began by sharing their natural homemade products with neighbors, who experienced
+                            remarkable results. Encouraged by this positive response, the initiative soon grew into a
+                            full-fledged product business. Today, with over 2 lakh satisfied customers both online and
+                            offline, WeGrow Naturals continues to deliver high-quality, effective products made with
+                            care, all without any side effects.
+                        </p>
+                        <div class="stats-row">
+                            <div class="stat-box">
+                                <h3>6+</h3>
+                                <p>Stores</p>
+                            </div>
+                            <div class="stat-box">
+                                <h3>2,05,232+</h3>
+                                <p>Happy Customers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="story-visual">
+                        <img src="https://lakshmikrishnanaturals.com/cdn/shop/files/Frame_1686558659_2x_562c4f6b-1c76-40ec-baec-d527dda1da78.png?v=1761406110&width=1500"
+                            alt="WeGrow Story" style="width: 100%; border-radius: 20px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STORE LOCATIONS -->
+        <section id="store-locations" class="container" style="padding: 80px 0; text-align: center;">
+            <h2 class="section-heading" style="margin-top: 0;">Our Store Location</h2>
+            <div class="store-pill-nav">
+                <div class="store-pill active">Coimbatore</div>
+                <div class="store-pill">Salem</div>
+                <div class="store-pill">Tirunelveli</div>
+                <div class="store-pill">Tiruppur</div>
+                <div class="store-pill">Trichy</div>
+                <div class="store-pill">Bangalore</div>
+                <div class="store-pill">Pondy</div>
+                <div class="store-pill">Madurai</div>
+                <div class="store-pill">Hosur</div>
+                <div class="store-pill">Avadi</div>
+                <div class="store-pill">Ramanathapuram</div>
+            </div>
+            <p style="color: #666; margin-bottom: 50px;">We have 17 stores across South India, offering authentic and
+                natural products.</p>
+
+            <div class="stores-grid">
+                <div class="store-card">
+                    <img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=500" alt="Chennai">
+                    <div class="store-info">
+                        <h4><i class='bx bx-current-location'></i> CHENNAI VADAPALANI</h4>
+                        <p>New no 21, old no H-16, jawaharlal nehru road, (100 feet road) Vadapalani, Chennai - 600026
+                        </p>
+                    </div>
+                </div>
+                <div class="store-card">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500" alt="Velachery">
+                    <div class="store-info">
+                        <h4><i class='bx bx-current-location'></i> CHENNAI VELACHERY</h4>
+                        <p>No.15/26, 1st Floor, North Vijaya Nagar, 100 Feet Bypass Road, Velachery, Chennai - 600042
+                        </p>
+                    </div>
+                </div>
+                <div class="store-card">
+                    <img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=500" alt="Bangalore">
+                    <div class="store-info">
+                        <h4><i class='bx bx-current-location'></i> BANGALORE</h4>
+                        <p>996, 9th main, 7th sector, HSR Layout, near Union Bank, Bengaluru, Karnataka 560102</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 50px;">
+                <button class="btn-view-all-dark">View All Stores <i class='bx bx-chevron-right'></i></button>
+            </div>
+        </section>
+
+        <!-- MARKETPLACE STRIP -->
+        <div class="marketplace-strip">
+            <div class="container">
+                <p>We are also Available in your favorite shopping platform</p>
+                <div class="market-logos">
+                    <img src="https://placehold.co/120x40/transparent/000000/png?text=Amazon" alt="Amazon">
+                    <img src="https://placehold.co/120x40/transparent/000000/png?text=Meesho" alt="Meesho">
+                    <img src="https://placehold.co/120x40/transparent/000000/png?text=Flipkart" alt="Flipkart">
+                    <img src="https://placehold.co/120x40/transparent/000000/png?text=JioMart" alt="JioMart">
+                </div>
+            </div>
+        </div>
+
+        <!-- VALUE PROPS (Mirroring Index) -->
+        <section class="container" style="margin-bottom: 60px;">
+            <div class="value-props">
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bxs-truck'></i></div>
+                    <h3 class="prop-title">On Time Delivery</h3>
+                    <p class="prop-desc">Get your orders delivered on time, every time.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bx-support'></i></div>
+                    <h3 class="prop-title">24x7 Support</h3>
+                    <p class="prop-desc">We're here for you 24/7 to assist with any queries.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bxs-medal'></i></div>
+                    <h3 class="prop-title">Rewards Points</h3>
+                    <p class="prop-desc">Collect reward points and redeem them with ease.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bxs-credit-card-front'></i></div>
+                    <h3 class="prop-title">Secure Payment</h3>
+                    <p class="prop-desc">Enjoy safe and encrypted transactions every time.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- APP PROMO (Mirroring Index) -->
+        <section class="container" style="margin-bottom: 80px;">
+            <div class="app-promo-banner" style="background-color: #EEFEF4;">
+                <div class="app-img-wrap">
+                    <img src="assets/phone.png" alt="WeGrow App">
+                </div>
+                <div class="app-promo-content">
+                    <h2>Get <span>₹100 OFF</span> your First Order</h2>
+                    <p>Download the WeGrow App and enjoy exclusive app-only offers and rewards.</p>
+                    <div class="app-store-btns">
+                        <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=App+Store" alt="App Store">
+                        <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=Google+Play" alt="Google Play">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer-base">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">
+                        <img src="assets/favicon.png" alt="WeGrow Logo">
+                    </a>
+                    <ul class="contact-links">
+                        <li><i class='bx bx-envelope'></i> support@wegrow.com</li>
+                        <li><i class='bx bx-phone'></i> +91 90000 00000</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class='bx bxl-facebook'></i></a>
+                        <a href="#"><i class='bx bxl-instagram'></i></a>
+                        <a href="#"><i class='bx bxl-youtube'></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul class="footer-links">
+                        <li><a href="all-products.html">Combo Products</a></li>
+                        <li><a href="all-products.html">Hair Care</a></li>
+                        <li><a href="all-products.html">Face Care</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Link</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="all-products.html">Shop All Products</a></li>
+                        <li><a href="#store-locations">Store Location</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 WeGrow. Built by Advanced Agentic Coding.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHARED OVERLAYS & MODALS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart (0 items)</h3>
+            <button class="close-cart" onclick="closeCart()"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="cart-body">
+            <p style="padding: 20px; text-align: center; color: #999;">Cart is empty</p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/main.js"></script>
+    <script>
+        // Shared login/cart UI logic can be handled by main.js
+    </script>
+</body>
+
+</html>
