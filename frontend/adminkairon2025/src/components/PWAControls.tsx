@@ -129,7 +129,8 @@ const PWAControls: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          }
+          },
+          credentials: 'include'
         });
 
         if (response.ok) {
@@ -152,7 +153,8 @@ const PWAControls: React.FC = () => {
         logDebug('Triggering test push...');
         const response = await fetch(`${API_BASE}/api/push/test`, {
             method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 'Authorization': `Bearer ${token}` },
+            credentials: 'include'
         });
         
         if (response.ok) {
@@ -179,7 +181,8 @@ const PWAControls: React.FC = () => {
                   headers: {
                       'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token}`
-                  }
+                  },
+                  credentials: 'include'
               });
               await subscription.unsubscribe();
               logDebug('Unsubscribed');

@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, type JSX } from "react";
 import { User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Vertex shader source code
 const vertexSmokeySource = `
@@ -210,12 +212,18 @@ interface LoginFormProps {
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 export function LoginForm({ onLogin }: LoginFormProps) {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [attemptsRemaining, setAttemptsRemaining] = useState<number | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Get the intended destination or default to root
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,6 +236,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Important: Include credentials to receive the cookie
         body: JSON.stringify({ email, password }),
       });
 
@@ -249,13 +258,15 @@ export function LoginForm({ onLogin }: LoginFormProps) {
       }
 
       // Successful login
-      if (data.success && data.token) {
-        // Store token in sessionStorage
-        sessionStorage.setItem('adminToken', data.token);
-        sessionStorage.setItem('adminAgent', JSON.stringify(data.agent));
+      if (data.success) {
+        // Update AuthContext state
+        login(data.token, data.agent);
         
-        // Call the onLogin callback
+        // Call the optional onLogin callback
         onLogin?.(data.token, data.agent);
+
+        // Redirect to intended page
+        navigate(from, { replace: true });
       }
     } catch (err) {
       setError('Network error. Please check your connection.');

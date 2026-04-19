@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './context/AuthContext'
 import { type User } from "@/lib/api"
 import { AnimatePresence, motion } from 'framer-motion'
 import './index.css'
@@ -8,153 +9,117 @@ import LoginDemo from './LoginDemo'
 import { AnimatedBackground } from './components/ui/animated-background'
 import { LoadingPage } from './components/ui/loading-page'
 import PWAControls from './components/PWAControls'
+import AuthGate from './components/AuthGate'
+import { useState } from 'react'
 
-// API endpoint for admin authentication
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
-
-// Admin agent type
-interface AdminAgent {
-  email: string;
-  name: string;
-  role: string;
+function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      key="dashboard-container"
+      initial={{ opacity: 0, filter: "blur(20px)", scale: 1.1 }}
+      animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      className="min-h-screen bg-transparent overflow-hidden relative"
+    >
+      <AnimatedBackground />
+      <div className="relative z-10 w-full h-full">
+        {children}
+      </div>
+    </motion.div>
+  );
 }
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
-  const [isLoading, setIsLoading] = useState(false)
-  const [showDashboard, setShowDashboard] = useState(false)
+function DashboardRoutes() {
+  const { user, logout } = useAuth();
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [adminAgent, setAdminAgent] = useState<AdminAgent | null>({ email: "mrk@mkavs.com", name: "MRK", role: "Founder" })
-
-  // Check for existing session on app load
-  useEffect(() => {
-    // Auto-login bypass for testing
-    const bypassSession = () => {
-      setAdminAgent({ email: "mrk@mkavs.com", name: "MRK", role: "Founder" });
-      setIsAuthenticated(true);
-      setIsLoading(false);
-    };
-
-    bypassSession();
-  }, []);
+  const [showDashboard, setShowDashboard] = useState(false)
 
   const handleViewProject = (user: User) => {
     setSelectedUser(user)
     setShowDashboard(true)
   }
 
-  const handleLogin = (token: string, agent: AdminAgent) => {
-    // Save to session storage
-    sessionStorage.setItem('adminToken', token);
-    sessionStorage.setItem('adminAgent', JSON.stringify(agent));
-    
-    setAdminAgent(agent);
-    setIsAuthenticated(true);
-  }
-
-  const handleLogout = async () => {
-    const token = sessionStorage.getItem('adminToken');
-    
-    try {
-      if (token) {
-        await fetch(`${API_BASE}/api/admin/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      // Always clear session regardless of API response
-      sessionStorage.removeItem('adminToken');
-      sessionStorage.removeItem('adminAgent');
-      setIsAuthenticated(false);
-      setAdminAgent(null);
-      setShowDashboard(false);
-      setSelectedUser(null);
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-[#020617] relative">
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100]"
-          >
-            <LoadingPage />
-          </motion.div>
-        ) : !isAuthenticated ? (
-          <motion.div
-            key="login"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="w-full h-screen"
-          >
-            <LoginDemo onLogin={(token, agent) => handleLogin(token, agent)} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="dashboard-container"
-            initial={{ opacity: 0, filter: "blur(20px)", scale: 1.1 }}
-            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="min-h-screen bg-transparent overflow-hidden relative"
-          >
-            <AnimatedBackground />
-            <div className="relative z-10 w-full h-full">
-              <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait">
+      {showDashboard && selectedUser ? (
+        <motion.div
+          key="dashboard"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="w-full h-full"
+        >
+          <Demo 
+            onBack={() => setShowDashboard(false)} 
+            user={selectedUser}
+            onUserUpdated={setSelectedUser}
+            onLogout={logout}
+            adminAgent={user}
+          />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="client-projects"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="w-full h-full"
+        >
+          <ClientProjects 
+            onViewProject={handleViewProject} 
+            onLogout={logout}
+            adminAgent={user}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
-                {showDashboard && selectedUser ? (
-                  <motion.div
-                    key="dashboard"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="w-full h-full"
-                  >
-                    <Demo 
-                      onBack={() => setShowDashboard(false)} 
-                      user={selectedUser}
-                      onUserUpdated={setSelectedUser}
-                      onLogout={handleLogout}
-                      adminAgent={adminAgent}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="client-projects"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="w-full h-full"
-                  >
-                    <ClientProjects 
-                      onViewProject={handleViewProject} 
-                      onLogout={handleLogout}
-                      adminAgent={adminAgent}
-                    />
-                  </motion.div>
-                )}
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-[#020617] relative">
+          <Routes>
+            {/* Public Route */}
+            <Route path="/login" element={
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key="login"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="w-full h-screen"
+                >
+                  <LoginDemo />
+                </motion.div>
               </AnimatePresence>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <PWAControls />
-    </div>
+            } />
+
+            {/* Protected Routes */}
+            <Route path="/" element={
+              <AuthGate>
+                <AdminLayout>
+                  <DashboardRoutes />
+                </AdminLayout>
+              </AuthGate>
+            } />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <PWAControls />
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
+
+export default App
 
 export default App
 
