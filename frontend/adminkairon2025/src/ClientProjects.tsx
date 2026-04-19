@@ -104,15 +104,6 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
 
     loadUsers();
 
-    // Deep linking: Check for view parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewParam = urlParams.get('view');
-    if (viewParam && ['analytics', 'settings', 'profile', 'users', 'consultations', 'schedule'].includes(viewParam)) {
-      setCurrentView(viewParam);
-      // Clean up the URL to prevent re-triggering on refresh if undesired, 
-      // but keeping it helps with state persistence.
-    }
-
     // Load schedules from local storage
     const savedSchedules = localStorage.getItem(STORAGE_KEY);
     if (savedSchedules) {
@@ -121,6 +112,16 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
       } catch (e) {}
     }
   }, []);
+
+  // Handle dynamic deep linking when URL changes
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam && ['analytics', 'settings', 'profile', 'users', 'consultations', 'schedule'].includes(viewParam)) {
+      console.log(`[Dashboard] Dynamic view switch to: ${viewParam}`);
+      setCurrentView(viewParam);
+    }
+  }, [window.location.search]);
 
   // Keyboard shortcut for search
   useEffect(() => {

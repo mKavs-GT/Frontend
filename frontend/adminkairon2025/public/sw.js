@@ -163,17 +163,23 @@ self.addEventListener('push', event => {
 
 // Notification Click Event
 self.addEventListener('notificationclick', event => {
+  console.log('[SW] Notification clicked:', event.notification.tag);
   event.notification.close();
   
   // Get the URL from notification data or default to dashboard
   const relativeUrl = event.notification.data.url || '/';
   const urlToOpen = new URL(relativeUrl, self.location.origin).href;
+  
+  console.log('[SW] Target URL:', urlToOpen);
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      console.log(`[SW] Found ${windowClients.length} existing window clients`);
+      
       // Check if there is already a window open with this URL
       for (let client of windowClients) {
         if (client.url === urlToOpen && 'focus' in client) {
+          console.log('[SW] Found exact match, focusing...');
           return client.focus();
         }
       }
@@ -181,9 +187,13 @@ self.addEventListener('notificationclick', event => {
       // If no window is open with the exact URL, check for any admin panel window
       for (let client of windowClients) {
         if (client.url.includes(self.location.origin) && 'focus' in client) {
+          console.log('[SW] Found admin window, navigating to target URL...');
           // Navigate existing window to the specific consultation
           if ('navigate' in client) {
-            return client.navigate(urlToOpen).then(c => c.focus());
+            return client.navigate(urlToOpen).then(c => {
+              console.log('[SW] Navigation complete, focusing...');
+              return c.focus();
+            });
           }
           return client.focus();
         }
@@ -191,6 +201,7 @@ self.addEventListener('notificationclick', event => {
 
       // If no admin window at all, open a new one
       if (clients.openWindow) {
+        console.log('[SW] No existing window, opening new window...');
         return clients.openWindow(urlToOpen);
       }
     })
