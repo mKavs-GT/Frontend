@@ -104,6 +104,15 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
 
     loadUsers();
 
+    // Deep linking: Check for view parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam && ['analytics', 'settings', 'profile', 'users', 'consultations', 'schedule'].includes(viewParam)) {
+      setCurrentView(viewParam);
+      // Clean up the URL to prevent re-triggering on refresh if undesired, 
+      // but keeping it helps with state persistence.
+    }
+
     // Load schedules from local storage
     const savedSchedules = localStorage.getItem(STORAGE_KEY);
     if (savedSchedules) {

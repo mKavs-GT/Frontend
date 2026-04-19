@@ -61,7 +61,18 @@ export function ConsultationsView() {
   }, []);
 
   const filtered = consultations.filter((c) => {
+    // If there is a 'request' param in the URL, prioritize showing that specific email
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestEmail = urlParams.get('request');
+    
     const query = searchQuery.toLowerCase();
+    
+    // If the user has NOT typed a manual search yet, but a request param exists, 
+    // we filter strictly by that email first.
+    if (!searchQuery && requestEmail) {
+      return c.userEmail?.toLowerCase() === requestEmail.toLowerCase();
+    }
+
     return (
       c.name?.toLowerCase().includes(query) ||
       c.userEmail?.toLowerCase().includes(query) ||
