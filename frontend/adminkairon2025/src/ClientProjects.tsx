@@ -37,75 +37,116 @@ interface ClientProjectsProps {
   adminAgent?: AdminAgent | null;
 }
 
-// Dummy data from Image
-const hiringNeeds = [
-  { title: "Content designers", cand: 5, color: "bg-[#0A2647]", icon: <PencilRuler className="w-5 h-5 text-white" /> },
-  { title: "PHP Developers", cand: 8, color: "bg-[#FF5C39]", icon: <Code2 className="w-5 h-5 text-white" /> },
-  { title: "UI/UX Designer", cand: 5, color: "bg-[#E63946]", icon: <Brush className="w-5 h-5 text-white" /> },
-  { title: "IOS Developer", cand: 10, color: "bg-[#72B01D]", icon: <Smartphone className="w-5 h-5 text-white" /> },
-  { title: "Android Developer", cand: 10, color: "bg-[#6D28D9]", icon: <Terminal className="w-5 h-5 text-white" /> },
-];
+interface Client {
+  user: User; // Store full user object
+  name: string;
+  projects: {
+    name: string;
+    type: "web" | "mobile" | "design";
+  }[];
+}
 
-const recruitmentProgress = [
-  { name: "John Doe", role: "UI/UX Designer", status: "Tech Interview", stColor: "bg-blue-600" },
-  { name: "Sam Emmanuel", role: "UI/UX Designer", status: "Task", stColor: "bg-amber-500" },
-  { name: "John Samuel", role: "PHP Developer", status: "Resume Review", stColor: "bg-emerald-400", active: true },
-  { name: "Sam Emmanuel", role: "UI/UX Designer", status: "Task", stColor: "bg-amber-500" },
-  { name: "John Doe", role: "Content Designer", status: "Final Interview", stColor: "bg-red-500" },
-  { name: "John Samuel", role: "PHP Developer", status: "Resume Review", stColor: "bg-emerald-400" },
-];
+interface ScheduleItem {
+  id: string;
+  type: 'call' | 'todo' | 'remark';
+  title: string;
+  datetime?: string;
+  description?: string;
+  completed?: boolean;
+}
 
-const newApplicants = [
-  { name: "Mike Tyson", role: "Applied for: IOS Developer", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Zara Thomas", role: "Applied for: Content Designer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Neenu Abraham", role: "Applied for: Content Designer", img: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { name: "John Samuel", role: "Applied for: IOS Developer", img: "https://randomuser.me/api/portraits/men/46.jpg" },
-  { name: "Zara Thomas", role: "Applied for: Content Designer", img: "", initial: "Z", initialColor: "bg-red-300" },
-  { name: "John Samuel", role: "Applied for: IOS Developer", img: "https://randomuser.me/api/portraits/men/22.jpg" },
-];
+const STORAGE_KEY = "mkavs_admin_schedule_v1";
 
-const readyForTraining = [
-  { name: "Mike Tyson", role: "IOS Developer", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Samuel John", role: "Android Developer", img: "https://randomuser.me/api/portraits/men/78.jpg" },
-  { name: "Jiya George", role: "UI/UX Designer", img: "https://randomuser.me/api/portraits/women/33.jpg" },
-];
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
 
-export default function ClientProjects({ onLogout }: ClientProjectsProps) {
-  // Override global dark theme when this component mounts by absolute positioning wrapper
-  return (
-    <div className="absolute inset-0 z-[100] flex bg-[#F4F7FE] text-slate-900 font-[Inter,sans-serif] overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      {/* LEFT SIDEBAR */}
-      <aside className="w-[240px] bg-white h-full flex flex-col justify-between shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
-        <div>
-          {/* Logo */}
-          <div className="flex items-center gap-3 px-8 pt-10 pb-12">
-            <div className="w-[34px] h-[34px] rounded-full bg-[#4361EE] text-white flex items-center justify-center font-bold text-[18px]">
-              H
-            </div>
-            <span className="font-bold text-[22px] tracking-tight text-slate-800">Hireism</span>
-          </div>
+const item = {
+  hidden: { opacity: 0, scale: 0.95 },
+  show: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.95 }
+};
 
-          {/* Nav Links */}
-          <nav className="flex flex-col gap-2 px-6">
-            <a href="#" className="flex items-center gap-4 px-4 py-[14px] bg-[#4361EE]/10 text-[#4361EE] rounded-[14px] font-bold transition-all border-l-[3px] border-[#4361EE] shadow-sm">
-              <LayoutGrid className="w-[20px] h-[20px]" />
-              <span className="text-[14px]">Dashboard</span>
-            </a>
-            
-            {[
-              { icon: Users, label: "Recruitment" },
-              { icon: CalendarDays, label: "Interview" },
-              { icon: FileText, label: "Onboarding" },
-              { icon: Mic, label: "Interview Task" },
-              { icon: CalendarCheck, label: "Appointments" },
-              { icon: GraduationCap, label: "Training" },
-            ].map((item, i) => (
-              <a key={i} href="#" className="flex items-center gap-4 px-4 py-[14px] text-[#A3AED0] font-bold hover:bg-slate-50 hover:text-[#4361EE] rounded-[14px] transition-all border-l-[3px] border-transparent">
-                <item.icon className="w-[20px] h-[20px]" />
-                <span className="text-[14px]">{item.label}</span>
-              </a>
-            ))}
-          </nav>
+export default function ClientProjects({ onViewProject, onLogout, adminAgent }: ClientProjectsProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [clients, setClients] = useState<Client[]>([]);
+  const [rawUsers, setRawUsers] = useState<User[]>([]);
+  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState("dashboard");
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const users = await fetchUsers();
+        setRawUsers(users);
+        // Map API users to Client interface
+        const mappedClients: Client[] = users
+          .filter(user => user.adminData) // Show all users with project data (even if name is empty)
+          .map(user => ({
+          user: user,
+          name: user.adminData?.activeProjects || "Untitled", // Display Project Name (from adminData) as Card Title
+          projects: [
+            { 
+              name: user.email, // Using email as subtitle/tech for now or 
+              type: "web" 
+            }
+          ]
+        }));
+        setClients(mappedClients);
+      } catch (err) {
+        console.error("Failed to load users", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUsers();
+
+    // Load schedules from local storage
+    const savedSchedules = localStorage.getItem(STORAGE_KEY);
+    if (savedSchedules) {
+      try {
+        setSchedules(JSON.parse(savedSchedules));
+      } catch (e) {}
+    }
+  }, []);
+
+  // Keyboard shortcut for search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/" && document.activeElement?.tagName !== "INPUT") {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
+        searchInput?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const filteredClients = clients.filter((client) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      client.name.toLowerCase().includes(query) ||
+      client.projects.some((project) =>
+        project.name.toLowerCase().includes(query)
+      )
+    );
+  });
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background text-foreground">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+          <p className="text-zinc-400 font-medium tracking-wide animate-pulse">Loading dashboard...</p>
         </div>
 
         {/* Logout */}
