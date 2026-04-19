@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mkavs-admin-shell-v2';
+const CACHE_NAME = 'mkavs-admin-shell-v3';
 const RUNTIME_CACHE = 'mkavs-admin-runtime';
 const IMAGE_CACHE = 'mkavs-admin-images';
 
@@ -7,8 +7,6 @@ const SHELL_ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './style.css',
-  './admin.js',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png',
   './mkavs-logo.png',
@@ -16,12 +14,25 @@ const SHELL_ASSETS = [
   './offline.html'
 ];
 
-// Install Event - Precache App Shell
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(SHELL_ASSETS))
-      .then(() => self.skipWaiting())
+      .then(cache => {
+        console.log('[SW] Pre-caching app shell');
+        // Use a more resilient approach: cache each asset individually
+        // so that one failure doesn't block the entire installation.
+        return Promise.allSettled(
+          SHELL_ASSETS.map(asset => {
+            return cache.add(asset).catch(err => {
+              console.warn(`[SW] Failed to cache asset: ${asset}`, err);
+            });
+          })
+        );
+      })
+      .then(() => {
+        console.log('[SW] Install complete, skipping waiting');
+        return self.skipWaiting();
+      })
   );
 });
 
