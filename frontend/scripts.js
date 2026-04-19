@@ -140,38 +140,18 @@ function setThumbnails(category, skipMainImageUpdate = false) {
         });
     }
 
-    // Smooth Animation Execution
+    // Instant Swap (No Animation as requested)
     let leftImg = null, rightImg = null;
     if (slide3BgGrid && slide3BgGrid.children.length === 9) {
         leftImg = slide3BgGrid.children[3].querySelector('img');
         rightImg = slide3BgGrid.children[5].querySelector('img');
     }
 
-    const imgs = [leftImg, rightImg, zoomMainImage].filter(Boolean);
-
-    // Apply strict fade-out overriding scroll listener inline opacities
-    imgs.forEach(img => {
-        img.style.setProperty('transition', 'opacity 0.3s ease-in-out', 'important');
-        img.style.setProperty('opacity', '0', 'important');
-    });
-
-    setTimeout(() => {
-        // Swap Sources
-        if (leftImg) leftImg.src = sources[0];
-        if (rightImg) rightImg.src = sources[2];
-        if (zoomMainImage && sources[1] && !skipMainImageUpdate) {
-            updateMainZoomImage(sources[1]);
-        }
-
-        // Trigger fade-in
-        imgs.forEach(img => {
-            img.style.removeProperty('opacity');
-            // Remove transition override after it finishes fading in so scroll listener resumes control cleanly
-            setTimeout(() => {
-                img.style.removeProperty('transition');
-            }, 300);
-        });
-    }, 300);
+    if (leftImg) leftImg.src = sources[0];
+    if (rightImg) rightImg.src = sources[2];
+    if (zoomMainImage && sources[1] && !skipMainImageUpdate) {
+        updateMainZoomImage(sources[1]);
+    }
 }
 
 let isCarouselAnimating = false;
@@ -337,7 +317,7 @@ function triggerSlide2Animations() {
 
 // Removed slide 4 animations
 
-function updateScrollState(newGlobalY) {
+function updateScrollState(newGlobalY, instant = false) {
     // 0. Sticky Toolbar Logic
     if (mainToolbar) {
         // Threshold to avoid jitter
@@ -428,7 +408,7 @@ function updateScrollState(newGlobalY) {
         }
     }
     else if (newSlideIndex === 2) { // Slide 3 (Flip logic + Scroll Appended Content)
-        handleSlide3Flip(localScrollY);
+        handleSlide3Flip(localScrollY, instant);
         
         const slide3 = document.getElementById('slide-3');
         const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
@@ -462,7 +442,7 @@ function handleVideoPlayback(index) {
 // Global Timeout Variable for Flip Sequencing
 let slide3FlipTimeout;
 
-function handleSlide3Flip(localY) {
+function handleSlide3Flip(localY, instant = false) {
     // Trigger point: 50% through the buffer
     const progress = Math.min(Math.max(localY / FLIP_SCROLL_HEIGHT, 0), 1);
 
@@ -582,11 +562,14 @@ function handleSlide3Flip(localY) {
             clearTimeout(slide3FlipTimeout);
 
             // 2. Start Flip Midway (Overlap)
-            slide3FlipTimeout = setTimeout(() => {
+            const triggerFlip = () => {
+                if (instant) zoomImageFlipper.style.transition = 'none';
+                else zoomImageFlipper.style.transition = ''; // Reset to CSS default
+
                 zoomImageFlipper.style.transform = `rotateY(180deg)`;
 
                 if (loopingTextWrapper) {
-                    loopingTextWrapper.style.transition = 'opacity 1s ease-out';
+                    loopingTextWrapper.style.transition = instant ? 'none' : 'opacity 1s ease-out';
                     loopingTextWrapper.style.opacity = 0;
                 }
 
@@ -602,9 +585,13 @@ function handleSlide3Flip(localY) {
                 if (thumbnailGallery) {
                     const thumbs = thumbnailGallery.querySelectorAll('img');
                     thumbs.forEach((img, idx) => {
-                        setTimeout(() => {
-                            img.classList.add('thumb-visible');
-                        }, idx * 100 + 100);
+                        if (instant) {
+                             img.classList.add('thumb-visible');
+                        } else {
+                            setTimeout(() => {
+                                img.classList.add('thumb-visible');
+                            }, idx * 100 + 100);
+                        }
                     });
                 }
 
@@ -614,13 +601,24 @@ function handleSlide3Flip(localY) {
                     slide3BgGrid.classList.add('opacity-100');
                     const gridImgs = slide3BgGrid.querySelectorAll('img');
                     gridImgs.forEach((img, idx) => {
-                        setTimeout(() => {
+                        if (instant) {
                             img.classList.remove('opacity-20');
                             img.classList.add('opacity-40');
-                        }, idx * 100);
+                        } else {
+                            setTimeout(() => {
+                                img.classList.remove('opacity-20');
+                                img.classList.add('opacity-40');
+                            }, idx * 100);
+                        }
                     });
                 }
-            }, 500); // 500ms Overlap (Zoom is 1.2s, so this happens during zoom)
+            };
+
+            if (instant) {
+                triggerFlip();
+            } else {
+                slide3FlipTimeout = setTimeout(triggerFlip, 500); // 500ms Overlap
+            }
         }
     } else {
         // Unflipped State (Hide List, Show Cover Text)
@@ -1097,58 +1095,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIAL ANIMATIONS (Slide 1) ---
-    const activateInitialSlide = () => {
+    const activateInitialSlide = (instant = false) => {
         // 1. Logo Pop + Toolbar Slide Down
         if (poppingLogo) {
-            poppingLogo.classList.remove('opacity-0', 'scale-0');
-            poppingLogo.classList.add('opacity-100', 'scale-100');
+            if (instant) {
+                 poppingLogo.style.transition = 'none';
+                 poppingLogo.classList.remove('opacity-0', 'scale-0');
+                 poppingLogo.classList.add('opacity-100', 'scale-100');
+                 setTimeout(() => poppingLogo.style.transition = '', 50);
+            } else {
+                 poppingLogo.classList.remove('opacity-0', 'scale-0');
+                 poppingLogo.classList.add('opacity-100', 'scale-100');
+            }
         }
         if (mainToolbar) {
+            if (instant) mainToolbar.style.transition = 'none';
             mainToolbar.classList.remove('-translate-y-full');
+            if (instant) setTimeout(() => mainToolbar.style.transition = '', 50);
         }
 
-        // 2. Hero Image Slide Up (After 500ms)
-        setTimeout(() => {
+        // 2. Hero Image Slide Up
+        const triggerHero = () => {
             if (slide1Image) {
-                // Base image fade/scale
+                if (instant) slide1Image.style.transition = 'none';
                 slide1Image.classList.remove('opacity-0', 'scale-50');
                 slide1Image.classList.add('scale-100', 'opacity-100');
+                if (instant) setTimeout(() => slide1Image.style.transition = '', 50);
             }
             if (slide1OverlayImage) {
-                // Hero Overlay slides up
+                if (instant) slide1OverlayImage.style.transition = 'none';
                 slide1OverlayImage.classList.remove('opacity-0', 'translate-y-full');
+                if (instant) setTimeout(() => slide1OverlayImage.style.transition = '', 50);
             }
-        }, 500);
+        };
 
-        // 3. Stars, Text, Button (After another 500ms -> 1000ms total)
-        setTimeout(() => {
+        if (instant) triggerHero();
+        else setTimeout(triggerHero, 500);
+
+        // 3. Stars, Text, Button
+        const triggerRest = () => {
             // Stars Pop
             starImages.forEach((star, index) => {
-                setTimeout(() => {
+                if (instant) {
+                    star.style.transition = 'none';
                     star.style.opacity = '1';
                     star.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
-                }, index * 50);
+                    setTimeout(() => star.style.transition = '', 50);
+                } else {
+                    setTimeout(() => {
+                        star.style.opacity = '1';
+                        star.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
+                    }, index * 50);
+                }
             });
 
             // Left Text Slide In
             if (textLeft) {
+                if (instant) textLeft.style.transition = 'none';
                 textLeft.classList.remove('-translate-x-full', 'opacity-0');
                 textLeft.classList.add('translate-x-0', 'opacity-100');
+                if (instant) setTimeout(() => textLeft.style.transition = '', 50);
             }
 
             // Right Button Slide In
             if (getStartedButton) {
+                if (instant) getStartedButton.style.transition = 'none';
                 getStartedButton.classList.remove('translate-x-full', 'opacity-0');
                 getStartedButton.classList.add('translate-x-0', 'opacity-100');
+                if (instant) setTimeout(() => getStartedButton.style.transition = '', 50);
             }
 
             // Metrics
-            metricNumbers.forEach(numElement => {
+            const mText = document.querySelectorAll('.metric-number');
+            mText.forEach(numElement => {
                 const t = parseInt(numElement.getAttribute('data-target'), 10);
                 const s = numElement.getAttribute('data-plus') || '';
-                countUp(numElement, t, s);
+                if (instant) numElement.textContent = t.toLocaleString() + s;
+                else countUp(numElement, t, s);
             });
-        }, 500); // SYNCED with Hero Image (was 1000)
+        };
+
+        if (instant) triggerRest();
+        else setTimeout(triggerRest, 1000); // 500 + 500
     };
 
     // --- PRELOADER (Triggers Animation) ---
@@ -1163,10 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isReload = navType === 'reload';
         const isBackForward = navType === 'back_forward';
 
-        if (isReload) {
-            sessionStorage.removeItem('preloaderShown');
-            sessionStorage.removeItem('mKavs_saved_scroll');
-        }
+        // Removed reload cleanup to ensure preloader ONLY shows the very first time in a session.
 
         if (sessionStorage.getItem('preloaderShown') || isBackForward) {
             if (preloader) {
@@ -1178,6 +1203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetScrollY = parseFloat(savedScroll);
                 // Give layout time to calculate heights before snapping
                 setTimeout(() => {
+                    activateInitialSlide(true); // Ensure Slide 1 is ready in background
                     updateScrollState(globalScrollY);
                 }, 100);
             } else {
@@ -1211,7 +1237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let startTime = null;
-        const MIN_DURATION = 7000;
+        const MIN_DURATION = 3000; // Minimum 3 seconds
 
         function updateLoader(timestamp) {
             if (!startTime) startTime = timestamp;
@@ -1263,8 +1289,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
                     targetY += slide3AnimLimit + 10;
 
-                    // Update target scroll properly
+                    // Update internal state directly (Instant Pop as requested)
                     targetScrollY = targetY;
+                    globalScrollY = targetY; // Instant pop (no scroll animation)
+                    updateScrollState(globalScrollY, true);
                 }, 300);
             }
         }
@@ -1287,6 +1315,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // 4. Home Link Click (Scroll To Top)
+    const homeLink = document.getElementById('toolbar-home-link');
+    if (homeLink) {
+        homeLink.addEventListener('click', (e) => {
+            // Only scroll if we are on index.html
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.hash === '#our-works') {
+                e.preventDefault();
+                // If there's a hash, clear it
+                if (window.location.hash) {
+                    history.pushState(null, null, window.location.pathname);
+                }
+                targetScrollY = 0;
+                globalScrollY = 0;
+                updateScrollState(0, true); // Instant jump
+            }
+        });
+    }
 
     // --- Mousemove/Star Repulsion ---
     window.addEventListener('mousemove', (e) => {

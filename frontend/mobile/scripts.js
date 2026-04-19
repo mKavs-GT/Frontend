@@ -1101,43 +1101,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIAL ANIMATIONS (Slide 1) ---
-    const activateInitialSlide = () => {
+    const activateInitialSlide = (instant = false) => {
         // 1. Logo Pop + Toolbar Slide Down
         if (poppingLogo) {
+            if (instant) poppingLogo.style.transition = 'none';
             poppingLogo.classList.remove('opacity-0', 'scale-0');
             poppingLogo.classList.add('opacity-100', 'scale-100');
+            if (instant) setTimeout(() => poppingLogo.style.transition = '', 50);
         }
         if (mainToolbar) {
+            if (instant) mainToolbar.style.transition = 'none';
             mainToolbar.classList.remove('-translate-y-full');
+            if (instant) setTimeout(() => mainToolbar.style.transition = '', 50);
         }
 
-        // 2. Hero Image Slide Up (After 500ms)
-        setTimeout(() => {
+        // 2. Hero Image Slide Up (After 500ms if not instant)
+        const triggerHero = () => {
             if (slide1Image) {
-                // Base image fade/scale
+                if (instant) slide1Image.style.transition = 'none';
                 slide1Image.classList.remove('opacity-0', 'scale-50');
                 slide1Image.classList.add('scale-100', 'opacity-100');
+                if (instant) setTimeout(() => slide1Image.style.transition = '', 50);
             }
             if (slide1OverlayImage) {
-                // Hero Overlay slides up
+                if (instant) slide1OverlayImage.style.transition = 'none';
                 slide1OverlayImage.classList.remove('opacity-0', 'translate-y-full');
+                if (instant) setTimeout(() => slide1OverlayImage.style.transition = '', 50);
             }
-        }, 500);
+        };
 
-        // 3. Stars, Text, Metrics, Carousel, Button (All at 1000ms)
-        setTimeout(() => {
-            // Stars Pop
+        if (instant) triggerHero();
+        else setTimeout(triggerHero, 500);
+
+        // 3. Stars, Text, Metrics, Carousel, Button (Synced)
+        const triggerRest = () => {
+             // Stars Pop
             starImages.forEach((star, index) => {
-                setTimeout(() => {
+                if (instant) {
                     star.style.opacity = '1';
                     star.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
-                }, index * 50);
+                } else {
+                    setTimeout(() => {
+                        star.style.opacity = '1';
+                        star.style.transform = 'translate3d(0px, 0px, 0) scale(1)';
+                    }, index * 50);
+                }
             });
 
             // Right Text Slide In
             if (textLeft) {
+                if (instant) textLeft.style.transition = 'none';
                 textLeft.classList.remove('translate-x-full', 'opacity-0');
                 textLeft.classList.add('translate-x-0', 'opacity-100');
+                if (instant) setTimeout(() => textLeft.style.transition = '', 50);
             }
 
             // Metrics
@@ -1145,21 +1161,29 @@ document.addEventListener('DOMContentLoaded', () => {
             metricNumbers.forEach(numElement => {
                 const t = parseInt(numElement.getAttribute('data-target'), 10);
                 const s = numElement.getAttribute('data-plus') || '';
-                countUp(numElement, t, s);
+                if (instant) numElement.textContent = t.toLocaleString() + s;
+                else countUp(numElement, t, s);
             });
 
-            // Carousel Slide Up (Synced)
+            // Carousel Slide Up
             const heroCarousel = document.getElementById('hero-carousel');
             if (heroCarousel) {
+                if (instant) heroCarousel.style.transition = 'none';
                 heroCarousel.classList.remove('opacity-0', 'translate-y-full');
+                if (instant) setTimeout(() => heroCarousel.style.transition = '', 50);
             }
 
-            // Button Pop (Synced)
+            // Button Pop
             if (getStartedButton) {
+                if (instant) getStartedButton.style.transition = 'none';
                 getStartedButton.classList.remove('scale-0', 'opacity-0');
                 getStartedButton.classList.add('scale-100', 'opacity-100');
+                if (instant) setTimeout(() => getStartedButton.style.transition = '', 50);
             }
-        }, 1000);
+        };
+
+        if (instant) triggerRest();
+        else setTimeout(triggerRest, 1000);
     };
 
     // --- PRELOADER (Triggers Animation) ---
@@ -1167,6 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         const progressFill = document.getElementById('loader-progress');
         const progressText = document.getElementById('loader-text');
+        const mascotVideo = document.getElementById('mascot-preloader-video');
 
         if (sessionStorage.getItem('preloaderShown')) {
             if (preloader) {
@@ -1177,33 +1202,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!preloader || !progressFill || !progressText) {
-            // If no preloader, trigger immediately
             activateInitialSlide();
             return;
         }
 
         let progress = 0;
-        let isLoaded = false;
-        window.addEventListener('load', () => { isLoaded = true; });
+        let videoStarted = false;
 
-        const updateLoader = () => {
-            if (isLoaded) progress += Math.random() * 5 + 2;
-            else if (progress < 90) progress += Math.random() * 2;
+        const startLoading = () => {
+             videoStarted = true;
+             requestAnimationFrame(updateLoader);
+        };
 
-            if (progress > 100) progress = 100;
+        if (mascotVideo) {
+            if (mascotVideo.readyState >= 3) {
+                startLoading();
+            } else {
+                mascotVideo.addEventListener('playing', startLoading, { once: true });
+                setTimeout(() => { if (!videoStarted) startLoading(); }, 2000);
+            }
+        } else {
+            startLoading();
+        }
+
+        let startTime = null;
+        const MIN_DURATION = 3000;
+
+        function updateLoader(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            
+            progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+
             progressFill.style.width = `${progress}%`;
             progressText.innerText = `${Math.floor(progress)}%`;
 
             if (progress < 100) {
                 requestAnimationFrame(updateLoader);
             } else {
-                // Loaded! Remove preloader then trigger animations.
                 sessionStorage.setItem('preloaderShown', 'true');
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');
-                    // Start Entrance Animations simulataneously with fade out or just after?
-                    // User said "happen simmulataneowulsy after the pre loading scrren".
-                    // Let's trigger it as the preloader fades out.
                     activateInitialSlide();
 
                     // --- Hash Navigation Support (Revised) ---
@@ -1262,6 +1301,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     setTimeout(() => preloader.remove(), 500);
+
+                    // --- Home Link Click (Scroll To Top) ---
+                    const homeLink = document.getElementById('mobile-home-link');
+                    if (homeLink) {
+                        homeLink.addEventListener('click', (e) => {
+                            if (window.location.pathname.endsWith('index.html') || window.location.pathname.includes('/mobile/')) {
+                                e.preventDefault();
+                                globalScrollY = 0;
+                                updateScrollState(0);
+                                activateInitialSlide(true); // Pop instantly
+                            }
+                        });
+                    }
                 }, 500);
             }
         };
@@ -1324,22 +1376,22 @@ async function checkAuthStatus() {
         if (data.loggedIn) {
             console.log('User is logged in:', data.user.displayName);
             if (userIconLink) {
-                userIconLink.href = './profile/profile.html';
+                userIconLink.href = '../profile/profile.html';
                 userIconLink.title = `Logged in as ${data.user.displayName}`;
                 
                 const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                 userIconLink.innerHTML = `<img src="${profileImageUrl}" alt="Profile" class="w-6 h-6 rounded-full border border-white hover:border-[#c7f908] transition-colors object-cover inline-block" onerror="this.src='https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150';">`;
             }
-            authConsultBtns.forEach(btn => btn.href = 'consult/consult.html');
-            authPricingBtns.forEach(btn => btn.href = 'pricingpage/pricing.html');
+            authConsultBtns.forEach(btn => btn.href = '../consult/consult.html');
+            authPricingBtns.forEach(btn => btn.href = '../pricingpage/pricing.html');
         } else {
             console.log('User is not logged in');
             if (userIconLink) {
-                userIconLink.href = './loginpg/login.html';
+                userIconLink.href = '../loginpg/login.html';
                 userIconLink.title = 'Login';
             }
-            authConsultBtns.forEach(btn => btn.href = './loginpg/login.html');
-            authPricingBtns.forEach(btn => btn.href = './loginpg/login.html');
+            authConsultBtns.forEach(btn => btn.href = '../loginpg/login.html');
+            authPricingBtns.forEach(btn => btn.href = '../loginpg/login.html');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);
