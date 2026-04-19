@@ -65,7 +65,10 @@ export const usePushNotifications = () => {
                 applicationServerKey: convertedKey
             });
 
+            const token = sessionStorage.getItem('adminToken');
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
+            
+            console.log('[PUSH] Syncing with backend:', API_BASE);
             const response = await fetch(`${API_BASE}/api/push/subscribe`, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -73,7 +76,8 @@ export const usePushNotifications = () => {
                     deviceLabel: `${navigator.platform} (${navigator.language})`
                 }),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 credentials: 'include'
             });
@@ -101,11 +105,15 @@ export const usePushNotifications = () => {
             const subscription = await registration.pushManager.getSubscription();
             
             if (subscription) {
+                const token = sessionStorage.getItem('adminToken');
                 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
                 await fetch(`${API_BASE}/api/push/unsubscribe`, {
                     method: 'POST',
                     body: JSON.stringify({ endpoint: subscription.endpoint }),
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     credentials: 'include'
                 });
                 await subscription.unsubscribe();
@@ -121,9 +129,11 @@ export const usePushNotifications = () => {
     const sendTestNotification = async () => {
         setIsLoading(true);
         try {
+            const token = sessionStorage.getItem('adminToken');
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
             const response = await fetch(`${API_BASE}/api/push/test`, {
                 method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
                 credentials: 'include'
             });
             if (!response.ok) throw new Error('Test failed');
