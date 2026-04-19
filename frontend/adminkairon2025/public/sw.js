@@ -100,7 +100,7 @@ self.addEventListener('fetch', event => {
     url.hostname.includes('fonts.gstatic.com')
   ) {
     // Avoid caching sensitive/auth endpoints
-    const sensitiveEndpoints = ['/api/admin/login', '/api/admin/logout', '/api/push/subscribe'];
+    const sensitiveEndpoints = ['/api/admin/login', '/api/admin/logout', '/api/admin/verify', '/api/push/subscribe'];
     if (sensitiveEndpoints.some(endpoint => url.pathname.includes(endpoint))) {
       return;
     }
