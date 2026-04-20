@@ -369,9 +369,13 @@ function updateScrollState(newGlobalY, instant = false) {
 
         if (index === 0) {
             slide.style.transform = `translateY(0)`; // Hero stays fixed in back
+            // Hide hero if we are deep enough to avoid transparency flicker
+            if (newSlideIndex >= 2) slide.style.opacity = '0';
+            else slide.style.opacity = '1';
         } else {
-            // Unlink any CSS snap transitions
-            slide.classList.remove('slide-transition');
+            // Unlink any CSS snap transitions if instant
+            if (instant) slide.style.transition = 'none';
+            else slide.classList.remove('slide-transition');
 
             const revealStart = startY - window.innerHeight;
             const revealEnd = startY;
@@ -393,8 +397,17 @@ function updateScrollState(newGlobalY, instant = false) {
                 slide.style.pointerEvents = 'none'; // Prevent interaction while actively moving 
                 if (index === 1) slide.classList.add('rounded-t-[40px]', 'md:rounded-t-[80px]');
             }
+            
+            if (instant) {
+                // Restore transitions for subsequent usage
+                setTimeout(() => { slide.style.transition = ''; }, 50);
+            }
         }
     });
+
+    if (instant) {
+        document.documentElement.classList.remove('jumping-to-works');
+    }
 
     if (newSlideIndex !== currentSlideIndex) {
         handleVideoPlayback(newSlideIndex);
@@ -1190,24 +1203,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const navType = navEntries.length > 0 ? navEntries[0].type : '';
         const isReload = navType === 'reload';
         const isBackForward = navType === 'back_forward';
+        const hash = window.location.hash;
+        const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
 
-        // Removed reload cleanup to ensure preloader ONLY shows the very first time in a session.
-
-        if (sessionStorage.getItem('preloaderShown') || isBackForward) {
+        if (sessionStorage.getItem('preloaderShown') || isBackForward || isJumpingToWorks) {
+            if (isJumpingToWorks) {
+                sessionStorage.setItem('preloaderShown', 'true');
+                // Calculate jump Y immediately to avoid flicker
+                calculateSlideHeights();
+                const boundaries = getSlideBoundaries();
+                if (boundaries.length > 2) {
+                    const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+                    globalScrollY = boundaries[2] + slide3AnimLimit + 10;
+                    targetScrollY = globalScrollY;
+                }
+            }
+            
             if (preloader) {
                 preloader.style.display = 'none';
+                preloader.remove(); // Remove immediately to prevent any flash
             }
+
             const savedScroll = sessionStorage.getItem('mKavs_saved_scroll');
-            if (savedScroll && parseFloat(savedScroll) > 10) {
+            if (savedScroll && parseFloat(savedScroll) > 10 && !isJumpingToWorks) {
                 globalScrollY = parseFloat(savedScroll);
                 targetScrollY = parseFloat(savedScroll);
-                // Give layout time to calculate heights before snapping
                 setTimeout(() => {
-                    activateInitialSlide(true); // Ensure Slide 1 is ready in background
-                    updateScrollState(globalScrollY);
-                }, 100);
+                    activateInitialSlide(true);
+                    updateScrollState(globalScrollY, true);
+                }, 50);
             } else {
-                activateInitialSlide();
+                // If jumping, we call updateScrollState immediately after initial slide
+                activateInitialSlide(isJumpingToWorks);
+                updateScrollState(globalScrollY, isJumpingToWorks);
             }
             return;
         }
@@ -1278,8 +1306,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // slide-3 is Index 2 (0: Hero, 1: What We Do, 2: Our Works)
             if (boundaries.length > 2) {
-                // Add a significant delay to ensure layout is fully stable
+                // Determine if this is the initial load jump
+                const isInitialLoad = !document.body.dataset.loaded;
+                const delay = isInitialLoad ? 10 : 300; // Even faster initial delay
+
                 setTimeout(() => {
+                    // Mark as loaded to prevent future flicker
+                    document.body.dataset.loaded = "true";
+                    
                     // Re-calculate in case of lateloading images
                     calculateSlideHeights();
                     const currentBoundaries = getSlideBoundaries();
@@ -1293,7 +1327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     targetScrollY = targetY;
                     globalScrollY = targetY; // Instant pop (no scroll animation)
                     updateScrollState(globalScrollY, true);
-                }, 300);
+                }, delay);
             }
         }
     };

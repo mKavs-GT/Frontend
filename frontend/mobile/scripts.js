@@ -342,23 +342,16 @@ function triggerSlide5Animations() {
     slide5Animated = true;
 }
 
-function updateScrollState(newGlobalY) {
+function updateScrollState(newGlobalY, instant = false) {
     // 0. Sticky Toolbar Logic
     if (mainToolbar) {
         // Threshold to avoid jitter
         if (Math.abs(newGlobalY - globalScrollY) > 5) {
-            // Logic:
-            // 1. If near top (< 50px), ALWAYS show.
-            // 2. If scrolling DOWN (new > old) -> Hide
-            // 3. If scrolling UP (new < old) -> Show
-
             if (newGlobalY < 50) {
                 mainToolbar.style.transform = 'translateY(0)';
             } else if (newGlobalY > globalScrollY) {
-                // Scrolling Down
                 mainToolbar.style.transform = 'translateY(-100%)';
             } else {
-                // Scrolling Up
                 mainToolbar.style.transform = 'translateY(0)';
             }
         }
@@ -388,19 +381,29 @@ function updateScrollState(newGlobalY) {
     }
 
     // 3. Update Slides (Standard Transition)
-    if (newSlideIndex !== currentSlideIndex) {
-        // Handle transitions
-        allSlides.forEach((slide, index) => {
-            if (index <= newSlideIndex) {
-                // Show slide (remove translate-y-full)
-                // BUT: Slide 0 is always visible. Slide 1 covers Slide 0.
-                if (index > 0) slide.classList.remove('translate-y-full');
-            } else {
-                // Hide slide (add translate-y-full)
-                if (index > 0) slide.classList.add('translate-y-full');
-            }
-        });
+    allSlides.forEach((slide, index) => {
+        if (index === 0) {
+             // Hero Slide
+             if (newSlideIndex >= 2) slide.style.opacity = '0';
+             else slide.style.opacity = '1';
+        } else {
+            if (instant) slide.style.transition = 'none';
 
+            if (index <= newSlideIndex) {
+                slide.classList.remove('translate-y-full');
+            } else {
+                slide.classList.add('translate-y-full');
+            }
+
+            if (instant) setTimeout(() => { slide.style.transition = ''; }, 50);
+        }
+    });
+
+    if (instant) {
+        document.documentElement.classList.remove('jumping-to-works');
+    }
+
+    if (newSlideIndex !== currentSlideIndex) {
         // Handle Video Playback Logic
         handleVideoPlayback(newSlideIndex);
 
@@ -1193,11 +1196,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressText = document.getElementById('loader-text');
         const mascotVideo = document.getElementById('mascot-preloader-video');
 
-        if (sessionStorage.getItem('preloaderShown')) {
+        const hash = window.location.hash;
+        const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
+
+        if (sessionStorage.getItem('preloaderShown') || isJumpingToWorks) {
+            if (isJumpingToWorks) {
+                sessionStorage.setItem('preloaderShown', 'true');
+                // Calculate jump Y immediately
+                calculateSlideHeights();
+                const boundaries = getSlideBoundaries();
+                if (boundaries.length > 2) {
+                    globalScrollY = boundaries[2] + FLIP_SCROLL_HEIGHT + 10;
+                }
+            }
             if (preloader) {
                 preloader.style.display = 'none';
+                preloader.remove();
             }
-            activateInitialSlide();
+            activateInitialSlide(isJumpingToWorks);
+            updateScrollState(globalScrollY, isJumpingToWorks);
             return;
         }
 
@@ -1244,82 +1261,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');
                     activateInitialSlide();
-
-                    // --- Hash Navigation Support (Revised) ---
-                    const handleHashNavigation = () => {
-                        const hash = window.location.hash;
-                        if (hash === '#slide-3' || hash === '#our-works') {
-                            // Prevent native scroll interference
-                            if ('scrollRestoration' in history) {
-                                history.scrollRestoration = 'manual';
-                            }
-                            window.scrollTo(0, 0);
-
-                            // Ensure heights are calculated
-                            calculateSlideHeights();
-                            const boundaries = getSlideBoundaries();
-
-                            // slide-3 is Index 2 (0: Hero, 1: What We Do, 2: Our Works)
-                            if (boundaries.length > 2) {
-                                // Add a significant delay to ensure layout is fully stable and preloader is gone
-                                setTimeout(() => {
-                                    // Re-calculate in case of lateloading images
-                                    calculateSlideHeights();
-                                    const currentBoundaries = getSlideBoundaries();
-
-                                    let targetY = currentBoundaries[2];
-                                    if (window.location.hash === '#our-works') {
-                                        // Add flip height to trigger the "Flipped" state (Works List) immediately
-                                        // Adding a small buffer (+10) to reliably trigger the flip logic
-                                        targetY += FLIP_SCROLL_HEIGHT + 10;
-                                    }
-
-                                    // Update internal state directly
-                                    updateScrollState(targetY);
-                                    updateScrollbarVisuals();
-                                }, 300);
-                            }
-                        }
-                    };
-
-                    // 1. Handle Initial Load
-                    handleHashNavigation();
-
-                    // 2. Handle Hash Change (Back/Forward buttons)
-                    window.addEventListener('hashchange', handleHashNavigation);
-
-                    // 3. Intercept Clicks (Prevent footer jump)
-                    document.querySelectorAll('a[href="#slide-3"], a[href*="#slide-3"], a[href="#our-works"], a[href*="#our-works"]').forEach(link => {
-                        link.addEventListener('click', (e) => {
-                            // Only intercept if we are on index.html
-                            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
-                                e.preventDefault();
-                                history.pushState(null, null, '#our-works');
-                                handleHashNavigation();
-                            }
-                        });
-                    });
-
                     setTimeout(() => preloader.remove(), 500);
-
-                    // --- Home Link Click (Scroll To Top) ---
-                    const homeLink = document.getElementById('mobile-home-link');
-                    if (homeLink) {
-                        homeLink.addEventListener('click', (e) => {
-                            if (window.location.pathname.endsWith('index.html') || window.location.pathname.includes('/mobile/')) {
-                                e.preventDefault();
-                                globalScrollY = 0;
-                                updateScrollState(0);
-                                activateInitialSlide(true); // Pop instantly
-                            }
-                        });
-                    }
                 }, 500);
             }
-        };
+        }
         requestAnimationFrame(updateLoader);
     };
+
     initPreloader();
+
+    // --- Hash Navigation Support (Revised) ---
+    const handleHashNavigation = () => {
+        const hash = window.location.hash;
+        if (hash === '#slide-3' || hash === '#our-works') {
+            // Prevent native scroll interference
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+
+            // Ensure heights are calculated
+            calculateSlideHeights();
+            const boundaries = getSlideBoundaries();
+
+            // slide-3 is Index 2 (0: Hero, 1: What We Do, 2: Our Works)
+            if (boundaries.length > 2) {
+                // Determine if this is the initial load jump
+                const isInitialLoad = !document.body.dataset.loaded;
+                const delay = isInitialLoad ? 10 : 300;
+
+                setTimeout(() => {
+                    // Mark as loaded to prevent future flicker
+                    document.body.dataset.loaded = "true";
+                    
+                    // Re-calculate in case of lateloading images
+                    calculateSlideHeights();
+                    const currentBoundaries = getSlideBoundaries();
+
+                    let targetY = currentBoundaries[2];
+                    if (window.location.hash === '#our-works' || window.location.hash === '#slide-3') {
+                        // Add flip height to trigger the "Flipped" state (Works List) immediately
+                        targetY += FLIP_SCROLL_HEIGHT + 10;
+                    }
+
+                    // Update internal state directly
+                    updateScrollState(targetY, true);
+                    updateScrollbarVisuals();
+                }, delay);
+            }
+        }
+    };
+
+    // 1. Handle Initial Load
+    handleHashNavigation();
+
+    // 2. Handle Hash Change (Back/Forward buttons)
+    window.addEventListener('hashchange', handleHashNavigation);
+
+    // 3. Intercept Clicks (Prevent footer jump)
+    document.querySelectorAll('a[href="#slide-3"], a[href*="#slide-3"], a[href="#our-works"], a[href*="#our-works"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Only intercept if we are on index.html
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+                e.preventDefault();
+                history.pushState(null, null, '#our-works');
+                handleHashNavigation();
+            }
+        });
+    });
+
+    // --- Home Link Click (Scroll To Top) ---
+    const homeLink = document.getElementById('mobile-home-link');
+    if (homeLink) {
+        homeLink.addEventListener('click', (e) => {
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname.includes('/mobile/')) {
+                e.preventDefault();
+                globalScrollY = 0;
+                updateScrollState(0);
+                activateInitialSlide(true); // Pop instantly
+            }
+        });
+    }
 
     // --- Mousemove/Star Repulsion ---
     window.addEventListener('mousemove', (e) => {

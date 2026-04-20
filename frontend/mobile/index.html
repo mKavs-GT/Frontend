@@ -25,6 +25,17 @@
             }
         }
     </script>
+    <script>
+        // Aggressive preloader skip for direct works links
+        if (window.location.hash === '#our-works' || window.location.hash === '#slide-3') {
+            document.documentElement.classList.add('skip-preloader-transition', 'jumping-to-works');
+            sessionStorage.setItem('preloaderShown', 'true');
+        }
+    </script>
+    <style>
+        .skip-preloader-transition #preloader { display: none !important; transition: none !important; }
+        .jumping-to-works #slide-1 { opacity: 0 !important; }
+    </style>
 </head>
 
 <body class="h-full w-full">
