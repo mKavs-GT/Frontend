@@ -1,0 +1,99 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+const allowedUsers = [
+  { uid: 'MGT-EXE-01', email: 'agent01mrk@gmail.com', name: 'Krishawn Rahul', firstName: 'Krishawn', avatar: 'https://i.pravatar.cc/150?u=krishawn', role: 'Executive', isExecutive: true },
+  { uid: 'MGT-DEV-01', email: 'agent03mrss@gmail.com', name: 'Sofia Stalance', firstName: 'Sofia', avatar: 'https://i.pravatar.cc/150?u=sofia', role: 'Developer' },
+  { uid: 'MGT-DEV-02', email: 'agent05mrm@gmail.com', name: 'Michael Antony', firstName: 'Michael', avatar: 'https://i.pravatar.cc/150?u=michael', role: 'Developer' },
+  { uid: 'MGT-DES-01', email: 'agent04mra@gmail.com', name: 'Mohammed Abuzar', firstName: 'Mohammed', avatar: 'https://i.pravatar.cc/150?u=mohammed', role: 'Designer' },
+  { uid: 'MGT-EXE-02', email: 'agent02mrv@gmail.com', name: 'Vinith Vijaya Rangan', firstName: 'Vinith', avatar: 'https://i.pravatar.cc/150?u=vinith', role: 'Executive' },
+  { uid: 'MGT-BIZ-01', email: 'agent06mrz@gmail.com', name: 'Sitesh', firstName: 'Sitesh', avatar: 'https://i.pravatar.cc/150?u=sitesh', role: 'Business' }
+];
+
+export default function Login({ onLogin }) {
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== 'trial123') {
+      setError('Invalid password. Please use trial123.');
+      return;
+    }
+    
+    const searchVal = identifier.trim().toLowerCase();
+    const user = allowedUsers.find(u => u.uid.toLowerCase() === searchVal || u.email.toLowerCase() === searchVal);
+    
+    if (!user) {
+      setError('Invalid UID or Email. User not found.');
+      return;
+    }
+
+    onLogin(user);
+  };
+
+  return (
+    <div className="flex h-screen w-screen items-center justify-center bg-zinc-50 dark:bg-[#09090b] relative overflow-hidden font-sans">
+      {/* Background gradients */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-500/20 dark:bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/20 dark:bg-purple-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md p-8 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl relative z-10"
+      >
+        <div className="flex justify-center mb-8">
+          <div className="w-16 h-16 flex items-center justify-center">
+            <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
+          </div>
+        </div>
+
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Welcome to MKAVS</h2>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your UID and password to access the dashboard.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div>
+            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Email or Employee UID</label>
+            <input 
+              type="text" 
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              placeholder="e.g. agent03mrss@gmail.com or MGT-DEV-01"
+              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-sm"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Password</label>
+            <input 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+            />
+          </div>
+
+          {error && (
+            <p className="text-rose-500 text-sm font-semibold text-center">{error}</p>
+          )}
+
+          <button 
+            type="submit"
+            className="mt-4 w-full py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md active:scale-[0.98]"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="mt-8 pt-6 border-t border-zinc-200/50 dark:border-zinc-800/50 text-center">
+          <p className="text-xs text-zinc-400 font-medium">Authorized Personnel Only. © MKAVS</p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
