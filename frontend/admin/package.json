@@ -16,6 +16,7 @@
     "lucide-react": "^1.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-is": "^19.2.5",
     "recharts": "^3.8.1",
     "tailwind-merge": "^3.5.0"
   },
@@ -32,6 +33,7 @@
     "globals": "^17.5.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.4",
-    "vite": "^8.0.9"
+    "vite": "^8.0.9",
+    "vite-plugin-pwa": "^1.2.0"
   }
 }
