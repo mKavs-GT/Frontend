@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, type JSX } from "react";
-import { User, Lock, ArrowRight, Eye, EyeOff, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from "framer-motion";
 
 // Vertex shader source code
 const vertexSmokeySource = `
@@ -51,14 +50,23 @@ void main() {
 }
 `;
 
+/**
+ * Valid blur sizes supported by Tailwind CSS.
+ */
 type BlurSize = "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
+/**
+ * Props for the SmokeyBackground component.
+ */
 interface SmokeyBackgroundProps {
   backdropBlurAmount?: string;
   color?: string;
   className?: string;
 }
 
+/**
+ * A mapping from blur size names to Tailwind CSS classes.
+ */
 const blurClassMap: Record<BlurSize, string> = {
   none: "backdrop-blur-none",
   sm: "backdrop-blur-sm",
@@ -69,6 +77,9 @@ const blurClassMap: Record<BlurSize, string> = {
   "3xl": "backdrop-blur-3xl",
 };
 
+/**
+ * A React component that renders an interactive WebGL shader background.
+ */
 export function SmokeyBackground({
   backdropBlurAmount = "sm",
   color = "#1E40AF", // Default dark blue
@@ -78,6 +89,7 @@ export function SmokeyBackground({
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
+  // Helper to convert hex color to RGB (0-1 range)
   const hexToRgb = (hex: string): [number, number, number] => {
     const r = parseInt(hex.substring(1, 3), 16) / 255;
     const g = parseInt(hex.substring(3, 5), 16) / 255;
@@ -90,13 +102,21 @@ export function SmokeyBackground({
     if (!canvas) return;
 
     const gl = canvas.getContext("webgl");
-    if (!gl) return;
+    if (!gl) {
+      console.error("WebGL not supported");
+      return;
+    }
 
     const compileShader = (type: number, source: string): WebGLShader | null => {
       const shader = gl.createShader(type);
       if (!shader) return null;
       gl.shaderSource(shader, source);
       gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error("Shader compilation error:", gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+      }
       return shader;
     };
 
@@ -109,6 +129,12 @@ export function SmokeyBackground({
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Program linking error:", gl.getProgramInfoLog(program));
+      return;
+    }
+
     gl.useProgram(program);
 
     const positionBuffer = gl.createBuffer();
@@ -149,12 +175,20 @@ export function SmokeyBackground({
       const rect = canvas.getBoundingClientRect();
       setMousePosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
     };
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+
     canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("mouseenter", () => setIsHovering(true));
-    canvas.addEventListener("mouseleave", () => setIsHovering(false));
+    canvas.addEventListener("mouseenter", handleMouseEnter);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
 
     render();
-    return () => canvas.removeEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseenter", handleMouseEnter);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, [isHovering, mousePosition, color]);
 
   const finalBlurClass = blurClassMap[backdropBlurAmount as BlurSize] || blurClassMap["sm"];
@@ -167,40 +201,28 @@ export function SmokeyBackground({
   );
 }
 
-// ============== AUTH MOCK DATA ==============
-const ADMIN_USERS = [
-  { alias: "Mr K", name: "Krishawn", role: "CEO", id: "(MGT-EXE-01)", email: "mrk@mkavs.com", pwd: "admin" },
-  { alias: "Mr V", name: "Vinny", role: "CTO", id: "(MGT-EXE-02)", email: "mrv@mkavs.com", pwd: "admin" },
-  { alias: "Mr Z", name: "Sitesh", role: "Chief Auditor & Sales Lead", id: "(MGT-BIZ-01)", email: "mrz@mkavs.com", pwd: "admin" },
-  { alias: "MrsS", name: "Sofia", role: "Lead Frontend Dev", id: "(MGT-DEV-01)", email: "mrss@mkavs.com", pwd: "admin" },
-  { alias: "Michael", name: "Lead Backend Dev", role: "Lead Backend Dev", id: "(MGT-DEV-02)", email: "michael@mkavs.com", pwd: "admin" },
-  { alias: "MrA", name: "Abuzar", role: "Associate Frontend Developer", id: "(MGT-DES-01)", email: "mra@mkavs.com", pwd: "admin" },
-];
-
-const SECRET_ANSWER = "thalapathy vetri kairon";
-
+/**
+ * A glassmorphism-style login form component with animated labels and credential validation.
+ */
 interface LoginFormProps {
   onLogin?: (token: string, agent: { email: string; name: string; role: string }) => void;
 }
 
+// API endpoint for admin authentication
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.mkavs.com';
 
 export function LoginForm({ onLogin }: LoginFormProps) {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const [identifier, setIdentifier] = useState(''); // Email or ID
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attemptsRemaining, setAttemptsRemaining] = useState<number | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  
-  // Forgot password flow
-  const [view, setView] = useState<'login' | 'forgot'>('login');
-  const [securityAnswer, setSecurityAnswer] = useState('');
-  const [resetSuccess, setResetSuccess] = useState(false);
 
+  // Get the intended destination or default to root
   const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -209,222 +231,156 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     setIsLoading(true);
 
     try {
-      // 1. Try Mock Auth First for recognized users
-      const mockUser = ADMIN_USERS.find(u => 
-        (u.email.toLowerCase() === identifier.toLowerCase() || u.id === identifier) && 
-        u.pwd === password
-      );
-
-      if (mockUser) {
-        // Simulate a small delay
-        await new Promise(r => setTimeout(r, 600));
-        const agent = { email: mockUser.email, name: mockUser.name, role: mockUser.role, alias: mockUser.alias, employeeId: mockUser.id };
-        login("mock-token-123", agent as any);
-        onLogin?.("mock-token-123", agent as any);
-        navigate(from, { replace: true });
-        return;
-      }
-
-      // 2. Fallback to API if not a mock user
       const response = await fetch(`${API_BASE}/api/admin/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email: identifier, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Important: Include credentials to receive the cookie
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        setError(data.error || 'Invalid credentials');
+        // Handle specific error cases
+        if (response.status === 429) {
+          setError(data.error || 'Too many attempts. Please try again later.');
+        } else if (response.status === 401) {
+          setError(data.error || 'Invalid credentials');
+          if (data.attemptsRemaining !== undefined) {
+            setAttemptsRemaining(data.attemptsRemaining);
+          }
+        } else {
+          setError(data.error || 'Login failed. Please try again.');
+        }
         return;
       }
 
+      // Successful login
       if (data.success) {
+        // Update AuthContext state
         login(data.token, data.agent);
+        
+        // Call the optional onLogin callback
         onLogin?.(data.token, data.agent);
+
+        // Redirect to intended page
         navigate(from, { replace: true });
       }
     } catch (err) {
-      // If network fails but identifier was a mock user, we could have logged them in.
-      // Since it already returned if mockUser was found, this catch handles true failures.
-      setError('Connection refused. Please try again.');
+      setError('Network error. Please check your connection.');
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleResetPassword = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    if (securityAnswer.toLowerCase().trim() === SECRET_ANSWER) {
-      setResetSuccess(true);
-      setTimeout(() => {
-        setResetSuccess(false);
-        setView('login');
-        setPassword('');
-        setError("Your password has been reset to 'admin'. Please log in.");
-      }, 3000);
-    } else {
-      setError("Incorrect answer. Access denied.");
-    }
-  };
-
   return (
-    <div className="w-full max-w-sm p-8 space-y-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl overflow-hidden min-h-[460px] flex flex-col justify-center">
-      <AnimatePresence mode="wait">
-        {view === 'login' ? (
-          <motion.div 
-            key="login"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="space-y-6"
+    <div className="w-full max-w-sm p-8 space-y-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl">
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-white">Admin Access</h2>
+        <p className="mt-2 text-sm text-gray-300">Authorized personnel only</p>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
+          <p className="text-sm text-red-300 text-center">{error}</p>
+          {attemptsRemaining !== null && attemptsRemaining > 0 && (
+            <p className="text-xs text-red-400 text-center mt-1">
+              {attemptsRemaining} attempt{attemptsRemaining !== 1 ? 's' : ''} remaining
+            </p>
+          )}
+        </div>
+      )}
+
+      <form className="space-y-8" onSubmit={handleSubmit}>
+        {/* Email Input with Animated Label */}
+        <div className="relative z-0">
+          <input
+            type="email"
+            id="floating_email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer"
+            placeholder=" " 
+            required
+            disabled={isLoading}
+          />
+          <label
+            htmlFor="floating_email"
+            className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-autofill:-translate-y-6 peer-autofill:scale-75 peer-autofill:text-blue-400"
           >
-            <div className="text-center">
-              <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase">Admin Access</h2>
-              <p className="mt-2 text-xs text-gray-400 uppercase tracking-widest font-mono">Mission Critical Hub</p>
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg">
-                <p className="text-xs text-red-300 text-center">{error}</p>
-              </div>
-            )}
-
-            <form className="space-y-8" onSubmit={handleSubmit}>
-              <div className="relative z-0">
-                <input
-                  type="text"
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer"
-                  placeholder=" " 
-                  required
-                  disabled={isLoading}
-                />
-                <label className="absolute text-[10px] uppercase font-black tracking-widest text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  <User className="inline-block mr-2 -mt-1" size={14} />
-                  Email or ID
-                </label>
-              </div>
-
-              <div className="relative z-0">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer pr-10"
-                  placeholder=" "
-                  required
-                  disabled={isLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-3 text-gray-400 hover:text-white transition-colors"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-                <label className="absolute text-[10px] uppercase font-black tracking-widest text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  <Lock className="inline-block mr-2 -mt-1" size={14} />
-                  Password
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="group w-full flex items-center justify-center py-4 rounded-xl bg-blue-600 text-white font-black uppercase italic tracking-widest text-[12px] hover:bg-blue-500 transition-all shadow-xl active:scale-95 disabled:opacity-50"
-              >
-                {isLoading ? "Authenticating..." : "Sign In"}
-                {!isLoading && <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1" />}
-              </button>
-            </form>
-
-            <button 
-              onClick={() => setView('forgot')}
-              className="w-full text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-mono"
-            >
-              Forgot Password?
-            </button>
-          </motion.div>
-        ) : (
-          <motion.div 
-            key="forgot"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
+            <User className="inline-block mr-2 -mt-1" size={16} />
+            Agent Email
+          </label>
+        </div>
+        {/* Password Input with Animated Label */}
+        <div className="relative z-0">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="floating_password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer pr-10"
+            placeholder=" "
+            required
+            disabled={isLoading}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-0 top-3 text-gray-400 hover:text-white transition-colors focus:outline-none"
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
-            <div className="text-center">
-              <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">Identity Recovery</h2>
-              <p className="mt-2 text-[10px] text-gray-400 uppercase tracking-widest font-mono">Verify Personal Secret</p>
-            </div>
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+          <label
+            htmlFor="floating_password"
+            className="absolute text-sm text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-autofill:-translate-y-6 peer-autofill:scale-75 peer-autofill:text-blue-400"
+          >
+            <Lock className="inline-block mr-2 -mt-1" size={16} />
+            Password
+          </label>
+        </div>
 
-            {resetSuccess ? (
-              <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
-                 <div className="w-16 h-16 bg-blue-500/20 text-blue-500 rounded-full flex items-center justify-center animate-bounce">
-                    <CheckCircle2 size={32} />
-                 </div>
-                 <p className="text-sm text-white font-bold">Access Restored.</p>
-                 <p className="text-xs text-gray-400 italic">Redirecting to login dashboard...</p>
-                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div className="h-full bg-blue-500" initial={{width:0}} animate={{width:"100%"}} transition={{duration:3}} />
-                 </div>
-              </div>
-            ) : (
-              <form className="space-y-8" onSubmit={handleResetPassword}>
-                <div className="p-4 bg-white/5 rounded-xl border border-white/10">
-                   <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
-                      <HelpCircle size={14} /> Security Question
-                   </p>
-                   <p className="text-sm text-white font-medium leading-relaxed">
-                      Who is the founder of MKAVS?
-                   </p>
-                </div>
 
-                {error && <p className="text-center text-xs text-red-400 font-bold">{error}</p>}
+        
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={`group w-full flex items-center justify-center py-3 px-4 rounded-lg text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-all duration-300 ${
+            isLoading 
+              ? 'bg-blue-600/50 cursor-not-allowed' 
+              : 'bg-blue-600 hover:bg-blue-700'
+          }`}
+        >
+          {isLoading ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Authenticating...
+            </>
+          ) : (
+            <>
+              Sign In
+              <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+            </>
+          )}
+        </button>
 
-                <div className="relative z-0">
-                  <input
-                    type="text"
-                    value={securityAnswer}
-                    onChange={(e) => setSecurityAnswer(e.target.value)}
-                    className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer"
-                    placeholder=" " 
-                    required
-                  />
-                  <label className="absolute text-[10px] uppercase font-black tracking-widest text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Enter Secret Answer
-                  </label>
-                </div>
+      </form>
 
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    onClick={() => { setView('login'); setError(null); }}
-                    className="flex-1 py-4 rounded-xl border border-white/10 text-[10px] font-black uppercase text-gray-400 hover:text-white transition-all"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-[2] py-4 rounded-xl bg-blue-600 text-white font-black uppercase italic tracking-widest text-[12px] hover:bg-blue-500 transition-all shadow-xl"
-                  >
-                    Verify Identity
-                  </button>
-                </div>
-              </form>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="pt-8 border-t border-white/5">
-        <p className="text-[9px] text-gray-600 text-center uppercase tracking-widest">
-          Authorized Operation Level: <span className="text-gray-400">Restricted</span>
+      {/* Security Notice */}
+      <div className="pt-4 border-t border-white/10">
+        <p className="text-xs text-gray-400 text-center">
+          🔒 Access is monitored and logged for security purposes
         </p>
       </div>
     </div>
   );
 }
+
