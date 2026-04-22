@@ -23,7 +23,11 @@ import {
   Globe,
   Sun,
   Moon,
-
+  Terminal,
+  Briefcase,
+  Plus,
+  ChevronRight
+} from "lucide-react";
 import { type User, fetchUsers } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "./components/ui/theme-toggle";
