@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ALERAK | BRUTAL MAGIC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@700&family=Playfair+Display:ital,wght@1,400&display=swap"
+    rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <style>
@@ -410,7 +413,8 @@
       position: relative;
       background: var(--bg);
       border-top: 1px solid #1a1a1a;
-      overflow: visible; /* Allow pinned content to render safely */
+      overflow: visible;
+      /* Allow pinned content to render safely */
       backface-visibility: hidden;
       transform-style: preserve-3d;
     }
@@ -576,15 +580,19 @@
         flex-direction: column;
         height: auto !important;
       }
-      .project-left, .project-right {
+
+      .project-left,
+      .project-right {
         width: 100%;
         height: auto;
         padding: 4rem 8vw;
       }
+
       .cards-grid {
         grid-template-columns: 1fr;
         padding-right: 0;
       }
+
       .project-title {
         font-size: 10vw;
       }
@@ -632,116 +640,120 @@
   </div> <!-- END SCROLL CONTENT (Avoid conflict with pinning) -->
 
   <section id="projects">
-      <div class="project-left">
-        <div class="project-left-content">
-          <div class="overline">Selected Works</div>
-          <h2 class="project-title">Crafting spaces that <br><em>inspire</em> living.</h2>
-          <p class="project-description">
-            We bridge the gap between function and artistry. Explore our curated selection of residential and commercial architectural projects.
-          </p>
-          <a href="#" class="btn-arrow magnetic">
-            View All Projects
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
+    <div class="project-left">
+      <div class="project-left-content">
+        <div class="overline">Selected Works</div>
+        <h2 class="project-title">Crafting spaces that <br><em>inspire</em> living.</h2>
+        <p class="project-description">
+          We bridge the gap between function and artistry. Explore our curated selection of residential and commercial
+          architectural projects.
+        </p>
+        <a href="#" class="btn-arrow magnetic">
+          View All Projects
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
-
-      <div class="project-right">
-        <div class="cards-grid">
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/i1.png" alt="Architecture 1">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>The Stone House</h3>
-                <p>Residential</p>
-              </div>
-              <div class="meta-right">2023</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/i2.png" alt="Architecture 2">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>Azure Villa</h3>
-                <p>Luxury Living</p>
-              </div>
-              <div class="meta-right">2023</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/i3.png" alt="Architecture 3">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>Apex Tower</h3>
-                <p>Commercial</p>
-              </div>
-              <div class="meta-right">2022</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/i4.png" alt="Architecture 4">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>Nordic Loft</h3>
-                <p>Interior</p>
-              </div>
-              <div class="meta-right">2022</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/i5.png" alt="Architecture 5">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>Glass Pavilion</h3>
-                <p>Concept</p>
-              </div>
-              <div class="meta-right">2021</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="img-wrapper">
-              <img src="images/image.png" alt="Architecture 6">
-            </div>
-            <div class="card-meta">
-              <div class="meta-left">
-                <h3>Eco Sanctuary</h3>
-                <p>Sustainable</p>
-              </div>
-              <div class="meta-right">2021</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <div class="spacer">
-      <span>Next Section</span>
     </div>
 
-    <footer style="height: 40vh; background: var(--fg); color: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom:1rem;"><a href="https://www.alerak.studio" style="color: inherit; text-decoration: none;">ALERAK</a></h2>
-      <p>© 2026</p>
-    </footer>
+    <div class="project-right">
+      <div class="cards-grid">
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/i1.png" alt="Architecture 1">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>The Stone House</h3>
+              <p>Residential</p>
+            </div>
+            <div class="meta-right">2023</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/i2.png" alt="Architecture 2">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>Azure Villa</h3>
+              <p>Luxury Living</p>
+            </div>
+            <div class="meta-right">2023</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/i3.png" alt="Architecture 3">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>Apex Tower</h3>
+              <p>Commercial</p>
+            </div>
+            <div class="meta-right">2022</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/i4.png" alt="Architecture 4">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>Nordic Loft</h3>
+              <p>Interior</p>
+            </div>
+            <div class="meta-right">2022</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/i5.png" alt="Architecture 5">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>Glass Pavilion</h3>
+              <p>Concept</p>
+            </div>
+            <div class="meta-right">2021</div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="img-wrapper">
+            <img src="images/image.png" alt="Architecture 6">
+          </div>
+          <div class="card-meta">
+            <div class="meta-left">
+              <h3>Eco Sanctuary</h3>
+              <p>Sustainable</p>
+            </div>
+            <div class="meta-right">2021</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="spacer">
+    <span>Next Section</span>
+  </div>
+
+  <footer
+    style="height: 40vh; background: var(--fg); color: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom:1rem;"><a href="https://www.alerak.studio"
+        style="color: inherit; text-decoration: none;">ALERAK</a></h2>
+    <p>© 2026</p>
+  </footer>
 
 
   <script>
@@ -950,7 +962,7 @@
 
       createScroll();
       // Ensure pins are calculated after content is out and shifted
-      setTimeout(() => ScrollTrigger.refresh(), 500); 
+      setTimeout(() => ScrollTrigger.refresh(), 500);
 
       let resizeTimer;
       window.addEventListener("resize", () => {
@@ -969,4 +981,5 @@
     }
   </script>
 </body>
+
 </html>
