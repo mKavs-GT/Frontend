@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products | WeGrow</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <style>
+        .breadcrumbs {
+            padding: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .breadcrumbs a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumbs span {
+            margin: 0 10px;
+            color: #ccc;
+        }
+
+        .breadcrumbs .active {
+            color: #999;
+        }
+
+        .category-quick-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0 40px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 40px;
+        }
+
+        .cat-quick-item {
+            text-align: center;
+            cursor: pointer;
+            width: 100px;
+        }
+
+        .cat-quick-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #f5f5f5;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+
+        .cat-quick-item:hover .cat-quick-img {
+            transform: translateY(-5px);
+        }
+
+        .cat-quick-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cat-quick-item span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .all-products-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin: 20px 0 40px;
+            color: #000;
+        }
+
+        .product-grid-main {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 1024px) {
+            .product-grid-main {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-grid-main {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .category-quick-row {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .cat-quick-item {
+                width: 80px;
+            }
+
+            .cat-quick-img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+        <span>We have launched a <strong>new ABC Malt !!</strong> Don't miss out | <strong>Shop Now</strong></span>
+    </div>
+
+    <!-- 2. HEADER -->
+    <header class="header-wrapper">
+        <div class="container">
+            <div class="header-main">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.png" alt="WeGrow Logo">
+                </a>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="What are you looking for?">
+                    <i class='bx bx-search search-icon'></i>
+                </div>
+                <div class="header-utils">
+                    <button class="util-btn">
+                        <i class='bx bx-user'></i>
+                        <span>Sign in/ Register</span>
+                    </button>
+                    <button class="util-btn">
+                        <div class="cart-icon-wrapper">
+                            <i class='bx bx-shopping-bag'></i>
+                            <span class="cart-badge">0</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </div>
+                <div class="nav-item">
+                    <a href="all-products.html" class="nav-link">Shop All</a>
+                </div>
+                <div class="nav-item">
+                    <a href="index.html#shop-by-concern" class="nav-link">Concern</a>
+                </div>
+                <div class="nav-item">
+                    <a href="about.html" class="nav-link">About Us</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a> <span>|</span> <a href="#">Collection</a> <span>|</span> <span
+                    class="active">All Products</span>
+            </div>
+
+            <!-- Category Icons -->
+            <div class="category-quick-row">
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=200" alt="Hair"></div>
+                    <span>Hair</span>
+                </div>
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=200" alt="Face"></div>
+                    <span>Face</span>
+                </div>
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6ece?w=200" alt="Body"></div>
+                    <span>Body</span>
+                </div>
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200" alt="Lip"></div>
+                    <span>Lip</span>
+                </div>
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1519735777090-ec97162dc266?w=200" alt="Baby"></div>
+                    <span>Baby</span>
+                </div>
+                <div class="cat-quick-item">
+                    <div class="cat-quick-img"><img
+                            src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=200" alt="Foods"></div>
+                    <span>Foods</span>
+                </div>
+            </div>
+
+            <h1 class="all-products-title">All Products</h1>
+
+            <div class="product-grid-main" id="allProductsGrid">
+                <!-- Products will be mirrored from the data or repeated here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- GLOBAL FOOTER BLOCK (Value Props + App Promo) -->
+    <div class="global-footer-block">
+        <div class="container">
+            <div class="value-props">
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bx-refresh'></i></div>
+                    <h3 class="prop-title">Returns Policy</h3>
+                    <p class="prop-desc">Easy returns for your peace of mind.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bx-time-five'></i></div>
+                    <h3 class="prop-title">On Time Delivery</h3>
+                    <p class="prop-desc">Get your orders delivered on time, every time.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bx-support'></i></div>
+                    <h3 class="prop-title">24x7 Support</h3>
+                    <p class="prop-desc">We're here for you 24/7 to assist with any queries.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bxs-medal'></i></div>
+                    <h3 class="prop-title">Rewards Points</h3>
+                    <p class="prop-desc">Collect reward points and redeem them with ease.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon"><i class='bx bxs-credit-card-front'></i></div>
+                    <h3 class="prop-title">Secure Payment</h3>
+                    <p class="prop-desc">Enjoy safe and encrypted transactions every time.</p>
+                </div>
+            </div>
+
+            <div class="app-promo-banner" style="background-color: #EEFEF4;">
+                <div class="app-img-wrap">
+                    <img src="assets/phone.png" alt="WeGrow App">
+                </div>
+                <div class="app-promo-content">
+                    <h2>Get <span>₹100 OFF</span> your First Order</h2>
+                    <p>Download the WeGrow App and enjoy exclusive app-only offers and rewards.</p>
+                    <div class="app-store-btns">
+                        <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=App+Store" alt="App Store">
+                        <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=Google+Play" alt="Google Play">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer-base">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <a href="#" class="footer-logo">
+                            <img src="assets/favicon.png" alt="WeGrow Logo">
+                        </a>
+                        <ul class="contact-links">
+                            <li><i class='bx bx-envelope'></i> support@wegrow.com</li>
+                            <li><i class='bx bx-phone'></i> +91 90000 00000</li>
+                        </ul>
+                        <div class="social-links">
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                            <a href="#"><i class='bx bxl-instagram'></i></a>
+                            <a href="#"><i class='bx bxl-youtube'></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Shop</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Combo Products</a></li>
+                            <li><a href="#">Hair Care</a></li>
+                            <li><a href="#">Face Care</a></li>
+                            <li><a href="#">Body Care</a></li>
+                            <li><a href="#">Lip Care</a></li>
+                            <li><a href="#">Baby Care</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Quick Link</h4>
+                        <ul class="footer-links">
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="#">Shop All Products</a></li>
+                            <li><a href="#">Store Location</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>We are also Available in</h4>
+                        <div class="app-store-btns" style="margin-top: 10px; gap: 10px; flex-wrap: wrap;">
+                            <img src="https://placehold.co/100x40/FFFFFF/000000/png?text=Amazon" alt="Amazon"
+                                style="height: 36px; border-radius: 4px;">
+                            <img src="https://placehold.co/100x40/FFFFFF/000000/png?text=Flipkart" alt="Flipkart"
+                                style="height: 36px; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <a href="#" style="display:block; margin-bottom:15px;"><img src="assets/favicon.png" alt="WeGrow"
+                            style="height:40px;"></a>
+                    <p>© 2026 WeGrow. Built by Advanced Agentic Coding.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- MODALS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart (<span id="cartCountTitle">0</span> items)</h3>
+            <button class="close-cart" onclick="closeCart()"><i class='bx bx-x'></i></button>
+        </div>
+        
+        <div class="cart-body-scroll">
+            <!-- Free Gift Progress -->
+            <div class="gift-progress-section">
+                <p class="gift-text">Unlock Free Hibiscus Shampoo Worth Rs 275</p>
+                <div class="progress-track-wrap">
+                    <div class="progress-fill-bar" id="cartProgressFill" style="width: 20%;"></div>
+                    <!-- Milestone 1 -->
+                    <div class="progress-milestone" style="left: 70%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">Hibiscus<br>Shampoo</div>
+                    </div>
+                    <!-- Milestone 2 -->
+                    <div class="progress-milestone" style="left: 95%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">3 Goat<br>Milk Soap</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upsell-checkbox-row">
+                <input type="checkbox" id="weightlossCheck">
+                <label for="weightlossCheck">Start your Weightloss journey</label>
+            </div>
+
+            <div class="coupon-applied-status">
+                <div class="coupon-details">
+                    <div style="display:flex; align-items:center; gap:8px; font-weight:800; color:#2E7D32; font-size:13px;">
+                        <i class='bx bxs-check-shield'></i> WELCOME applied
+                    </div>
+                    <div class="benefit-tag">Saved ₹59.00</div>
+                    <i class='bx bx-trash' style="cursor:pointer; color:#999;"></i>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px dashed #eee;">
+                    <span style="font-size:12px; font-weight:700;">1 coupons available</span>
+                    <span style="font-size:12px; font-weight:800; color:#000; cursor:pointer;">View Coupons <i class='bx bx-chevron-right'></i></span>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin: 15px 0;">
+                <span style="font-size:13px; font-weight:800; text-decoration:underline; cursor:pointer;">Add Special Instructions</span>
+            </div>
+
+            <div class="cart-item-list" id="cartItemsList">
+                <!-- Items populated via JS -->
+            </div>
+
+            <div style="padding: 15px;">
+                <div style="background:white; border-radius:12px; padding:15px; border:1px solid #eee;">
+                    <h4 style="font-size:13px; font-weight:800; margin-bottom:12px;">Cart Upsell</h4>
+                    <div style="display:flex; align-items:center; gap:12px; border:1px solid #eee; border-radius:8px; padding:8px;">
+                        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=100" style="width:50px; border-radius:4px;">
+                        <div style="flex:1;">
+                            <h5 style="font-size:11px; font-weight:700;">Hibiscus Shampoo</h5>
+                            <div style="font-size:12px; font-weight:800;">₹275.00</div>
+                        </div>
+                        <button style="background:#f0f0f0; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">+ Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-sticky-footer">
+            <div class="savings-bar">₹59.00 Saved so far!</div>
+            <div class="total-summary-row">
+                <div style="font-size:15px; font-weight:800;">Estimated Total</div>
+                <div style="text-align:right;">
+                    <div style="font-size:12px; color:#999; text-decoration:line-through;" id="cartSubtotal">₹590.00</div>
+                    <div style="font-size:22px; font-weight:800;" id="cartTotal">₹531.00</div>
+                    <div style="font-size:11px; color:#26C6B2; font-weight:700;">(10% OFF)</div>
+                </div>
+            </div>
+            <button class="checkout-btn-black" onclick="initiateCheckout()">
+                <span>Proceed to Checkout</span>
+                <div class="payment-logos-img">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Paytm_Logo.png" alt="Paytm" style="height:12px; filter:brightness(0) invert(1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_Logo.svg" alt="GPay" style="height:12px; filter:brightness(0) invert(1);">
+                </div>
+            </button>
+            <div style="text-align:center; font-size:10px; color:#999; margin-top:12px;">
+                Powered by <img src="https://placehold.co/50x10/000000/FFFFFF/png?text=GoKwik" style="vertical-align:middle; filter:grayscale(1);">
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        // Simple script to populate the grid with mock products
+        const products = [
+            { name: "Weight Loss Powder (1kg)", price: "395", oldPrice: "449", img: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=400", rating: "4.61", reviews: "1173" },
+            { name: "Slim And Strength Weight Loss Powder (500g)", price: "550", oldPrice: "699", img: "https://cdn01.pharmeasy.in/dam/products_otc/P19445/inlife-whey-protein-powder-for-women-ayurvedic-herbs-with-weight-management-and-hsn-500g-chocolate-2-1741328360.jpg", rating: "4.49", reviews: "583" },
+            { name: "Henna Hair Dye", price: "300", oldPrice: "350", img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=400", rating: "4.4", reviews: "239" },
+            { name: "Natural Mass Powder (1kg)", price: "447", oldPrice: "599", img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400", rating: "4.47", reviews: "95" },
+            { name: "ABC Malt", price: "395", oldPrice: "449", img: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400", rating: "4.41", reviews: "333" },
+            { name: "Hair Growth Booster Kit", price: "1075", oldPrice: "1289", img: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400", rating: "4.58", reviews: "279" }
+        ];
+
+        const grid = document.getElementById('allProductsGrid');
+        for (let i = 0; i < 8; i++) {
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-wrapper" onclick="location.href='product-detail.html'" style="cursor:pointer;">
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title" onclick="location.href='product-detail.html'" style="cursor:pointer;">${p.name}</h3>
+                        <div class="product-rating" style="font-size: 13px; color: #FFB800; margin-bottom: 10px;">
+                            <i class='bx bxs-star'></i> ${p.rating} <span style="color: #666;">| ${p.reviews} Reviews</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price" style="font-weight: 800; color: #D32F2F; font-size: 18px;">Rs. ${p.price}</span>
+                            <span class="old-price" style="color: #999; text-decoration: line-through; margin-left:10px;">Rs. ${p.oldPrice}</span>
+                        </div>
+                        <button class="btn-card" style="margin-top:15px; width:100%;" onclick="addToCart('${p.name}', '${p.price}', '${p.img}')">Add to Cart</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+
+</html>

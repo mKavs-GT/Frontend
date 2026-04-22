@@ -1,24 +1,32 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Monitor, Search, Briefcase, Users, MessageSquare, Plus, Activity, CheckCircle2, Calendar as CalendarIcon, Clock } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { 
+  Search, 
+  LayoutGrid, 
+  Users, 
+  CalendarDays, 
+  FileText, 
+  Mic, 
+  CalendarCheck, 
+  GraduationCap, 
+  LogOut, 
+  Bell, 
+  Settings, 
+  ChevronDown,
+  Phone,
+  MessageSquare,
+  MoreVertical,
+  PencilRuler,
+  Code2,
+  Brush,
+  Server,
+  Smartphone,
+  Globe,
+  Sun,
+  Moon
+} from "lucide-react";
+import { type User, fetchUsers } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sidebar } from "@/components/ui/modern-side-bar";
-import { Input } from "@/components/ui/input";
-import { AnalyticsView } from "@/components/ui/analytics-view";
-import { ProfileView } from "@/components/ui/ProfileView";
-import { fetchUsers, type User } from "@/lib/api";
-import ProjectDataDemo from "@/ProjectDataDemo";
-import { UsersView } from "@/components/ui/users-view";
-import { ConsultationsView } from "@/components/ui/consultations-view";
-import { ScheduleView } from "@/components/ui/schedule-view";
+import { ThemeToggle } from "./components/ui/theme-toggle";
 
 interface AdminAgent {
   email: string;
@@ -33,7 +41,7 @@ interface ClientProjectsProps {
 }
 
 interface Client {
-  user: User; // Store full user object
+  user: User;
   name: string;
   projects: {
     name: string;
@@ -52,48 +60,44 @@ interface ScheduleItem {
 
 const STORAGE_KEY = "mkavs_admin_schedule_v1";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+const hiringNeeds = [
+  { title: "UI Designer", cand: 45, icon: <Brush className="w-6 h-6" />, color: "bg-purple-100 text-purple-600" },
+  { title: "Back End Dev", cand: 32, icon: <Code2 className="w-6 h-6" />, color: "bg-blue-100 text-blue-600" },
+  { title: "SEO Specialist", cand: 18, icon: <Terminal className="w-6 h-6" />, color: "bg-emerald-100 text-emerald-600" },
+  { title: "Project Manager", cand: 12, icon: <Briefcase className="w-6 h-6" />, color: "bg-orange-100 text-orange-600" },
+  { title: "UX Researcher", cand: 8, icon: <PencilRuler className="w-6 h-6" />, color: "bg-rose-100 text-rose-600" },
+];
 
-const item = {
-  hidden: { opacity: 0, scale: 0.95 },
-  show: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.95 }
-};
+const recruitmentProgress = [
+  { name: "John Smith", role: "Software Engineer", status: "On-Hold", stColor: "bg-amber-400", active: false },
+  { name: "Sara Abraham", role: "UI Designer", status: "In-Progress", stColor: "bg-blue-400", active: true },
+  { name: "Mila Jau", role: "Marketing Lead", status: "Pending", stColor: "bg-slate-300", active: false },
+  { name: "David Miller", role: "DevOps Engineer", status: "Completed", stColor: "bg-emerald-400", active: false },
+];
+
+const newApplicants = [
+  { name: "Alex Johnson", role: "Backend Developer", initial: "AJ", initialColor: "bg-blue-500" },
+  { name: "Emma Wilson", role: "Content Specialist", initial: "EW", initialColor: "bg-rose-500" },
+  { name: "Chris Evans", role: "UI Designer", img: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { name: "Sophia Lee", role: "UX Designer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+];
 
 export default function ClientProjects({ onViewProject, onLogout, adminAgent }: ClientProjectsProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState<Client[]>([]);
-  const [rawUsers, setRawUsers] = useState<User[]>([]);
-  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState("dashboard");
 
   useEffect(() => {
     const loadUsers = async () => {
       try {
         const users = await fetchUsers();
-        setRawUsers(users);
-        // Map API users to Client interface
         const mappedClients: Client[] = users
-          .filter(user => user.adminData) // Show all users with project data (even if name is empty)
+          .filter(user => user.adminData)
           .map(user => ({
-          user: user,
-          name: user.adminData?.activeProjects || "Untitled", // Display Project Name (from adminData) as Card Title
-          projects: [
-            { 
-              name: user.email, // Using email as subtitle/tech for now or 
-              type: "web" 
-            }
-          ]
-        }));
+            user: user,
+            name: user.adminData?.activeProjects || "Untitled Project",
+            projects: [{ name: user.email, type: "web" }]
+          }));
         setClients(mappedClients);
       } catch (err) {
         console.error("Failed to load users", err);
@@ -101,38 +105,14 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
         setLoading(false);
       }
     };
-
     loadUsers();
-
-    // Load schedules from local storage
-    const savedSchedules = localStorage.getItem(STORAGE_KEY);
-    if (savedSchedules) {
-      try {
-        setSchedules(JSON.parse(savedSchedules));
-      } catch (e) {}
-    }
-  }, []);
-
-  // Keyboard shortcut for search
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "/" && document.activeElement?.tagName !== "INPUT") {
-        e.preventDefault();
-        const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
-        searchInput?.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const filteredClients = clients.filter((client) => {
     const query = searchQuery.toLowerCase();
     return (
       client.name.toLowerCase().includes(query) ||
-      client.projects.some((project) =>
-        project.name.toLowerCase().includes(query)
-      )
+      client.user.email.toLowerCase().includes(query)
     );
   });
 
@@ -140,283 +120,235 @@ export default function ClientProjects({ onViewProject, onLogout, adminAgent }: 
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background text-foreground">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-          <p className="text-zinc-400 font-medium tracking-wide animate-pulse">Loading dashboard...</p>
+          <div className="w-12 h-12 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
+          <p className="text-muted-foreground font-medium tracking-wide animate-pulse uppercase text-[10px]">Initializing MKAVS Global Dashboard...</p>
         </div>
       </div>
     );
   }
 
-  // Calculate Stats
-  const totalUsers = rawUsers.length;
-  const totalConsultations = rawUsers.reduce((sum, user) => sum + (user.consultations?.length || 0), 0);
-  const activeProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'Active' || u.adminData?.projectStatus === 'Progress').length;
-  const completedProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'Completed').length;
-  const futureProjects = rawUsers.filter(u => u.adminData?.projectStatus === 'On Hold').length;
-
-  // Upcoming Schedules
-  const upcomingSchedules = schedules
-    .filter(s => s.type === 'call' || (s.type === 'todo' && !s.completed))
-    .slice(0, 5);
-
-  const renderContent = () => {
-    if (currentView === "analytics") {
-      return <AnalyticsView onViewProject={onViewProject} />;
-    }
-    
-    if (currentView === "settings") {
-      return <ProjectDataDemo />;
-    }
-    
-    if (currentView === "profile") {
-      return <ProfileView adminAgent={adminAgent || null} />;
-    }
-    
-    if (currentView === "users") {
-      return <UsersView onViewProject={onViewProject} />;
-    }
-    
-    if (currentView === "consultations") {
-      return <ConsultationsView />;
-    }
-    
-    if (currentView === "schedule") {
-      return <ScheduleView />;
-    }
-
-    
-    return (
-      <motion.div
-          className="max-w-7xl mx-auto space-y-8"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.header 
-            className="flex flex-col md:flex-row justify-between items-start md:items-center pb-8 border-b border-zinc-800/50 gap-6"
-            variants={item}
-          >
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 shadow-lg shadow-blue-500/5">
-                  <Activity className="w-8 h-8 text-blue-500" />
-                </div>
-                <div>
-                  <h1 className="text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-                    Overview Dashboard
-                  </h1>
-                  <p className="text-zinc-400 mt-1 font-medium italic">
-                    Welcome back. Here's what's happening today.
-                  </p>
-                </div>
-              </div>
-
-               <div className="relative w-full md:w-96 group">
-                  {/* Subtle Background Glow */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
-                  
-                  <div className="relative flex items-center">
-                    <Search className="absolute left-4 h-4 w-4 text-zinc-500 group-focus-within:text-blue-400 transition-all duration-300 group-focus-within:scale-110" />
-                    <Input
-                      type="search"
-                      placeholder="Search projects, clients..."
-                      className="pl-11 pr-12 h-12 bg-zinc-900/40 border-zinc-800/50 focus:border-blue-500/30 backdrop-blur-2xl transition-all duration-500 rounded-2xl text-zinc-200 placeholder:text-zinc-600 focus:ring-0 shadow-2xl"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    {/* Keyboard Shortcut Hint */}
-                    <div className="absolute right-3 px-1.5 py-1 rounded-md bg-zinc-800/50 border border-zinc-700/50 text-[10px] font-bold text-zinc-500 group-hover:text-zinc-400 group-focus-within:border-blue-500/30 transition-all pointer-events-none">
-                      /
-                    </div>
-                  </div>
-              </div>
-          </motion.header>
-
-          {/* Top Stats Cards */}
-          <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
-                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-                    <Users className="w-6 h-6 text-purple-500 mb-1" />
-                    <span className="text-2xl font-bold text-white">{totalUsers}</span>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Total Users</span>
-                 </CardContent>
-             </Card>
-             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
-                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-                    <MessageSquare className="w-6 h-6 text-green-500 mb-1" />
-                    <span className="text-2xl font-bold text-white">{totalConsultations}</span>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Consultations</span>
-                 </CardContent>
-             </Card>
-             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
-                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-                    <Activity className="w-6 h-6 text-amber-500 mb-1" />
-                    <span className="text-2xl font-bold text-white">{activeProjects}</span>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Active Projects</span>
-                 </CardContent>
-             </Card>
-             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
-                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-                    <Clock className="w-6 h-6 text-zinc-400 mb-1" />
-                    <span className="text-2xl font-bold text-white">{futureProjects}</span>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Future / On Hold</span>
-                 </CardContent>
-             </Card>
-             <Card className="bg-zinc-900/60 border-zinc-800 backdrop-blur-md">
-                 <CardContent className="p-5 flex flex-col items-center text-center space-y-2">
-                    <CheckCircle2 className="w-6 h-6 text-blue-500 mb-1" />
-                    <span className="text-2xl font-bold text-white">{completedProjects}</span>
-                    <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Completed</span>
-                 </CardContent>
-             </Card>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <motion.div 
-              className="lg:col-span-3 space-y-6"
-              layout
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-blue-500" /> Active Managed Projects
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <AnimatePresence>
-                  {filteredClients.map((client, index) => (
-                <motion.div
-                  key={`${client.name}-${index}`}
-                  variants={item}
-                  initial="hidden"
-                  animate="show"
-                  exit="exit"
-                  layout
-                  whileHover={{ y: -5 }}
-                  className="group"
-                >
-                  <Card
-                    className="relative overflow-hidden bg-gradient-to-br from-zinc-900/80 to-black border-zinc-800/60 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/20 hover:border-blue-500/30 h-full flex flex-col"
-                  >
-                    {/* Hover Glow Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <CardHeader className="relative z-10">
-                      <div className="flex justify-between items-start">
-                        <div className="space-y-1">
-                          <CardTitle className="text-xl font-semibold tracking-tight text-white group-hover:text-blue-100 transition-colors">
-                            {client.name}
-                          </CardTitle>
-                          <CardDescription className="text-zinc-400 font-medium">{client.user.displayName}</CardDescription>
-                        </div>
-                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border shadow-sm ${
-                          client.user.adminData?.projectStatus === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-emerald-900/20' :
-                          client.user.adminData?.projectStatus === 'Completed' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-blue-900/20' :
-                          client.user.adminData?.projectStatus === 'On Hold' ? 'bg-red-500/10 text-red-400 border-red-500/20 shadow-red-900/20' :
-                          client.user.adminData?.projectStatus === 'Progress' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-amber-900/20' :
-                          (client.user.adminData?.projectProgress === 100) ? 'bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-blue-900/20' :
-                          'bg-zinc-500/10 text-zinc-400 border-zinc-500/20'
-                        }`}>
-                          {client.user.adminData?.projectStatus === 'Progress' ? 'In Progress' : (client.user.adminData?.projectStatus || (client.user.adminData?.projectProgress === 100 ? "Completed" : "Active"))}
-                        </span>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4 flex-1 relative z-10">
-                        <div className="flex items-center text-sm text-zinc-500 group-hover:text-zinc-300 transition-colors">
-                            <Monitor className="h-4 w-4 mr-2.5 text-blue-500/70" />
-                            <span className="truncate">{client.user.email}</span>
-                        </div>
-                    </CardContent>
-                    <CardFooter className="relative z-10 pt-2 pb-6 px-6">
-                      <Button
-                          className="w-full bg-zinc-800/50 hover:bg-blue-600 text-white hover:text-white border border-zinc-700/50 hover:border-blue-500/50 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 active:scale-[0.98]"
-                        onClick={() => onViewProject(client.user)}
-                      >
-                        View Project
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
-                </AnimatePresence>
-              </div>
-              
-              {filteredClients.length === 0 && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center py-12 border border-zinc-800/50 rounded-2xl bg-zinc-900/20"
-                >
-                  <Search className="mx-auto h-12 w-12 text-zinc-700 mb-4" />
-                  <p className="text-lg font-bold text-zinc-400">No projects found</p>
-                  <p className="text-sm text-zinc-500">Try adjusting your search query</p>
-                </motion.div>
-              )}
-            </motion.div>
-
-            {/* Right Side Panel: Upcoming Schedules */}
-            <motion.div variants={item} className="lg:col-span-1 space-y-6">
-               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  <CalendarIcon className="w-5 h-5 text-purple-500" /> Upcoming
-               </h2>
-               
-               <div className="space-y-4">
-                 {upcomingSchedules.length === 0 ? (
-                   <div className="p-8 text-center border border-zinc-800/50 rounded-2xl bg-zinc-900/20">
-                      <CheckCircle2 className="w-8 h-8 text-zinc-700 mx-auto mb-3" />
-                      <p className="text-sm font-bold text-zinc-500">You're all caught up!</p>
-                      <p className="text-xs text-zinc-600 mt-1">No pending calls or tasks.</p>
-                   </div>
-                 ) : (
-                   upcomingSchedules.map(schedule => (
-                     <Card key={schedule.id} className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-700 transition-colors">
-                        <CardHeader className="p-4 pb-2">
-                          <div className="flex justify-between items-start">
-                            <CardTitle className="text-sm font-bold text-white">{schedule.title}</CardTitle>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 bg-zinc-800/80 px-2 py-0.5 rounded">
-                              {schedule.type}
-                            </span>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="p-4 pt-0">
-                          {schedule.type === 'call' && schedule.datetime && (
-                            <div className="flex items-center gap-1.5 text-xs text-blue-400 mt-2 font-medium bg-blue-500/10 w-fit px-2 py-1 rounded">
-                              <Clock className="w-3.5 h-3.5" />
-                              {new Date(schedule.datetime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
-                            </div>
-                          )}
-                          {schedule.description && (
-                            <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
-                              {schedule.description}
-                            </p>
-                          )}
-                        </CardContent>
-                     </Card>
-                   ))
-                 )}
-                 <Button 
-                   variant="outline" 
-                   className="w-full bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800 hover:text-white"
-                   onClick={() => setCurrentView('schedule')}
-                 >
-                    View Full Schedule
-                 </Button>
-               </div>
-            </motion.div>
-          </div>
-        </motion.div>
-    );
-  };
-
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
-      <Sidebar 
-        activeItem={currentView} 
-        onNavigate={(id) => setCurrentView(id)}
-        onLogout={onLogout}
-        adminAgent={adminAgent}
-      />
+    <div className="flex h-screen w-full overflow-hidden bg-[#F4F7FE] dark:bg-zinc-950 font-sans transition-colors duration-300">
       
-      <main className="flex-1 h-full overflow-y-auto bg-background p-8">
-        {renderContent()}
+      {/* SIDEBAR handled in Demo.tsx/Sidebar component, 
+          so we only render the main content area here */}
+
+      <main className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Top Header */}
+        <header className="h-[90px] shrink-0 flex items-center justify-between px-8 bg-transparent">
+          <div className="flex items-center gap-8">
+            <h1 className="text-[24px] font-black text-zinc-800 dark:text-white tracking-tight">Dashboard</h1>
+            <div className="relative w-[360px]">
+              <div className="absolute left-[18px] top-1/2 -translate-y-1/2">
+                <Search className="w-[18px] h-[18px] text-[#A3AED0]" />
+              </div>
+              <input 
+                type="text" 
+                placeholder="Search projects, candidates..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full h-[48px] bg-white dark:bg-zinc-900 rounded-[14px] pl-12 pr-4 text-[14px] text-zinc-700 dark:text-white placeholder:text-[#A3AED0] focus:outline-none border-none shadow-sm transition-all"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <button className="h-[46px] bg-white dark:bg-zinc-900 dark:text-white px-4 rounded-[14px] shadow-sm relative group overflow-hidden transition-all hover:shadow-md">
+                 <Bell className="w-[20px] h-[20px] text-zinc-400 group-hover:text-primary" />
+                 <span className="absolute top-[12px] right-[12px] w-[8px] h-[8px] bg-rose-500 rounded-full border-2 border-white dark:border-zinc-900"></span>
+            </button>
+            <button className="h-[46px] bg-primary text-primary-foreground px-6 rounded-[14px] text-[14px] font-bold flex items-center gap-3 hover:bg-opacity-90 transition-all shadow-lg active:scale-95">
+              <Plus className="w-[18px] h-[18px]" strokeWidth={3} />
+              New Project
+            </button>
+          </div>
+        </header>
+
+        {/* Main Scrollable Area */}
+        <div className="flex-1 overflow-y-auto px-8 pb-10 scrollbar-hide">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left/Middle Column (v2.0 Client Portal) */}
+            <div className="lg:col-span-2 space-y-8">
+                {/* Welcome Banner */}
+                <div className="bg-gradient-to-br from-[#4361EE] to-[#7B91F5] rounded-[24px] p-10 relative overflow-hidden text-white flex items-center shadow-xl min-h-[220px]">
+                  <div className="relative z-10">
+                    <h2 className="text-[28px] font-black mb-[8px] tracking-tighter uppercase italic">Welcome Back, {adminAgent?.name.split(' ')[0] || 'Admin'}</h2>
+                    <p className="text-white/80 text-[14px] font-medium max-w-[360px] leading-[1.6] mb-8">
+                      You have {filteredClients.length} active client projects under your supervision. Everything looks great for today!
+                    </p>
+                    <button className="h-[42px] bg-white text-primary px-8 rounded-[12px] text-[13px] font-bold hover:shadow-lg transition-all active:scale-95">
+                      Review Deliverables
+                    </button>
+                  </div>
+                  <div className="absolute right-[-10px] bottom-[-20px] opacity-20 pointer-events-none">
+                    <Terminal className="w-[300px] h-[300px]" />
+                  </div>
+                </div>
+
+                {/* Categories */}
+                <div className="grid grid-cols-5 gap-4">
+                  {hiringNeeds.map((item, idx) => (
+                    <motion.div 
+                      key={idx} 
+                      whileHover={{ y: -5 }}
+                      className="bg-white dark:bg-zinc-900 p-5 rounded-[22px] shadow-sm flex flex-col items-center text-center cursor-pointer transition-colors border border-transparent hover:border-primary/20"
+                    >
+                      <div className={`w-[52px] h-[52px] rounded-[16px] flex items-center justify-center mb-4 ${item.color}`}>
+                        {item.icon}
+                      </div>
+                      <h4 className="text-[13px] font-bold text-zinc-800 dark:text-white leading-tight mb-1 truncate w-full px-1">{item.title}</h4>
+                      <p className="text-[11px] text-[#A3AED0] font-bold">{item.cand} Jobs</p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Project Table */}
+                <div className="bg-white dark:bg-zinc-900 rounded-[24px] shadow-sm p-8 pb-4">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-[18px] font-black text-zinc-800 dark:text-white tracking-tighter uppercase italic">Active Client Projects</h3>
+                    <button className="text-[13px] font-bold text-primary hover:underline">View All</button>
+                  </div>
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="border-b border-zinc-50 dark:border-zinc-800">
+                        <th className="pb-4 font-bold text-[11px] text-[#A3AED0] uppercase tracking-widest">Project Name</th>
+                        <th className="pb-4 font-bold text-[11px] text-[#A3AED0] uppercase tracking-widest">Status</th>
+                        <th className="pb-4 font-bold text-[11px] text-[#A3AED0] uppercase tracking-widest">Progress</th>
+                        <th className="pb-4 font-bold text-[11px] text-[#A3AED0] text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredClients.map((client, idx) => (
+                        <tr key={idx} className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                          <td className="py-5">
+                            <div className="flex flex-col">
+                              <span className="text-[14px] font-bold text-zinc-800 dark:text-white group-hover:text-primary transition-colors">{client.name}</span>
+                              <span className="text-[11px] text-[#A3AED0] font-medium">{client.user.email}</span>
+                            </div>
+                          </td>
+                          <td className="py-5">
+                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                              client.user.adminData?.projectStatus === 'Completed' ? 'bg-emerald-500/10 text-emerald-500' :
+                              client.user.adminData?.projectStatus === 'On Hold' ? 'bg-rose-500/10 text-rose-500' :
+                              'bg-blue-500/10 text-blue-500'
+                            }`}>
+                              {client.user.adminData?.projectStatus || 'Active'}
+                            </span>
+                          </td>
+                          <td className="py-5">
+                             <div className="flex items-center gap-3">
+                                <div className="flex-1 h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden min-w-[60px]">
+                                  <div 
+                                    className="h-full bg-primary rounded-full transition-all duration-1000"
+                                    style={{ width: `${client.user.adminData?.projectProgress || 0}%` }}
+                                  />
+                                </div>
+                                <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">{client.user.adminData?.projectProgress || 0}%</span>
+                             </div>
+                          </td>
+                          <td className="py-5 text-right">
+                             <button 
+                                onClick={() => onViewProject(client.user)}
+                                className="h-[34px] w-[34px] rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm"
+                              >
+                               <ChevronRight className="w-4 h-4" />
+                             </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="lg:col-span-1 space-y-8">
+                {/* Profile Card */}
+                <div className="bg-white dark:bg-zinc-900 rounded-[24px] shadow-sm p-8 flex flex-col items-center text-center">
+                   <div className="w-[100px] h-[100px] rounded-full p-1 bg-gradient-to-br from-primary to-emerald-400 mb-4 shadow-lg overflow-hidden relative">
+                      <img 
+                        src={adminAgent?.email?.includes('mrv') ? '/mrv.png' : '/founder.png'} 
+                        alt="Profile" 
+                        onLoad={(e) => e.currentTarget.style.scale = '1.2'}
+                        style={{ objectPosition: 'center 20%' }}
+                        className="w-full h-full rounded-full object-cover bg-zinc-100 dark:bg-zinc-800" 
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.parentElement!.innerHTML = `<div class='h-full flex items-center justify-center text-2xl font-black text-white'>${adminAgent?.name[0] || 'A'}</div>`;
+                        }}
+                      />
+                      <div className="absolute bottom-1 right-2 w-5 h-5 bg-emerald-500 border-4 border-white dark:border-zinc-900 rounded-full"></div>
+                   </div>
+                   <h3 className="text-[18px] font-black text-zinc-800 dark:text-white uppercase tracking-tighter leading-tight italic">{adminAgent?.name || 'Admin'}</h3>
+                   <p className="text-[11px] font-black text-primary uppercase tracking-[0.2em] mt-1 mb-6 border border-primary/20 bg-primary/5 px-3 py-1 rounded-full">{adminAgent?.role || 'Agent'}</p>
+                   
+                   <div className="w-full grid grid-cols-2 gap-4 border-t border-zinc-50 dark:border-zinc-800 pt-6">
+                      <div className="text-left">
+                        <p className="text-[10px] font-black text-[#A3AED0] uppercase tracking-widest mb-1">Tasks</p>
+                        <p className="text-[18px] font-black text-zinc-800 dark:text-white italic tabular-nums">42</p>
+                      </div>
+                      <div className="text-left border-l border-zinc-50 dark:border-zinc-800 pl-4">
+                        <p className="text-[10px] font-black text-[#A3AED0] uppercase tracking-widest mb-1">Success</p>
+                        <p className="text-[18px] font-black text-zinc-800 dark:text-white italic tabular-nums">12</p>
+                      </div>
+                   </div>
+                </div>
+
+                {/* Upcoming Meetings */}
+                <div className="bg-white dark:bg-zinc-900 rounded-[24px] shadow-sm p-8">
+                   <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-[15px] font-black text-zinc-800 dark:text-white tracking-widest uppercase italic">Schedule</h3>
+                      <button><Settings className="w-4 h-4 text-zinc-400 hover:text-primary transition-colors" /></button>
+                   </div>
+                   <div className="space-y-6">
+                      {[
+                        { title: "Website Launch Prep", type: "Sync", time: "10:00 AM", color: "bg-primary" },
+                        { title: "UI/UX Review", type: "Review", time: "02:30 PM", color: "bg-emerald-500" },
+                        { title: "Content Strategy", type: "Brief", time: "04:00 PM", color: "bg-rose-500" },
+                      ].map((meet, i) => (
+                        <div key={i} className="flex gap-4 group cursor-pointer">
+                           <div className={`w-1 shrink-0 rounded-full ${meet.color} h-12 shadow-sm group-hover:h-14 transition-all duration-300`}></div>
+                           <div className="flex-1">
+                              <h4 className="text-[13px] font-bold text-zinc-700 dark:text-white leading-tight mb-1 group-hover:text-primary transition-colors">{meet.title}</h4>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-black text-[#A3AED0] uppercase tracking-widest">{meet.type}</span>
+                                <span className="text-zinc-300 dark:text-zinc-700 font-black">•</span>
+                                <span className="text-[10px] font-black text-[#A3AED0] uppercase tracking-widest">{meet.time}</span>
+                              </div>
+                           </div>
+                        </div>
+                      ))}
+                   </div>
+                   <button className="w-full mt-8 py-3 rounded-[14px] border-2 border-dashed border-zinc-100 dark:border-zinc-800 text-[11px] font-black text-[#A3AED0] uppercase tracking-[0.2em] hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all">
+                      Add New Slot
+                   </button>
+                </div>
+
+                {/* Quick Shortcuts */}
+                <div className="grid grid-cols-2 gap-4">
+                   <button className="bg-primary/5 border border-primary/10 p-5 rounded-[22px] flex flex-col items-center gap-2 group hover:bg-primary hover:text-white transition-all shadow-sm">
+                      <Smartphone className="w-6 h-6 text-primary group-hover:text-white" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">Mobile</span>
+                   </button>
+                   <button className="bg-emerald-500/5 border border-emerald-500/10 p-5 rounded-[22px] flex flex-col items-center gap-2 group hover:bg-emerald-500 hover:text-white transition-all shadow-sm">
+                      <Code2 className="w-6 h-6 text-emerald-500 group-hover:text-white" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">Backend</span>
+                   </button>
+                </div>
+
+                {/* Logout Button */}
+                <button 
+                  onClick={onLogout}
+                  className="w-full h-[60px] bg-rose-50 text-rose-500 dark:bg-rose-500/10 dark:text-rose-400 rounded-[18px] border border-rose-100 dark:border-rose-500/20 text-[12px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-rose-500 hover:text-white transition-all shadow-sm active:scale-95"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
+                </button>
+            </div>
+          </div>
+
+        </div>
       </main>
     </div>
   );

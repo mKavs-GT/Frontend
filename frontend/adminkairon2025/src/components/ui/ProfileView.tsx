@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { User, Mail, Phone, Building, Briefcase, MapPin, Calendar, Clock, Play, Square, CheckCircle2, Circle, AlertCircle } from "lucide-react";
+import { User, Mail, Phone, Building, Briefcase, MapPin, Calendar, Clock, Play, Square, CheckCircle2, Circle, AlertCircle, Bell, BellOff, ShieldCheck, Globe, Zap } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { usePushNotifications } from "../../hooks/usePushNotifications";
 
 // Image Imports
 import mraImg from '../../images/mra.png';
@@ -205,6 +206,7 @@ function getAgentKey(adminAgent: AdminAgent | null): string {
 export function ProfileView({ adminAgent }: ProfileViewProps) {
   const agentKey = getAgentKey(adminAgent);
   const profile = agentProfiles[agentKey] || agentProfiles["MRK"];
+  const { permission, isSubscribed, isLoading, error, subscribe, unsubscribe, sendTestNotification } = usePushNotifications();
 
   // ===============================
   // REAL-TIME CLOCK & TIME TRACKING
@@ -610,6 +612,129 @@ export function ProfileView({ adminAgent }: ProfileViewProps) {
                    </div>
                 </div>
 
+             </div>
+          </motion.div>
+          
+          {/* Notification & Security Settings */}
+          <motion.div 
+             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.25 }}
+             className="lg:col-span-8 bg-zinc-900/50 border border-zinc-800 backdrop-blur-xl rounded-3xl p-6 md:p-8"
+          >
+             <div className="space-y-8">
+                <div>
+                   <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                     <Bell className="w-5 h-5 text-yellow-400" /> Admin Alerts & Notifications
+                   </h3>
+                   <p className="text-sm text-zinc-500 mb-6">Receive critical alerts for consultation requests and system downtime directly on your device.</p>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Push Notification Status */}
+                      <div className="bg-black/30 border border-zinc-800 p-6 rounded-2xl flex flex-col justify-between">
+                         <div className="flex justify-between items-start mb-4">
+                            <div>
+                               <p className="text-xs text-zinc-500 font-bold uppercase mb-1">Status</p>
+                               <div className="flex items-center gap-2">
+                                  {isSubscribed ? (
+                                     <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                                        <ShieldCheck className="w-4 h-4" /> ACTIVE
+                                     </span>
+                                  ) : (
+                                     <span className="flex items-center gap-1.5 text-zinc-500 font-bold">
+                                        <BellOff className="w-4 h-4" /> DISABLED
+                                     </span>
+                                  )}
+                               </div>
+                            </div>
+                            <div className={`p-3 rounded-xl ${isSubscribed ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-800 text-zinc-500'}`}>
+                               <Bell className="w-6 h-6" />
+                            </div>
+                         </div>
+                         
+                         <div className="space-y-3">
+                            {error && (
+                               <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-400 flex items-start gap-2">
+                                  <AlertCircle className="w-4 h-4 shrink-0" />
+                                  <span>{error}</span>
+                               </div>
+                            )}
+                            
+                            <div className="flex flex-wrap gap-2">
+                               {!isSubscribed ? (
+                                  <button 
+                                     onClick={subscribe}
+                                     disabled={isLoading}
+                                     className="flex-1 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-black font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
+                                  >
+                                     {isLoading ? 'Processing...' : 'Enable Notifications'}
+                                  </button>
+                               ) : (
+                                  <button 
+                                     onClick={unsubscribe}
+                                     disabled={isLoading}
+                                     className="flex-1 px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-zinc-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
+                                  >
+                                     {isLoading ? 'Processing...' : 'Disable'}
+                                  </button>
+                               )}
+                               
+                               {isSubscribed && (
+                                  <button 
+                                     onClick={sendTestNotification}
+                                     disabled={isLoading}
+                                     className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider rounded-xl border border-white/10 transition-all"
+                                  >
+                                     Test
+                                  </button>
+                               )}
+                            </div>
+                         </div>
+                      </div>
+
+                      {/* Monitored Systems */}
+                      <div className="bg-black/30 border border-zinc-800 p-6 rounded-2xl">
+                         <p className="text-xs text-zinc-500 font-bold uppercase mb-4">Uptime Monitoring</p>
+                         <div className="space-y-4">
+                            <div className="flex items-center justify-between p-3 bg-zinc-800/30 rounded-xl border border-zinc-800/50">
+                               <div className="flex items-center gap-3">
+                                  <div className="p-2 bg-blue-500/10 rounded-lg"><Globe className="w-4 h-4 text-blue-400" /></div>
+                                  <div>
+                                     <p className="text-xs font-bold text-zinc-200">Main Site</p>
+                                     <p className="text-[10px] text-zinc-500">mkavs.com</p>
+                                  </div>
+                               </div>
+                               <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-[10px] font-bold">
+                                  ONLINE
+                               </div>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-zinc-800/30 rounded-xl border border-zinc-800/50">
+                               <div className="flex items-center gap-3">
+                                  <div className="p-2 bg-purple-500/10 rounded-lg"><Zap className="w-4 h-4 text-purple-400" /></div>
+                                  <div>
+                                     <p className="text-xs font-bold text-zinc-200">API Backend</p>
+                                     <p className="text-[10px] text-zinc-500">api.mkavs.com</p>
+                                  </div>
+                               </div>
+                               <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-[10px] font-bold">
+                                  ONLINE
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent md:from-zinc-800 via-zinc-800 to-transparent" />
+
+                <div>
+                   <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                     <AlertCircle className="w-5 h-5 text-red-400" /> Browser Compatibility
+                   </h3>
+                   <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-2xl">
+                      <p className="text-xs text-zinc-400 leading-relaxed">
+                         If you are using <span className="text-white font-bold">Brave Browser</span>, you must manually enable "Google Services for Push Messaging" in your browser settings (Settings &gt; Privacy &amp; Security &gt; Google Services) and restart the browser to receive notifications.
+                      </p>
+                   </div>
+                </div>
              </div>
           </motion.div>
 

@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Malt Pack of 2 | WeGrow</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <style>
+        .product-detail-page {
+            padding: 40px 0;
+        }
+
+        .p-breadcrumbs {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .p-breadcrumbs a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .p-top-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .p-image-box {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-image-box img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            object-fit: fill;
+        }
+
+        .zoom-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .p-info-box .save-badge {
+            background: #D32F2F;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .p-info-box h1 {
+            font-size: 34px;
+            font-weight: 800;
+            margin: 15px 0 5px;
+            color: #000;
+        }
+
+        .p-tagline {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .p-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .p-rating-row i {
+            color: #FFB800;
+        }
+
+        .p-buying-count {
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .p-price-row {
+            margin-bottom: 25px;
+        }
+
+        .p-current-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #D32F2F;
+            margin-right: 15px;
+        }
+
+        .p-old-price {
+            font-size: 18px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .p-shipping {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .p-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .qty-toggle {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 0 10px;
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .qty-val {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            border: none;
+        }
+
+        .btn-add-p-cart {
+            flex: 1;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .attr-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .attr-pill {
+            background: #F5F1E9;
+            color: #333;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Accordion Style */
+        .p-accordion {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .p-acc-header {
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: #fff;
+            font-weight: 700;
+        }
+
+        .p-acc-body {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.3s ease;
+            background: #fff;
+        }
+
+        .p-acc-body.active {
+            padding: 0 24px 24px;
+            max-height: 1000px;
+        }
+
+        .desc-accordion {
+            background: #004D2C;
+            color: #fff;
+            border-radius: 0;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .desc-accordion .p-acc-header {
+            background: #0D3B2B;
+            color: #fff;
+        }
+
+        .desc-accordion .p-acc-body {
+            background: #0D3B2B;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* Benefits & Use */
+        .benef-section {
+            background: #F1FDF6;
+            padding: 80px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .benef-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            text-align: left;
+        }
+
+        .benef-visual {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .benef-visual img {
+            width: 100%;
+            display: block;
+        }
+
+        .how-use-title {
+            text-align: center;
+            margin: 80px 0 40px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .use-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .use-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            padding-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .use-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .use-card-text {
+            padding: 25px;
+        }
+
+        .use-card-text h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .use-card-text p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .ingredients-title {
+            text-align: center;
+            margin: 100px 0 50px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .ingred-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .ingred-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .ingred-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .ingred-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .ingred-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .ingred-card p {
+            font-size: 11px;
+            color: #777;
+            line-height: 1.4;
+        }
+
+        .reviews-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        @media (max-width: 1024px) {
+
+            .p-top-grid,
+            .benef-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ingred-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <span>We have launched a <strong>new ABC Malt !!</strong> Don't miss out | <strong style="cursor:pointer;"
+                onclick="location.href='all-products.html'">Shop Now</strong></span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header-wrapper">
+        <div class="container">
+            <div class="header-main">
+                <a href="index.html" class="logo"><img src="assets/logo.png" alt="WeGrow Logo"></a>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="What are you looking for?">
+                    <i class='bx bx-search search-icon'></i>
+                </div>
+                <div class="header-utils">
+                    <button class="util-btn" onclick="openLoginModal()"><i class='bx bx-user'></i> <span>Sign in/
+                            Register</span></button>
+                    <button class="util-btn" onclick="openCart()">
+                        <div class="cart-icon-wrapper"><i class='bx bx-shopping-bag'></i> <span class="cart-badge"
+                                id="cartBadge">0</span></div>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="all-products.html" class="nav-link">Shop All</a>
+                <a href="index.html#shop-by-concern" class="nav-link">Shop by Concern</a>
+                <a href="about.html" class="nav-link">About Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container product-detail-page">
+            <div class="p-breadcrumbs">
+                <a href="index.html">Home</a> <span>|</span> <a href="all-products.html">All Products</a> <span>|</span>
+                ABC Malt Pack of 2
+            </div>
+
+            <div class="p-top-grid">
+                <div class="p-image-box">
+                    <img src="https://cdn.shopify.com/s/files/1/0901/3375/8246/files/ABCMaltFront.png?v=1751574913"
+                        alt="ABC Malt">
+                    <div class="zoom-icon"><i class='bx bx-search-alt'></i></div>
+                </div>
+                <div class="p-info-box">
+                    <span class="save-badge">Save 30%</span>
+                    <h1>ABC Malt Pack of 2</h1>
+                    <p class="p-tagline">Power-Packed Nutrition in Every Scoop</p>
+
+                    <div class="p-rating-row">
+                        <div class="stars"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i
+                                class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star-half'></i>
+                        </div>
+                        <span style="font-size:14px; color:#555;">39 reviews</span>
+                    </div>
+
+                    <div class="p-buying-count">
+                        <i class='bx bx-shopping-bag'></i> 156 customers buying this product
+                    </div>
+
+                    <div class="p-price-row">
+                        <span class="p-current-price">Rs. 699</span>
+                        <span class="p-old-price">Rs. 990</span>
+                        <p class="p-shipping"><a href="#" style="color:#000; text-decoration:underline;">Shipping</a>
+                            calculated at checkout.</p>
+                    </div>
+
+                    <div class="p-actions">
+                        <div class="qty-toggle">
+                            <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                            <input type="text" class="qty-val" value="1" readonly id="qtyInput">
+                            <button class="qty-btn" onclick="updateQty(1)">+</button>
+                        </div>
+                        <button class="btn-add-p-cart"
+                            onclick="addToCart('ABC Malt Pack of 2', 699, 'https://cdn.shopify.com/s/files/1/0901/3375/8246/files/ABCMaltFront.png?v=1751574913')">Add
+                            To Cart</button>
+                    </div>
+
+                    <div class="attr-pills">
+                        <span class="attr-pill">Energy Boost</span>
+                        <span class="attr-pill">Rich in Iron</span>
+                        <span class="attr-pill">Immunity Support</span>
+                        <span class="attr-pill">100% Natural</span>
+                    </div>
+
+                    <div class="p-accordion">
+                        <div class="p-acc-header" onclick="toggleAcc(this)">
+                            Product Suitable <span><i class='bx bx-minus'></i></span>
+                        </div>
+                        <div class="p-acc-body active">
+                            <p style="font-size:13px; color:#666; line-height:1.6; padding-top:10px;">
+                                • ABC Malt (Apple, Beetroot, Carrot) is perfectly suitable for all age groups. It serves
+                                as an excellent natural energy booster for children and adults, helping fulfill daily
+                                nutritional requirements with the goodness of real fruits and vegetables.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Width Accordion -->
+        <div class="p-accordion desc-accordion">
+            <div class="container">
+                <div class="p-acc-header" onclick="toggleAcc(this)" style="background:none;">
+                    Product Description <span><i class='bx bx-minus'></i></span>
+                </div>
+                <div class="p-acc-body active" style="background:none;">
+                    <h4 style="margin-bottom:10px;">Quantity : 400g (Pack of 2)</h4>
+                    <p>
+                        Experience the ultimate blend of health and taste with our ABC Malt. Carefully crafted with
+                        Apple, Beetroot, and Carrot extracts, enriched with premium nuts like Almonds and Pistachios.
+                        This 100% natural formulation is designed to improve hemoglobin levels, boost immunity, and
+                        provide a sustainable energy source throughout the day. No artificial colors or preservatives
+                        added.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Benefits -->
+        <section class="benef-section">
+            <div class="container">
+                <h2 style="font-size:28px; font-weight:800; margin-bottom:50px;">Product Benefits</h2>
+                <div class="benef-grid">
+                    <div class="benef-visual">
+                        <img src="https://theerthaa.com/cdn/shop/files/ABCMaltNew.jpg?v=1754995586&width=1200"
+                            alt="Benefits">
+                    </div>
+                    <div class="benef-accordions">
+                        <div class="p-accordion">
+                            <div class="p-acc-header" onclick="toggleAcc(this)">High Hemoglobin <span><i
+                                        class='bx bx-plus'></i></span></div>
+                            <div class="p-acc-body">Natural beetroot and carrot extracts help significantly improve iron
+                                absorption and hemoglobin levels.</div>
+                        </div>
+                        <div class="p-accordion">
+                            <div class="p-acc-header" onclick="toggleAcc(this)">Instant Energy <span><i
+                                        class='bx bx-plus'></i></span></div>
+                            <div class="p-acc-body">Clean carbohydrates from fruits provide an immediate and lasting
+                                energy surge for your morning.</div>
+                        </div>
+                        <div class="p-accordion">
+                            <div class="p-acc-header" onclick="toggleAcc(this)">Skin Nutrition <span><i
+                                        class='bx bx-plus'></i></span></div>
+                            <div class="p-acc-body">Rich in Vitamin A and C, it nourishes the skin from within,
+                                promoting a natural glow.</div>
+                        </div>
+                        <div class="p-accordion">
+                            <div class="p-acc-header" onclick="toggleAcc(this)">Immune Support <span><i
+                                        class='bx bx-plus'></i></span></div>
+                            <div class="p-acc-body">Antioxidants from apple and beetroot strengthen the body's natural
+                                defense mechanism.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Ingredients -->
+        <section class="container">
+            <h2 class="ingredients-title">Key Ingredients</h2>
+            <div class="ingred-grid">
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/FFEBEE/B71C1C/png?text=Apple" alt="Apple">
+                    <h4>Fresh Apple</h4>
+                    <p>Provides essential fiber and antioxidants for heart health...</p>
+                </div>
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/F3E5F5/4A148C/png?text=Beetroot" alt="Beetroot">
+                    <h4>Beetroot</h4>
+                    <p>Rich in nitrates and iron, perfect for blood purification...</p>
+                </div>
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/FFF3E0/E65100/png?text=Carrot" alt="Carrot">
+                    <h4>Carrot</h4>
+                    <p>Loaded with Beta-carotene which converts to Vitamin A...</p>
+                </div>
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/E8F5E9/1B5E20/png?text=Almonds" alt="Almonds">
+                    <h4>Almonds</h4>
+                    <p>Premium Cali almonds for healthy fats and brain health...</p>
+                </div>
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/FFFDE7/FBC02D/png?text=Honey" alt="Honey">
+                    <h4>Natural sweetener</h4>
+                    <p>Used as an alternative to refined sugar for a healthy taste...</p>
+                </div>
+                <div class="ingred-card">
+                    <img src="https://placehold.co/100x120/E1F5FE/01579B/png?text=Cashew" alt="Cashew">
+                    <h4>Cashews</h4>
+                    <p>Rich in magnesium and protein for muscle support...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How To Use -->
+        <section class="container">
+            <h2 class="how-use-title">How To Use</h2>
+            <div class="use-grid">
+                <div class="use-card">
+                    <img src="https://lakshmikrishnanaturals.com/cdn/shop/files/Final2.webp?v=1772014325&width=1946"
+                        alt="Step 1">
+                    <div class="use-card-text">
+                        <h4>Step 1</h4>
+                        <p>Take 2 scoops (approx 20g) of ABC Malt and mix it with a cup of warm or cold milk.</p>
+                    </div>
+                </div>
+                <div class="use-card">
+                    <img src="https://myvnaturals.com/wp-content/uploads/2025/10/abc-malt-apple-beetroot-carrot-250g.webp"
+                        alt="Step 2">
+                    <div class="use-card-text">
+                        <h4>Step 2</h4>
+                        <p>Stir well and consume immediately. Best taken during morning breakfast or evening snack time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Customer Reviews -->
+        <section class="reviews-section container">
+            <div class="review-detailed-wrap"
+                style="border-radius: 12px; border: 1px solid #eee; overflow: hidden; background: #fff;">
+                <div class="review-header-main"
+                    style="text-align: center; padding: 40px; border-bottom: 1px solid #eee;">
+                    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 30px;">Customer Reviews</h2>
+                    <div
+                        style="display: flex; justify-content: space-around; align-items: center; max-width: 900px; margin: 0 auto; gap: 40px;">
+                        <div class="rev-summ-left">
+                            <div
+                                style="font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                                <div style="color: #FFB800;"><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i
+                                        class='bx bxs-star'></i><i class='bx bxs-star'></i><i
+                                        class='bx bxs-star-half'></i></div>
+                                4.46 <span style="font-size: 14px; color: #777; font-weight: 400;">out of 5</span>
+                            </div>
+                            <p style="font-size: 13px; color: #555; text-align: left; margin-top: 10px;">Based on 39
+                                reviews <i class='bx bx-check-circle' style="color: #26C6B2;"></i></p>
+                        </div>
+                        <div class="rev-summ-middle" style="flex: 1; max-width: 300px;">
+                            <div
+                                style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; font-size: 12px;">
+                                <div style="color: #FFB800;">★★★★★</div>
+                                <div
+                                    style="flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 80%; height: 100%; background: #004D2C;"></div>
+                                </div>
+                                <span>31</span>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; font-size: 12px;">
+                                <div style="color: #FFB800;">★★★★☆</div>
+                                <div
+                                    style="flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 15%; height: 100%; background: #004D2C;"></div>
+                                </div>
+                                <span>6</span>
+                            </div>
+                            <div
+                                style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; font-size: 12px; color: #ccc;">
+                                <div>★★★☆☆</div>
+                                <div
+                                    style="flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 5%; height: 100%; background: #004D2C;"></div>
+                                </div>
+                                <span>2</span>
+                            </div>
+                        </div>
+                        <div class="rev-summ-right">
+                            <button class="btn-write-review"
+                                style="background: #004D2C; color: #fff; padding: 15px 40px; border-radius: 100px; font-weight: 700;">Write
+                                a review</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-filter-strip"
+                    style="padding: 15px 40px; border-bottom: 1px solid #eee; display: flex; align-items: center; font-size: 14px; color: #004D2C; font-weight: 700; cursor: pointer;">
+                    Most Recent <i class='bx bx-chevron-down' style="margin-left: 8px; font-size: 18px;"></i>
+                </div>
+
+                <div class="review-list"
+                    style="padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: #f9f9f9;">
+                    <div class="rev-card-full"
+                        style="background: #fff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                            <div style="color: #FFB800; font-size: 14px;"><i class='bx bxs-star'></i><i
+                                    class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i
+                                    class='bx bxs-star'></i></div>
+                            <span style="font-size: 12px; color: #999;">02/26/2025</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                            <div
+                                style="width: 40px; height: 40px; border-radius: 50%; background: #E1F5FE; color: #0288D1; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                <i class='bx bx-user'></i>
+                            </div>
+                            <span style="font-weight: 700; font-size: 14px; color: #004D2C;">Anitha S.</span>
+                        </div>
+                        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 5px;">Best Health Supplement</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.6;">My kids love the taste when mixed
+                            with milk. I can see a visible difference in their energy levels!</p>
+                    </div>
+                    <div class="rev-card-full"
+                        style="background: #fff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                            <div style="color: #FFB800; font-size: 14px;"><i class='bx bxs-star'></i><i
+                                    class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i
+                                    class='bx bxs-star'></i></div>
+                            <span style="font-size: 12px; color: #999;">02/03/2025</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                            <div
+                                style="width: 40px; height: 40px; border-radius: 50%; background: #E1F5FE; color: #0288D1; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                                <i class='bx bx-user'></i>
+                            </div>
+                            <span style="font-weight: 700; font-size: 14px; color: #004D2C;">Rahul V.</span>
+                        </div>
+                        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 5px;">Very Effective</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.6;">Great natural product. Highly
+                            recommend for people with low hemoglobin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer-base">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo"><img src="assets/favicon.png" alt="WeGrow Logo"></a>
+                    <ul class="contact-links">
+                        <li><i class='bx bx-envelope'></i> support@wegrow.com</li>
+                        <li><i class='bx bx-phone'></i> +91 90000 00000</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul class="footer-links">
+                        <li><a href="all-products.html">Combo Products</a></li>
+                        <li><a href="all-products.html">Hair Care</a></li>
+                        <li><a href="all-products.html">Face Care</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 WeGrow. Built by Advanced Agentic Coding.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart (<span id="cartCountTitle">0</span> items)</h3>
+            <button class="close-cart" onclick="closeCart()"><i class='bx bx-x'></i></button>
+        </div>
+        
+        <div class="cart-body-scroll">
+            <!-- Free Gift Progress -->
+            <div class="gift-progress-section">
+                <p class="gift-text">Unlock Free Hibiscus Shampoo Worth Rs 275</p>
+                <div class="progress-track-wrap">
+                    <div class="progress-fill-bar" id="cartProgressFill" style="width: 20%;"></div>
+                    <!-- Milestone 1 -->
+                    <div class="progress-milestone" style="left: 70%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">Hibiscus<br>Shampoo</div>
+                    </div>
+                    <!-- Milestone 2 -->
+                    <div class="progress-milestone" style="left: 95%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">3 Goat<br>Milk Soap</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upsell-checkbox-row">
+                <input type="checkbox" id="weightlossCheck">
+                <label for="weightlossCheck">Start your Weightloss journey</label>
+            </div>
+
+            <div class="coupon-applied-status">
+                <div class="coupon-details">
+                    <div style="display:flex; align-items:center; gap:8px; font-weight:800; color:#2E7D32; font-size:13px;">
+                        <i class='bx bxs-check-shield'></i> WELCOME applied
+                    </div>
+                    <div class="benefit-tag">Saved ₹59.00</div>
+                    <i class='bx bx-trash' style="cursor:pointer; color:#999;"></i>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px dashed #eee;">
+                    <span style="font-size:12px; font-weight:700;">1 coupons available</span>
+                    <span style="font-size:12px; font-weight:800; color:#000; cursor:pointer;">View Coupons <i class='bx bx-chevron-right'></i></span>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin: 15px 0;">
+                <span style="font-size:13px; font-weight:800; text-decoration:underline; cursor:pointer;">Add Special Instructions</span>
+            </div>
+
+            <div class="cart-item-list" id="cartItemsList">
+                <!-- Items populated via JS -->
+            </div>
+
+            <div style="padding: 15px;">
+                <div style="background:white; border-radius:12px; padding:15px; border:1px solid #eee;">
+                    <h4 style="font-size:13px; font-weight:800; margin-bottom:12px;">Cart Upsell</h4>
+                    <div style="display:flex; align-items:center; gap:12px; border:1px solid #eee; border-radius:8px; padding:8px;">
+                        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=100" style="width:50px; border-radius:4px;">
+                        <div style="flex:1;">
+                            <h5 style="font-size:11px; font-weight:700;">Hibiscus Shampoo</h5>
+                            <div style="font-size:12px; font-weight:800;">₹275.00</div>
+                        </div>
+                        <button style="background:#f0f0f0; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">+ Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-sticky-footer">
+            <div class="savings-bar">₹59.00 Saved so far!</div>
+            <div class="total-summary-row">
+                <div style="font-size:15px; font-weight:800;">Estimated Total</div>
+                <div style="text-align:right;">
+                    <div style="font-size:12px; color:#999; text-decoration:line-through;" id="cartSubtotal">₹590.00</div>
+                    <div style="font-size:22px; font-weight:800;" id="cartTotal">₹531.00</div>
+                    <div style="font-size:11px; color:#26C6B2; font-weight:700;">(10% OFF)</div>
+                </div>
+            </div>
+            <button class="checkout-btn-black" onclick="initiateCheckout()">
+                <span>Proceed to Checkout</span>
+                <div class="payment-logos-img">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Paytm_Logo.png" alt="Paytm" style="height:12px; filter:brightness(0) invert(1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_Logo.svg" alt="GPay" style="height:12px; filter:brightness(0) invert(1);">
+                </div>
+            </button>
+            <div style="text-align:center; font-size:10px; color:#999; margin-top:12px;">
+                Powered by <img src="https://placehold.co/50x10/000000/FFFFFF/png?text=GoKwik" style="vertical-align:middle; filter:grayscale(1);">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function toggleAcc(header) {
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('i');
+            body.classList.toggle('active');
+            if (body.classList.contains('active')) {
+                icon.className = 'bx bx-minus';
+            } else {
+                icon.className = 'bx bx-plus';
+            }
+        }
+
+        function updateQty(val) {
+            const input = document.getElementById('qtyInput');
+            let current = parseInt(input.value);
+            current += val;
+            if (current < 1) current = 1;
+            input.value = current;
+        }
+
+
+    </script>
+</body>
+
+</html>

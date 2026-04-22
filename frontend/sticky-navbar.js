@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Mark preloader as shown for the session as soon as any subpage is visited
+    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
+        sessionStorage.setItem('preloaderShown', 'true');
+    }
     let lastScrollY = window.scrollY;
     // Attempt to find the main toolbar by ID first, then by class if not found
     const toolbar = document.getElementById('main-toolbar') || document.querySelector('.main-toolbar');
@@ -44,7 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global Auth Status check for all pages with sticky-navbar
     async function checkAuthStatusGlobal() {
         try {
-            const baseUrl = (window.MKAVS_CONFIG && window.MKAVS_CONFIG.API_BASE_URL) ? window.MKAVS_CONFIG.API_BASE_URL : 'https://api.mkavs.com';
+            // Robustly determine API URL
+            const baseUrl = (window.MKAVS_CONFIG && window.MKAVS_CONFIG.API_BASE_URL) 
+                ? window.MKAVS_CONFIG.API_BASE_URL 
+                : 'https://api-mkavs.vercel.app'; // Fallback to production API
+
             const response = await fetch(baseUrl + '/auth/status', {
                 credentials: 'include'
             });
@@ -52,10 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const loginBtns = document.querySelectorAll('.login-btn, #desktop-login-btn');
             const userIcons = document.querySelectorAll('.fa-regular.fa-user');
-
+            
             if (data.loggedIn) {
                 loginBtns.forEach(btn => {
-                    if (btn.textContent.trim().toLowerCase() === 'login') {
+                    // Only change if it's currently showing "Login"
+                    const text = btn.textContent.trim().toLowerCase();
+                    if (text === 'login') {
                         btn.textContent = 'Logout';
                         btn.href = baseUrl + '/auth/logout';
                         btn.addEventListener('click', () => {
@@ -68,19 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {
-                        try {
-                            const currentPath = window.location.pathname;
-                            const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
-                            // Always update href to profile based on relative path
-                            parent.href = isRoot ? './profile/profile.html' : '../profile/profile.html';
-                        } catch(e) {}
+                        parent.href = '/profile/profile.html';
                     }
                     if (data.user) {
                         const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
                         const imgEl = document.createElement('img');
                         imgEl.src = profileImageUrl;
                         imgEl.alt = "Profile";
-                        // Basic stylings that fit everywhere
                         imgEl.style.width = "24px";
                         imgEl.style.height = "24px";
                         imgEl.style.borderRadius = "50%";
@@ -92,35 +96,38 @@ document.addEventListener('DOMContentLoaded', () => {
                         imgEl.onerror = function() {
                             this.src = "https://ui-avatars.com/api/?name=User&background=ccff00&color=000&size=150";
                         };
-                        icon.parentElement.replaceChild(imgEl, icon);
+                        
+                        // Only replace if the icon is still there
+                        if (icon.parentNode) {
+                            icon.parentNode.replaceChild(imgEl, icon);
+                        }
                     }
                 });
             } else {
-                userIcons.forEach(icon => {
-                    const parent = icon.parentElement;
-                    if (parent) {
-                        try {
-                            const currentPath = window.location.pathname;
-                            const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
-                            parent.href = isRoot ? './loginpg/login.html' : '../loginpg/login.html';
-                        } catch(e) {}
+                // User is not logged in
+                loginBtns.forEach(btn => {
+                    if (btn.textContent.trim().toLowerCase() === 'logout') {
+                        btn.textContent = 'Login';
+                        btn.href = '/loginpg/login.html';
                     }
                 });
 
-                // Redirect "Book Us" buttons in toolbars or everywhere to Login if unauthenticated
-                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
-                bookUsLinks.forEach(link => {
-                    try {
-                        const currentPath = window.location.pathname;
-                        const isRoot = currentPath.endsWith('/') || currentPath.endsWith('index.html') && !currentPath.includes('/portfolio/') && !currentPath.includes('/frontend/');
-                        link.href = isRoot ? './loginpg/login.html' : '../loginpg/login.html';
-                    } catch(e) {}
+                userIcons.forEach(icon => {
+                    const parent = icon.parentElement;
+                    if (parent) {
+                        parent.href = '/loginpg/login.html';
+                    }
                 });
 
-                // Actively kick out users who navigate directly to consult.html while unauthenticated
-                const currentPath = window.location.pathname;
-                if (currentPath.includes('consult.html')) {
-                    window.location.href = '../loginpg/login.html';
+                // Update "Book Us" links to point to login if they require auth
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
+                bookUsLinks.forEach(link => {
+                    link.href = '/loginpg/login.html';
+                });
+
+                // Actively protect the consult page
+                if (window.location.pathname.includes('consult/consult.html')) {
+                    window.location.href = '/loginpg/login.html';
                 }
             }
         } catch (error) {
