@@ -25,6 +25,25 @@
             }
         }
     </script>
+    <script>
+        const navEntries = performance.getEntriesByType('navigation');
+        const navType = navEntries.length > 0 ? navEntries[0].type : '';
+        const isReload = navType === 'reload';
+        const isWorksHash = window.location.hash === '#our-works' || window.location.hash === '#slide-3';
+
+        // Aggressive preloader skip for reloads, existing sessions, or direct works links
+        if (sessionStorage.getItem('preloaderShown') || isReload || isWorksHash) {
+            document.documentElement.classList.add('skip-preloader-transition');
+            if (isWorksHash) {
+                document.documentElement.classList.add('jumping-to-works');
+            }
+            sessionStorage.setItem('preloaderShown', 'true');
+        }
+    </script>
+    <style>
+        .skip-preloader-transition #preloader { display: none !important; transition: none !important; }
+        .jumping-to-works #slide-1 { opacity: 0 !important; }
+    </style>
 </head>
 
 <body class="h-full w-full">
@@ -34,8 +53,8 @@
         <div class="relative flex flex-col items-center justify-center h-full w-full">
             <!-- Video Container -->
             <div class="relative">
-                <video autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
-                    <source src="/images/mascot.mp4" type="video/mp4">
+                <video id="mascot-preloader-video" autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
+                    <source src="../images/mascot.mp4" type="video/mp4">
                 </video>
                 <!-- Progress Bar Overlapping Base -->
                 <div
@@ -72,12 +91,12 @@
                 <!-- Links & Icon -->
                 <div
                     class="flex items-center space-x-4 text-[10px] sm:text-xs font-medium text-white uppercase tracking-wider">
-                    <a href="/mobile/index.html" class="hover:text-[#c7f908] transition-colors">Home</a>
+                    <a href="/mobile/index.html" id="mobile-home-link" class="hover:text-[#c7f908] transition-colors">Home</a>
                     <a href="/mobile/about/about.html" class="hover:text-[#c7f908] transition-colors">About</a>
                     <a href="/mobile/brandpg/index.html" class="hover:text-[#c7f908] transition-colors">Branding</a>
                     <a href="/mobile/pricingpage/pricing.html"
                         class="hover:text-[#c7f908] transition-colors">Pricing</a>
-                    <a href="/mobile/consult/consult.html" class="hover:text-[#c7f908] transition-colors">Book Us</a>
+                    <a href="/mobile/consult/consult.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors">Book Us</a>
 
                     <!-- Profile Icon -->
                     <a href="/mobile/profile/profile.html"

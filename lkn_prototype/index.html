@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeGrow - Comprehensive Prototype</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <style>
+        .kwikpass-benefits {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .k-benefit {
+            text-align: center;
+            flex: 1;
+            background: #F9F8F3;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .k-benefit i {
+            color: #FFB800;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .k-benefit h5 {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .k-benefit p {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. CUSTOM NOTIFICATION PROMPT -->
+    <div class="push-notification-prompt" id="pushNotificationPrompt">
+        <button class="push-close" onclick="closePush()"
+            style="position: absolute; top: 12px; right: 12px; color: #004D2C; font-size: 20px; background: none; border: none; cursor: pointer; z-index: 10;"><i
+                class='bx bx-x'></i></button>
+        <div class="push-logo">
+            <img src="assets/logo.png" alt="WeGrow Logo">
+        </div>
+        <div class="push-text">
+            <h4>This website would like to send you awesome updates and offers!</h4>
+            <p>Notifications can be turned off anytime from browser settings.</p>
+        </div>
+        <div class="push-btns">
+            <button class="p-btn p-btn-deny" onclick="closePush()">Don't Allow</button>
+            <button class="p-btn p-btn-allow" onclick="closePush()">Allow</button>
+        </div>
+    </div>
+
+    <!-- 1. ANNOUNCEMENT BAR -->
+    <div class="announcement-bar">
+        <span>We have launched a <strong>new ABC Malt !!</strong> Don't miss out | <strong>Shop Now</strong></span>
+    </div>
+
+    <!-- 2. HEADER -->
+    <header class="header-wrapper">
+        <div class="container">
+            <div class="header-main">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.png" alt="WeGrow Logo">
+                </a>
+                <div class="search-container">
+                    <input type="text" class="search-bar" placeholder="What are you looking for?">
+                    <i class='bx bx-search search-icon'></i>
+                </div>
+                <div class="header-utils">
+                    <button class="util-btn" id="btnAuthToggle" onclick="openLoginModal()">
+                        <i class='bx bx-user'></i>
+                        <span id="authText">Sign in/ Register</span>
+                    </button>
+                    <button class="util-btn" onclick="openCart()">
+                        <div class="cart-icon-wrapper">
+                            <i class='bx bx-shopping-bag'></i>
+                            <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <div class="nav-item">
+                    <a class="nav-link">Shop All <i class='bx bx-chevron-down'></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-shop-all">
+                            <div class="mega-banner">
+                                <p style="font-size: 11px; font-weight: 500; margin-bottom: 10px; opacity: 0.8;">Tested.
+                                    Trusted. Truly Effective.</p>
+                                <h2 style="font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 15px;">
+                                    Dazzling Solution With Natural Touch</h2>
+                                <div style="margin-bottom: 20px;"><img
+                                        src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=150"
+                                        alt="Prod" style="width:100%; border-radius:6px;"></div>
+                                <a href="#" class="btn-white"
+                                    style="display:inline-block; padding: 10px 20px; font-size: 12px;">Shop All</a>
+                            </div>
+                            <div class="mega-columns">
+                                <div class="mega-column">
+                                    <h4
+                                        style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                                        Face Care</h4>
+                                    <ul>
+                                        <li><a href="#">Combo & Kits</a></li>
+                                        <li><a href="#">Face gels</a></li>
+                                        <li><a href="#">Face Serums</a></li>
+                                        <li><a href="#">Face Wash</a></li>
+                                        <li><a href="#">Under Eye Care</a></li>
+                                        <li><a href="#">Lip Care</a></li>
+                                        <li><a href="#">Mask, toner etc</a></li>
+                                        <li><a href="#">Men Face Care</a></li>
+                                        <li><a href="all-products.html">View all</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-column">
+                                    <h4
+                                        style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                                        Hair Care</h4>
+                                    <ul>
+                                        <li><a href="#">Combos & Kits</a></li>
+                                        <li><a href="#">Hair Oils</a></li>
+                                        <li><a href="#">Hair Serums</a></li>
+                                        <li><a href="#">Hair Shampoos</a></li>
+                                        <li><a href="#">Hair Mask</a></li>
+                                        <li><a href="#">Hair Supplements</a></li>
+                                        <li><a href="#">Men Products</a></li>
+                                        <li><a href="#">Hair Accessories</a></li>
+                                        <li><a href="#">Hair Gel</a></li>
+                                        <li><a href="all-products.html">View all</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-column">
+                                    <h4
+                                        style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                                        Body Care</h4>
+                                    <ul>
+                                        <li><a href="#">Combos & Kits</a></li>
+                                        <li><a href="#">Natural Soaps</a></li>
+                                        <li><a href="#">Crack Heel</a></li>
+                                        <li><a href="#">Dark Neck</a></li>
+                                        <li><a href="#">Body Lotions</a></li>
+                                        <li><a href="#">Wellness Essentials</a></li>
+                                        <li><a href="all-products.html">View all</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-column">
+                                    <h4
+                                        style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                                        Baby Care</h4>
+                                    <ul>
+                                        <li><a href="#">Combos & Kits</a></li>
+                                        <li><a href="#">Baby Face Wash</a></li>
+                                        <li><a href="#">Baby Soaps</a></li>
+                                        <li><a href="#">Shampoos & Lotions</a></li>
+                                        <li><a href="all-products.html">View all</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item">
+                    <a class="nav-link" href="#superfoods-section">Superfoods <i class='bx bx-chevron-down'></i></a>
+                    <div class="simple-dropdown">
+                        <a href="#">Combos</a>
+                        <a href="#">Weight Loss</a>
+                        <a href="#">Weight Gain</a>
+                        <a href="#">Malts</a>
+                        <a href="#">Supplements</a>
+                        <a href="#">Musli & Mixture</a>
+                        <a href="#">Wine</a>
+                        <a href="all-products.html">View all</a>
+                    </div>
+                </div>
+
+                <div class="nav-item">
+                    <a class="nav-link" href="#shop-by-concern">Shop by Concern <i class='bx bx-chevron-down'></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-concern" style="display: flex; gap: 0; padding: 20px 40px;">
+                            <div class="concern-sidebar-nav"
+                                style="flex: 0 0 250px; border-right: 1px solid #eee; padding-right: 20px;">
+                                <button class="btn-concern-nav"
+                                    style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #f0f0f0; border: none; padding: 15px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; color: #000;">
+                                    Target Your Concern <i class='bx bx-chevron-right'></i>
+                                </button>
+                            </div>
+                            <div class="concern-grid-menu"
+                                style="flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 20px; padding-left: 40px;">
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://tiimg.tistatic.com/fp/4/008/587/health-gainer-weight-gainer-30-veg-capsules-543.jpg"
+                                        alt="Weight" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Weight
+                                        Management</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://vithoba.co.in/cdn/shop/files/Kesh-Hair-Oil-01_00f396d2-b1a5-4e2d-b1c8-af8bc34d0a08.png?v=1756980957"
+                                        alt="Hair" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Hair Loss/Hair
+                                        Growth</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=240&h=180&fit=crop"
+                                        alt="Skin" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Skin Glow &
+                                        Tan</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=240&h=180&fit=crop"
+                                        alt="Dandruff" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Dandruff
+                                        Care</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://dhathriayurveda.in/cdn/shop/files/pimple_clear_neem_facewash_200_ml.webp?v=1739183020"
+                                        alt="Pimple" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Pimple &
+                                        Blackspot</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=240&h=180&fit=crop"
+                                        alt="Dry Skin" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Dry Skin</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=240&h=180&fit=crop"
+                                        alt="Under eye" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Under-Eye & Dark
+                                        Lip</span>
+                                </div>
+                                <div class="concern-item-menu" style="text-align: center;">
+                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&h=180&fit=crop"
+                                        alt="Open pore" style="width: 100%; border-radius: 20px; margin-bottom: 12px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Open Pore &
+                                        Pigmentation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item">
+                    <a href="about.html" class="nav-link">About Us</a>
+                </div>
+
+                <div class="nav-item">
+                    <a class="nav-link">More <i class='bx bx-chevron-down'></i></a>
+                    <div class="simple-dropdown">
+                        <a href="#store-locations">Store Location</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Contact</a>
+                        <a href="#">FAQ's</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- 3. MAIN CONTENT -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="swiper heroSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide hero-slide">
+                        <img src="assets/hero_banner_1.png"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Hero Banner 1">
+                    </div>
+                    <div class="swiper-slide hero-slide">
+                        <img src="assets/hero_banner_2.png"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Hero Banner 2">
+                    </div>
+                    <div class="swiper-slide hero-slide">
+                        <img src="assets/hero_banner_3.png"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Hero Banner 3">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </section>
+
+        <!-- Shop by Concern (Circular) -->
+        <section class="container">
+            <h2 class="section-heading" style="margin-top:40px; margin-bottom: 10px;">Shop by Concern</h2>
+            <div class="circular-concerns">
+                <div class="circular-item">
+                    <div class="circular-img"><img
+                            src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=200" alt="Skin"></div>
+                    <span>Skin</span>
+                </div>
+                <div class="circular-item">
+                    <div class="circular-img"><img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPSbEXXqxabluJr6-JV581dmHrAc6XxR2qwQ&s"
+                            alt="Hair"></div>
+                    <span>Hair</span>
+                </div>
+                <div class="circular-item">
+                    <div class="circular-img"><img
+                            src="https://cdn.shopify.com/s/files/1/0761/6577/5649/files/shutterstock_613737830-min.jpg"
+                            alt="Body"></div>
+                    <span>Body</span>
+                </div>
+                <div class="circular-item">
+                    <div class="circular-img"><img
+                            src="https://www.ayurwoman.com.au/wp-content/uploads/2017/12/Ayurwoman-Ayurveda-Clinic-400x367.jpg"
+                            alt="Face"></div>
+                    <span>Face</span>
+                </div>
+                <div class="circular-item">
+                    <div class="circular-img"><img
+                            src="https://images.unsplash.com/photo-1519735777090-ec97162dc266?w=200" alt="Baby"></div>
+                    <span>Baby Care</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Real Stories Section -->
+        <!-- Our Real Stories Section -->
+        <section class="container"
+            style="padding: 60px 0; background: var(--background-cream); margin-top: 40px; border-radius: 20px;">
+            <h2 class="section-heading" style="margin-top: 0; text-align:center;">Real Stories, Real Results</h2>
+            <div class="stories-grid" style="justify-content:center;">
+                <!-- Card 1 -->
+                <div class="story-card">
+                    <div class="story-img-wrap">
+                        <img class="main-img"
+                            src="https://cdn01.pharmeasy.in/dam/products_otc/P19445/inlife-whey-protein-powder-for-women-ayurvedic-herbs-with-weight-management-and-hsn-500g-chocolate-2-1741328360.jpg"
+                            alt="Story">
+                        <div class="story-circle-icon"><img
+                                src="https://cdn01.pharmeasy.in/dam/products_otc/P19445/inlife-whey-protein-powder-for-women-ayurvedic-herbs-with-weight-management-and-hsn-500g-chocolate-2-1741328360.jpg"
+                                alt="Prod">
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4>Weight Loss Powder (1kg)</h4>
+                        <p>Natural Slim And Strength</p>
+                        <div class="story-rating"><i class='bx bxs-star'></i> 4.61 <span>| 1161 Reviews</span></div>
+                        <div><span class="story-price">Rs. 945</span> <span class="story-old-price">Rs. 999</span></div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="story-card">
+                    <div class="story-img-wrap">
+                        <img class="main-img"
+                            src="https://www.jiomart.com/images/product/original/rvrmnykgzq/herbal-tatva-heena-based-hair-colour-40g-ayurvedic-ingredients-long-lasting-hair-color-1-x-40g-product-images-orvrmnykgzq-p598175181-0-202303271409.jpg?im=Resize=(1000,1000)"
+                            alt="Story">
+                        <div class="story-circle-icon"><img
+                                src="https://www.jiomart.com/images/product/original/rvrmnykgzq/herbal-tatva-heena-based-hair-colour-40g-ayurvedic-ingredients-long-lasting-hair-color-1-x-40g-product-images-orvrmnykgzq-p598175181-0-202303271409.jpg?im=Resize=(1000,1000)"
+                                alt="Prod"></div>
+                    </div>
+                    <div class="story-content">
+                        <h4>Henna Hair Dye</h4>
+                        <p>Henna Keep Your Hair Black</p>
+                        <div class="story-rating"><i class='bx bxs-star'></i> 4.4 <span>| 239 Reviews</span></div>
+                        <div><span class="story-price">Rs. 300</span> <span class="story-old-price">Rs. 350</span></div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="story-card">
+                    <div class="story-img-wrap">
+                        <img class="main-img"
+                            src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=300&h=400&fit=crop"
+                            alt="Story">
+                        <div class="story-circle-icon"><img
+                                src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=100" alt="Prod">
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4>Hair Growth Booster Kit</h4>
+                        <p>Helps To Prevent Hair Fall</p>
+                        <div class="story-rating"><i class='bx bxs-star'></i> 4.58 <span>| 279 Reviews</span></div>
+                        <div><span class="story-price">Rs. 1,075</span> <span class="story-old-price">Rs. 1,289</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="story-card">
+                    <div class="story-img-wrap">
+                        <img class="main-img"
+                            src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=300&h=400&fit=crop"
+                            alt="Story">
+                        <div class="story-circle-icon"><img
+                                src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?w=100" alt="Prod">
+                        </div>
+                    </div>
+                    <div class="story-content">
+                        <h4>ABC Malt</h4>
+                        <p>Get Your Health Back</p>
+                        <div class="story-rating"><i class='bx bxs-star'></i> 4.41 <span>| 333 Reviews</span></div>
+                        <div><span class="story-price">Rs. 395</span> <span class="story-old-price">Rs. 449</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Product Carousels will be injected here via JS -->
+        <div id="superfoods-section">
+            <div id="dynamic-carousels-container"></div>
+        </div>
+
+        <!-- Shop By Concern Grid (Square) -->
+        <section id="shop-by-concern" class="concern-grid-new-container">
+            <div class="container">
+                <h2 class="section-heading" style="margin-top: 0;">Shop By Concern</h2>
+                <div class="concern-grid-wrapper">
+                    <div class="concern-card-new">
+                        <img src="https://dhathriayurveda.in/cdn/shop/files/pimple_clear_neem_facewash_200_ml.webp?v=1739183020"
+                            alt="Acne">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Weight<br>Management</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=400" alt="Hair Loss">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Hair Loss/Hair<br>Growth</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400" alt="Skin Glow">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Skin Glow &<br>Tan</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://vithoba.co.in/cdn/shop/files/Kesh-Hair-Oil-01_00f396d2-b1a5-4e2d-b1c8-af8bc34d0a08.png?v=1756980957"
+                            alt="Dandruff">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Dandruff<br>Care</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=400" alt="Pimple">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Pimple &<br>Blackspot</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://vithoba.co.in/cdn/shop/files/Kesh-Hair-Oil-01_00f396d2-b1a5-4e2d-b1c8-af8bc34d0a08.png?v=1756980957"
+                            alt="Under-eye">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Under-Eye &<br>Dark Lip</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                    <div class="concern-card-new">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"
+                            alt="Pigmentation">
+                        <div class="concern-gradient"></div>
+                        <div class="concern-text-new">Open pore &<br>Pigmentation</div>
+                        <div class="concern-arrow"><i class='bx bx-chevron-right'></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop by Location -->
+        <section id="store-locations" class="container" style="margin-bottom: 80px; padding-top: 40px;">
+            <h2 class="section-heading" style="margin-bottom: 40px;">Shop by Location</h2>
+            <div class="stores-grid">
+                <div class="store-card">
+                    <img src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=600" alt="Chennai Store">
+                    <div class="store-info">
+                        <div class="store-loc-row">
+                            <i class='bx bx-current-location store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <h4>CHENNAI VADAPALANI</h4>
+                                <p>New no 21, old no H-16, jawaharlal nehru road, (100 feet road) Vadapalani, Chennai -
+                                    600026</p>
+                            </div>
+                        </div>
+                        <div class="store-loc-row" style="margin-bottom: 0;">
+                            <i class='bx bx-mobile-alt store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <p>7010668843</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-card">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600" alt="Velachery Store">
+                    <div class="store-info">
+                        <div class="store-loc-row">
+                            <i class='bx bx-current-location store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <h4>CHENNAI VELACHERY</h4>
+                                <p>No.15/26, 1st Floor, North Vijaya Nagar, 100 Feet Bypass Road, Velachery, Chennai -
+                                    600042</p>
+                            </div>
+                        </div>
+                        <div class="store-loc-row" style="margin-bottom: 0;">
+                            <i class='bx bx-mobile-alt store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <p>9087768115</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-card">
+                    <img src="https://cdn.shopify.com/s/files/1/0064/8907/9893/files/20160320_162712_1024x1024.jpg?v=1549711167"
+                        alt="Bangalore Store">
+                    <div class="store-info">
+                        <div class="store-loc-row">
+                            <i class='bx bx-current-location store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <h4>BANGALORE</h4>
+                                <p>996, 9th main, 7th sector, HSR Layout, near Union Bank, Bengaluru, Karnataka 560102
+                                </p>
+                            </div>
+                        </div>
+                        <div class="store-loc-row" style="margin-bottom: 0;">
+                            <i class='bx bx-mobile-alt store-loc-icon'></i>
+                            <div class="store-loc-text">
+                                <p>7899117794</p>
+                            </div>
+                            <div class="view-all-wrapper" style="margin-top: 40px;">
+                                <button class="btn-view-all-dark"
+                                    onclick="window.location.href='all-products.html'">View All Stores <i
+                                        class='bx bx-chevron-right'></i></button>
+                            </div>
+        </section>
+
+        <!-- GLOBAL FOOTER BLOCK -->
+        <div class="global-footer-block">
+            <div class="container">
+                <div class="value-props">
+                    <div class="prop-card">
+                        <div class="prop-icon"><i class='bx bxs-truck'></i></div>
+                        <h3 class="prop-title">On Time Delivery</h3>
+                        <p class="prop-desc">Get your orders delivered on time, every time.</p>
+                    </div>
+                    <div class="prop-card">
+                        <div class="prop-icon"><i class='bx bx-support'></i></div>
+                        <h3 class="prop-title">24x7 Support</h3>
+                        <p class="prop-desc">We're here for you 24/7 to assist with any queries.</p>
+                    </div>
+                    <div class="prop-card">
+                        <div class="prop-icon"><i class='bx bxs-medal'></i></div>
+                        <h3 class="prop-title">Rewards Points</h3>
+                        <p class="prop-desc">Collect reward points and redeem them with ease.</p>
+                    </div>
+                    <div class="prop-card">
+                        <div class="prop-icon"><i class='bx bxs-credit-card-front'></i></div>
+                        <h3 class="prop-title">Secure Payment</h3>
+                        <p class="prop-desc">Enjoy safe and encrypted transactions every time.</p>
+                    </div>
+                </div>
+
+                <div class="app-promo-banner" style="background-color: #EEFEF4;">
+                    <div class="app-img-wrap">
+                        <img src="assets/phone.png" alt="WeGrow App">
+                    </div>
+                    <div class="app-promo-content">
+                        <h2>Get <span>₹100 OFF</span> your First Order</h2>
+                        <p>Download the WeGrow App and enjoy exclusive app-only offers and rewards.</p>
+                        <div class="app-store-btns">
+                            <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=App+Store" alt="App Store">
+                            <img src="https://placehold.co/150x44/000000/FFFFFF/png?text=Google+Play" alt="Google Play">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer-base">
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-col">
+                            <a href="#" class="footer-logo">
+                                <img src="assets/favicon.png" alt="WeGrow Logo">
+                            </a>
+                            <ul class="contact-links">
+                                <li><i class='bx bx-envelope'></i> support@wegrow.com</li>
+                                <li><i class='bx bx-phone'></i> +91 90000 00000</li>
+                            </ul>
+                            <div class="social-links">
+                                <a href="#"><i class='bx bxl-facebook'></i></a>
+                                <a href="#"><i class='bx bxl-instagram'></i></a>
+                                <a href="#"><i class='bx bxl-youtube'></i></a>
+                            </div>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Shop</h4>
+                            <ul class="footer-links">
+                                <li><a href="#">Combo Products</a></li>
+                                <li><a href="#">Hair Care</a></li>
+                                <li><a href="#">Face Care</a></li>
+                                <li><a href="#">Body Care</a></li>
+                                <li><a href="#">Lip Care</a></li>
+                                <li><a href="#">Baby Care</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Quick Link</h4>
+                            <ul class="footer-links">
+                                <li><a href="about.html">About Us</a></li>
+                                <li><a href="#">Shop All Products</a></li>
+                                <li><a href="#">Store Location</a></li>
+                                <li><a href="#">Terms & Conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>We are also Available in</h4>
+                            <div class="app-store-btns" style="margin-top: 10px; gap: 10px; flex-wrap: wrap;">
+                                <img src="https://placehold.co/100x40/FFFFFF/000000/png?text=Amazon" alt="Amazon"
+                                    style="height: 36px; border-radius: 4px;">
+                                <img src="https://placehold.co/100x40/FFFFFF/000000/png?text=Flipkart" alt="Flipkart"
+                                    style="height: 36px; border-radius: 4px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <a href="#" style="display:block; margin-bottom:15px;"><img src="assets/favicon.png"
+                                alt="WeGrow" style="height:40px;"></a>
+                        <p>© 2026 WeGrow. Built by Advanced Agentic Coding.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- 1. CART DRAWER -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart (<span id="cartCountTitle">0</span> items)</h3>
+            <button class="close-cart" onclick="closeCart()"><i class='bx bx-x'></i></button>
+        </div>
+        
+        <div class="cart-body-scroll">
+            <!-- Free Gift Progress -->
+            <div class="gift-progress-section">
+                <p class="gift-text">Unlock Free Hibiscus Shampoo Worth Rs 275</p>
+                <div class="progress-track-wrap">
+                    <div class="progress-fill-bar" id="cartProgressFill" style="width: 20%;"></div>
+                    <!-- Milestone 1 -->
+                    <div class="progress-milestone" style="left: 70%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">Hibiscus<br>Shampoo</div>
+                    </div>
+                    <!-- Milestone 2 -->
+                    <div class="progress-milestone" style="left: 95%;">
+                        <div class="ms-icon"><i class='bx bxs-gift'></i></div>
+                        <div class="ms-label">3 Goat<br>Milk Soap</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extra Checkbox -->
+            <div class="upsell-checkbox-row">
+                <input type="checkbox" id="weightlossCheck">
+                <label for="weightlossCheck">Start your Weightloss journey</label>
+            </div>
+
+            <!-- Coupon Status -->
+            <div class="coupon-applied-status">
+                <div class="coupon-details">
+                    <div style="display:flex; align-items:center; gap:8px; font-weight:800; color:#2E7D32; font-size:13px;">
+                        <i class='bx bxs-check-shield'></i> WELCOME applied
+                    </div>
+                    <div class="benefit-tag">Saved ₹59.00</div>
+                    <i class='bx bx-trash' style="cursor:pointer; color:#999;"></i>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:1px dashed #eee;">
+                    <span style="font-size:12px; font-weight:700;">1 coupons available</span>
+                    <span style="font-size:12px; font-weight:800; color:#000; cursor:pointer;">View Coupons <i class='bx bx-chevron-right'></i></span>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin: 15px 0;">
+                <span style="font-size:13px; font-weight:800; text-decoration:underline; cursor:pointer;">Add Special Instructions</span>
+            </div>
+
+            <!-- Items List -->
+            <div class="cart-item-list" id="cartItemsList">
+                <!-- Items populated via JS -->
+            </div>
+
+            <!-- Upsell Card -->
+            <div style="padding: 15px;">
+                <div style="background:white; border-radius:12px; padding:15px; border:1px solid #eee;">
+                    <h4 style="font-size:13px; font-weight:800; margin-bottom:12px;">Cart Upsell</h4>
+                    <div style="display:flex; align-items:center; gap:12px; border:1px solid #eee; border-radius:8px; padding:8px;">
+                        <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=100" style="width:50px; border-radius:4px;">
+                        <div style="flex:1;">
+                            <h5 style="font-size:11px; font-weight:700;">Hibiscus Shampoo</h5>
+                            <div style="font-size:12px; font-weight:800;">₹275.00</div>
+                        </div>
+                        <button style="background:#f0f0f0; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">+ Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="cart-sticky-footer">
+            <div class="savings-bar">₹59.00 Saved so far!</div>
+            <div class="total-summary-row">
+                <div style="font-size:15px; font-weight:800;">Estimated Total</div>
+                <div style="text-align:right;">
+                    <div style="font-size:12px; color:#999; text-decoration:line-through;" id="cartSubtotal">₹590.00</div>
+                    <div style="font-size:22px; font-weight:800;" id="cartTotal">₹531.00</div>
+                    <div style="font-size:11px; color:#26C6B2; font-weight:700;">(10% OFF)</div>
+                </div>
+            </div>
+            <button class="checkout-btn-black" onclick="initiateCheckout()">
+                <span>Proceed to Checkout</span>
+                <div class="payment-logos-img">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Paytm_Logo.png" alt="Paytm" style="height:12px; filter:brightness(0) invert(1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_Logo.svg" alt="GPay" style="height:12px; filter:brightness(0) invert(1);">
+                </div>
+            </button>
+            <div style="text-align:center; font-size:10px; color:#999; margin-top:12px;">
+                Powered by <img src="https://placehold.co/50x10/000000/FFFFFF/png?text=GoKwik" style="vertical-align:middle; filter:grayscale(1);">
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. KWIKPASS LOGIN MODAL (High-Fidelity) -->
+    <div class="login-modal-overlay" id="loginModal">
+        <div class="modal-content-wrap">
+            <button class="modal-x" onclick="closeLoginModal()"><i class='bx bx-x'></i></button>
+
+            <div class="modal-left">
+                <div class="modal-logos">
+                    <img src="assets/logo.png" alt="WeGrow" style="height: 60px;">
+                    <img src="https://placehold.co/100x30/FFFFFF/000000/png?text=KwikPass" alt="KwikPass">
+                </div>
+                <h2>Login now to avail best offers!</h2>
+
+                <div class="benefits-row">
+                    <div class="benefit-pill">
+                        <i class='bx bxs-star'></i>
+                        <h4>Customer-first</h4>
+                        <p>Putting you in the center</p>
+                    </div>
+                    <div class="benefit-pill">
+                        <i class='bx bxs-check-shield'></i>
+                        <h4>Transparent</h4>
+                        <p>Honest from the inside out</p>
+                    </div>
+                    <div class="benefit-pill">
+                        <i class='bx bxs-bulb'></i>
+                        <h4>Innovative</h4>
+                        <p>Getting the absolute best for you</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-right">
+                <h3>SignUp now to unlock exclusive deals!</h3>
+                <div class="phone-input-wrap">
+                    <div class="country-code">🇮🇳 +91</div>
+                    <input type="tel" placeholder="Enter Mobile Number" maxlength="10">
+                </div>
+                <label class="notify-label">
+                    <input type="checkbox" checked>
+                    Notify me with offers & updates
+                </label>
+                <button class="submit-btn" onclick="processLogin()">Submit</button>
+
+                <p class="modal-footer-text">
+                    I accept that I have read & understood your<br>
+                    <a href="#">Privacy Policy</a> and <a href="#">T&Cs</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CHECKOUT MODAL (High-Fidelity) -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-window">
+            <div class="checkout-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class='bx bx-chevron-left checkout-x' onclick="closeCheckout()"></i>
+                    <img src="assets/logo.png" alt="WeGrow" style="height:30px;">
+                </div>
+                <div class="checkout-summary-mini">
+                    <div style="font-size:10px; font-weight:700; color:#26C6B2;">₹59 saved so far • <span id="checkoutItemCount">2</span> items</div>
+                    <div style="font-size:16px; font-weight:800;" id="checkoutTotalAmount">₹590</div>
+                </div>
+            </div>
+
+            <div class="checkout-section">
+                <div class="checkout-section-title">Delivery Details</div>
+                <div class="address-card">
+                    <div style="display:flex; align-items:start; gap:12px;">
+                        <i class='bx bx-map-pin' style="font-size:20px; color:#555; margin-top:2px;"></i>
+                        <div style="font-size:12px; line-height:1.5;">
+                            <div style="font-weight:800; margin-bottom:4px;">Deliver To Krishawn V Rahul</div>
+                            <div style="color:#666;">3 Daisy Villa Pillana Garden, Bangalore<br>Karnataka, 560049</div>
+                            <div style="color:#666; margin-top:4px;">+91 8073499837 | tintedtimber@gmail.com</div>
+                        </div>
+                    </div>
+                    <button class="btn-change-addr">Change</button>
+                    <div style="margin-top:15px; padding-top:15px; border-top:1px solid #eee; display:flex; justify-content:space-between; font-size:11px;">
+                        <span style="color:#666;">Standard Shipping</span>
+                        <span style="font-weight:700;">₹59</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-section" style="padding-top:0;">
+                <div class="checkout-section-title">Offers & Rewards</div>
+                <div class="address-card" style="border:none;">
+                    <div style="text-align:center; font-size:12px; color:#26C6B2; font-weight:700; margin-bottom:10px;">You saved ₹59</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#E8F5E9; padding:10px 15px; border-radius:8px;">
+                        <div style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#2E7D32;">
+                            <i class='bx bxs-check-circle'></i> "WELCOME" applied
+                        </div>
+                        <button style="font-size:11px; font-weight:700; color:#000;">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-section" style="padding-top:0;">
+                <div class="checkout-section-title">Payment Options</div>
+                
+                <div class="payment-row">
+                    <div class="payment-left">
+                        <i class='bx bx-mobile-alt'></i> UPI
+                    </div>
+                    <div style="font-weight:800; font-size:14px;" class="checkout-total-val">₹590.00</div>
+                </div>
+
+                <div class="upi-expand">
+                    <div style="display:flex; justify-content:center; align-items:center; gap:30px; margin:15px 0;">
+                        <div style="text-align:center;">
+                            <div class="qr-placeholder">
+                                <i class='bx bx-qr' style="font-size:40px;"></i>
+                                <div style="display:flex; align-items:center; gap:4px; margin-top:5px; background:white; padding:2px 8px; border-radius:4px; border:1px solid #eee;">
+                                    <i class='bx bx-show'></i> Show QR
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align:left; font-size:12px; color:#666; line-height:1.4;">
+                            Open any UPI Apps & scan QR<br>Code to pay
+                            <div class="payment-apps-row">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Paytm_Logo.png">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_Logo.svg">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/PhonePe_Logo.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-row">
+                    <div class="payment-left">
+                        <i class='bx bx-credit-card'></i> Debit/Credit Cards
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-weight:800; font-size:14px;" class="checkout-total-val">₹590</span>
+                        <i class='bx bx-chevron-right'></i>
+                    </div>
+                </div>
+
+                <div class="payment-row">
+                    <div class="payment-left">
+                        <i class='bx bx-buildings'></i> Netbanking
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-weight:800; font-size:14px;" class="checkout-total-val">₹590</span>
+                        <i class='bx bx-chevron-right'></i>
+                    </div>
+                </div>
+
+                <div class="payment-row">
+                    <div class="payment-left">
+                        <i class='bx bx-wallet'></i> Wallets
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-weight:800; font-size:14px;" class="checkout-total-val">₹590</span>
+                        <i class='bx bx-chevron-right'></i>
+                    </div>
+                </div>
+
+                <div class="payment-row">
+                    <div class="payment-left">
+                        <i class='bx bx-money'></i> Cash on Delivery
+                        <div style="font-size:10px; color:#999; font-weight:400;">Amount Non-Refundable</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="background:#26C6B2; color:white; font-size:8px; padding:2px 6px; border-radius:4px; font-weight:700;">Pay ₹75 now. Rest on delivery</div>
+                        <span style="font-weight:800; font-size:14px;">₹75</span>
+                        <i class='bx bx-chevron-right'></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

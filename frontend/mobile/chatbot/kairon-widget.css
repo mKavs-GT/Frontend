@@ -356,6 +356,64 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+}/* --- Typing & Thinking Animations --- */
+
+.typing-indicator {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    animation: slideUpFade 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    height: 14px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    background-color: #9ca3af;
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing-dot 1.4s infinite ease-in-out both;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing-dot {
+    0%, 80%, 100% { 
+        transform: scale(0.6); 
+        opacity: 0.4; 
+    }
+    40% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+
+.typewriter-cursor::after {
+    content: '|';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+    color: var(--kairon-purple);
+    font-weight: bold;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 /* Mobile Responsive */
