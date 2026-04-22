@@ -22,7 +22,9 @@ import {
   Smartphone,
   Globe,
   Sun,
-  Moon
+  Moon,
+  Terminal,
+  Briefcase
 } from "lucide-react";
 import { type User, fetchUsers } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
