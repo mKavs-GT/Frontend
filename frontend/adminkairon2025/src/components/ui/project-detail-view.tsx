@@ -17,9 +17,7 @@ import {
   MessageSquare,
   Search,
   Bell,
-  CheckCircle2,
-  Clock as ClockIcon
-} from "lucide-react";
+
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
