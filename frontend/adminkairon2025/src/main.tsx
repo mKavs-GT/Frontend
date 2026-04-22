@@ -9,19 +9,18 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 )
 
-// Register Service Worker
+// Disabled service worker to ensure cache is bypassed for "Start from Scratch" mode
+/*
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(reg => {
         console.log('Admin SW Registered:', reg.scope);
-        // Force update check
         reg.update();
       })
       .catch(err => console.error('Admin SW Registration failed:', err));
   });
 
-  // Reload the page when a new service worker takes over
   let refreshing = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!refreshing) {
@@ -30,3 +29,4 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+*/
