@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Phone, Mail, Calendar, Building, Briefcase, DollarSign, MessageSquare, ExternalLink, FileText, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import { Users, Phone, Mail, Calendar, Building, Briefcase, DollarSign, MessageSquare, ExternalLink, FileText, TrendingUp, CheckCircle, Clock, AlertCircle, X } from 'lucide-react';
 
 const mockUsers = [
   { id: 1, name: 'Alice Waverly', email: 'alice@quantum.io', phone: '+1 555-0101', company: 'Quantum Tech', role: 'CEO', signedUp: '2026-04-10', status: 'Active Trial', location: 'San Francisco, CA', ltv: '$0.00' },

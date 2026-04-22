@@ -13,6 +13,8 @@ import {
   Briefcase,
   Zap,
   Coffee,
+  Copy,
+  CheckCircle,
   Users,
   Database,
   Shield,
@@ -56,7 +58,13 @@ export default function App() {
   useEffect(() => {
     const fetchNotifs = () => {
       const saved = localStorage.getItem('mkavs_notifications');
-      if (saved) setNotifications(JSON.parse(saved));
+      if (saved) {
+        try {
+          setNotifications(JSON.parse(saved));
+        } catch (e) {
+          console.error("Failed to parse notifications", e);
+        }
+      }
     };
     fetchNotifs();
     const interval = setInterval(fetchNotifs, 2000);
@@ -410,10 +418,12 @@ export default function App() {
           </div>
           
           <div className="space-y-2">
-            <TeamMember name="Sarah Jenkins" role="Lead Designer" status="online" avatar="https://i.pravatar.cc/150?u=sarah" />
-            <TeamMember name="Mike Ross" role="Frontend Dev" status="offline" avatar="https://i.pravatar.cc/150?u=mike" />
-            <TeamMember name="Elena Gilbert" role="Backend Dev" status="online" avatar="https://i.pravatar.cc/150?u=elena" />
-            <TeamMember name="David Chen" role="Product Manager" status="online" avatar="https://i.pravatar.cc/150?u=david" />
+            <TeamMember name="Krishawn Rahul" role="Executive Admin" status="online" avatar="https://i.pravatar.cc/150?u=krishawn" />
+            <TeamMember name="Sitesh" role="Business Head" status="online" avatar="https://i.pravatar.cc/150?u=sitesh" />
+            <TeamMember name="Vinith Vijaya" role="Executive" status="offline" avatar="https://i.pravatar.cc/150?u=vinith" />
+            <TeamMember name="Sofia Stalance" role="Developer" status="online" avatar="https://i.pravatar.cc/150?u=sofia" />
+            <TeamMember name="Michael Antony" role="Developer" status="online" avatar="https://i.pravatar.cc/150?u=michael" />
+            <TeamMember name="Mohammed Abuzar" role="Designer" status="offline" avatar="https://i.pravatar.cc/150?u=mohammed" />
           </div>
         </div>
       </aside>
