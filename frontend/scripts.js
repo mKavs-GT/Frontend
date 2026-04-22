@@ -1206,10 +1206,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const hash = window.location.hash;
         const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
 
-        if (sessionStorage.getItem('preloaderShown') || isBackForward || isJumpingToWorks) {
+        // Check if preloader should be skipped (Session, Reload, Back/Forward, or Works Jump)
+        if (sessionStorage.getItem('preloaderShown') || isReload || isBackForward || isJumpingToWorks) {
             if (isJumpingToWorks) {
                 sessionStorage.setItem('preloaderShown', 'true');
-                // Calculate jump Y immediately to avoid flicker
                 calculateSlideHeights();
                 const boundaries = getSlideBoundaries();
                 if (boundaries.length > 2) {
@@ -1233,7 +1233,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateScrollState(globalScrollY, true);
                 }, 50);
             } else {
-                // If jumping, we call updateScrollState immediately after initial slide
                 activateInitialSlide(isJumpingToWorks);
                 updateScrollState(globalScrollY, isJumpingToWorks);
             }
@@ -1245,33 +1244,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let progress = 0;
-        let videoStarted = false;
+        // --- Progressive Loading Logic ---
+        let startTime = null;
+        const MIN_DURATION = 3000; // Minimum 3 seconds
+        let animationStarted = false;
 
-        const startLoading = () => {
-             videoStarted = true;
+        const startLoadingAnimation = () => {
+             if (animationStarted) return;
+             animationStarted = true;
              requestAnimationFrame(updateLoader);
         };
 
+        // Ensure video is playing/ready before we start the visual progress bar
         if (mascotVideo) {
-            if (mascotVideo.readyState >= 3 && !mascotVideo.paused) {
-                startLoading();
+            if (mascotVideo.readyState >= 3) {
+                // Video already buffered enough
+                startLoadingAnimation();
             } else {
-                mascotVideo.addEventListener('playing', startLoading, { once: true });
-                setTimeout(() => { if (!videoStarted) startLoading(); }, 2000); // 2s fallback
+                // Wait for video to be ready to play
+                mascotVideo.addEventListener('canplaythrough', startLoadingAnimation, { once: true });
+                // Robust Fallback (Start after 3s anyway if video is slow)
+                setTimeout(startLoadingAnimation, 3000);
             }
         } else {
-            startLoading();
+            startLoadingAnimation();
         }
-
-        let startTime = null;
-        const MIN_DURATION = 3000; // Minimum 3 seconds
 
         function updateLoader(timestamp) {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             
-            progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+            // Progress is a factor of time (min 3s) and window loading state
+            // If document is not loaded, we can slow down after 90%
+            let progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+            
+            // "More if needed" logic: hold at 98% if page isn't fully ready
+            if (progress > 98 && document.readyState !== 'complete') {
+                progress = 98;
+            }
 
             progressFill.style.width = `${progress}%`;
             progressText.innerText = `${Math.floor(progress)}%`;
@@ -1279,6 +1289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (progress < 100) {
                 requestAnimationFrame(updateLoader);
             } else {
+                // Loading Finished
                 sessionStorage.setItem('preloaderShown', 'true');
                 setTimeout(() => {
                     preloader.classList.add('opacity-0', 'pointer-events-none');

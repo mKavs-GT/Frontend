@@ -1,595 +1,972 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MKAVS Branding</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Notable&family=Outfit:wght@300;400;600;900&display=swap"
-        rel="stylesheet">
-    <script src="config.js"></script>
-    <style>
-        .text-black #nav-logo {
-            filter: invert(1);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALERAK | BRUTAL MAGIC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --bg: #030303;
+      /* Slightly darker */
+      --fg: #e0e0e0;
+      --accent: #ccff00;
+      --secondary: #ff00ff;
+      /* Neon magenta */
+      --danger: #ff3333;
+      --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
-        :root {
-            --color-base: #1a1a1a;
-            --color-accent: #c7f908;
-            --color-dark: #000000;
-            --font-display: 'Notable', sans-serif;
-            --font-body: 'Outfit', sans-serif;
-        }
+    /* --- GRAIN OVERLAY --- */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
 
-        body {
-            margin: 0;
-            background-color: var(--color-base);
-            color: #ffffff;
-            font-family: var(--font-body);
-            overflow-x: hidden;
-        }
+    /* --- SCROLL CONTENT WRAPPER --- */
+    #scroll-content {
+      will-change: transform;
+      /* Smooth skewing performance */
+    }
 
-        /* Portfolio Marquee Overlay */
-        @keyframes marquee-up {
-            from {
-                transform: translateY(0);
-            }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: none;
+    }
 
-            to {
-                transform: translateY(-50%);
-            }
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: "Space Grotesk", sans-serif;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      /* Force vertical scroll */
+    }
 
-        @keyframes marquee-down {
-            from {
-                transform: translateY(-50%);
-            }
+    /* --- CURSOR --- */
+    #cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--easing), height 0.3s var(--easing),
+        transform 0.05s linear;
+    }
 
-            to {
-                transform: translateY(0);
-            }
-        }
+    #cursor.magnet {
+      width: 90px;
+      height: 90px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      backdrop-filter: blur(0px);
+      /* Performance fix */
+    }
 
-        .animate-scroll-up {
-            animation: marquee-up 50s linear infinite;
-        }
+    #cursor.magnet::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
 
-        .animate-scroll-down {
-            animation: marquee-down 50s linear infinite;
-        }
+    /* --- NAVBAR --- */
+    .brutal-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: padding 0.7s var(--easing), top 0.7s var(--easing),
+        width 0.7s var(--easing), background 0.5s var(--easing),
+        border-radius 0.7s var(--easing);
+      mix-blend-mode: exclusion;
+      transform-style: preserve-3d;
+      perspective: 1200px;
+    }
 
-        h1,
-        h2,
-        h3,
-        .display-font {
-            font-family: var(--font-display);
-        }
+    .brutal-nav.scrolled {
+      top: 1.5rem;
+      padding: 0.8rem 2rem;
+      width: auto;
+      min-width: 500px;
+      /* Consistent width */
+      left: 50%;
+      transform: translateX(-50%);
+      /* JS handles the rest */
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      /* Less rounded, more brutal tech */
+      mix-blend-mode: normal;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
 
-        /* Navbar Overlay */
-        .overlay-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            transition: right 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            border-left: 2px solid var(--color-accent);
-        }
+    /* Logo Glitch */
+    .nav-logo {
+      font-family: "Syncopate", sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: -2px;
+      color: #fff;
+      user-select: none;
+      position: relative;
+    }
 
-        @media(min-width: 768px) {
-            .overlay-menu {
-                width: 50vw;
-            }
-        }
+    .nav-logo:hover {
+      animation: glitch-anim 0.3s infinite;
+    }
 
-        .overlay-menu.active {
-            right: 0;
-        }
+    .nav-logo::before,
+    .nav-logo::after {
+      content: "ALERAK";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      opacity: 0.8;
+      display: none;
+    }
 
-        /* Intro Circle Sequence */
-        .hero-section {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    .nav-logo:hover::before,
+    .nav-logo:hover::after {
+      display: block;
+    }
 
-        .accent-circle {
-            position: absolute;
-            width: 40vmin;
-            height: 40vmin;
-            background-color: var(--color-accent);
-            border-radius: 50%;
-            z-index: 0;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+    .nav-logo:hover::before {
+      color: var(--secondary);
+      z-index: -1;
+      transform: translate(-2px, -2px);
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      animation: glitch-anim-2 0.5s infinite linear alternate-reverse;
+    }
 
-        .hero-text {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-        }
+    .nav-logo:hover::after {
+      color: var(--accent);
+      z-index: -2;
+      transform: translate(2px, 2px);
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+      animation: glitch-anim-2 0.5s infinite linear alternate-reverse;
+    }
 
-        .content-section {
-            padding: 4rem 2rem;
-            position: relative;
-            z-index: 2;
-        }
-    </style>
+    @keyframes glitch-anim {
+      0% {
+        transform: translate(0);
+      }
+
+      20% {
+        transform: translate(-2px, 2px);
+      }
+
+      40% {
+        transform: translate(-2px, -2px);
+      }
+
+      60% {
+        transform: translate(2px, 2px);
+      }
+
+      80% {
+        transform: translate(2px, -2px);
+      }
+
+      100% {
+        transform: translate(0);
+      }
+    }
+
+    /* Nav Items */
+    .nav-menu {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      position: relative;
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px;
+    }
+
+    .nav-link::before {
+      content: ">";
+      position: absolute;
+      left: -10px;
+      opacity: 0;
+      transition: all 0.2s;
+      color: var(--accent);
+    }
+
+    .nav-link:hover::before {
+      opacity: 1;
+      left: 0;
+    }
+
+    .nav-link:hover {
+      padding-left: 15px;
+    }
+
+    /* CTA Button */
+    .cta-btn {
+      position: relative;
+      padding: 0.8rem 2rem;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+      font-family: "Space Grotesk";
+      font-size: 0.9rem;
+      /* Smaller text */
+      letter-spacing: 1px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .cta-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+      z-index: 1;
+    }
+
+    .cta-btn span {
+      position: relative;
+      z-index: 2;
+      transition: color 0.3s;
+    }
+
+    .cta-btn:hover span {
+      color: #000;
+    }
+
+    .cta-btn:hover::after {
+      transform: translateX(0);
+    }
+
+    .brutal-nav.scrolled .cta-btn {
+      padding: 0.6rem 1.5rem;
+    }
+
+    /* --- HERO --- */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      /* perspective: 1000px; - Removed to fix skew conflict */
+    }
+
+    .hero-title-container {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    .hero h1 {
+      font-family: "Syncopate", sans-serif;
+      font-size: 13vw;
+      line-height: 0.8;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--fg);
+      position: relative;
+      z-index: 10;
+      mix-blend-mode: color-dodge;
+      transform: translateZ(50px);
+      /* 3D pop */
+    }
+
+    .hero h1 .word {
+      display: inline-block;
+    }
+
+    .hero h1 .char {
+      display: inline-block;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .hero h1:hover .char {
+      color: var(--accent);
+      -webkit-text-stroke: 0px;
+      transform: translateZ(20px);
+    }
+
+    /* Running Text Tape */
+    .tape-wrapper {
+      position: absolute;
+      bottom: 5vh;
+      left: -10%;
+      width: 120%;
+      background: var(--accent);
+      color: #000;
+      transform: rotate(-2deg);
+      padding: 10px 0;
+      border-top: 3px solid #000;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .tape-text {
+      font-family: "Syncopate";
+      font-size: 2rem;
+      font-weight: 800;
+      white-space: nowrap;
+      animation: tapeScroll 10s linear infinite;
+    }
+
+    @keyframes tapeScroll {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* --- CONTENT SECTIONS --- */
+    .section-dark {
+      min-height: 80vh;
+      background: #080808;
+      display: flex;
+      align-items: center;
+      padding: 10vw;
+      border-top: 1px solid #222;
+    }
+
+    .big-text {
+      font-size: 5vw;
+      line-height: 1.1;
+      font-weight: 300;
+      color: #444;
+    }
+
+    .big-text span {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* --- PROJECTS SECTION (GSAP PINNED) --- */
+    .spacer {
+      height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Syncopate";
+      font-size: 1.2rem;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    #projects {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: var(--bg);
+      border-top: 1px solid #1a1a1a;
+      overflow: visible; /* Allow pinned content to render safely */
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .project-left {
+      width: 40%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 6vw;
+      z-index: 10;
+      backface-visibility: hidden;
+    }
+
+    .project-left-content {
+      max-width: 450px;
+    }
+
+    .overline {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      font-family: "Syncopate";
+    }
+
+    .project-title {
+      font-family: "Syncopate";
+      font-size: 3.8vw;
+      line-height: 0.95;
+      font-weight: 800;
+      margin-bottom: 2.5rem;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .project-title em {
+      font-family: "Playfair Display";
+      font-weight: 400;
+      font-style: italic;
+      color: var(--accent);
+      text-transform: lowercase;
+      -webkit-text-stroke: 0;
+    }
+
+    .project-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #888;
+      margin-bottom: 3.5rem;
+      font-weight: 300;
+    }
+
+    .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.4s var(--easing);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-arrow svg {
+      transition: transform 0.4s var(--easing);
+    }
+
+    .btn-arrow:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn-arrow:hover svg {
+      transform: translateX(8px);
+      stroke: var(--accent);
+    }
+
+    .project-right {
+      width: 60%;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+      padding: 10rem 4rem 150px 0;
+      width: 100%;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: opacity 0.4s;
+    }
+
+    .img-wrapper {
+      width: 100%;
+      aspect-ratio: 4/5;
+      min-height: 450px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid #222;
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1);
+      transition: transform 1.2s var(--easing), filter 0.8s var(--easing);
+    }
+
+    .project-card:hover .img-wrapper img {
+      transform: scale(1.08);
+      filter: grayscale(0);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1.5rem;
+    }
+
+    .meta-left h3 {
+      font-family: "Syncopate";
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      letter-spacing: -1px;
+    }
+
+    .meta-left p {
+      font-size: 0.8rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .meta-right {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: "Syncopate";
+    }
+
+    @media (max-width: 1024px) {
+      #projects {
+        flex-direction: column;
+        height: auto !important;
+      }
+      .project-left, .project-right {
+        width: 100%;
+        height: auto;
+        padding: 4rem 8vw;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+        padding-right: 0;
+      }
+      .project-title {
+        font-size: 10vw;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="noise"></div>
+  <div id="cursor"></div>
 
-    <!-- Moving Portfolio Grid Background -->
-    <div class="fixed inset-0 z-[0] pointer-events-none overflow-hidden opacity-[0.12]">
-        <div
-            class="absolute w-[200vw] h-[250vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] scale-[1.5] md:scale-[1.8] flex gap-6 md:gap-10 justify-center">
-            <!-- Column 1 -->
-            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-up -mt-[10vh]">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-            </div>
-            <!-- Column 2 -->
-            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-down mt-[15vh]">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-            </div>
-            <!-- Column 3 -->
-            <div class="flex flex-col gap-4 w-[20vw] animate-scroll-up mt-[5vh]">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb3.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb5.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb7.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb9.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-            </div>
-            <!-- Column 4 -->
-            <div class="hidden md:flex flex-col gap-4 w-[20vw] animate-scroll-down -mt-[5vh]">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb8.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb2.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb4.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb1.png" class="w-full object-cover rounded-3xl" alt="">
-                <img src="images/thumb6.png" class="w-full object-cover rounded-3xl" alt="">
-            </div>
+  <nav class="brutal-nav">
+    <a href="https://www.alerak.studio" class="nav-logo magnetic" style="text-decoration: none;">ALERAK</a>
+    <ul class="nav-menu">
+      <li><a href="#" class="nav-link magnetic" data-text="WORK">WORK</a></li>
+      <li><a href="#" class="nav-link magnetic" data-text="ABOUT">ABOUT</a></li>
+      <li><a href="#" class="nav-link magnetic" data-text="LABS">LABS</a></li>
+    </ul>
+    <button class="cta-btn magnetic"><span>LET'S TALK</span></button>
+  </nav>
+
+  <div id="scroll-content">
+    <section class="hero">
+      <div class="hero-title-container">
+        <h1>
+          <div class="word">BRUTAL</div><br>
+          <div class="word">MAGIC</div>
+        </h1>
+      </div>
+
+      <div class="tape-wrapper">
+        <div class="tape-text">
+          ALERAK STUDIO ✦ SCROLL VELOCITY ✦ INTERACTIVE SYSTEMS ✦ ALERAK STUDIO ✦ SCROLL VELOCITY ✦
+          INTERACTIVE SYSTEMS ✦
         </div>
-    </div>
-
-    <!-- Navigation Toolbar -->
-    <nav id="main-nav"
-        class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 md:px-12 bg-transparent text-white font-body transition-all duration-500">
-        <!-- Left Side Links -->
-        <div class="hidden md:flex gap-8 items-center text-sm tracking-widest uppercase font-bold">
-            <a href="index.html" class="hover:text-[#c7f908] transition-colors">Home</a>
-            <a href="about/about.html" class="hover:text-[#c7f908] transition-colors">About</a>
-            <a href="index.html#our-works" class="hover:text-[#c7f908] transition-colors">Our Work</a>
-            <a href="branding.html" class="text-[#c7f908]">Branding</a>
-        </div>
-
-        <!-- Logo Area -->
-        <div class="flex items-center justify-center">
-            <a href="branding.html">
-                <img src="images/MKAVS.png" alt="MKAVS Logo" id="nav-logo"
-                    class="h-[20px] md:h-[22px] w-auto object-contain hover-target transition-all duration-300">
-            </a>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button id="menu-btn" class="md:hidden text-2xl hover-target focus:outline-none">&#x2261;</button>
-
-        <!-- Right Side Links -->
-        <div class="hidden md:flex gap-8 items-center text-sm tracking-widest uppercase font-bold">
-            <a href="pricingpage/pricing.html" class="hover:text-[#c7f908] transition-colors">Pricing</a>
-            <a href="consult/consult.html" class="hover:text-[#c7f908] transition-colors">Book Us</a>
-            <a href="support/support.html" class="hover:text-[#c7f908] transition-colors">Support</a>
-            <a href="loginpg/login.html"
-                class="px-6 py-2 bg-white text-black rounded-full hover:bg-[#c7f908] hover:text-black transition-all login-btn">Login</a>
-        </div>
-    </nav>
-
-    <!-- Mobile Overlay Menu (Unchanged from original structure, just adjusted slightly) -->
-    <div id="overlay" class="overlay-menu flex flex-col justify-center items-start p-10 md:p-20 gap-8">
-        <a href="index.html"
-            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Home</a>
-        <a href="about/about.html"
-            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">About</a>
-        <a href="branding.html" class="text-3xl display-font text-[#c7f908] hover-target transition-colors">Branding</a>
-        <a href="pricingpage/pricing.html"
-            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Pricing</a>
-        <a href="consult/consult.html"
-            class="text-3xl display-font text-white hover-target hover:text-[#c7f908] transition-colors">Book Us</a>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero-section" id="hero">
-        <div class="accent-circle" id="sun"></div>
-        <div class="hero-text opacity-0 translate-y-10" id="hero-title">
-            <img src="images/MKAVS.png" alt="MKAVS Circle Logo" class="w-[30vmin] object-contain mx-auto"
-                style="filter: brightness(0);">
-            <p class="text-[2.5vmin] tracking-[0.5em] uppercase mt-[2vmin] text-black font-black">Branding</p>
-        </div>
-        <!-- TEXT ON CIRCLE -->
-        <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none z-10 px-8 text-black"
-            id="sun-text">
-            <div class="relative w-full max-w-5xl flex items-center justify-center">
-                <img src="images/iconnn.png"
-                    class="absolute -top-16 md:-top-24 left-0 md:-left-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 scale-0 pointer-events-auto brightness-0">
-                <img src="images/iconnn.png"
-                    class="absolute -top-16 md:-top-24 right-0 md:-right-8 w-12 h-12 md:w-20 md:h-20 repel-star opacity-0 scale-0 pointer-events-auto brightness-0">
-
-                <h3 class="text-2xl md:text-3xl lg:text-4xl leading-relaxed md:leading-normal font-black font-body text-black uppercase tracking-[0.2em] text-center w-full relative z-10"
-                    id="scrub-text">Your website deserves a look that hits differently. <br>We don't guess. We design
-                    with
-                    intention.</h3>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <!-- Section 2: Neon Wrapper -->
-    <div id="color-wrapper" class="bg-[#c7f908] w-full relative z-10 -mt-[30vh] pt-10 pb-20">
+    <section class="section-dark">
+      <p class="big-text">
+        WE BUILD <span>DIGITAL EXPERIENCES</span> THAT DEFY GRAVITY. NO TEMPLATES. NO LIMITS. JUST <span>PURE
+          CODE</span> AND <span>RAW AESTHETICS</span>.
+      </p>
+    </section>
+  </div> <!-- END SCROLL CONTENT (Avoid conflict with pinning) -->
 
-        <!-- Dynamic Mockup Fan-out -->
-        <section
-            class="-mt-24 md:-mt-40 px-4 relative flex justify-center items-center h-[400px] md:h-[600px] max-w-7xl mx-auto"
-            id="bottles-section">
-            <!-- Left Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-square z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
-                id="bottle-left" style="background:#000;">
-                <img src="si1.png" alt="Brand Assets"
-                    class="w-full h-full object-cover transition-all duration-500 hover-target">
-            </div>
-            <!-- Right Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-square z-0 border border-black/10 rounded-[40px] overflow-hidden shadow-xl"
-                id="bottle-right" style="background:#000;">
-                <img src="si3.png" alt="Wireframes"
-                    class="w-full h-full object-cover transition-all duration-500 hover-target">
-            </div>
-            <!-- Center Mockup -->
-            <div class="absolute w-[250px] md:w-[350px] aspect-square z-10 scale-110 border-4 border-black rounded-[40px] overflow-hidden shadow-2xl bg-black"
-                id="bottle-center">
-                <img src="si2.png" alt="Mobile UI"
-                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-110 hover-target">
-            </div>
-        </section>
+  <section id="projects">
+      <div class="project-left">
+        <div class="project-left-content">
+          <div class="overline">Selected Works</div>
+          <h2 class="project-title">Crafting spaces that <br><em>inspire</em> living.</h2>
+          <p class="project-description">
+            We bridge the gap between function and artistry. Explore our curated selection of residential and commercial architectural projects.
+          </p>
+          <a href="#" class="btn-arrow magnetic">
+            View All Projects
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
 
+      <div class="project-right">
+        <div class="cards-grid">
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/i1.png" alt="Architecture 1">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>The Stone House</h3>
+                <p>Residential</p>
+              </div>
+              <div class="meta-right">2023</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/i2.png" alt="Architecture 2">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>Azure Villa</h3>
+                <p>Luxury Living</p>
+              </div>
+              <div class="meta-right">2023</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/i3.png" alt="Architecture 3">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>Apex Tower</h3>
+                <p>Commercial</p>
+              </div>
+              <div class="meta-right">2022</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/i4.png" alt="Architecture 4">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>Nordic Loft</h3>
+                <p>Interior</p>
+              </div>
+              <div class="meta-right">2022</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/i5.png" alt="Architecture 5">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>Glass Pavilion</h3>
+                <p>Concept</p>
+              </div>
+              <div class="meta-right">2021</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="img-wrapper">
+              <img src="images/image.png" alt="Architecture 6">
+            </div>
+            <div class="card-meta">
+              <div class="meta-left">
+                <h3>Eco Sanctuary</h3>
+                <p>Sustainable</p>
+              </div>
+              <div class="meta-right">2021</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="spacer">
+      <span>Next Section</span>
     </div>
 
-    <!-- Section 3: The Overlapping Black Slide -->
-    <div id="blue-slide-container"
-        class="relative z-[50] bg-black text-white overflow-hidden rounded-t-[50px] md:rounded-t-[100px]">
-        <section class="min-h-screen flex flex-col items-center justify-center py-32 px-4 max-w-5xl mx-auto gs-reveal">
-            <!-- Text Header -->
-            <div class="text-center space-y-4 mb-20">
-                <p class="text-sm md:text-base font-bold tracking-[0.3em] text-[#c7f908] uppercase">Custom Branding</p>
-                <h2 class="text-5xl md:text-7xl font-black display-font uppercase tracking-widest leading-tight">LETS
-                    BRAND<br>YOUR
-                    WEBSITE</h2>
-            </div>
+    <footer style="height: 40vh; background: var(--fg); color: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+      <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom:1rem;"><a href="https://www.alerak.studio" style="color: inherit; text-decoration: none;">ALERAK</a></h2>
+      <p>© 2026</p>
+    </footer>
 
-            <!-- Bento Boxes Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl mx-auto gs-reveal">
 
-                <!-- Color Palette Box -->
-                <div
-                    class="bg-[#1a1a1a] rounded-[40px] p-10 md:p-14 shadow-[0_0_40px_rgba(199,249,8,0.2)] border border-[#c7f908]/30 hover:border-[#c7f908] transition-all flex flex-col justify-between group h-full">
-                    <div>
-                        <h3
-                            class="text-3xl md:text-4xl font-black mb-6 text-[#c7f908] display-font uppercase tracking-[0.15em]">
-                            Color Palettes</h3>
-                        <p
-                            class="text-lg md:text-xl text-white/80 leading-relaxed mb-6 font-body font-light tracking-wide">
-                            We craft
-                            custom palettes based on your energy, your audience, and the message you wanna send.</p>
-                        <p class="text-xl md:text-2xl font-bold text-white mb-6 tracking-[0.15em] uppercase">Bold?
-                            Minimal? Playful?
-                            Premium?</p>
-                        <p class="text-lg text-white/60 mb-10 font-body tracking-wide">We build colors that define your
-                            brand — not
-                            just decorate it.</p>
-                    </div>
-                    <a href="brandpg/colopg/color.html"
-                        class="inline-flex w-[max-content] items-center text-black bg-[#c7f908] hover:bg-white px-8 py-4 rounded-full font-bold tracking-widest uppercase hover:shadow-[0_0_20px_#c7f908] transition-all shadow-md">Check
-                        Color Palette <span class="ml-2 font-black text-lg">→</span></a>
-                </div>
+  <script>
+    // --- TEXT SPLITTING ---
+    // Manually split hero text for animation control
+    const words = document.querySelectorAll(".hero h1 .word");
+    words.forEach((word) => {
+      const text = word.innerText;
+      word.innerHTML = "";
+      text.split("").forEach((char) => {
+        const span = document.createElement("span");
+        span.classList.add("char");
+        span.innerText = char;
+        word.appendChild(span);
+      });
+    });
 
-                <!-- Typography Box -->
-                <div
-                    class="bg-[#1a1a1a] rounded-[40px] p-10 md:p-14 shadow-[0_0_40px_rgba(199,249,8,0.2)] border border-[#c7f908]/30 hover:border-[#c7f908] transition-all flex flex-col justify-between group h-full">
-                    <div>
-                        <h3
-                            class="text-3xl md:text-4xl font-black mb-6 text-[#c7f908] display-font uppercase tracking-[0.15em]">
-                            Typography</h3>
-                        <p
-                            class="text-lg md:text-xl text-white/80 leading-relaxed mb-10 font-body font-light tracking-wide">
-                            Typography sets the tone.<br><br>Clean, modern, classy, loud, soft — we pick fonts that
-                            match your brand's personality.</p>
-                    </div>
-                    <a href="brandpg/fontspg/fonts.html"
-                        class="inline-flex w-[max-content] items-center text-black bg-[#c7f908] hover:bg-white px-8 py-4 rounded-full font-bold tracking-widest uppercase hover:shadow-[0_0_20px_#c7f908] transition-all mt-auto shadow-md">Check
-                        Fonts <span class="ml-2 font-black text-lg">→</span></a>
-                </div>
+    // --- MAGNET & CURSOR ---
+    const cursor = document.getElementById("cursor");
+    const magneticElements = document.querySelectorAll(".magnetic");
 
-            </div>
-        </section>
-    </div>
+    let mouseX = 0,
+      mouseY = 0;
+    let cursorX = 0,
+      cursorY = 0;
 
-    <script>
-        // Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const overlay = document.getElementById('overlay');
-        let menuOpen = false;
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
-        menuBtn.addEventListener('click', () => {
-            menuOpen = !menuOpen;
-            if (menuOpen) {
-                overlay.classList.add('active');
-                menuBtn.innerText = 'CLOSE';
-            } else {
-                overlay.classList.remove('active');
-                menuBtn.innerText = 'MENU';
-            }
-        });
+    function lerp(start, end, factor) {
+      return start + (end - start) * factor;
+    }
 
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
+    function animateCursor() {
+      cursorX = lerp(cursorX, mouseX, 0.15);
+      cursorY = lerp(cursorY, mouseY, 0.15);
+      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
 
-        // Navbar Scroller
-        let lastScrollY = window.scrollY;
-        const mainNav = document.getElementById('main-nav');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                // Scrolling Down -> Hide
-                mainNav.style.transform = 'translateY(-100%)';
-                mainNav.style.opacity = '0';
-            } else {
-                // Scrolling Up -> Show
-                mainNav.style.transform = 'translateY(0)';
-                mainNav.style.opacity = '1';
-            }
-            lastScrollY = window.scrollY;
-        });
+    magneticElements.forEach((el) => {
+      el.addEventListener("mousemove", (e) => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dist = 0.5; // Magnetic strength
 
-        // Smart Nav Color Toggle (Light vs Dark Backgrounds)
-        ScrollTrigger.create({
-            trigger: "#hero",
-            start: "top+=" + window.innerHeight + " top", // Sun scales up over the screen
-            endTrigger: "#color-wrapper",
-            end: "bottom top", // End of neon section
-            onToggle: self => {
-                if (self.isActive) {
-                    mainNav.classList.remove('text-white');
-                    mainNav.classList.add('text-black');
-                } else {
-                    mainNav.classList.remove('text-black');
-                    mainNav.classList.add('text-white');
-                }
-            }
-        });
+        const moveX = (e.clientX - centerX) * dist;
+        const moveY = (e.clientY - centerY) * dist;
 
-        // Initial Title Animation
-        gsap.to("#hero-title", { y: 0, opacity: 1, duration: 1.5, ease: "power4.out", delay: 0.5 });
+        el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        cursor.classList.add("magnet");
+      });
 
-        // Sun Expanding Sequence
-        let sunTimeline = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#hero",
-                start: "top top",
-                end: "+=150%",
-                scrub: 1,
-                pin: true,
-                anticipatePin: 1
-            }
-        });
+      el.addEventListener("mouseleave", () => {
+        el.style.transform = "translate(0, 0)";
+        cursor.classList.remove("magnet");
+      });
+    });
 
-        sunTimeline.to("#sun", {
-            scale: 3,
-            ease: "none",
-            duration: 1
-        }).fromTo("#hero-title", {
-            opacity: 1,
-            y: 0
-        }, {
-            opacity: 0,
-            y: -50,
-            ease: "none",
-            duration: 1
-        }, "<")
-            .to("#sun-text", {
-                opacity: 1,
-                duration: 0.5,
-                ease: "none"
+    // --- NAVBAR STATE & 3D TILT ---
+    const nav = document.querySelector(".brutal-nav");
+    let isScrolled = false;
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 100) {
+        if (!isScrolled) {
+          nav.classList.add("scrolled");
+          isScrolled = true;
+        }
+      } else {
+        if (isScrolled) {
+          nav.classList.remove("scrolled");
+          nav.style.transform = "";
+          isScrolled = false;
+        }
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isScrolled) return;
+      const cx = window.innerWidth / 2;
+      const cy = 100; // Pivot near top
+
+      // Subtle tilt
+      const rx = (e.clientY - cy) * 0.02;
+      const ry = (e.clientX - cx) * 0.02;
+
+      // Constrain
+      const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+      nav.style.transform = `translateX(-50%) perspective(1000px) rotateX(${-clamp(
+        rx,
+        -10,
+        10
+      )}deg) rotateY(${clamp(ry, -10, 10)}deg)`;
+    });
+
+    // --- SCROLL VELOCITY SKEW ---
+    const content = document.getElementById("scroll-content");
+    let currentScroll = 0;
+    let targetScroll = 0;
+    let skew = 0;
+
+    // Note: For native scroll skewing, we just monitor scroll speed
+    // We aren't hijacking scroll here (keeping it native for UX), just adding effect
+    let lastScrollTop = 0;
+
+    function scrollLoop() {
+      const scrollTop = window.scrollY;
+      const velocity = scrollTop - lastScrollTop;
+      lastScrollTop = scrollTop;
+
+      // Smooth skew approach
+      // Target skew is based on velocity
+      // We clamp it to avoid too much distortion
+      const maxSkew = 5.0;
+      const speed = Math.min(Math.max(velocity * 0.1, -maxSkew), maxSkew);
+
+      // Lerp current skew to target speed
+      skew = lerp(skew, speed, 0.1);
+
+      // round to avoid blurry pixel issues if needed, but smooth is better for transform
+      if (Math.abs(skew) > 0.01) {
+        content.style.transform = `skewY(${skew}deg)`;
+      } else {
+        content.style.transform = `skewY(0deg)`;
+      }
+
+      requestAnimationFrame(scrollLoop);
+    }
+    scrollLoop();
+
+    // --- HACKER TEXT RE-INIT ---
+    const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    document.querySelectorAll("[data-text]").forEach((link) => {
+      link.addEventListener("mouseenter", (event) => {
+        let iter = 0;
+        const original = event.target.dataset.text;
+        clearInterval(event.target.interval);
+
+        event.target.interval = setInterval(() => {
+          event.target.innerText = original
+            .split("")
+            .map((l, i) => {
+              if (i < iter) return original[i];
+              return alpha[Math.floor(Math.random() * 26)];
             })
-            .to(".repel-star", {
-                opacity: 1,
-                scale: 1,
-                duration: 0.6,
-                ease: "back.out(1.7)"
-            }, "<")
-            .to("#sun", {
-                scale: 30,
-                ease: "none",
-                duration: 1
-            }, "-=0.5");
+            .join("");
 
-        // The background color of color-wrapper is already perfectly matched (#c7f908)!
-        // So as it naturally scrolls up, it perfectly blends with the zoomed-in sun!
+          if (iter >= original.length) clearInterval(event.target.interval);
+          iter += 1 / 3;
+        }, 30);
+      });
+      link.addEventListener("mouseleave", (e) => {
+        clearInterval(e.target.interval);
+        e.target.innerText = e.target.dataset.text;
+      });
+    });
 
-        // The Sliding Overlap Effect
-        ScrollTrigger.create({
-            trigger: "#color-wrapper",
-            start: "top top",
-            end: () => "+=" + document.querySelector("#blue-slide-container").offsetHeight,
-            pin: true,
-            pinSpacing: false
+    // --- GSAP PROJECTS PINNING ---
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initProjectsScroll() {
+      const projectsSection = document.querySelector("#projects");
+      const grid = document.querySelector(".cards-grid");
+      const viewport = document.querySelector(".project-right");
+
+      if (!projectsSection || !grid || !viewport) return;
+
+      const createScroll = () => {
+        let isMobile = window.innerWidth <= 1024;
+
+        ScrollTrigger.getAll().forEach((t) => {
+          if (t.trigger === projectsSection) t.kill();
         });
 
-        // Typographical Scroll Scrub (Gradient-like filling animation)
-        const scrubText = document.getElementById("scrub-text");
-        if (scrubText) {
-            const htmlContent = scrubText.innerHTML;
-            const parts = htmlContent.split(/(<[^>]*>|\s+)/);
-            scrubText.innerHTML = "";
-            parts.forEach(part => {
-                if (!part) return;
-                if (part.match(/<br\s*\/?>/i)) {
-                    scrubText.appendChild(document.createElement("br"));
-                } else if (part.match(/^\s+$/)) {
-                    scrubText.appendChild(document.createTextNode(" "));
-                } else if (!part.match(/<[^>]*>/)) {
-                    const span = document.createElement("span");
-                    span.innerHTML = part;
-                    span.className = "text-word opacity-20 transition-opacity duration-75 inline-block";
-                    scrubText.appendChild(span);
-                }
-            });
-
-            // Animate words INSIDE the sunTimeline since they are on the pinned circle
-            sunTimeline.to(".text-word", {
-                opacity: 1, // Ends solid black
-                stagger: 0.05,
-                ease: "none",
-                duration: 1
-            }, "-=0.5");
+        if (isMobile) {
+          gsap.set(grid, { y: 0 });
+          return;
         }
 
-        // Mockups Fan Out Scrub Animation
-        let tlBottles = gsap.timeline({
+        const totalHeight = grid.scrollHeight;
+        const viewHeight = viewport.offsetHeight;
+        const distance = totalHeight - viewHeight;
+
+        if (distance > 0) {
+          gsap.to(grid, {
+            y: -distance,
+            ease: "none",
             scrollTrigger: {
-                trigger: "#bottles-section",
-                start: "top 80%",
-                end: "top 30%",
-                scrub: 1
+              trigger: projectsSection,
+              start: "top top",
+              end: `+=${distance + 150}`, // slight extra for smooth finish
+              pin: true,
+              scrub: 1.2,
+              invalidateOnRefresh: true,
             }
-        });
+          });
+        }
+      };
 
-        gsap.set("#bottle-left", { xPercent: 0, rotation: 0, y: 0 });
-        gsap.set("#bottle-right", { xPercent: 0, rotation: 0, y: 0 });
-        gsap.set("#bottle-center", { y: 150, opacity: 0 });
+      createScroll();
+      // Ensure pins are calculated after content is out and shifted
+      setTimeout(() => ScrollTrigger.refresh(), 500); 
 
-        tlBottles.to("#bottle-center", { y: 0, opacity: 1, duration: 1 }, 0)
-            .to("#bottle-left", { xPercent: -100, rotation: -8, y: 40, duration: 1 }, 0)
-            .to("#bottle-right", { xPercent: 100, rotation: 8, y: 40, duration: 1 }, 0);
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          createScroll();
+          ScrollTrigger.refresh();
+        }, 200);
+      });
+    }
 
-        // Standard GS-Reveal Elements
-        const revealElements = document.querySelectorAll(".gs-reveal");
-        revealElements.forEach(elem => {
-            gsap.fromTo(elem,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1.2,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-        });
-
-        // Star Repulsion
-        const stars = document.querySelectorAll('.repel-star');
-        document.addEventListener('mousemove', (e) => {
-            stars.forEach(star => {
-                const rect = star.getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                const distX = e.clientX - x;
-                const distY = e.clientY - y;
-                const distance = Math.sqrt(distX * distX + distY * distY);
-                if (distance < 150) {
-                    const angle = Math.atan2(distY, distX);
-                    const push = 150 - distance;
-                    gsap.to(star, {
-                        x: -Math.cos(angle) * push * 0.5,
-                        y: -Math.sin(angle) * push * 0.5,
-                        duration: 0.3
-                    });
-                } else {
-                    gsap.to(star, { x: 0, y: 0, duration: 0.5 });
-                }
-            });
-        });
-    </script>
-    <script src="sticky-navbar.js"></script>
+    if (document.readyState === "complete") {
+      initProjectsScroll();
+    } else {
+      window.addEventListener("load", initProjectsScroll);
+    }
+  </script>
 </body>
-
 </html>

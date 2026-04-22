@@ -1196,13 +1196,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressText = document.getElementById('loader-text');
         const mascotVideo = document.getElementById('mascot-preloader-video');
 
+        const navEntries = performance.getEntriesByType('navigation');
+        const navType = navEntries.length > 0 ? navEntries[0].type : '';
+        const isReload = navType === 'reload';
+        const isBackForward = navType === 'back_forward';
         const hash = window.location.hash;
         const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
 
-        if (sessionStorage.getItem('preloaderShown') || isJumpingToWorks) {
+        if (sessionStorage.getItem('preloaderShown') || isReload || isBackForward || isJumpingToWorks) {
             if (isJumpingToWorks) {
                 sessionStorage.setItem('preloaderShown', 'true');
-                // Calculate jump Y immediately
                 calculateSlideHeights();
                 const boundaries = getSlideBoundaries();
                 if (boundaries.length > 2) {
@@ -1223,33 +1226,37 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let progress = 0;
-        let videoStarted = false;
+        // --- Progressive Loading Logic ---
+        let startTime = null;
+        const MIN_DURATION = 3000;
+        let animationStarted = false;
 
-        const startLoading = () => {
-             videoStarted = true;
+        const startLoadingAnimation = () => {
+             if (animationStarted) return;
+             animationStarted = true;
              requestAnimationFrame(updateLoader);
         };
 
         if (mascotVideo) {
             if (mascotVideo.readyState >= 3) {
-                startLoading();
+                startLoadingAnimation();
             } else {
-                mascotVideo.addEventListener('playing', startLoading, { once: true });
-                setTimeout(() => { if (!videoStarted) startLoading(); }, 2000);
+                mascotVideo.addEventListener('canplaythrough', startLoadingAnimation, { once: true });
+                setTimeout(startLoadingAnimation, 3000); // 3s fallback
             }
         } else {
-            startLoading();
+            startLoadingAnimation();
         }
-
-        let startTime = null;
-        const MIN_DURATION = 3000;
 
         function updateLoader(timestamp) {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             
-            progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+            let progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
+            
+            if (progress > 98 && document.readyState !== 'complete') {
+                progress = 98;
+            }
 
             progressFill.style.width = `${progress}%`;
             progressText.innerText = `${Math.floor(progress)}%`;
@@ -1265,7 +1272,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 500);
             }
         }
-        requestAnimationFrame(updateLoader);
     };
 
     initPreloader();

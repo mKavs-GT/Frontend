@@ -34,9 +34,19 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.location.href = "./mobile/index.html";
         }
-        // Aggressive preloader skip for direct works links
-        if (window.location.hash === '#our-works' || window.location.hash === '#slide-3') {
-            document.documentElement.classList.add('skip-preloader-transition', 'jumping-to-works');
+        
+        const navEntries = performance.getEntriesByType('navigation');
+        const navType = navEntries.length > 0 ? navEntries[0].type : '';
+        const isReload = navType === 'reload';
+        const isWorksHash = window.location.hash === '#our-works' || window.location.hash === '#slide-3';
+
+        // Aggressive preloader skip for reloads, existing sessions, or direct works links
+        if (sessionStorage.getItem('preloaderShown') || isReload || isWorksHash) {
+            document.documentElement.classList.add('skip-preloader-transition');
+            if (isWorksHash) {
+               document.documentElement.classList.add('jumping-to-works');
+            }
+            // Ensure preloaderShown is set for future reloads if it was just isReload
             sessionStorage.setItem('preloaderShown', 'true');
         }
     </script>
