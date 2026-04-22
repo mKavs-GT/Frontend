@@ -10,6 +10,19 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Safety Net for 'Terminal' ReferenceError
+      if (typeof window.Terminal === 'undefined') {
+        window.Terminal = class {
+          constructor() { console.warn('Terminal Safety Net: Global "Terminal" class was accessed but not defined. Creating dummy instance.'); }
+          open() {}
+          write() {}
+          writeln() {}
+          onData() {}
+          onKey() {}
+        };
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
