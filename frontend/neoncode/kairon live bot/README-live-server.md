@@ -14,6 +14,6 @@ Run locally (Windows PowerShell):
 
    npm start
 
-The server listens on port 3000 by default. Open `media/live_staff.html` and `media/live_customer_widget.html` in your browser (file:// works, but using a local static server is recommended for full functionality).
+The server listens on port 3001 by default. Open `media/live_staff.html` and `media/live_customer_widget.html` in your browser (file:// works, but using a local static server is recommended for full functionality).
 
 If you want to change the port, edit `server.js` and adjust the `PORT` constant.

@@ -476,11 +476,25 @@ html {
 }
 
 .footer-column h4 {
-    color: #000000;
+    color: #111;
     text-transform: uppercase;
-    font-size: 0.875rem;
-    font-weight: 700;
-    margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+}
+
+.footer-column h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 30px;
+    height: 4px;
+    background-color: #0c19ad;
+    border-radius: 2px;
 }
 
 .footer-column ul {
@@ -489,20 +503,46 @@ html {
 }
 
 .footer-column ul li {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .footer-column ul li a {
-    color: #000000;
+    color: #222;
     text-decoration: none;
-    font-size: 1rem;
-    transition: text-decoration 0.2s;
-    opacity: 0.8;
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.85;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.footer-column ul li a::before {
+    content: '→';
+    font-family: monospace;
+    opacity: 0;
+    transform: translateX(-10px);
+    margin-right: 0;
+    width: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #0c19ad;
+    font-weight: 900;
+    font-size: 1.2rem;
 }
 
 .footer-column ul li a:hover {
-    text-decoration: underline;
     opacity: 1;
+    transform: translateX(5px);
+    color: #0c19ad;
+    text-decoration: none;
+}
+
+.footer-column ul li a:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+    width: 24px;
+    margin-right: 4px;
 }
 
 .footer-brand-side {

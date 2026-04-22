@@ -158,12 +158,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function appendMessage(text, type) {
+    window.showTypingIndicator = function() {
+        if (document.getElementById('typing-indicator')) return;
+        const msg = document.createElement('div');
+        msg.id = 'typing-indicator';
+        msg.className = 'typing-indicator';
+        msg.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    window.hideTypingIndicator = function() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    };
+
+    function typewriter(el, text, speed = 30) {
+        return new Promise(resolve => {
+            let i = 0;
+            el.innerHTML = '';
+            el.classList.add('typewriter-cursor');
+            
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    messages.scrollTop = messages.scrollHeight;
+                    setTimeout(type, speed);
+                } else {
+                    el.classList.remove('typewriter-cursor');
+                    resolve();
+                }
+            }
+            type();
+        });
+    }
+
+    async function appendMessage(text, type, useTypewriter = false) {
         const el = document.createElement('div');
         el.className = `msg ${type}`;
-        el.textContent = text;
-        messages.appendChild(el);
+        
+        if (useTypewriter && type === 'bot') {
+            messages.appendChild(el);
+            await typewriter(el, text);
+        } else {
+            el.textContent = text;
+            messages.appendChild(el);
+        }
         messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function botReply(text) {
+        showTypingIndicator();
+        const delay = Math.min(Math.max(text.length * 15, 1000), 2500);
+        await new Promise(r => setTimeout(r, delay));
+        hideTypingIndicator();
+        await appendMessage(text, 'bot', true);
     }
 
     // --- Logic Functions ---
@@ -289,8 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleUserSelection(item) {
         appendMessage(item.question, 'user');
         setTimeout(() => {
-            appendMessage(item.answer, 'bot');
-        }, 500);
+            botReply(item.answer);
+        }, 300);
     }
 
     // --- Initialization ---
@@ -312,9 +362,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateImagePaths();
 
     // Initial Greeting Message
-    setTimeout(() => {
+    setTimeout(async () => {
         if (messages.children.length === 0) {
-            appendMessage("Hi! I'm Kairon. How can I help you today?", 'bot');
+            await botReply("Hi! I'm Kairon. How can I help you today?");
         }
     }, 100);
 
@@ -340,12 +390,12 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const reply = botReplyFor(val);
                 if (reply) {
-                    appendMessage(reply, 'bot');
+                    botReply(reply);
                 } else {
-                    appendMessage("I'm not sure about that. Checking for available agents...", 'bot');
-                    window.requestStaff();
+                    botReply("I'm not sure about that. Checking for available agents...");
+                    setTimeout(() => window.requestStaff(), 1000);
                 }
-            }, 500);
+            }, 300);
         });
     }
 

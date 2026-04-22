@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- WebSocket Connection ---
     function connectWebSocket() {
         console.log('Attempting WS connection...');
-        ws = new WebSocket('ws://localhost:3000/customer');
+        ws = new WebSocket('ws://localhost:3001/customer');
 
         ws.onopen = () => {
             console.log('Connected to Live Chat Server');
@@ -66,6 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.handleServerMessage = function (data) {
         switch (data.type) {
+
+            // Server assigned us a customerId — store it for outbound messages
+            case 'connected':
+                ws._customerId = data.customerId;
+                break;
+
             case 'staff_list':
                 // Server sends [{name, status, ...}], we need just names of ONLINE agents
                 window.onlineAgents = (data.staff || [])
@@ -73,20 +79,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     .map(s => s.name);
                 console.log('Online agents updated:', window.onlineAgents);
                 break;
+
+            // Server confirmed it is routing the request to an agent
+            case 'request_sent':
+                appendMessage(`Request sent to ${data.requested || 'an agent'}. Please wait...`, 'system');
+                break;
+
             case 'staff_message':
                 appendMessage(data.message, 'agent');
                 break;
-            case 'request_failed':
-                appendMessage('Agent unavailable at the moment. Please try again later.', 'system');
+
+            // Server could not find an available agent
+            case 'no_staff':
+                appendMessage('No live agents are currently available. Please leave a message or try again later.', 'system');
                 currentAgent = null;
                 break;
+
+            // The requested agent was offline or busy
+            case 'request_failed':
+                appendMessage('The requested agent is unavailable. We are checking for other available agents…', 'system');
+                currentAgent = null;
+                // Auto-fallback: try any available agent after a short delay
+                setTimeout(() => window.requestStaff(null), 1500);
+                break;
+
+            // An agent accepted our request
             case 'request_accepted':
                 currentAgent = data.staff;
-                appendMessage(`You are now connected with ${data.staff}.`, 'system');
+                appendMessage(`You are now connected with ${data.staff}. How can I help?`, 'system');
                 break;
-            case 'chat_closed':
-                appendMessage('Chat ended by agent.', 'system');
+
+            // An agent explicitly declined (new event type)
+            case 'request_declined':
+                appendMessage(`Agent ${data.staff} is currently unavailable. Trying another agent…`, 'system');
                 currentAgent = null;
+                // Retry with any available agent after a short delay
+                setTimeout(() => window.requestStaff(null), 1500);
+                break;
+
+            // Chat was closed by the agent
+            case 'closed':
+            case 'chat_closed':
+                appendMessage('The chat session has ended. Thank you for reaching out!', 'system');
+                currentAgent = null;
+                break;
+
+            // Chat was transferred to another agent
+            case 'transferred':
+                appendMessage(`Your chat has been transferred to ${data.toStaff || 'another agent'}.`, 'system');
+                currentAgent = data.toStaff || null;
                 break;
         }
     }
@@ -97,23 +138,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setOpen(open) {
         if (open) {
-            panel.style.display = 'flex';
-            root.classList.add('open');
+            panel.classList.add('open');
             panel.setAttribute('aria-hidden', 'false');
-            input.focus();
+            setTimeout(() => input.focus(), 300); // Focus after slide-up starts
         } else {
-            root.classList.remove('open');
+            panel.classList.remove('open');
             panel.setAttribute('aria-hidden', 'true');
-            panel.style.display = 'none';
         }
     }
 
-    function appendMessage(text, type) {
+    window.showTypingIndicator = function() {
+        if (document.getElementById('typing-indicator')) return;
+        const msg = document.createElement('div');
+        msg.id = 'typing-indicator';
+        msg.className = 'typing-indicator';
+        msg.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    window.hideTypingIndicator = function() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    };
+
+    function typewriter(el, text, speed = 30) {
+        return new Promise(resolve => {
+            let i = 0;
+            el.innerHTML = '';
+            el.classList.add('typewriter-cursor');
+            
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    messages.scrollTop = messages.scrollHeight;
+                    setTimeout(type, speed);
+                } else {
+                    el.classList.remove('typewriter-cursor');
+                    resolve();
+                }
+            }
+            type();
+        });
+    }
+
+    async function appendMessage(text, type, useTypewriter = false) {
         const el = document.createElement('div');
         el.className = `msg ${type}`;
-        el.textContent = text;
-        messages.appendChild(el);
+        
+        if (useTypewriter && type === 'bot') {
+            messages.appendChild(el);
+            await typewriter(el, text);
+        } else {
+            el.textContent = text;
+            messages.appendChild(el);
+        }
         messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function botReply(text) {
+        showTypingIndicator();
+        // Simulate thinking time based on message length (min 1s, max 2.5s)
+        const delay = Math.min(Math.max(text.length * 15, 1000), 2500);
+        await new Promise(r => setTimeout(r, delay));
+        hideTypingIndicator();
+        await appendMessage(text, 'bot', true);
     }
 
     // --- Logic Functions ---
@@ -126,21 +216,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const priority = ['Mr.K', 'Mr.A', 'Mr.S', 'Mr.V', 'Mr.M'];
 
+        // Step 1 — specific named agent requested and confirmed online
         if (name && window.onlineAgents.includes(name)) {
             ws.send(JSON.stringify({ type: 'request_staff', requestedStaff: name }));
             appendMessage(`Connecting to ${name}...`, 'system');
             return;
         }
 
-        let target = priority.find(p => window.onlineAgents.includes(p));
-
-        if (target) {
-            ws.send(JSON.stringify({ type: 'request_staff', requestedStaff: target }));
-            appendMessage(`Connecting to ${target}...`, 'system');
-        } else {
-            appendMessage("No live agents are currently available. Please leave a message or try again later.", 'bot');
-            appendMessage("You can email us at support@kairon.com", 'bot');
+        // Step 2 — try a priority agent if they happen to be online
+        const priorityTarget = priority.find(p => window.onlineAgents.includes(p));
+        if (priorityTarget) {
+            ws.send(JSON.stringify({ type: 'request_staff', requestedStaff: priorityTarget }));
+            appendMessage(`Connecting to ${priorityTarget}...`, 'system');
+            return;
         }
+
+        // Step 3 — ANY online agent (covers 'Live Agent' and other non-priority names).
+        // Uses request_any so the server picks the least-loaded available agent.
+        if (window.onlineAgents.length > 0) {
+            ws.send(JSON.stringify({ type: 'request_any' }));
+            appendMessage('I\'m checking for an available agent, one moment...', 'system');
+            return;
+        }
+
+        // Step 4 — nobody online at all
+        appendMessage("No live agents are currently available. Please leave a message or try again later.", 'bot');
+        appendMessage("You can email us at support@kairon.com", 'bot');
     };
 
     function botReplyFor(text) {
@@ -158,7 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadFaqData() {
         try {
-            const response = await fetch('kairon-faqs.json');
+            const basePath = window.KAIRON_BASE_PATH || '';
+            const response = await fetch(basePath + 'kairon-faqs.json');
             if (!response.ok) throw new Error("JSON file not found");
             allFaqs = await response.json();
             console.log("Loaded FAQs:", allFaqs.length);
@@ -238,25 +340,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleUserSelection(item) {
         appendMessage(item.question, 'user');
         setTimeout(() => {
-            appendMessage(item.answer, 'bot');
-        }, 500);
+            botReply(item.answer);
+        }, 300);
     }
 
     // --- Initialization ---
 
+    function updateImagePaths() {
+        const basePath = window.KAIRON_BASE_PATH || '';
+        const images = document.querySelectorAll('#kairon img');
+        images.forEach(img => {
+            // Force the logo images to use the specific local little.png from kairon live bot folder
+            img.setAttribute('src', basePath + 'little.png');
+        });
+    }
+
     loadFaqData(); // Load FAQs from JSON
     renderCategories();
+    updateImagePaths();
 
     // Initial Messages
-    setTimeout(() => {
+    setTimeout(async () => {
         if (messages.children.length === 0) {
-            appendMessage("Hi! I'm Kairon. How can I help you today?", 'bot');
-            setTimeout(() => {
+            await botReply("Hi! I'm Kairon. How can I help you today?");
+            setTimeout(async () => {
                 appendMessage("I'm looking for information about your services.", 'user');
                 setTimeout(() => {
-                    appendMessage("Sure! I can help with that. What specifically are you interested in?", 'bot');
-                }, 500);
-            }, 500);
+                    botReply("Sure! I can help with that. What specifically are you interested in?");
+                }, 800);
+            }, 1000);
         }
     }, 100);
 
@@ -282,12 +394,12 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const reply = botReplyFor(val);
                 if (reply) {
-                    appendMessage(reply, 'bot');
+                    botReply(reply);
                 } else {
-                    appendMessage("I'm not sure about that. Checking for available agents...", 'bot');
-                    window.requestStaff();
+                    botReply("I'm not sure about that. Checking for available agents...");
+                    setTimeout(() => window.requestStaff(), 1000);
                 }
-            }, 500);
+            }, 300);
         });
     }
 
