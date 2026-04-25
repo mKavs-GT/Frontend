@@ -48,7 +48,10 @@ export default function App() {
   };
 
   const [activeView, setActiveView] = useState('project'); // 'project', 'time', 'profile', 'vault'
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('mkavs_theme');
+    return saved ? JSON.parse(saved) : true;
+  });
   const [isZenMode, setIsZenMode] = useState(false);
   const [zenTime, setZenTime] = useState(25 * 60);
   const [standupCopied, setStandupCopied] = useState(false);
@@ -60,13 +63,18 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
   
-  // Apply dark mode
+  // Apply dark mode and smooth transitions
   useEffect(() => {
+    const root = document.documentElement;
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
     }
+    localStorage.setItem('mkavs_theme', JSON.stringify(isDarkMode));
+    
+    // Add global transition class to body for smooth switching
+    document.body.classList.add('transition-colors', 'duration-500');
   }, [isDarkMode]);
 
   // Notifications sync
@@ -179,6 +187,50 @@ export default function App() {
       </div>
     );
   }
+
+  const [onlineStaff, setOnlineStaff] = useState([]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    // Use ws:// for local development and wss:// for production
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.hostname === 'localhost' ? 'localhost:3001' : 'mkavs-backend.onrender.com';
+    const wsUrl = `${protocol}//${host}/staff`;
+    
+    let ws;
+    try {
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name }));
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'staff_list') {
+            setOnlineStaff(data.staff);
+          }
+        } catch (e) {
+          console.error("WS Message Error:", e);
+        }
+      };
+
+      ws.onerror = (err) => console.warn("Presence WS Error:", err);
+    } catch (e) {
+      console.error("WS Connection failed:", e);
+    }
+
+    return () => {
+      if (ws) ws.close();
+    };
+  }, [user]);
+
+  const getStaffStatus = (name) => {
+    const s = onlineStaff.find(s => s.name === name);
+    return s ? s.status : 'offline';
+  };
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
@@ -416,12 +468,12 @@ export default function App() {
           </div>
           
           <div className="space-y-2">
-            <TeamMember name="Krishawn Rahul" role="Executive Admin" status="online" avatar="https://i.pravatar.cc/150?u=krishawn" />
-            <TeamMember name="Sitesh" role="Business Head" status="online" avatar="https://i.pravatar.cc/150?u=sitesh" />
-            <TeamMember name="Vinith Vijaya" role="Executive" status="offline" avatar="https://i.pravatar.cc/150?u=vinith" />
-            <TeamMember name="Sofia Stalance" role="Developer" status="online" avatar="https://i.pravatar.cc/150?u=sofia" />
-            <TeamMember name="Michael Antony" role="Developer" status="online" avatar="https://i.pravatar.cc/150?u=michael" />
-            <TeamMember name="Mohammed Abuzar" role="Designer" status="offline" avatar="https://i.pravatar.cc/150?u=mohammed" />
+            <TeamMember name="Krishawn Rahul" role="Executive Admin" status={getStaffStatus("Krishawn Rahul")} avatar="https://i.pravatar.cc/150?u=krishawn" />
+            <TeamMember name="Sitesh" role="Business Head" status={getStaffStatus("Sitesh")} avatar="https://i.pravatar.cc/150?u=sitesh" />
+            <TeamMember name="Vinith Vijaya Rangan" role="Executive" status={getStaffStatus("Vinith Vijaya Rangan")} avatar="https://i.pravatar.cc/150?u=vinith" />
+            <TeamMember name="Sofia Stalance" role="Developer" status={getStaffStatus("Sofia Stalance")} avatar="https://i.pravatar.cc/150?u=sofia" />
+            <TeamMember name="Michael Antony" role="Developer" status={getStaffStatus("Michael Antony")} avatar="https://i.pravatar.cc/150?u=michael" />
+            <TeamMember name="Mohammed Abuzar" role="Designer" status={getStaffStatus("Mohammed Abuzar")} avatar="https://i.pravatar.cc/150?u=mohammed" />
           </div>
         </div>
       </aside>

@@ -189,7 +189,7 @@ export default function ProjectManager({ user }) {
       <div className="flex flex-col gap-6">
         {projects.map(project => (
           <div key={project._id} className="flex flex-col gap-4">
-            <div className={`bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2.5rem] p-6 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-all ${expandedProjects.has(project._id) ? 'border-indigo-500/30' : ''}`}>
+            <div className={`bg-white dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2.5rem] p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm transition-all ${expandedProjects.has(project._id) ? 'border-indigo-500/30' : ''}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 cursor-pointer" onClick={() => {
                   setExpandedProjects(prev => {
@@ -204,11 +204,11 @@ export default function ProjectManager({ user }) {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">{project.name}</h3>
-                    <p className="text-sm text-zinc-500 font-medium">{project.description || 'Global project objectives.'}</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">{project.description || 'Global project objectives.'}</p>
                   </div>
                 </div>
                 {user?.isExecutive && (
-                  <button onClick={() => { setSelectedProjectId(project._id); setIsSprintModalOpen(true); }} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-bold text-sm hover:bg-indigo-600 hover:text-white transition-all">
+                  <button onClick={() => { setSelectedProjectId(project._id); setIsSprintModalOpen(true); }} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-bold text-sm hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
                     <PlusCircle size={18} />
                     <span>Add Sprint</span>
                   </button>
@@ -220,7 +220,7 @@ export default function ProjectManager({ user }) {
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
                     <div className="pt-8 flex flex-wrap gap-3">
                       {project.sprints.map(sprint => (
-                        <button key={sprint._id} onClick={() => setActiveSprintMap(prev => ({ ...prev, [project._id]: sprint._id }))} className={`px-5 py-3 rounded-2xl border transition-all flex flex-col items-start gap-1 ${activeSprintMap[project._id] === sprint._id ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400'}`}>
+                        <button key={sprint._id} onClick={() => setActiveSprintMap(prev => ({ ...prev, [project._id]: sprint._id }))} className={`px-5 py-3 rounded-2xl border transition-all flex flex-col items-start gap-1 ${activeSprintMap[project._id] === sprint._id ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-indigo-500/50'}`}>
                           <span className="text-xs font-black uppercase tracking-tighter opacity-80">{sprint.name}</span>
                           <span className="text-xs font-bold whitespace-nowrap">{sprint.dueDate}</span>
                         </button>
@@ -235,11 +235,11 @@ export default function ProjectManager({ user }) {
               {expandedProjects.has(project._id) && activeSprintMap[project._id] && (
                 <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} className="flex flex-col gap-6">
                   {project.sprints.filter(s => s._id === activeSprintMap[project._id]).map(sprint => (
-                    <div key={sprint._id} className="bg-zinc-50/50 dark:bg-zinc-950/20 rounded-[2.5rem] p-8 border border-zinc-200/50 dark:border-zinc-800/20">
+                    <div key={sprint._id} className="bg-white dark:bg-zinc-950/20 rounded-[2.5rem] p-8 border border-zinc-200 dark:border-zinc-800/20 shadow-sm">
                       <div className="flex items-center justify-between mb-8">
                         <div>
                           <h4 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{sprint.name}</h4>
-                          <span className="flex items-center gap-1.5 text-sm font-bold text-zinc-500 mt-1"><Clock size={14} /> Due: {sprint.dueDate}</span>
+                          <span className="flex items-center gap-1.5 text-sm font-bold text-zinc-600 dark:text-zinc-500 mt-1"><Clock size={14} /> Due: {sprint.dueDate}</span>
                         </div>
                         <div className="text-right">
                           <span className="text-4xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">{sprint.progress}%</span>
@@ -249,19 +249,23 @@ export default function ProjectManager({ user }) {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {Object.entries(COLUMN_TITLES).map(([key, title]) => (
-                          <div key={key} className="bg-white/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/30 dark:border-zinc-800/30 flex flex-col gap-4">
+                          <div key={key} className="bg-zinc-50/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/50 dark:border-zinc-800/30 flex flex-col gap-4">
                             <div className="flex items-center justify-between mb-2 px-1">
                               <h5 className="font-black text-zinc-900 dark:text-white uppercase tracking-tighter text-xs opacity-70">{title}</h5>
                               <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black bg-zinc-200 dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-full">{sprint.columns[key].length}</span>
+                                <span className="text-[10px] font-black bg-white dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-full shadow-sm">{sprint.columns[key].length}</span>
                                 {user?.isExecutive && (
-                                  <button onClick={() => {
-                                    setSelectedProjectId(project._id);
-                                    setSelectedSprintId(sprint._id);
-                                    setSelectedColumn(key);
-                                    setIsTaskModalOpen(true);
-                                  }} className="text-zinc-400 hover:text-indigo-600 transition-colors">
-                                    <Plus size={16} />
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedProjectId(project._id);
+                                      setSelectedSprintId(sprint._id);
+                                      setSelectedColumn(key);
+                                      setIsTaskModalOpen(true);
+                                    }} 
+                                    className="flex items-center gap-1 text-[10px] font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-1 rounded-lg hover:bg-indigo-100 transition-all"
+                                  >
+                                    <Plus size={12} />
+                                    <span>ADD TASK</span>
                                   </button>
                                 )}
                               </div>
