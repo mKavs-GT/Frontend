@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
+    "build": "npm run build --prefix frontend/admin",
+    "postinstall": "npm install --prefix frontend/admin",
     "dev": "node backend/scripts/open-admin.js --with-server",
     "admin": "node backend/scripts/open-admin.js"
   },

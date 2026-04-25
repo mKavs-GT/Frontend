@@ -1,6 +1,14 @@
 {
-  "cleanUrls": false,
+  "cleanUrls": true,
   "rewrites": [
+    {
+      "source": "/admin/:path*",
+      "destination": "/frontend/admin/dist/:path*"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/frontend/admin/dist/index.html"
+    },
     {
       "source": "/images/:path*",
       "destination": "/frontend/images/:path*"
