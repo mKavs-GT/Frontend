@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://mkavs-backend.onrender.com/api/:path*"
+    },
+    {
       "source": "/(css|js|assets|images)/:path*",
       "destination": "/$1/:path*"
     },
