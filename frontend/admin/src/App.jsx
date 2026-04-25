@@ -29,6 +29,7 @@ import Login from './components/Login';
 import TeamTracker from './components/TeamTracker';
 import CRM from './components/CRM';
 import GodMode from './components/GodMode';
+import NotificationCenter from './components/NotificationCenter';
 
 export default function App() {
   const [user, setUser] = useState(() => {
@@ -235,46 +236,7 @@ export default function App() {
           </h1>
           
           <div className="flex items-center gap-4">
-            <div className="relative group cursor-pointer p-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors">
-              <Bell className="text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors" size={20} />
-              <div className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white dark:ring-zinc-950"></div>
-              
-              {/* Dropdown */}
-              <div className="absolute right-0 mt-2 w-72 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-2xl shadow-xl border border-zinc-200/50 dark:border-zinc-700/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
-                <div className="p-4 border-b border-zinc-200/50 dark:border-zinc-700/50 flex justify-between items-center">
-                  <h3 className="font-semibold text-zinc-900 dark:text-white text-sm">Notifications</h3>
-                  <span className="text-xs bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-medium">{notifications.length || 2} New</span>
-                </div>
-                <div className="p-2 max-h-[300px] overflow-y-auto hide-scrollbar">
-                  {notifications.length > 0 ? (
-                    notifications.map(n => (
-                      <div key={n.id} className="px-3 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl cursor-pointer transition-colors flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center shrink-0">
-                          <MessageSquare size={14} className="text-rose-600 dark:text-rose-400" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-rose-600 dark:text-rose-400">{n.title}</p>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{n.message}</p>
-                          <p className="text-[10px] text-zinc-400 mt-1">{n.time}</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div className="px-3 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl cursor-pointer transition-colors flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center shrink-0">
-                          <Kanban size={14} className="text-indigo-600 dark:text-indigo-400" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">New Task Assigned</p>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Design new landing page for client</p>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
+            <NotificationCenter user={user} />
             
             <button 
               onClick={() => setIsDarkMode(!isDarkMode)}
@@ -282,6 +244,18 @@ export default function App() {
             >
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
+
+            <div className="flex items-center gap-3 ml-2">
+              <div className="text-right hidden sm:block">
+                <p className="text-sm font-bold text-zinc-900 dark:text-white leading-none">{user.name}</p>
+                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">{user.role}</p>
+              </div>
+              <img 
+                src={user.avatar} 
+                alt={user.name} 
+                className="w-10 h-10 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm"
+              />
+            </div>
           </div>
         </header>
 
