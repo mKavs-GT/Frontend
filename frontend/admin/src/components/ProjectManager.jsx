@@ -1,429 +1,477 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle2, Plus, Trash2, ArrowRight, Settings, X, Calendar } from 'lucide-react';
+import { 
+  Plus, 
+  Trash2, 
+  Calendar, 
+  X, 
+  ChevronRight, 
+  ChevronDown, 
+  Layout, 
+  PlusCircle, 
+  Clock,
+  MoreVertical,
+  CheckCircle2,
+  Circle,
+  GripVertical
+} from 'lucide-react';
 
-const initialColumns = [
-  { id: 'backlog', title: 'Backlog', tasks: [
-    { id: 1, title: 'Design System Update', assignee: 'https://i.pravatar.cc/150?u=sarah', tags: [{name: 'UI/UX', color: 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-500/20 dark:text-fuchsia-400'}] },
-    { id: 2, title: 'User Onboarding Flow', assignee: 'https://i.pravatar.cc/150?u=mike', tags: [{name: 'Feature', color: 'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400'}] },
-  ]},
-  { id: 'in-progress', title: 'In Progress', tasks: [
-    { id: 3, title: 'Dashboard Bento Grid', assignee: 'https://i.pravatar.cc/150?u=12', tags: [{name: 'Frontend', color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400'}, {name: 'High Priority', color: 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400'}] },
-    { id: 4, title: 'Authentication API', assignee: 'https://i.pravatar.cc/150?u=elena', tags: [{name: 'Backend', color: 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400'}] },
-  ]},
-  { id: 'qa', title: 'QA/Testing', tasks: [
-    { id: 5, title: 'Payment Gateway Integration', assignee: 'https://i.pravatar.cc/150?u=david', tags: [{name: 'Critical', color: 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400'}] },
-  ]},
-  { id: 'live', title: 'Live', tasks: [
-    { id: 6, title: 'Landing Page V2', assignee: 'https://i.pravatar.cc/150?u=sarah', tags: [{name: 'Marketing', color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400'}] },
-  ]}
-];
+// Task columns helper
+const COLUMN_TITLES = {
+  allTasks: 'All Tasks',
+  ongoing: 'Ongoing',
+  testing: 'Testing',
+  live: 'Live'
+};
 
 export default function ProjectManager({ user }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [project, setProject] = useState(() => {
-    const saved = localStorage.getItem('mkavs_dashboard_project');
-    return saved ? JSON.parse(saved) : {
-      name: 'Website Redesign MVP',
-      sprint: 'Sprint 4',
-      dueDate: '2026-04-30'
-    };
-  });
+  const [projects, setProjects] = useState([]);
+  const [expandedProjects, setExpandedProjects] = useState(new Set());
+  const [activeSprintMap, setActiveSprintMap] = useState({}); // { projectId: sprintId }
+  
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isSprintModalOpen, setIsSprintModalOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
 
-  // Fetch from backend on mount
+  const [projectFormData, setProjectFormData] = useState({ name: '', description: '' });
+  const [sprintFormData, setSprintFormData] = useState({ dueDate: '' });
+
+  // Fetch all projects on mount and set up polling for "realtime" feel
   useEffect(() => {
-    const fetchGlobalProject = async () => {
-      try {
-        const res = await fetch('/api/dashboard/config/main_project');
-        if (res.ok) {
-          const data = await res.json();
-          setProject(data);
-          localStorage.setItem('mkavs_dashboard_project', JSON.stringify(data));
-        }
-      } catch (err) {
-        console.error('Failed to sync with backend:', err);
-      }
-    };
-    fetchGlobalProject();
+    fetchProjects();
+    const interval = setInterval(fetchProjects, 5000); // Poll every 5s
+    return () => clearInterval(interval);
   }, []);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    sprint: '',
-    dueDate: ''
-  });
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch('/api/admin-projects');
+      if (res.ok) {
+        const data = await res.json();
+        setProjects(data);
+        
+        // Auto-expand first project if none expanded
+        if (expandedProjects.size === 0 && data.length > 0) {
+          setExpandedProjects(new Set([data[0]._id]));
+          // Default to first sprint
+          if (data[0].sprints.length > 0) {
+            setActiveSprintMap(prev => ({ ...prev, [data[0]._id]: data[0].sprints[0]._id }));
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Fetch projects failed:', err);
+    }
+  };
+
+  const toggleProject = (projectId) => {
+    setExpandedProjects(prev => {
+      const next = new Set(prev);
+      if (next.has(projectId)) next.delete(projectId);
+      else next.add(projectId);
+      return next;
+    });
+  };
 
   const handleCreateProject = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.sprint || !formData.dueDate) return;
-    
-    const newProject = {
-      name: formData.name,
-      sprint: formData.sprint,
-      dueDate: formData.dueDate
-    };
+    if (!projectFormData.name) return;
 
-    // Update locally first for instant feedback
-    setProject(newProject);
-    setIsModalOpen(false);
-    setFormData({ name: '', sprint: '', dueDate: '' });
-    localStorage.setItem('mkavs_dashboard_project', JSON.stringify(newProject));
-
-    // Sync to backend if user is executive
-    if (user?.isExecutive) {
-      try {
-        await fetch('/api/dashboard/config', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            key: 'main_project',
-            value: newProject
-          })
-        });
-      } catch (err) {
-        console.error('Failed to save to backend:', err);
-      }
-    }
-  };
-
-  // Helper to format "Due in X Days" or similar
-  const getDueDateDisplay = (dateStr) => {
     try {
-      const due = new Date(dateStr);
-      const today = new Date();
-      const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-      if (diff === 0) return 'Due Today';
-      if (diff < 0) return `Overdue by ${Math.abs(diff)} Days`;
-      return `Due in ${diff} Days`;
-    } catch (e) {
-      return dateStr;
-    }
-  };
-
-  const [columns, setColumns] = useState(() => {
-    const saved = localStorage.getItem('mkavs_kanban_board');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return initialColumns;
-      }
-    }
-    return initialColumns;
-  });
-
-  // Sync back to localStorage ONLY if user is executive
-  useEffect(() => {
-    if (user?.isExecutive) {
-      localStorage.setItem('mkavs_kanban_board', JSON.stringify(columns));
-    }
-  }, [columns, user]);
-
-  const [pingedTasks, setPingedTasks] = useState(new Set());
-
-  // Calculate dynamic progress
-  const totalTasks = columns.reduce((acc, col) => acc + col.tasks.length, 0);
-  const liveTasks = columns.find(c => c.id === 'live')?.tasks.length || 0;
-  const progressPercentage = totalTasks === 0 ? 0 : Math.round((liveTasks / totalTasks) * 100);
-
-  const pingReviewer = (taskId) => {
-    setPingedTasks(prev => new Set(prev).add(taskId));
-    // Simulate notification logic here
-  };
-
-  const moveTaskToLive = (taskId, fromColId) => {
-    setColumns(prev => {
-      const newCols = [...prev];
-      const fromColIndex = newCols.findIndex(c => c.id === fromColId);
-      const toColIndex = newCols.findIndex(c => c.id === 'live');
-      
-      const taskIndex = newCols[fromColIndex].tasks.findIndex(t => t.id === taskId);
-      const [task] = newCols[fromColIndex].tasks.splice(taskIndex, 1);
-      
-      newCols[toColIndex].tasks.push(task);
-      return newCols;
-    });
-  };
-
-  const executiveMoveTask = (taskId, fromColId, direction) => {
-    setColumns(prev => {
-      const newCols = [...prev];
-      const fromColIndex = newCols.findIndex(c => c.id === fromColId);
-      const toColIndex = direction === 'next' ? fromColIndex + 1 : fromColIndex - 1;
-      
-      if (toColIndex < 0 || toColIndex >= newCols.length) return prev;
-
-      const taskIndex = newCols[fromColIndex].tasks.findIndex(t => t.id === taskId);
-      const [task] = newCols[fromColIndex].tasks.splice(taskIndex, 1);
-      
-      newCols[toColIndex].tasks.push(task);
-      return newCols;
-    });
-  };
-
-  const executiveRemoveTask = (taskId, colId) => {
-    setColumns(prev => {
-      const newCols = [...prev];
-      const colIndex = newCols.findIndex(c => c.id === colId);
-      newCols[colIndex].tasks = newCols[colIndex].tasks.filter(t => t.id !== taskId);
-      return newCols;
-    });
-  };
-
-  const executiveAddTask = (colId) => {
-    setColumns(prev => {
-      const newCols = [...prev];
-      const colIndex = newCols.findIndex(c => c.id === colId);
-      newCols[colIndex].tasks.unshift({
-        id: Math.random(),
-        title: 'New Assigned Task',
-        assignee: 'https://i.pravatar.cc/150?u=new',
-        tags: [{name: 'New', color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400'}]
+      const res = await fetch('/api/admin-projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(projectFormData)
       });
-      return newCols;
+      if (res.ok) {
+        const newProject = await res.json();
+        setProjects(prev => [...prev, newProject]);
+        setIsProjectModalOpen(false);
+        setProjectFormData({ name: '', description: '' });
+        setExpandedProjects(prev => new Set(prev).add(newProject._id));
+      }
+    } catch (err) {
+      console.error('Create project failed:', err);
+    }
+  };
+
+  const handleCreateSprint = async (e) => {
+    e.preventDefault();
+    if (!sprintFormData.dueDate || !selectedProjectId) return;
+
+    try {
+      const res = await fetch(`/api/admin-projects/${selectedProjectId}/sprints`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sprintFormData)
+      });
+      if (res.ok) {
+        const updatedProject = await res.json();
+        setProjects(prev => prev.map(p => p._id === selectedProjectId ? updatedProject : p));
+        setIsSprintModalOpen(false);
+        setSprintFormData({ dueDate: '' });
+        
+        // Set new sprint as active
+        const newSprint = updatedProject.sprints[updatedProject.sprints.length - 1];
+        setActiveSprintMap(prev => ({ ...prev, [selectedProjectId]: newSprint._id }));
+      }
+    } catch (err) {
+      console.error('Create sprint failed:', err);
+    }
+  };
+
+  const moveTask = async (projectId, sprintId, task, fromCol, toCol) => {
+    if (fromCol === toCol) return;
+    
+    // Find project and sprint
+    const project = projects.find(p => p._id === projectId);
+    const sprint = project.sprints.find(s => s._id === sprintId);
+    
+    // Deep clone columns
+    const newColumns = JSON.parse(JSON.stringify(sprint.columns));
+    
+    // Remove from old column
+    newColumns[fromCol] = newColumns[fromCol].filter(t => t.id !== task.id);
+    
+    // Add to new column
+    newColumns[toCol].push(task);
+
+    // Calculate new progress
+    const total = Object.values(newColumns).reduce((acc, col) => acc + col.length, 0);
+    const live = newColumns.live.length;
+    const progress = total === 0 ? 0 : Math.round((live / total) * 100);
+
+    // Optimistic update
+    setProjects(prev => prev.map(p => {
+      if (p._id === projectId) {
+        return {
+          ...p,
+          sprints: p.sprints.map(s => s._id === sprintId ? { ...s, columns: newColumns, progress } : s)
+        };
+      }
+      return p;
+    }));
+
+    // Sync to backend
+    try {
+      await fetch(`/api/admin-projects/${projectId}/sprints/${sprintId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ columns: newColumns, progress })
+      });
+    } catch (err) {
+      console.error('Sync task move failed:', err);
+      fetchProjects(); // Rollback
+    }
+  };
+
+  const addTask = async (projectId, sprintId, columnKey) => {
+    const content = prompt("Enter task title:");
+    if (!content) return;
+
+    const project = projects.find(p => p._id === projectId);
+    const sprint = project.sprints.find(s => s._id === sprintId);
+    const newColumns = JSON.parse(JSON.stringify(sprint.columns));
+    
+    newColumns[columnKey].push({
+      id: Math.random().toString(36).substr(2, 9),
+      content,
+      priority: 'medium'
     });
+
+    // Update progress
+    const total = Object.values(newColumns).reduce((acc, col) => acc + col.length, 0);
+    const live = newColumns.live.length;
+    const progress = total === 0 ? 0 : Math.round((live / total) * 100);
+
+    try {
+      await fetch(`/api/admin-projects/${projectId}/sprints/${sprintId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ columns: newColumns, progress })
+      });
+      fetchProjects();
+    } catch (err) {
+      console.error('Add task failed:', err);
+    }
   };
 
   return (
-    <div className="flex flex-col gap-8 h-full">
-      {/* Integrated Projects Card */}
-      <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        
-        {/* Header Row inside Card */}
-        <div className="flex items-center justify-between mb-8 relative z-10">
-          <div>
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Projects</h2>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1 opacity-70">Development Cycle</p>
-          </div>
-          {user?.isExecutive && (
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
-              title="New Project"
-            >
-              <Plus size={20} />
-            </button>
-          )}
+    <div className="flex flex-col gap-8 h-full pb-20">
+      
+      {/* Header with New Project Button */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">Projects</h2>
+          <p className="text-sm font-bold text-zinc-500 uppercase tracking-widest mt-1 opacity-70">Development Cycle & Sprints</p>
         </div>
-
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-4 relative z-10 gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">{project.name}</h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-1">{project.sprint} • {getDueDateDisplay(project.dueDate)}</p>
-          </div>
-          <div className="text-right">
-            <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">{progressPercentage}%</span>
-            <p className="text-xs text-zinc-500 font-semibold uppercase tracking-wider mt-1">Completed</p>
-          </div>
-        </div>
-        <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-950 rounded-full overflow-hidden shadow-inner relative z-10">
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: `${progressPercentage}%` }}
-            transition={{ duration: 1, type: 'spring', bounce: 0.2 }}
-            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full relative overflow-hidden"
+        {user?.isExecutive && (
+          <button 
+            onClick={() => setIsProjectModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
           >
-            <div className="absolute inset-0 bg-white/20 w-full h-full" style={{ backgroundImage: 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)', backgroundSize: '1rem 1rem' }}></div>
-          </motion.div>
-        </div>
+            <Plus size={20} />
+            <span>New Project</span>
+          </button>
+        )}
       </div>
 
-      {/* Project Creation Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden"
-            >
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xl font-bold text-zinc-900 dark:text-white">New Project</h3>
-                  <button 
-                    onClick={() => setIsModalOpen(false)}
-                    className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
-                  >
-                    <X size={20} />
-                  </button>
+      {/* Projects List */}
+      <div className="flex flex-col gap-6">
+        {projects.length === 0 ? (
+          <div className="bg-white/50 dark:bg-zinc-900/30 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] p-12 text-center">
+            <Layout size={48} className="mx-auto text-zinc-300 dark:text-zinc-700 mb-4" />
+            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">No projects yet</h3>
+            <p className="text-zinc-500 font-medium mt-2">Create your first project to start managing sprints.</p>
+          </div>
+        ) : (
+          projects.map(project => (
+            <div key={project._id} className="flex flex-col gap-4">
+              {/* Project Header Card */}
+              <div 
+                className={`bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2.5rem] p-6 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-all ${expandedProjects.has(project._id) ? 'border-indigo-500/30' : ''}`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => toggleProject(project._id)}>
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${expandedProjects.has(project._id) ? 'bg-indigo-600 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500'}`}>
+                      {expandedProjects.has(project._id) ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">{project.name}</h3>
+                      <p className="text-sm text-zinc-500 font-medium truncate max-w-md">{project.description || 'No description provided.'}</p>
+                    </div>
+                  </div>
+                  
+                  {user?.isExecutive && (
+                    <button 
+                      onClick={() => { setSelectedProjectId(project._id); setIsSprintModalOpen(true); }}
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-bold text-sm hover:bg-indigo-600 hover:text-white transition-all active:scale-95"
+                    >
+                      <PlusCircle size={18} />
+                      <span>Add Sprint</span>
+                    </button>
+                  )}
                 </div>
 
-                <form onSubmit={handleCreateProject} className="flex flex-col gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Project Name</label>
-                    <input 
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={e => setFormData({...formData, name: e.target.value})}
-                      placeholder="e.g. Mobile App V2"
-                      className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Sprint</label>
-                    <input 
-                      type="text"
-                      required
-                      value={formData.sprint}
-                      onChange={e => setFormData({...formData, sprint: e.target.value})}
-                      placeholder="e.g. Sprint 1"
-                      className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Due Date</label>
-                    <div className="relative">
-                      <input 
-                        type="date"
-                        required
-                        value={formData.dueDate}
-                        onChange={e => setFormData({...formData, dueDate: e.target.value})}
-                        className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium appearance-none"
-                      />
-                      <Calendar size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit"
-                    className="mt-4 w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/25 active:scale-[0.98]"
-                  >
-                    Create
-                  </button>
-                </form>
+                {/* Sprints Horizontal List (Inside Project Card) */}
+                <AnimatePresence>
+                  {expandedProjects.has(project._id) && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-8 flex flex-wrap gap-3">
+                        {project.sprints.length === 0 ? (
+                          <p className="text-sm font-bold text-zinc-400 italic py-2 ml-2">No sprints yet. Add your first sprint.</p>
+                        ) : (
+                          project.sprints.map(sprint => (
+                            <button
+                              key={sprint._id}
+                              onClick={() => setActiveSprintMap(prev => ({ ...prev, [project._id]: sprint._id }))}
+                              className={`px-5 py-3 rounded-2xl border transition-all flex flex-col items-start gap-1 ${
+                                activeSprintMap[project._id] === sprint._id
+                                  ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                                  : 'bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-indigo-500/50'
+                              }`}
+                            >
+                              <span className="text-xs font-black uppercase tracking-tighter opacity-80">{sprint.name}</span>
+                              <span className="text-xs font-bold whitespace-nowrap">{sprint.dueDate}</span>
+                            </button>
+                          ))
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
-      {/* Kanban Board */}
-      <div className="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x snap-mandatory min-h-[400px]">
-        {columns.map((column, colIndex) => (
-          <div key={column.id} className="snap-start flex-1 min-w-[300px] bg-zinc-50/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col gap-5 backdrop-blur-sm">
-            <div className="flex items-center justify-between px-2">
-              <div className="flex items-center gap-2">
-                <h4 className="font-bold text-zinc-900 dark:text-white text-lg tracking-tight">{column.title}</h4>
-                <span className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">
-                  {column.tasks.length}
-                </span>
-              </div>
-              {user?.isExecutive && (
-                <button 
-                  onClick={() => executiveAddTask(column.id)}
-                  className="w-7 h-7 rounded-lg bg-zinc-200/50 dark:bg-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-500/20 dark:hover:text-indigo-400 transition-colors"
-                  title="Admin: Add Task"
-                >
-                  <Plus size={16} />
-                </button>
-              )}
-            </div>
-            
-            <div className="flex flex-col gap-4 flex-1">
+              {/* Active Sprint Dashboard (Kanban) */}
               <AnimatePresence>
-                {column.tasks.map((task, index) => (
+                {expandedProjects.has(project._id) && activeSprintMap[project._id] && (
                   <motion.div
-                    layout
-                    layoutId={`task-${task.id}`}
-                    key={task.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="bg-white dark:bg-zinc-900/80 p-5 rounded-[1.5rem] shadow-sm hover:shadow-lg border border-zinc-200/80 dark:border-zinc-700/50 cursor-grab hover:border-indigo-500/30 dark:hover:border-indigo-500/30 transition-colors duration-300 group flex flex-col"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 20, opacity: 0 }}
+                    className="flex flex-col gap-6 mt-2"
                   >
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {task.tags.map((tag, i) => (
-                        <span key={i} className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md ${tag.color}`}>
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <div className="flex justify-between items-start mb-5">
-                      <p className="font-semibold text-zinc-900 dark:text-zinc-100 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors pr-4">
-                        {task.title}
-                      </p>
-                      {user?.isExecutive && (
-                        <div className="flex gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button className="text-zinc-400 hover:text-indigo-500 transition-colors" title="Edit Priority/Assignee"><Settings size={14}/></button>
-                          <button onClick={() => executiveRemoveTask(task.id, column.id)} className="text-zinc-400 hover:text-rose-500 transition-colors" title="Delete Task"><Trash2 size={14}/></button>
+                    {/* Sprint Meta Info */}
+                    {project.sprints.filter(s => s._id === activeSprintMap[project._id]).map(sprint => (
+                      <div key={sprint._id} className="bg-zinc-50/50 dark:bg-zinc-950/20 rounded-[2.5rem] p-8 border border-zinc-200/50 dark:border-zinc-800/20">
+                        <div className="flex items-center justify-between mb-8">
+                          <div className="flex items-center gap-6">
+                            <div>
+                              <h4 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{sprint.name} Dashboard</h4>
+                              <div className="flex items-center gap-4 mt-2">
+                                <span className="flex items-center gap-1.5 text-sm font-bold text-zinc-500">
+                                  <Clock size={14} /> Due: {sprint.dueDate}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-4xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">{sprint.progress}%</span>
+                            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mt-1">Sprint Progress</p>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex justify-between items-end mt-auto">
-                      <div className="flex flex-col gap-2">
-                        <div className="flex gap-1.5 opacity-60">
-                          <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
-                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+
+                        {/* Kanban Columns */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                          {Object.entries(COLUMN_TITLES).map(([key, title]) => (
+                            <div key={key} className="bg-white/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/30 dark:border-zinc-800/30 flex flex-col gap-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h5 className="font-black text-zinc-900 dark:text-white uppercase tracking-tighter text-sm opacity-80">{title}</h5>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[10px] font-black bg-zinc-200 dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-full">{sprint.columns[key].length}</span>
+                                  {user?.isExecutive && (
+                                    <button 
+                                      onClick={() => addTask(project._id, sprint._id, key)}
+                                      className="text-zinc-400 hover:text-indigo-600 transition-colors"
+                                    >
+                                      <Plus size={16} />
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="flex flex-col gap-3 min-h-[100px]">
+                                {sprint.columns[key].map(task => (
+                                  <div 
+                                    key={task.id} 
+                                    className="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 group relative"
+                                  >
+                                    <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight pr-6">{task.content}</p>
+                                    
+                                    <div className="flex items-center justify-between mt-4">
+                                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${
+                                        task.priority === 'high' ? 'bg-rose-500/10 text-rose-500' : 
+                                        task.priority === 'medium' ? 'bg-amber-500/10 text-amber-500' : 
+                                        'bg-indigo-500/10 text-indigo-500'
+                                      }`}>
+                                        {task.priority}
+                                      </span>
+                                      
+                                      {/* Quick Move Button */}
+                                      {user?.isExecutive && (
+                                        <div className="flex gap-1">
+                                          {key !== 'live' && (
+                                            <button 
+                                              onClick={() => {
+                                                const keys = Object.keys(COLUMN_TITLES);
+                                                const nextKey = keys[keys.indexOf(key) + 1];
+                                                moveTask(project._id, sprint._id, task, key, nextKey);
+                                              }}
+                                              className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-indigo-600 transition-all"
+                                            >
+                                              <ChevronRight size={16} />
+                                            </button>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        {/* Peer Review Trigger specifically for QA/Testing */}
-                        {column.id === 'qa' && (
-                          <button 
-                            onClick={() => pingReviewer(task.id)}
-                            disabled={pingedTasks.has(task.id)}
-                            className={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all ${
-                              pingedTasks.has(task.id) 
-                                ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' 
-                                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20'
-                            }`}
-                          >
-                            {pingedTasks.has(task.id) ? (
-                              <><CheckCircle2 size={14} /> Pinged Tester</>
-                            ) : (
-                              <><Send size={12} /> Request Review</>
-                            )}
-                          </button>
-                        )}
-                        {/* Mock Move to Live Button (Original) */}
-                        {!user?.isExecutive && column.id === 'qa' && pingedTasks.has(task.id) && (
-                          <button 
-                            onClick={() => moveTaskToLive(task.id, column.id)}
-                            className="mt-1 text-xs font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
-                          >
-                            Move to Live →
-                          </button>
-                        )}
-                        {/* Executive Admin Move Next Button */}
-                        {user?.isExecutive && colIndex < columns.length - 1 && (
-                          <button 
-                            onClick={() => executiveMoveTask(task.id, column.id, 'next')}
-                            className="flex items-center gap-1 mt-1 text-[10px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 dark:text-indigo-400 px-2 py-1 rounded-md hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors w-fit"
-                          >
-                            Admin Move <ArrowRight size={10} />
-                          </button>
-                        )}
                       </div>
-                      
-                      <div className="flex -space-x-2 shrink-0">
-                        <img 
-                          src={task.assignee} 
-                          alt="Assignee" 
-                          className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm"
-                        />
-                      </div>
-                    </div>
+                    ))}
                   </motion.div>
-                ))}
+                )}
               </AnimatePresence>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {isProjectModalOpen && (
+          <Modal onClose={() => setIsProjectModalOpen(false)} title="New Project">
+            <form onSubmit={handleCreateProject} className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest ml-1">Project Name</label>
+                <input 
+                  type="text"
+                  required
+                  autoFocus
+                  value={projectFormData.name}
+                  onChange={e => setProjectFormData({ ...projectFormData, name: e.target.value })}
+                  placeholder="e.g. MKAVS Website Launch"
+                  className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest ml-1">Description (Optional)</label>
+                <textarea 
+                  value={projectFormData.description}
+                  onChange={e => setProjectFormData({ ...projectFormData, description: e.target.value })}
+                  placeholder="What is this project about?"
+                  rows={3}
+                  className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold resize-none"
+                />
+              </div>
+              <button type="submit" className="w-full py-4 rounded-2xl bg-indigo-600 text-white font-black text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/25 active:scale-95">
+                Create Project
+              </button>
+            </form>
+          </Modal>
+        )}
+
+        {isSprintModalOpen && (
+          <Modal onClose={() => setIsSprintModalOpen(false)} title="Add New Sprint">
+            <form onSubmit={handleCreateSprint} className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest ml-1">Due Date</label>
+                <input 
+                  type="date"
+                  required
+                  autoFocus
+                  value={sprintFormData.dueDate}
+                  onChange={e => setSprintFormData({ ...sprintFormData, dueDate: e.target.value })}
+                  className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-bold"
+                />
+              </div>
+              <button type="submit" className="w-full py-4 rounded-2xl bg-indigo-600 text-white font-black text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/25 active:scale-95">
+                Create Sprint
+              </button>
+            </form>
+          </Modal>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Reusable Modal Component
+function Modal({ children, onClose, title }) {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden"
+      >
+        <div className="p-8">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">{title}</h3>
+            <button onClick={onClose} className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
+              <X size={20} />
+            </button>
+          </div>
+          {children}
+        </div>
+      </motion.div>
     </div>
   );
 }
