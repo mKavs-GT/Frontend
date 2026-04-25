@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle2, Plus, Trash2, ArrowRight, Settings } from 'lucide-react';
+import { Send, CheckCircle2, Plus, Trash2, ArrowRight, Settings, X, Calendar } from 'lucide-react';
 
 const initialColumns = [
   { id: 'backlog', title: 'Backlog', tasks: [
@@ -20,6 +20,86 @@ const initialColumns = [
 ];
 
 export default function ProjectManager({ user }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [project, setProject] = useState(() => {
+    const saved = localStorage.getItem('mkavs_dashboard_project');
+    return saved ? JSON.parse(saved) : {
+      name: 'Website Redesign MVP',
+      sprint: 'Sprint 4',
+      dueDate: '2026-04-30'
+    };
+  });
+
+  // Fetch from backend on mount
+  useEffect(() => {
+    const fetchGlobalProject = async () => {
+      try {
+        const res = await fetch('/api/dashboard/config/main_project');
+        if (res.ok) {
+          const data = await res.json();
+          setProject(data);
+          localStorage.setItem('mkavs_dashboard_project', JSON.stringify(data));
+        }
+      } catch (err) {
+        console.error('Failed to sync with backend:', err);
+      }
+    };
+    fetchGlobalProject();
+  }, []);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    sprint: '',
+    dueDate: ''
+  });
+
+  const handleCreateProject = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.sprint || !formData.dueDate) return;
+    
+    const newProject = {
+      name: formData.name,
+      sprint: formData.sprint,
+      dueDate: formData.dueDate
+    };
+
+    // Update locally first for instant feedback
+    setProject(newProject);
+    setIsModalOpen(false);
+    setFormData({ name: '', sprint: '', dueDate: '' });
+    localStorage.setItem('mkavs_dashboard_project', JSON.stringify(newProject));
+
+    // Sync to backend if user is executive
+    if (user?.isExecutive) {
+      try {
+        await fetch('/api/dashboard/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key: 'main_project',
+            value: newProject
+          })
+        });
+      } catch (err) {
+        console.error('Failed to save to backend:', err);
+      }
+    }
+  };
+
+  // Helper to format "Due in X Days" or similar
+  const getDueDateDisplay = (dateStr) => {
+    try {
+      const due = new Date(dateStr);
+      const today = new Date();
+      const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+      if (diff === 0) return 'Due Today';
+      if (diff < 0) return `Overdue by ${Math.abs(diff)} Days`;
+      return `Due in ${diff} Days`;
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
   const [columns, setColumns] = useState(() => {
     const saved = localStorage.getItem('mkavs_kanban_board');
     if (saved) {
@@ -106,13 +186,31 @@ export default function ProjectManager({ user }) {
 
   return (
     <div className="flex flex-col gap-8 h-full">
-      {/* Progress Bar */}
+      {/* Integrated Projects Card */}
       <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        
+        {/* Header Row inside Card */}
+        <div className="flex items-center justify-between mb-8 relative z-10">
+          <div>
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Projects</h2>
+            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1 opacity-70">Development Cycle</p>
+          </div>
+          {user?.isExecutive && (
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+              title="New Project"
+            >
+              <Plus size={20} />
+            </button>
+          )}
+        </div>
+
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-4 relative z-10 gap-4">
           <div>
-            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Website Redesign MVP</h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-1">Sprint 4 • Due in 5 Days</p>
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">{project.name}</h3>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-1">{project.sprint} • {getDueDateDisplay(project.dueDate)}</p>
           </div>
           <div className="text-right">
             <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">{progressPercentage}%</span>
@@ -130,6 +228,86 @@ export default function ProjectManager({ user }) {
           </motion.div>
         </div>
       </div>
+
+      {/* Project Creation Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden"
+            >
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-xl font-bold text-zinc-900 dark:text-white">New Project</h3>
+                  <button 
+                    onClick={() => setIsModalOpen(false)}
+                    className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <form onSubmit={handleCreateProject} className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Project Name</label>
+                    <input 
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={e => setFormData({...formData, name: e.target.value})}
+                      placeholder="e.g. Mobile App V2"
+                      className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Sprint</label>
+                    <input 
+                      type="text"
+                      required
+                      value={formData.sprint}
+                      onChange={e => setFormData({...formData, sprint: e.target.value})}
+                      placeholder="e.g. Sprint 1"
+                      className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Due Date</label>
+                    <div className="relative">
+                      <input 
+                        type="date"
+                        required
+                        value={formData.dueDate}
+                        onChange={e => setFormData({...formData, dueDate: e.target.value})}
+                        className="w-full px-5 py-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium appearance-none"
+                      />
+                      <Calendar size={18} className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="mt-4 w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/25 active:scale-[0.98]"
+                  >
+                    Create
+                  </button>
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Kanban Board */}
       <div className="flex gap-6 overflow-x-auto pb-4 hide-scrollbar snap-x snap-mandatory min-h-[400px]">

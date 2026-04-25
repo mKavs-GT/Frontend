@@ -18,7 +18,8 @@ import {
   Users,
   Database,
   Shield,
-  MessageSquare
+  MessageSquare,
+  LogOut
 } from 'lucide-react';
 import ProjectManager from './components/ProjectManager';
 import TimeTracker from './components/TimeTracker';
@@ -30,7 +31,21 @@ import CRM from './components/CRM';
 import GodMode from './components/GodMode';
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('mkavs_admin_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem('mkavs_admin_user', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('mkavs_admin_user');
+  };
+
   const [activeView, setActiveView] = useState('project'); // 'project', 'time', 'profile', 'vault'
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isZenMode, setIsZenMode] = useState(false);
@@ -165,7 +180,7 @@ export default function App() {
   }
 
   if (!user) {
-    return <Login onLogin={setUser} />;
+    return <Login onLogin={handleLogin} />;
   }
 
   return (
@@ -196,6 +211,15 @@ export default function App() {
             </>
           )}
         </nav>
+
+        <div className="mt-auto pb-8 w-full px-4">
+          <SidebarItem 
+            icon={<LogOut size={22} className="text-rose-500" />} 
+            active={false} 
+            onClick={handleLogout} 
+            tooltip="Logout" 
+          />
+        </div>
       </motion.aside>
 
       {/* Main Content Area */}
