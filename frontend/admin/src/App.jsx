@@ -672,15 +672,33 @@ export default function App() {
           </div>
           
           <div className="space-y-2">
-            {TEAM_MEMBERS.map(member => (
-              <TeamMember 
-                key={member.email}
-                name={member.name} 
-                role={member.role} 
-                status={getStaffStatus(member)} 
-                avatar={member.avatar} 
-              />
-            ))}
+            {TEAM_MEMBERS.map(member => {
+              const userEmail = user?.email?.toLowerCase().trim() || '';
+              const userName = (user?.name || user?.displayName)?.toLowerCase().trim() || '';
+              const memberEmail = member.email?.toLowerCase().trim() || '';
+              const memberName = member.name?.toLowerCase().trim() || '';
+              
+              const isMe = (memberEmail && memberEmail === userEmail) || (memberName && memberName === userName);
+              const displayStatus = isMe ? currentStatus : getStaffStatus(member);
+
+              return (
+                <TeamMember 
+                  key={member.email}
+                  name={member.name} 
+                  role={member.role} 
+                  status={displayStatus} 
+                  avatar={member.avatar} 
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Identity Check (Debug) */}
+        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 opacity-20 hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 text-[8px] font-mono text-zinc-500">
+            <Shield size={10} />
+            <span>ID: {user?.email || 'MISSING_EMAIL'} | {user?.name || user?.displayName || 'MISSING_NAME'}</span>
           </div>
         </div>
       </aside>
