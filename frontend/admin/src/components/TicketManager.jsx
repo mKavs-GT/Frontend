@@ -69,9 +69,13 @@ export default function TicketManager({ user, onReview }) {
         setSelectedTicket(null);
         fetchTickets();
         if (onReview) onReview();
+      } else {
+        const errorData = await res.json();
+        alert(`Review failed: ${errorData.error || errorData.message || 'Unknown error'}`);
       }
     } catch (e) {
       console.error("Review failed", e);
+      alert("Network error: Could not connect to the server.");
     } finally {
       setIsProcessing(false);
     }
