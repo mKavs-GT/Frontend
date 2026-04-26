@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, Alert
 export default function TimeTracker({ user, onTicketSubmit }) {
   const [view, setView] = useState('weekly');
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [viewDate, setViewDate] = useState(new Date()); // For calendar navigation
   const [showManualEntry, setShowManualEntry] = useState(false);
   
   const [stats, setStats] = useState({ todayHours: 0, monthHours: 0 });
@@ -254,12 +255,31 @@ export default function TimeTracker({ user, onTicketSubmit }) {
       {/* Right Column - Calendar Heatmap & Manual Entry */}
       <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col h-full relative overflow-hidden">
         <div className="flex justify-between items-center mb-8">
-          <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Productivity Heatmap</h3>
+          <div>
+            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Productivity Heatmap</h3>
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-1">
+              {viewDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+            </p>
+          </div>
           <div className="flex gap-2">
-            <button className="p-2 rounded-xl hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors border border-transparent hover:border-zinc-200 dark:border-zinc-700/50 dark:hover:border-zinc-700">
+            <button 
+              onClick={() => {
+                const d = new Date(viewDate);
+                d.setMonth(d.getMonth() - 1);
+                setViewDate(d);
+              }}
+              className="p-2 rounded-xl hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors border border-transparent hover:border-zinc-200 dark:border-zinc-700/50 dark:hover:border-zinc-700"
+            >
               <ChevronLeft size={20} />
             </button>
-            <button className="p-2 rounded-xl hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors border border-transparent hover:border-zinc-200 dark:border-zinc-700/50 dark:hover:border-zinc-700">
+            <button 
+              onClick={() => {
+                const d = new Date(viewDate);
+                d.setMonth(d.getMonth() + 1);
+                setViewDate(d);
+              }}
+              className="p-2 rounded-xl hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors border border-transparent hover:border-zinc-200 dark:border-zinc-700/50 dark:hover:border-zinc-700"
+            >
               <ChevronRight size={20} />
             </button>
           </div>
@@ -271,8 +291,8 @@ export default function TimeTracker({ user, onTicketSubmit }) {
             <div key={i} className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">{d}</div>
           ))}
           {(() => {
-            const year = selectedDate.getFullYear();
-            const month = selectedDate.getMonth();
+            const year = viewDate.getFullYear();
+            const month = viewDate.getMonth();
             const firstDayOfMonth = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const today = new Date();
