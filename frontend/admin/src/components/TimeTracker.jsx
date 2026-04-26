@@ -13,10 +13,83 @@ const weeklyData = [
   { name: 'Sun', hours: 0 },
 ];
 
-export default function TimeTracker() {
+export default function TimeTracker({ user, onTicketSubmit }) {
   const [view, setView] = useState('weekly');
-  const [selectedDate, setSelectedDate] = useState(23);
+  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
   const [showManualEntry, setShowManualEntry] = useState(false);
+  
+  const [stats, setStats] = useState({ todayHours: 0, monthHours: 0 });
+  const [history, setHistory] = useState({ dailyLogs: {} });
+  const [manualEntry, setManualEntry] = useState({ hours: '', projectName: '', reason: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchStats = async () => {
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/api/time-entries/stats`);
+      const data = await res.json();
+      setStats(data);
+    } catch (e) { console.error("Stats fetch fail", e); }
+  };
+
+  const fetchHistory = async () => {
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/api/time-entries/history`);
+      const data = await res.json();
+      setHistory(data);
+    } catch (e) { console.error("History fetch fail", e); }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    fetchHistory();
+  }, []);
+
+  const handleManualSubmit = async () => {
+    if (!manualEntry.hours || !manualEntry.projectName || !manualEntry.reason) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const entryDate = new Date();
+      entryDate.setDate(selectedDate); // Simple logic for demo
+
+      const res = await fetch(`${host}/api/tickets`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId: manualEntry.projectName, // Using name as ID for simplicity
+          projectName: manualEntry.projectName,
+          entryDate,
+          requestedMinutes: parseFloat(manualEntry.hours) * 60,
+          reason: manualEntry.reason
+        })
+      });
+
+      if (res.ok) {
+        setShowManualEntry(false);
+        setManualEntry({ hours: '', projectName: '', reason: '' });
+        if (onTicketSubmit) onTicketSubmit();
+        alert("Request submitted for approval!");
+      }
+    } catch (e) {
+      console.error("Submission failed", e);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Convert dailyLogs to chart data
+  const chartData = Object.entries(history.dailyLogs).slice(-7).map(([date, hours]) => ({
+    name: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+    hours
+  }));
+
+  const displayChartData = chartData.length > 0 ? chartData : weeklyData;
 
   // Generate heatmap data
   const getHeatmapColor = (hours) => {
@@ -38,8 +111,8 @@ export default function TimeTracker() {
              <div className="absolute -bottom-4 -right-4 p-6 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all text-indigo-500 duration-500">
                <CalendarIcon size={120} />
              </div>
-             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Selected Range</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">37<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
+             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Total Today</p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{stats.todayHours}<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
           </div>
           <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10"></div>
@@ -47,7 +120,7 @@ export default function TimeTracker() {
                <Clock size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Monthly Total</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">142<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{stats.monthHours}<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
           </div>
         </div>
 
@@ -73,7 +146,7 @@ export default function TimeTracker() {
           </div>
           <div className="flex-1 w-full min-h-0 relative -ml-4">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <BarChart data={displayChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#52525b" opacity={0.2} />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#71717a', fontSize: 13, fontWeight: 500 }} dy={15} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#71717a', fontSize: 13, fontWeight: 500 }} dx={-10} />
@@ -118,14 +191,13 @@ export default function TimeTracker() {
             const date = i + 1;
             const isSelected = selectedDate === date;
             
-            // Generate some deterministic mock hours for heatmap
-            let hoursLogged = 0;
-            if (date < 24) {
-              hoursLogged = (date * 7) % 10; // Pseudo-random 0-9 hours
-            }
-            if (date === 23) hoursLogged = 8;
+            // Use live history for heatmap
+            const dateObj = new Date();
+            dateObj.setDate(date);
+            const dateStr = dateObj.toISOString().split('T')[0];
+            let hoursLogged = history.dailyLogs[dateStr] || 0;
             
-            const isFuture = date > 23;
+            const isFuture = date > new Date().getDate();
             const heatColor = isFuture ? 'bg-zinc-50 dark:bg-zinc-900 text-zinc-300 dark:text-zinc-700/50 cursor-not-allowed border border-dashed border-zinc-200 dark:border-zinc-800' : getHeatmapColor(hoursLogged);
             
             return (
@@ -136,7 +208,7 @@ export default function TimeTracker() {
                 className={`aspect-square rounded-[10px] flex items-center justify-center text-xs font-bold transition-all duration-300 ${heatColor} ${
                   isSelected && !isFuture ? 'ring-2 ring-offset-2 ring-emerald-500 dark:ring-offset-zinc-900 scale-110 z-10 shadow-lg' : 'hover:scale-105'
                 }`}
-                title={`${date} Apr: ${isFuture ? '0' : hoursLogged} hours`}
+                title={`${date} Apr: ${hoursLogged.toFixed(1)} hours`}
               >
                 {date}
               </button>
@@ -161,7 +233,7 @@ export default function TimeTracker() {
             <div>
               <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Hours on Apr {selectedDate}</p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {selectedDate === 23 ? '8' : ((selectedDate * 7) % 10)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
+                {(history.dailyLogs[new Date(new Date().setDate(selectedDate)).toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
               </p>
             </div>
             <button 
@@ -187,13 +259,39 @@ export default function TimeTracker() {
                     <AlertCircle size={16} />
                     <p className="text-xs font-bold uppercase tracking-wider">Manual Entry</p>
                   </div>
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Hours" className="w-20 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500" />
-                    <input type="text" placeholder="Reason (e.g. Forgot to clock in)" className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm font-medium text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <input 
+                        type="number" 
+                        value={manualEntry.hours}
+                        onChange={(e) => setManualEntry({...manualEntry, hours: e.target.value})}
+                        placeholder="Hours" 
+                        className="w-20 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm font-bold text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500" 
+                      />
+                      <input 
+                        type="text" 
+                        value={manualEntry.projectName}
+                        onChange={(e) => setManualEntry({...manualEntry, projectName: e.target.value})}
+                        placeholder="Project Name" 
+                        className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm font-medium text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500" 
+                      />
+                    </div>
+                    <textarea 
+                      value={manualEntry.reason}
+                      onChange={(e) => setManualEntry({...manualEntry, reason: e.target.value})}
+                      placeholder="Reason for manual entry..." 
+                      className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm font-medium text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[60px]"
+                    />
                   </div>
                   <div className="flex justify-between items-center mt-3">
                     <span className="text-[10px] font-bold text-amber-600/70 dark:text-amber-500/70 uppercase tracking-widest">*Requires Admin Approval</span>
-                    <button className="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors">Submit Request</button>
+                    <button 
+                      onClick={handleManualSubmit}
+                      disabled={isSubmitting}
+                      className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors"
+                    >
+                      {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                    </button>
                   </div>
                 </div>
               </motion.div>

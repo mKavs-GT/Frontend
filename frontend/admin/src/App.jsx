@@ -19,7 +19,10 @@ import {
   Database,
   Shield,
   MessageSquare,
-  LogOut
+  LogOut,
+  Ticket as TicketIcon,
+  CheckCircle2,
+  XCircle
 } from 'lucide-react';
 import ProjectManager from './components/ProjectManager';
 import TimeTracker from './components/TimeTracker';
@@ -30,6 +33,7 @@ import TeamTracker from './components/TeamTracker';
 import CRM from './components/CRM';
 import GodMode from './components/GodMode';
 import NotificationCenter from './components/NotificationCenter';
+import TicketManager from './components/TicketManager';
 import { TEAM_MEMBERS } from './constants/users';
 
 const STATUS_CONFIG = {
@@ -71,9 +75,10 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
 
-  const [currentStatus, setCurrentStatus] = useState('focus');
+  const [currentStatus, setCurrentStatus] = useState('offline');
   const [statusLoading, setStatusLoading] = useState(false);
   const [statusError, setStatusError] = useState(null);
+  const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const wsRef = useRef(null);
   
   // Apply dark mode and smooth transitions
@@ -214,8 +219,20 @@ export default function App() {
     }
   };
 
+  const fetchTicketStats = async () => {
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/api/tickets/stats`);
+      const data = await res.json();
+      setTicketStats(data);
+    } catch (e) {
+      console.warn("Failed to fetch ticket stats", e);
+    }
+  };
+
   useEffect(() => {
     fetchInitialStatus();
+    fetchTicketStats();
   }, []);
 
   useEffect(() => {
@@ -320,6 +337,7 @@ export default function App() {
         <nav className="flex-1 flex flex-col gap-4">
           <SidebarItem icon={<Kanban size={22} />} active={activeView === 'project'} onClick={() => setActiveView('project')} tooltip="Project Manager" />
           <SidebarItem icon={<Clock size={22} />} active={activeView === 'time'} onClick={() => setActiveView('time')} tooltip="Time Tracker" />
+          <SidebarItem icon={<TicketIcon size={22} />} active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} tooltip="Approval Tickets" />
           <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
           <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
           <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
@@ -406,22 +424,36 @@ export default function App() {
                 </div>
               </motion.div>
 
-              {/* Productivity Pulse */}
+              {/* Approval Tickets Pulse */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors"
+                onClick={() => setActiveView('tickets')}
+                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-all cursor-pointer hover:shadow-md"
               >
                 <div className="flex justify-between items-start">
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Pulse</p>
-                  <div className="w-8 h-8 rounded-full bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Tickets</p>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${ticketStats.pending > 0 ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-500 animate-pulse' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
+                    <TicketIcon size={16} />
                   </div>
                 </div>
-                <div className="mt-6">
-                  <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">2</p>
-                  <p className="text-sm font-bold text-rose-500 mt-1">Blocked tickets</p>
+                <div className="mt-4">
+                  <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{ticketStats.pending}</p>
+                  <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Pending Approval</p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
+                  <div className="flex gap-3">
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                      <span className="text-[10px] font-bold text-zinc-400">{ticketStats.approvedToday}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
+                      <span className="text-[10px] font-bold text-zinc-400">{ticketStats.rejectedToday}</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest group-hover:translate-x-1 transition-transform">View All →</span>
                 </div>
               </motion.div>
 
@@ -456,7 +488,8 @@ export default function App() {
 
             <AnimatePresence mode="wait">
               {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} /></motion.div>}
-              {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker /></motion.div>}
+              {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} /></motion.div>}
+              {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
               {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
               {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
               {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
