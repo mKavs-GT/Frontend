@@ -354,8 +354,20 @@ export default function App() {
   };
 
   const getStaffStatus = (member) => {
-    if (member.email === user.email) return currentStatus; // Optimistic update
-    const s = onlineStaff.find(s => (s.email && s.email === member.email) || s.name === member.name);
+    const userEmail = user.email?.toLowerCase().trim() || '';
+    const memberEmail = member.email?.toLowerCase().trim() || '';
+    const userName = user.name?.toLowerCase().trim() || user.displayName?.toLowerCase().trim() || '';
+    const memberName = member.name?.toLowerCase().trim() || '';
+    
+    // If this is ME, always return currentStatus immediately
+    if ((memberEmail && memberEmail === userEmail) || (memberName && memberName === userName)) {
+      return currentStatus;
+    }
+    
+    const s = onlineStaff.find(s => 
+      (s.email && s.email.toLowerCase().trim() === memberEmail) || 
+      (s.name && s.name.toLowerCase().trim() === memberName)
+    );
     return s ? s.status : 'offline';
   };
 
