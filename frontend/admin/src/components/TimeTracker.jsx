@@ -26,18 +26,26 @@ export default function TimeTracker({ user, onTicketSubmit }) {
   const fetchStats = async () => {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/time-entries/stats`);
-      const data = await res.json();
-      setStats(data);
+      const res = await fetch(`${host}/api/time-entries/stats`, {
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setStats(data);
+      }
     } catch (e) { console.error("Stats fetch fail", e); }
   };
 
   const fetchHistory = async () => {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/time-entries/history`);
-      const data = await res.json();
-      setHistory(data);
+      const res = await fetch(`${host}/api/time-entries/history`, {
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setHistory(data);
+      }
     } catch (e) { console.error("History fetch fail", e); }
   };
 
@@ -60,7 +68,10 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
       const res = await fetch(`${host}/api/tickets`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify({
           projectId: manualEntry.projectName, // Using name as ID for simplicity
           projectName: manualEntry.projectName,
@@ -84,7 +95,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
   };
 
   // Convert dailyLogs to chart data
-  const chartData = Object.entries(history.dailyLogs).slice(-7).map(([date, hours]) => ({
+  const chartData = Object.entries(history?.dailyLogs || {}).slice(-7).map(([date, hours]) => ({
     name: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
     hours
   }));
@@ -195,7 +206,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
             const dateObj = new Date();
             dateObj.setDate(date);
             const dateStr = dateObj.toISOString().split('T')[0];
-            let hoursLogged = history.dailyLogs[dateStr] || 0;
+            let hoursLogged = (history?.dailyLogs?.[dateStr]) || 0;
             
             const isFuture = date > new Date().getDate();
             const heatColor = isFuture ? 'bg-zinc-50 dark:bg-zinc-900 text-zinc-300 dark:text-zinc-700/50 cursor-not-allowed border border-dashed border-zinc-200 dark:border-zinc-800' : getHeatmapColor(hoursLogged);
@@ -233,7 +244,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
             <div>
               <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Hours on Apr {selectedDate}</p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {(history.dailyLogs[new Date(new Date().setDate(selectedDate)).toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
+                {(history?.dailyLogs?.[new Date(new Date().setDate(selectedDate)).toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
               </p>
             </div>
             <button 

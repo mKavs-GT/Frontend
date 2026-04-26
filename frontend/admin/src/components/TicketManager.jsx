@@ -27,7 +27,9 @@ export default function TicketManager({ user, onReview }) {
   const fetchTickets = async () => {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/tickets`);
+      const res = await fetch(`${host}/api/tickets`, {
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
       const data = await res.json();
       setTickets(data);
     } catch (e) {
@@ -50,7 +52,10 @@ export default function TicketManager({ user, onReview }) {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/tickets/${id}/review`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify({ status, decisionComment })
       });
 

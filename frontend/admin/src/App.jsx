@@ -222,9 +222,15 @@ export default function App() {
   const fetchTicketStats = async () => {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/tickets/stats`);
-      const data = await res.json();
-      setTicketStats(data);
+      const res = await fetch(`${host}/api/tickets/stats`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTicketStats(data);
+      }
     } catch (e) {
       console.warn("Failed to fetch ticket stats", e);
     }
