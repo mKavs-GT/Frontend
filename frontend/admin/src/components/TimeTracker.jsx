@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, AlertCircle, Check } from 'lucide-react';
 
 const weeklyData = [
   { name: 'Mon', hours: 6 },
@@ -22,6 +22,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
   const [history, setHistory] = useState({ dailyLogs: {} });
   const [manualEntry, setManualEntry] = useState({ hours: '', projectName: '', reason: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [wasSubmitted, setWasSubmitted] = useState(false);
 
   const fetchStats = async () => {
     try {
@@ -82,10 +83,14 @@ export default function TimeTracker({ user, onTicketSubmit }) {
       });
 
       if (res.ok) {
-        setShowManualEntry(false);
-        setManualEntry({ hours: '', projectName: '', reason: '' });
+        setWasSubmitted(true);
+        setTimeout(() => {
+          setWasSubmitted(false);
+          setShowManualEntry(false);
+          setManualEntry({ hours: '', projectName: '', reason: '' });
+        }, 3000);
+        
         if (onTicketSubmit) onTicketSubmit();
-        alert("Request submitted for approval!");
       }
     } catch (e) {
       console.error("Submission failed", e);
@@ -298,10 +303,14 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                     <span className="text-[10px] font-bold text-amber-600/70 dark:text-amber-500/70 uppercase tracking-widest">*Requires Admin Approval</span>
                     <button 
                       onClick={handleManualSubmit}
-                      disabled={isSubmitting}
-                      className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors"
+                      disabled={isSubmitting || wasSubmitted}
+                      className={`${
+                        wasSubmitted 
+                          ? 'bg-emerald-500 hover:bg-emerald-600' 
+                          : 'bg-amber-500 hover:bg-amber-600'
+                      } disabled:opacity-50 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2`}
                     >
-                      {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                      {isSubmitting ? 'Submitting...' : wasSubmitted ? <><Check size={14}/> Submitted</> : 'Submit Request'}
                     </button>
                   </div>
                 </div>
