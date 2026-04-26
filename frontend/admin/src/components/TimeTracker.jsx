@@ -91,9 +91,13 @@ export default function TimeTracker({ user, onTicketSubmit }) {
         }, 3000);
         
         if (onTicketSubmit) onTicketSubmit();
+      } else {
+        const errorData = await res.json();
+        alert(`Submission failed: ${errorData.error || errorData.message || 'Unknown error'}`);
       }
     } catch (e) {
       console.error("Submission failed", e);
+      alert("Network error: Could not connect to the server.");
     } finally {
       setIsSubmitting(false);
     }
