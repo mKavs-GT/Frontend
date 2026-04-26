@@ -400,7 +400,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-zinc-50 dark:bg-[#09090b] transition-colors duration-300 font-sans">
+    <div className="flex h-screen h-[100dvh] overflow-hidden bg-zinc-50 dark:bg-[#09090b] transition-colors duration-300 font-sans relative">
       
       {/* Left Sidebar - Mobile Drawer Overlay */}
       <AnimatePresence>
@@ -418,11 +418,7 @@ export default function App() {
       {/* Left Sidebar */}
       <motion.aside 
         initial={false}
-        animate={{ 
-          x: isMobileMenuOpen ? 0 : (window.innerWidth < 1024 ? -100 : 0),
-          width: 80 
-        }}
-        className={`fixed lg:relative flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-50 shadow-xl lg:shadow-sm h-full transition-transform duration-300 lg:translate-x-0`}
+        className={`fixed lg:relative left-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-50 shadow-xl lg:shadow-sm h-full w-[80px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         <div className="mb-12 w-12 h-12 flex items-center justify-center transition-transform hover:scale-105">
           <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
@@ -462,7 +458,7 @@ export default function App() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 dark:bg-purple-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
         {/* Header */}
-        <header className="h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
+        <header className="h-16 lg:h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsMobileMenuOpen(true)}
@@ -641,11 +637,7 @@ export default function App() {
       {/* Right Persistent Sidebar */}
       <motion.aside 
         initial={false}
-        animate={{ 
-          x: isRightSidebarOpen ? 0 : (window.innerWidth < 1024 ? 400 : 0),
-          width: window.innerWidth < 1024 ? 300 : 320 
-        }}
-        className={`fixed lg:relative right-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-200/50 dark:border-zinc-800/50 flex flex-col z-50 lg:z-20 h-full overflow-y-auto shadow-2xl lg:shadow-sm transition-transform duration-300 lg:translate-x-0`}
+        className={`fixed lg:relative right-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-200/50 dark:border-zinc-800/50 flex flex-col z-50 lg:z-20 h-full overflow-y-auto shadow-2xl lg:shadow-sm w-[300px] lg:w-[320px] transition-transform duration-300 ${isRightSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}
       >
         <div className="p-8 pb-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
           <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-6">Current Session</h3>
@@ -800,9 +792,9 @@ export default function App() {
       {(isMobileMenuOpen || isRightSidebarOpen) && (
         <button 
           onClick={() => { setIsMobileMenuOpen(false); setIsRightSidebarOpen(false); }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden flex items-center gap-2"
         >
-          Close Menu
+          <X size={16} /> Close Menu
         </button>
       )}
 
