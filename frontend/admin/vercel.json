@@ -6,12 +6,28 @@
       "destination": "https://mkavs-backend.onrender.com/api/:path*"
     },
     {
-      "source": "/(css|js|assets|images)/:path*",
-      "destination": "/$1/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
     }
   ]
 }
