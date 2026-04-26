@@ -11,6 +11,9 @@ const allowedUsers = [
 ];
 
 export default function Login({ onLogin }) {
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
 
