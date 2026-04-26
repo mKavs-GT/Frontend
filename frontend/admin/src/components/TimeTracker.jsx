@@ -3,15 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, AlertCircle, Check } from 'lucide-react';
 
-const weeklyData = [
-  { name: 'Mon', hours: 6 },
-  { name: 'Tue', hours: 8 },
-  { name: 'Wed', hours: 5 },
-  { name: 'Thu', hours: 9 },
-  { name: 'Fri', hours: 7 },
-  { name: 'Sat', hours: 2 },
-  { name: 'Sun', hours: 0 },
-];
+// Real weekly data will be calculated from the history state
 
 export default function TimeTracker({ user, onTicketSubmit }) {
   const [view, setView] = useState('weekly');
@@ -122,7 +114,36 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
-      {/* Left Column - Analytics */}
+      {/* Left Column - Analytics */}  const getWeeklyData = () => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const currentWeek = [];
+    const today = new Date();
+    
+    // Get start of week (Sunday)
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() - today.getDay());
+    
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(sunday);
+      date.setDate(sunday.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      
+      const log = history.dailyLogs && history.dailyLogs[dateStr];
+      const hours = log ? log.totalMinutes / 60 : 0;
+      
+      currentWeek.push({
+        name: days[i],
+        hours: parseFloat(hours.toFixed(1)),
+        fullDate: dateStr
+      });
+    }
+    return currentWeek;
+  };
+
+  const weeklyData = getWeeklyData();
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
       <div className="lg:col-span-2 flex flex-col gap-8">
         
         {/* Stats Row */}
