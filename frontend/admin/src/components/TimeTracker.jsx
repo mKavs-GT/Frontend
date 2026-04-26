@@ -29,8 +29,8 @@ export default function TimeTracker({ user, onTicketSubmit }) {
       const res = await fetch(`${host}/api/time-entries/stats`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
-      if (res.ok) {
-        const data = await res.json();
+      const data = await res.json();
+      if (data && typeof data === 'object') {
         setStats(data);
       }
     } catch (e) { console.error("Stats fetch fail", e); }
@@ -42,8 +42,8 @@ export default function TimeTracker({ user, onTicketSubmit }) {
       const res = await fetch(`${host}/api/time-entries/history`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
-      if (res.ok) {
-        const data = await res.json();
+      const data = await res.json();
+      if (data && typeof data === 'object') {
         setHistory(data);
       }
     } catch (e) { console.error("History fetch fail", e); }

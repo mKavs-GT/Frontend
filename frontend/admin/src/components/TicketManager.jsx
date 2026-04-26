@@ -31,9 +31,14 @@ export default function TicketManager({ user, onReview }) {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       const data = await res.json();
-      setTickets(data);
+      if (Array.isArray(data)) {
+        setTickets(data);
+      } else {
+        setTickets([]);
+      }
     } catch (e) {
       console.error("Failed to fetch tickets", e);
+      setTickets([]);
     }
   };
 
@@ -72,13 +77,13 @@ export default function TicketManager({ user, onReview }) {
     }
   };
 
-  const filteredTickets = tickets.filter(t => {
+  const filteredTickets = Array.isArray(tickets) ? tickets.filter(t => {
     const matchesFilter = filter === 'all' || t.status === filter;
-    const matchesSearch = t.employeeName.toLowerCase().includes(search.toLowerCase()) || 
-                         t.ticketNumber.toLowerCase().includes(search.toLowerCase()) ||
-                         t.projectName.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = (t.employeeName || '').toLowerCase().includes(search.toLowerCase()) || 
+                         (t.ticketNumber || '').toLowerCase().includes(search.toLowerCase()) ||
+                         (t.projectName || '').toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
-  });
+  }) : [];
 
   const getStatusStyle = (status) => {
     switch (status) {
