@@ -22,7 +22,9 @@ import {
   LogOut,
   Ticket as TicketIcon,
   CheckCircle2,
-  XCircle
+  XCircle,
+  Search,
+  Info
 } from 'lucide-react';
 import ProjectManager from './components/ProjectManager';
 import TimeTracker from './components/TimeTracker';
@@ -261,8 +263,17 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
 
-    let ws;
-    let reconnectTimer;
+    // Heartbeat to keep status fresh for others
+    const heartbeat = setInterval(() => {
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'staff_online',
+          staffName: user.name,
+          email: user.email,
+          status: currentStatus
+        }));
+      }
+    }, 5000);
 
     const connect = () => {
       // Use ws:// for local development and wss:// for production
@@ -311,11 +322,12 @@ export default function App() {
     connect();
 
     return () => {
-      if (ws) ws.close();
+      clearInterval(heartbeat);
       if (reconnectTimer) clearTimeout(reconnectTimer);
+      if (wsRef.current) wsRef.current.close();
       wsRef.current = null;
     };
-  }, [user]);
+  }, [user, currentStatus]);
 
   const handleStatusChange = async (status) => {
     if (statusLoading) return;
@@ -671,9 +683,18 @@ export default function App() {
         <div className="flex-1 p-8 pt-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Team Status</h3>
-            <button className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-              <MoreVertical size={16} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => alert(JSON.stringify(onlineStaff, null, 2))}
+                className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
+                title="Debug Sync Data"
+              >
+                <Info size={14} />
+              </button>
+              <button className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                <MoreVertical size={16} />
+              </button>
+            </div>
           </div>
           
           <div className="space-y-2">
