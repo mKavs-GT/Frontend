@@ -571,49 +571,78 @@ footer {
     color: var(--text-muted);
 }
 
-/* --- Comparison Table --- */
-.comparison-container {
-    max-width: 1000px;
+/* --- Why Comparison Section --- */
+.why-comparison {
+    max-width: 1100px;
     margin: 0 auto 100px;
-    padding: 0 20px;
-}
-
-.comparison-table {
-    width: 100%;
-    border-collapse: collapse;
     background: white;
     border-radius: var(--radius-lg);
-    overflow: hidden;
     border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
-.comparison-table th,
-.comparison-table td {
-    padding: 24px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-}
-
-.comparison-table th {
+.comparison-header {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
     background: #f8f8f8;
-    font-size: 14px;
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
     font-weight: 600;
+    font-size: 14px;
     color: var(--text-muted);
 }
 
-.comparison-table td:first-child {
-    font-weight: 500;
-    width: 30%;
+.comparison-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.3s;
 }
 
-.comparison-table .check {
+.comparison-row:last-child {
+    border-bottom: none;
+}
+
+.comparison-row:hover {
+    background: #fafafa;
+}
+
+.feature-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text);
+}
+
+.trad-value {
+    color: #888;
+    font-size: 14px;
+}
+
+.trac-value {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.trac-value .check {
     color: #2ecc71;
     font-weight: bold;
 }
 
-.comparison-table .cross {
-    color: #e74c3c;
-    font-weight: bold;
+@media (max-width: 768px) {
+    .comparison-header { display: none; }
+    .comparison-row { 
+        grid-template-columns: 1fr; 
+        gap: 12px;
+        text-align: center;
+    }
+    .trac-value { justify-content: center; }
 }
 
 /* --- Report Preview --- */
