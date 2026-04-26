@@ -112,9 +112,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
     return 'bg-emerald-600 dark:bg-emerald-400 text-white shadow-md';
   };
 
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
-      {/* Left Column - Analytics */}  const getWeeklyData = () => {
+  const getWeeklyData = () => {
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const currentWeek = [];
     const today = new Date();
