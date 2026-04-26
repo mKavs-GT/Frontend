@@ -205,8 +205,8 @@ export default function App() {
 
   const fetchInitialStatus = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3001' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/staff-status`);
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/api/staff-status`);
       const data = await res.json();
       if (data.staff) setOnlineStaff(data.staff);
     } catch (e) {
@@ -223,7 +223,7 @@ export default function App() {
 
     // Use ws:// for local development and wss:// for production
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname === 'localhost' ? 'localhost:3001' : 'mkavs-backend.onrender.com';
+    const host = window.location.hostname === 'localhost' ? 'localhost:3000' : 'mkavs-backend.onrender.com';
     const wsUrl = `${protocol}//${host}/staff`;
     
     let ws;
