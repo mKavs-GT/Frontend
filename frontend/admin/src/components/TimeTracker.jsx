@@ -47,6 +47,34 @@ export default function TimeTracker({ user, onTicketSubmit }) {
     fetchHistory();
   }, []);
 
+  const getWeeklyData = () => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const currentWeek = [];
+    const today = new Date();
+    
+    // Get start of week (Sunday)
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() - today.getDay());
+    
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(sunday);
+      date.setDate(sunday.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      
+      const log = history.dailyLogs && history.dailyLogs[dateStr];
+      const hours = log ? log.totalMinutes / 60 : 0;
+      
+      currentWeek.push({
+        name: days[i],
+        hours: parseFloat(hours.toFixed(1)),
+        fullDate: dateStr
+      });
+    }
+    return currentWeek;
+  };
+
+  const weeklyData = getWeeklyData();
+  
   const handleManualSubmit = async () => {
     if (!manualEntry.hours || !manualEntry.projectName || !manualEntry.reason) {
       alert("Please fill all fields");
@@ -112,33 +140,6 @@ export default function TimeTracker({ user, onTicketSubmit }) {
     return 'bg-emerald-600 dark:bg-emerald-400 text-white shadow-md';
   };
 
-  const getWeeklyData = () => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const currentWeek = [];
-    const today = new Date();
-    
-    // Get start of week (Sunday)
-    const sunday = new Date(today);
-    sunday.setDate(today.getDate() - today.getDay());
-    
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(sunday);
-      date.setDate(sunday.getDate() + i);
-      const dateStr = date.toISOString().split('T')[0];
-      
-      const log = history.dailyLogs && history.dailyLogs[dateStr];
-      const hours = log ? log.totalMinutes / 60 : 0;
-      
-      currentWeek.push({
-        name: days[i],
-        hours: parseFloat(hours.toFixed(1)),
-        fullDate: dateStr
-      });
-    }
-    return currentWeek;
-  };
-
-  const weeklyData = getWeeklyData();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
