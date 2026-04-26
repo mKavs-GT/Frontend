@@ -79,6 +79,7 @@ export default function App() {
   const [statusLoading, setStatusLoading] = useState(false);
   const [statusError, setStatusError] = useState(null);
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
+  const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
   const wsRef = useRef(null);
   
   // Apply dark mode and smooth transitions
@@ -243,6 +244,8 @@ export default function App() {
       }
     } catch (e) {
       console.warn("Failed to fetch ticket stats", e);
+    } finally {
+      setTicketStatsLoading(false);
     }
   };
 
@@ -256,46 +259,55 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
 
-    // Use ws:// for local development and wss:// for production
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname === 'localhost' ? 'localhost:3000' : 'mkavs-backend.onrender.com';
-    const wsUrl = `${protocol}//${host}/staff`;
-    
     let ws;
-    try {
-      ws = new WebSocket(wsUrl);
-      wsRef.current = ws;
+    let reconnectTimer;
 
-      ws.onopen = () => {
-        ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name, status: currentStatus }));
-      };
+    const connect = () => {
+      // Use ws:// for local development and wss:// for production
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname === 'localhost' ? 'localhost:3000' : 'mkavs-backend.onrender.com';
+      const wsUrl = `${protocol}//${host}/staff`;
+      
+      try {
+        ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
 
-      ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          if (data.type === 'staff_list') {
-            setOnlineStaff(data.staff);
-            // Sync local status if changed by another device? (Optional)
-            const me = data.staff.find(s => s.name === user.name);
-            if (me && me.status !== currentStatus) {
-              setCurrentStatus(me.status);
+        ws.onopen = () => {
+          ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name, status: currentStatus }));
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'staff_list') {
+              setOnlineStaff(data.staff);
+              const me = data.staff.find(s => s.name === user.name);
+              if (me && me.status !== currentStatus) {
+                setCurrentStatus(me.status);
+              }
             }
+          } catch (e) {
+            console.error("WS Message Error:", e);
           }
-        } catch (e) {
-          console.error("WS Message Error:", e);
-        }
-      };
+        };
 
-      ws.onerror = (err) => console.warn("Presence WS Error:", err);
-    } catch (e) {
-      console.error("WS Connection failed:", e);
-    }
+        ws.onclose = () => {
+          console.log("WS Disconnected. Reconnecting in 2s...");
+          reconnectTimer = setTimeout(connect, 2000);
+        };
+
+        ws.onerror = (err) => console.warn("Presence WS Error:", err);
+      } catch (e) {
+        console.error("WS Connection failed:", e);
+      }
+    };
+
+    connect();
 
     return () => {
-      if (ws) {
-        ws.close();
-        wsRef.current = null;
-      }
+      if (ws) ws.close();
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      wsRef.current = null;
     };
   }, [user]);
 
@@ -308,19 +320,28 @@ export default function App() {
     setStatusError(null);
 
     try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      
+      // Attempt HTTP update (Reliable fallback)
+      fetch(`${host}/api/staff-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: user.name, status })
+      }).catch(e => console.warn("HTTP Status sync failed", e));
+
+      // Attempt WebSocket update (Instant)
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
         wsRef.current.send(JSON.stringify({
           type: 'update_status',
           staffName: user.name,
           status: status
         }));
-        
-        // We'll assume success if WS is open, but we could wait for a confirmation message
-        // For now, let's just clear loading after a short delay to simulate network
-        setTimeout(() => setStatusLoading(false), 500);
-      } else {
-        throw new Error("Connection lost. Please try again.");
       }
+      
+      setTimeout(() => {
+        setStatusLoading(false);
+        fetchInitialStatus(); // Refresh list immediately
+      }, 500);
     } catch (e) {
       setStatusError(e.message);
       setCurrentStatus(prevStatus); // Rollback
@@ -448,29 +469,44 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 onClick={() => setActiveView('tickets')}
-                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-all cursor-pointer hover:shadow-md"
+                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-all cursor-pointer hover:shadow-md h-full"
               >
                 <div className="flex justify-between items-start">
                   <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Tickets</p>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${ticketStats.pending > 0 ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-500 animate-pulse' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${ticketStats.pending > 0 && !ticketStatsLoading ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-500 animate-pulse' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
                     <TicketIcon size={16} />
                   </div>
                 </div>
+                
                 <div className="mt-4">
-                  <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{ticketStats.pending}</p>
-                  <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Pending Approval</p>
+                  {ticketStatsLoading ? (
+                    <div className="h-10 w-16 bg-zinc-100 dark:bg-zinc-800 animate-pulse rounded-lg opacity-50"></div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{ticketStats.pending}</p>
+                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Pending Approval</p>
+                    </motion.div>
+                  )}
                 </div>
+
                 <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
-                  <div className="flex gap-3">
-                    <div className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                      <span className="text-[10px] font-bold text-zinc-400">{ticketStats.approvedToday}</span>
+                  {ticketStatsLoading ? (
+                    <div className="h-3 w-20 bg-zinc-100 dark:bg-zinc-800 animate-pulse rounded opacity-50"></div>
+                  ) : (
+                    <div className="flex gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                        <span className="text-[10px] font-bold text-zinc-400">{ticketStats.approvedToday}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
+                        <span className="text-[10px] font-bold text-zinc-400">{ticketStats.rejectedToday}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
-                      <span className="text-[10px] font-bold text-zinc-400">{ticketStats.rejectedToday}</span>
-                    </div>
-                  </div>
+                  )}
                   <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest group-hover:translate-x-1 transition-transform">View All →</span>
                 </div>
               </motion.div>
