@@ -118,6 +118,8 @@ export default function App() {
   const [workedSeconds, setWorkedSeconds] = useState(0);
   
   useEffect(() => {
+    // We'll rely on the backend stats for the primary display
+    // but keep local storage as a fallback for the live ticker
     const saved = localStorage.getItem('workedSeconds');
     if (saved) setWorkedSeconds(parseInt(saved, 10));
     
@@ -129,6 +131,14 @@ export default function App() {
       localStorage.setItem('workedSeconds', '0');
     }
   }, []);
+
+  // Fetch stats whenever we mount or when a ticket is submitted
+  useEffect(() => {
+    if (user?.token) {
+      fetchTicketStats();
+      fetchInitialStatus();
+    }
+  }, [user]);
 
   useEffect(() => {
     let interval;
@@ -237,9 +247,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchInitialStatus();
-    fetchTicketStats();
-  }, []);
+    if (user?.token) {
+      fetchInitialStatus();
+      fetchTicketStats();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
