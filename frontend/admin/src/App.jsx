@@ -79,6 +79,7 @@ export default function App() {
   const [statusLoading, setStatusLoading] = useState(false);
   const [statusError, setStatusError] = useState(null);
   const [isSynced, setIsSynced] = useState(false);
+  const [syncCount, setSyncCount] = useState(0);
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
   const wsRef = useRef(null);
@@ -288,6 +289,7 @@ export default function App() {
             const data = JSON.parse(event.data);
             if (data.type === 'staff_list') {
               setOnlineStaff(data.staff);
+              setSyncCount(data.syncCount || 0);
             }
           } catch (e) {
             console.error("WS Message Error:", e);
@@ -706,7 +708,9 @@ export default function App() {
               </div>
               <div className="flex items-center gap-1.5">
                 <div className={`w-1.5 h-1.5 rounded-full ${isSynced ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 animate-pulse'}`}></div>
-                <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">{isSynced ? 'Synced' : 'Offline'}</span>
+                <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">
+                  {isSynced ? `Synced (${syncCount})` : 'Offline'}
+                </span>
               </div>
             </div>
          </div>
