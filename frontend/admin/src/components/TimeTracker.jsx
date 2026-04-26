@@ -345,9 +345,11 @@ export default function TimeTracker({ user, onTicketSubmit }) {
         <div className="mt-auto flex flex-col gap-3">
           <div className="bg-zinc-50 dark:bg-zinc-950/50 rounded-2xl p-4 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">Hours on Apr {selectedDate}</p>
+              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
+                Hours on {selectedDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}
+              </p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {(history?.dailyLogs?.[new Date(new Date().setDate(selectedDate)).toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
+                {(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
               </p>
             </div>
             <button 
