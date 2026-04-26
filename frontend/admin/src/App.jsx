@@ -58,7 +58,7 @@ export default function App() {
   const [activeView, setActiveView] = useState('project'); // 'project', 'time', 'profile', 'vault'
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('mkavs_theme');
-    return saved ? JSON.parse(saved) : true;
+    return saved !== null ? JSON.parse(saved) : true;
   });
   const [isZenMode, setIsZenMode] = useState(false);
   const [zenTime, setZenTime] = useState(25 * 60);
