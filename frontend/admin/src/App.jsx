@@ -362,10 +362,11 @@ export default function App() {
         }));
       }
       
+      // We no longer call fetchInitialStatus() here to avoid the flicker.
+      // The WebSocket 'staff_list' broadcast will update the team list naturally.
       setTimeout(() => {
         setStatusLoading(false);
-        fetchInitialStatus(); // Refresh list immediately
-      }, 500);
+      }, 300);
     } catch (e) {
       setStatusError(e.message);
       setCurrentStatus(prevStatus); // Rollback
