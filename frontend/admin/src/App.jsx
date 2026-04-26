@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Kanban, 
@@ -30,6 +30,14 @@ import TeamTracker from './components/TeamTracker';
 import CRM from './components/CRM';
 import GodMode from './components/GodMode';
 import NotificationCenter from './components/NotificationCenter';
+import { TEAM_MEMBERS } from './constants/users';
+
+const STATUS_CONFIG = {
+  focus: { label: 'Focus Mode', color: 'blue', icon: <Zap size={14} /> },
+  break: { label: 'Break', color: 'amber', icon: <Coffee size={14} /> },
+  deepwork: { label: 'Deep Work', color: 'purple', icon: <CheckCircle size={14} /> },
+  offline: { label: 'Offline', color: 'gray', icon: <Moon size={14} /> }
+};
 
 export default function App() {
   const [user, setUser] = useState(() => {
@@ -62,6 +70,9 @@ export default function App() {
     setSpecialMention(val);
     localStorage.setItem('mkavs_special_mention', val);
   };
+
+  const [currentStatus, setCurrentStatus] = useState('focus');
+  const wsRef = useRef(null);
   
   // Apply dark mode and smooth transitions
   useEffect(() => {
@@ -201,9 +212,12 @@ export default function App() {
     let ws;
     try {
       ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
       ws.onopen = () => {
         ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name }));
+        // Initial status sync
+        ws.send(JSON.stringify({ type: 'update_status', staffName: user.name, status: currentStatus }));
       };
 
       ws.onmessage = (event) => {
@@ -211,6 +225,11 @@ export default function App() {
           const data = JSON.parse(event.data);
           if (data.type === 'staff_list') {
             setOnlineStaff(data.staff);
+            // Sync local status if changed by another device? (Optional)
+            const me = data.staff.find(s => s.name === user.name);
+            if (me && me.status !== currentStatus) {
+              setCurrentStatus(me.status);
+            }
           }
         } catch (e) {
           console.error("WS Message Error:", e);
@@ -223,9 +242,23 @@ export default function App() {
     }
 
     return () => {
-      if (ws) ws.close();
+      if (ws) {
+        ws.close();
+        wsRef.current = null;
+      }
     };
   }, [user]);
+
+  const handleStatusChange = (status) => {
+    setCurrentStatus(status);
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'update_status',
+        staffName: user.name,
+        status: status
+      }));
+    }
+  };
 
   const getStaffStatus = (name) => {
     const s = onlineStaff.find(s => s.name === name);
@@ -433,10 +466,29 @@ export default function App() {
 
         <div className="px-8 mt-2 mb-2">
           <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">Your Status</p>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex gap-1 mb-4">
-             <button className="flex-1 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-400 shadow-sm border border-indigo-100 dark:border-indigo-500/20">🎧 Deep Work</button>
-             <button className="flex-1 py-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-xs font-bold text-zinc-500 transition-colors">☕ Break</button>
-             <button className="flex-1 py-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-xs font-bold text-zinc-500 transition-colors">🚀 Deploy</button>
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex flex-wrap gap-1 mb-4">
+             {Object.entries(STATUS_CONFIG).map(([key, config]) => {
+               const isActive = currentStatus === key;
+               const colors = {
+                 blue: isActive ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 amber: isActive ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 purple: isActive ? 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 gray: isActive ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500'
+               };
+               
+               return (
+                 <button 
+                   key={key}
+                   onClick={() => handleStatusChange(key)}
+                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'}`}
+                 >
+                   <span className="flex items-center justify-center gap-1.5">
+                     {config.icon}
+                     {config.label}
+                   </span>
+                 </button>
+               );
+             })}
           </div>
           
           <div className="grid grid-cols-2 gap-2">
@@ -468,12 +520,15 @@ export default function App() {
           </div>
           
           <div className="space-y-2">
-            <TeamMember name="Krishawn Rahul" role="Executive Admin" status={getStaffStatus("Krishawn Rahul")} avatar="https://i.pravatar.cc/150?u=krishawn" />
-            <TeamMember name="Sitesh" role="Business Head" status={getStaffStatus("Sitesh")} avatar="https://i.pravatar.cc/150?u=sitesh" />
-            <TeamMember name="Vinith Vijaya Rangan" role="Executive" status={getStaffStatus("Vinith Vijaya Rangan")} avatar="https://i.pravatar.cc/150?u=vinith" />
-            <TeamMember name="Sofia Stalance" role="Developer" status={getStaffStatus("Sofia Stalance")} avatar="https://i.pravatar.cc/150?u=sofia" />
-            <TeamMember name="Michael Antony" role="Developer" status={getStaffStatus("Michael Antony")} avatar="https://i.pravatar.cc/150?u=michael" />
-            <TeamMember name="Mohammed Abuzar" role="Designer" status={getStaffStatus("Mohammed Abuzar")} avatar="https://i.pravatar.cc/150?u=mohammed" />
+            {TEAM_MEMBERS.map(member => (
+              <TeamMember 
+                key={member.email}
+                name={member.name} 
+                role={member.role} 
+                status={getStaffStatus(member.name)} 
+                avatar={member.avatar} 
+              />
+            ))}
           </div>
         </div>
       </aside>
@@ -513,16 +568,35 @@ function SidebarItem({ icon, active, onClick, tooltip }) {
 }
 
 function TeamMember({ name, role, status, avatar }) {
+  const config = STATUS_CONFIG[status] || STATUS_CONFIG.offline;
+  
+  const statusColors = {
+    blue: 'bg-blue-500 shadow-blue-500/20',
+    amber: 'bg-amber-500 shadow-amber-500/20',
+    purple: 'bg-purple-500 shadow-purple-500/20',
+    gray: 'bg-zinc-400 shadow-zinc-400/20'
+  };
+
+  const badgeColors = {
+    blue: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    amber: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400',
+    purple: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400',
+    gray: 'bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500'
+  };
+
   return (
     <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all cursor-pointer group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all" />
-        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-          status === 'online' ? 'bg-emerald-500' : 'bg-zinc-400'
-        }`}></div>
+        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${statusColors[config.color]}`}></div>
       </div>
-      <div>
-        <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{name}</h4>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{name}</h4>
+          <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${badgeColors[config.color]}`}>
+            {config.label}
+          </span>
+        </div>
         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 mt-0.5">{role}</p>
       </div>
     </div>
