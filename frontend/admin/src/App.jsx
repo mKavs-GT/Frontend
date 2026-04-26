@@ -72,6 +72,8 @@ export default function App() {
   };
 
   const [currentStatus, setCurrentStatus] = useState('focus');
+  const [statusLoading, setStatusLoading] = useState(false);
+  const [statusError, setStatusError] = useState(null);
   const wsRef = useRef(null);
   
   // Apply dark mode and smooth transitions
@@ -201,6 +203,21 @@ export default function App() {
 
   const [onlineStaff, setOnlineStaff] = useState([]);
 
+  const fetchInitialStatus = async () => {
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3001' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/staff-status`);
+      const data = await res.json();
+      if (data.staff) setOnlineStaff(data.staff);
+    } catch (e) {
+      console.warn("Failed to fetch initial staff status", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchInitialStatus();
+  }, []);
+
   useEffect(() => {
     if (!user) return;
 
@@ -215,9 +232,7 @@ export default function App() {
       wsRef.current = ws;
 
       ws.onopen = () => {
-        ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name }));
-        // Initial status sync
-        ws.send(JSON.stringify({ type: 'update_status', staffName: user.name, status: currentStatus }));
+        ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name, status: currentStatus }));
       };
 
       ws.onmessage = (event) => {
@@ -249,18 +264,38 @@ export default function App() {
     };
   }, [user]);
 
-  const handleStatusChange = (status) => {
+  const handleStatusChange = async (status) => {
+    if (statusLoading) return;
+    
+    const prevStatus = currentStatus;
     setCurrentStatus(status);
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({
-        type: 'update_status',
-        staffName: user.name,
-        status: status
-      }));
+    setStatusLoading(true);
+    setStatusError(null);
+
+    try {
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({
+          type: 'update_status',
+          staffName: user.name,
+          status: status
+        }));
+        
+        // We'll assume success if WS is open, but we could wait for a confirmation message
+        // For now, let's just clear loading after a short delay to simulate network
+        setTimeout(() => setStatusLoading(false), 500);
+      } else {
+        throw new Error("Connection lost. Please try again.");
+      }
+    } catch (e) {
+      setStatusError(e.message);
+      setCurrentStatus(prevStatus); // Rollback
+      setStatusLoading(false);
+      setTimeout(() => setStatusError(null), 3000);
     }
   };
 
   const getStaffStatus = (name) => {
+    if (name === user.name) return currentStatus; // Optimistic update
     const s = onlineStaff.find(s => s.name === name);
     return s ? s.status : 'offline';
   };
@@ -465,7 +500,21 @@ export default function App() {
         </div>
 
         <div className="px-8 mt-2 mb-2">
-          <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">Your Status</p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Your Status</p>
+            <AnimatePresence>
+              {statusError && (
+                <motion.span 
+                  initial={{ opacity: 0, x: 5 }} 
+                  animate={{ opacity: 1, x: 0 }} 
+                  exit={{ opacity: 0 }}
+                  className="text-[10px] font-bold text-rose-500"
+                >
+                  {statusError}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex flex-wrap gap-1 mb-4">
              {Object.entries(STATUS_CONFIG).map(([key, config]) => {
                const isActive = currentStatus === key;
@@ -478,8 +527,9 @@ export default function App() {
                return (
                  <button 
                    key={key}
+                   disabled={statusLoading}
                    onClick={() => handleStatusChange(key)}
-                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'}`}
+                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'} ${statusLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                  >
                    <span className="flex items-center justify-center gap-1.5">
                      {config.icon}
