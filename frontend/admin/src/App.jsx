@@ -85,6 +85,7 @@ export default function App() {
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
   const wsRef = useRef(null);
+  const reconnectTimerRef = useRef(null);
   
   // Apply dark mode and smooth transitions
   useEffect(() => {
@@ -282,7 +283,7 @@ export default function App() {
       const wsUrl = `${protocol}//${host}/staff`;
       
       try {
-        ws = new WebSocket(wsUrl);
+        const ws = new WebSocket(wsUrl);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -310,12 +311,13 @@ export default function App() {
         ws.onclose = () => {
           setIsSynced(false);
           console.log("WS Disconnected. Reconnecting in 1s...");
-          reconnectTimer = setTimeout(connect, 1000);
+          reconnectTimerRef.current = setTimeout(connect, 1000);
         };
 
         ws.onerror = (err) => console.warn("Presence WS Error:", err);
       } catch (e) {
         console.error("WS Connection failed:", e);
+        reconnectTimerRef.current = setTimeout(connect, 5000);
       }
     };
 
@@ -323,9 +325,11 @@ export default function App() {
 
     return () => {
       clearInterval(heartbeat);
-      if (reconnectTimer) clearTimeout(reconnectTimer);
-      if (wsRef.current) wsRef.current.close();
-      wsRef.current = null;
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      if (wsRef.current) {
+        wsRef.current.onclose = null;
+        wsRef.current.close();
+      }
     };
   }, [user, currentStatus]);
 
