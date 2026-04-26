@@ -24,7 +24,9 @@ import {
   CheckCircle2,
   XCircle,
   Search,
-  Info
+  Info,
+  Menu,
+  X
 } from 'lucide-react';
 import ProjectManager from './components/ProjectManager';
 import TimeTracker from './components/TimeTracker';
@@ -400,11 +402,27 @@ export default function App() {
   return (
     <div className="flex h-screen overflow-hidden bg-zinc-50 dark:bg-[#09090b] transition-colors duration-300 font-sans">
       
+      {/* Left Sidebar - Mobile Drawer Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Left Sidebar */}
       <motion.aside 
-        initial={{ width: 80 }}
-        animate={{ width: 80 }}
-        className="flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-20 shadow-sm"
+        initial={false}
+        animate={{ 
+          x: isMobileMenuOpen ? 0 : (window.innerWidth < 1024 ? -100 : 0),
+          width: 80 
+        }}
+        className={`fixed lg:relative flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-50 shadow-xl lg:shadow-sm h-full transition-transform duration-300 lg:translate-x-0`}
       >
         <div className="mb-12 w-12 h-12 flex items-center justify-center transition-transform hover:scale-105">
           <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
@@ -431,7 +449,7 @@ export default function App() {
           <SidebarItem 
             icon={<LogOut size={22} className="text-rose-500" />} 
             active={false} 
-            onClick={handleLogout} 
+            onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
             tooltip="Logout" 
           />
         </div>
@@ -444,12 +462,21 @@ export default function App() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 dark:bg-purple-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
         {/* Header */}
-        <header className="h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-8 z-10 sticky top-0">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
-            MKAVS Dashboard
-          </h1>
+        <header className="h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="lg:hidden p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+            >
+              <Menu size={20} />
+            </button>
+            <h1 className="text-lg lg:text-xl font-bold bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
+              <span className="hidden sm:inline">MKAVS Dashboard</span>
+              <span className="sm:hidden">MKAVS</span>
+            </h1>
+          </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 lg:gap-4">
             <NotificationCenter user={user} />
             
             <button 
@@ -459,15 +486,22 @@ export default function App() {
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
-            <div className="flex items-center gap-3 ml-2">
-              <div className="text-right hidden sm:block">
+            <button 
+              onClick={() => setIsRightSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-xl bg-indigo-500/10 text-indigo-500"
+            >
+              <Users size={20} />
+            </button>
+
+            <div className="flex items-center gap-3 ml-1 lg:ml-2">
+              <div className="text-right hidden md:block">
                 <p className="text-sm font-bold text-zinc-900 dark:text-white leading-none">{user.name}</p>
                 <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">{user.role}</p>
               </div>
               <img 
                 src={user.avatar} 
                 alt={user.name} 
-                className="w-10 h-10 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm"
+                className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm"
               />
             </div>
           </div>
@@ -591,8 +625,28 @@ export default function App() {
         </div>
       </main>
 
+      {/* Right Sidebar - Mobile Drawer Overlay */}
+      <AnimatePresence>
+        {isRightSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsRightSidebarOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Right Persistent Sidebar */}
-      <aside className="w-[320px] bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-200/50 dark:border-zinc-800/50 flex flex-col z-20 flex-shrink-0 overflow-y-auto shadow-sm">
+      <motion.aside 
+        initial={false}
+        animate={{ 
+          x: isRightSidebarOpen ? 0 : (window.innerWidth < 1024 ? 400 : 0),
+          width: window.innerWidth < 1024 ? 300 : 320 
+        }}
+        className={`fixed lg:relative right-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-200/50 dark:border-zinc-800/50 flex flex-col z-50 lg:z-20 h-full overflow-y-auto shadow-2xl lg:shadow-sm transition-transform duration-300 lg:translate-x-0`}
+      >
         <div className="p-8 pb-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
           <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-6">Current Session</h3>
           
@@ -739,8 +793,18 @@ export default function App() {
                 </span>
               </div>
             </div>
-         </div>
-      </aside>
+        </div>
+      </motion.aside>
+
+      {/* Close buttons for mobile sidebars */}
+      {(isMobileMenuOpen || isRightSidebarOpen) && (
+        <button 
+          onClick={() => { setIsMobileMenuOpen(false); setIsRightSidebarOpen(false); }}
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden"
+        >
+          Close Menu
+        </button>
+      )}
 
     </div>
   );
