@@ -35,7 +35,7 @@ import { TEAM_MEMBERS } from './constants/users';
 const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
   break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
-  deepwork: { label: 'DEEP WORK', color: 'green', icon: <CheckCircle size={14} /> },
+  deepwork: { label: 'DEEP WORK', color: 'purple', icon: <CheckCircle size={14} /> },
   offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> }
 };
 
@@ -520,6 +520,7 @@ export default function App() {
                const isActive = currentStatus === key;
                const colors = {
                  green: isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 purple: isActive ? 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  amber: isActive ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  gray: isActive ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500'
                };
@@ -621,6 +622,7 @@ function TeamMember({ name, role, status, avatar }) {
   
   const statusColors = {
     green: 'bg-emerald-500 shadow-emerald-500/20',
+    purple: 'bg-purple-500 shadow-purple-500/20',
     amber: 'bg-amber-500 shadow-amber-500/20',
     gray: 'bg-zinc-400 shadow-zinc-400/20'
   };
@@ -628,7 +630,7 @@ function TeamMember({ name, role, status, avatar }) {
   const badgeColors = {
     focus: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20',
     break: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/20',
-    deepwork: 'bg-emerald-500 text-white border-emerald-400 shadow-sm shadow-emerald-500/20',
+    deepwork: 'bg-purple-500 text-white border-purple-400 shadow-sm shadow-purple-500/20',
     offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700'
   };
 
