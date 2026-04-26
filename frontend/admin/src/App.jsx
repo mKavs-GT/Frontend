@@ -273,7 +273,12 @@ export default function App() {
         wsRef.current = ws;
 
         ws.onopen = () => {
-          ws.send(JSON.stringify({ type: 'staff_online', staffName: user.name, status: currentStatus }));
+          ws.send(JSON.stringify({ 
+            type: 'staff_online', 
+            staffName: user.name, 
+            email: user.email,
+            status: currentStatus 
+          }));
         };
 
         ws.onmessage = (event) => {
@@ -331,6 +336,7 @@ export default function App() {
         wsRef.current.send(JSON.stringify({
           type: 'update_status',
           staffName: user.name,
+          email: user.email,
           status: status
         }));
       }
@@ -347,9 +353,9 @@ export default function App() {
     }
   };
 
-  const getStaffStatus = (name) => {
-    if (name === user.name) return currentStatus; // Optimistic update
-    const s = onlineStaff.find(s => s.name === name);
+  const getStaffStatus = (member) => {
+    if (member.email === user.email) return currentStatus; // Optimistic update
+    const s = onlineStaff.find(s => (s.email && s.email === member.email) || s.name === member.name);
     return s ? s.status : 'offline';
   };
 
@@ -659,7 +665,7 @@ export default function App() {
                 key={member.email}
                 name={member.name} 
                 role={member.role} 
-                status={getStaffStatus(member.name)} 
+                status={getStaffStatus(member)} 
                 avatar={member.avatar} 
               />
             ))}
