@@ -78,6 +78,7 @@ export default function App() {
   const [currentStatus, setCurrentStatus] = useState(() => localStorage.getItem('mkavs_staff_status') || 'offline');
   const [statusLoading, setStatusLoading] = useState(false);
   const [statusError, setStatusError] = useState(null);
+  const [isSynced, setIsSynced] = useState(false);
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
   const wsRef = useRef(null);
@@ -273,6 +274,7 @@ export default function App() {
         wsRef.current = ws;
 
         ws.onopen = () => {
+          setIsSynced(true);
           ws.send(JSON.stringify({ 
             type: 'staff_online', 
             staffName: user.name, 
@@ -293,8 +295,9 @@ export default function App() {
         };
 
         ws.onclose = () => {
-          console.log("WS Disconnected. Reconnecting in 2s...");
-          reconnectTimer = setTimeout(connect, 2000);
+          setIsSynced(false);
+          console.log("WS Disconnected. Reconnecting in 1s...");
+          reconnectTimer = setTimeout(connect, 1000);
         };
 
         ws.onerror = (err) => console.warn("Presence WS Error:", err);
@@ -694,13 +697,19 @@ export default function App() {
           </div>
         </div>
 
-        {/* Identity Check (Debug) */}
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 opacity-20 hover:opacity-100 transition-opacity">
-          <div className="flex items-center gap-2 text-[8px] font-mono text-zinc-500">
-            <Shield size={10} />
-            <span>ID: {user?.email || 'MISSING_EMAIL'} | {user?.name || user?.displayName || 'MISSING_NAME'}</span>
-          </div>
-        </div>
+         {/* Identity Check (Debug) */}
+         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 opacity-40 hover:opacity-100 transition-opacity">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-[8px] font-mono text-zinc-500">
+                <Shield size={10} />
+                <span>ID: {user?.email || '???'}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className={`w-1.5 h-1.5 rounded-full ${isSynced ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 animate-pulse'}`}></div>
+                <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">{isSynced ? 'Synced' : 'Offline'}</span>
+              </div>
+            </div>
+         </div>
       </aside>
 
     </div>
