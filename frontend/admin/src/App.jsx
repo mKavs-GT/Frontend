@@ -86,6 +86,9 @@ export default function App() {
   const [syncCount, setSyncCount] = useState(0);
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
+  const [onlineStaff, setOnlineStaff] = useState([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const wsRef = useRef(null);
   const reconnectTimerRef = useRef(null);
   
