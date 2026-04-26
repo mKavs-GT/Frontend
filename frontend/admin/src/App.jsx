@@ -227,8 +227,6 @@ export default function App() {
     );
   }
 
-  const [onlineStaff, setOnlineStaff] = useState([]);
-
   const fetchInitialStatus = async () => {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
