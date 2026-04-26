@@ -75,7 +75,7 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
 
-  const [currentStatus, setCurrentStatus] = useState('offline');
+  const [currentStatus, setCurrentStatus] = useState(() => localStorage.getItem('mkavs_staff_status') || 'offline');
   const [statusLoading, setStatusLoading] = useState(false);
   const [statusError, setStatusError] = useState(null);
   const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
@@ -281,10 +281,6 @@ export default function App() {
             const data = JSON.parse(event.data);
             if (data.type === 'staff_list') {
               setOnlineStaff(data.staff);
-              const me = data.staff.find(s => s.name === user.name);
-              if (me && me.status !== currentStatus) {
-                setCurrentStatus(me.status);
-              }
             }
           } catch (e) {
             console.error("WS Message Error:", e);
@@ -316,6 +312,7 @@ export default function App() {
     
     const prevStatus = currentStatus;
     setCurrentStatus(status);
+    localStorage.setItem('mkavs_staff_status', status);
     setStatusLoading(true);
     setStatusError(null);
 
