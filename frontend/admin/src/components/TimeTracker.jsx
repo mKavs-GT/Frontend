@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, Alert
 
 export default function TimeTracker({ user, onTicketSubmit }) {
   const [view, setView] = useState('weekly');
-  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [showManualEntry, setShowManualEntry] = useState(false);
   
   const [stats, setStats] = useState({ todayHours: 0, monthHours: 0 });
@@ -84,8 +84,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
     setIsSubmitting(true);
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const entryDate = new Date();
-      entryDate.setDate(selectedDate); // Simple logic for demo
+      const entryDate = new Date(selectedDate);
 
       const res = await fetch(`${host}/api/tickets`, {
         method: 'POST',
@@ -123,13 +122,57 @@ export default function TimeTracker({ user, onTicketSubmit }) {
     }
   };
 
-  // Convert dailyLogs to chart data
-  const chartData = Object.entries(history?.dailyLogs || {}).slice(-7).map(([date, hours]) => ({
-    name: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
-    hours
-  }));
+  const getChartData = () => {
+    const data = [];
+    const baseDate = new Date(selectedDate);
+    
+    if (view === 'weekly') {
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      // Get start of week (Sunday)
+      const sunday = new Date(baseDate);
+      sunday.setDate(baseDate.getDate() - baseDate.getDay());
+      
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(sunday);
+        d.setDate(sunday.getDate() + i);
+        const dStr = d.toISOString().split('T')[0];
+        const hours = history.dailyLogs && history.dailyLogs[dStr] ? history.dailyLogs[dStr] : 0;
+        data.push({ name: days[i], hours: parseFloat(Number(hours).toFixed(1)) });
+      }
+    } else if (view === 'monthly') {
+      // Group by weeks or 5-day blocks for monthly view
+      const year = baseDate.getFullYear();
+      const month = baseDate.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      for (let i = 1; i <= daysInMonth; i += 5) {
+        let blockHours = 0;
+        for (let j = 0; j < 5 && (i + j) <= daysInMonth; j++) {
+          const d = new Date(year, month, i + j);
+          const dStr = d.toISOString().split('T')[0];
+          blockHours += (history.dailyLogs && history.dailyLogs[dStr]) ? history.dailyLogs[dStr] : 0;
+        }
+        data.push({ name: `${i}-${Math.min(i+4, daysInMonth)}`, hours: parseFloat(blockHours.toFixed(1)) });
+      }
+    } else {
+      // Yearly - group by months
+      const year = baseDate.getFullYear();
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      for (let i = 0; i < 12; i++) {
+        let monthHours = 0;
+        const daysInM = new Date(year, i + 1, 0).getDate();
+        for (let j = 1; j <= daysInM; j++) {
+          const d = new Date(year, i, j);
+          const dStr = d.toISOString().split('T')[0];
+          monthHours += (history.dailyLogs && history.dailyLogs[dStr]) ? history.dailyLogs[dStr] : 0;
+        }
+        data.push({ name: months[i], hours: parseFloat(monthHours.toFixed(1)) });
+      }
+    }
+    return data;
+  };
 
-  const displayChartData = chartData.length > 0 ? chartData : weeklyData;
+  const displayChartData = getChartData();
 
   // Generate heatmap data
   const getHeatmapColor = (hours) => {
@@ -227,33 +270,44 @@ export default function TimeTracker({ user, onTicketSubmit }) {
           {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d, i) => (
             <div key={i} className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1">{d}</div>
           ))}
-          {Array.from({ length: 30 }).map((_, i) => {
-            const date = i + 1;
-            const isSelected = selectedDate === date;
+          {(() => {
+            const year = selectedDate.getFullYear();
+            const month = selectedDate.getMonth();
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const grid = [];
+            // Padding
+            for (let i = 0; i < firstDayOfMonth; i++) {
+              grid.push(<div key={`pad-${i}`} className="aspect-square"></div>);
+            }
             
-            // Use live history for heatmap
-            const dateObj = new Date();
-            dateObj.setDate(date);
-            const dateStr = dateObj.toISOString().split('T')[0];
-            let hoursLogged = (history?.dailyLogs?.[dateStr]) || 0;
-            
-            const isFuture = date > new Date().getDate();
-            const heatColor = isFuture ? 'bg-zinc-50 dark:bg-zinc-900 text-zinc-300 dark:text-zinc-700/50 cursor-not-allowed border border-dashed border-zinc-200 dark:border-zinc-800' : getHeatmapColor(hoursLogged);
-            
-            return (
-              <button
-                key={date}
-                onClick={() => !isFuture && setSelectedDate(date)}
-                disabled={isFuture}
-                className={`aspect-square rounded-[10px] flex items-center justify-center text-xs font-bold transition-all duration-300 ${heatColor} ${
-                  isSelected && !isFuture ? 'ring-2 ring-offset-2 ring-emerald-500 dark:ring-offset-zinc-900 scale-110 z-10 shadow-lg' : 'hover:scale-105'
-                }`}
-                title={`${date} Apr: ${hoursLogged.toFixed(1)} hours`}
-              >
-                {date}
-              </button>
-            );
-          })}
+            for (let d = 1; d <= daysInMonth; d++) {
+              const dateObj = new Date(year, month, d);
+              const dateStr = dateObj.toISOString().split('T')[0];
+              const isSelected = selectedDate.getDate() === d && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
+              const isFuture = dateObj > today;
+              const hoursLogged = (history?.dailyLogs?.[dateStr]) || 0;
+              const heatColor = isFuture ? 'bg-zinc-50 dark:bg-zinc-900 text-zinc-300 dark:text-zinc-700/50 cursor-not-allowed border border-dashed border-zinc-200 dark:border-zinc-800' : getHeatmapColor(hoursLogged);
+
+              grid.push(
+                <button
+                  key={d}
+                  onClick={() => !isFuture && setSelectedDate(new Date(year, month, d))}
+                  disabled={isFuture}
+                  className={`aspect-square rounded-[10px] flex items-center justify-center text-xs font-bold transition-all duration-300 ${heatColor} ${
+                    isSelected && !isFuture ? 'ring-2 ring-offset-2 ring-emerald-500 dark:ring-offset-zinc-900 scale-110 z-10 shadow-lg' : 'hover:scale-105'
+                  }`}
+                  title={`${d} ${dateObj.toLocaleString('default', { month: 'short' })}: ${hoursLogged.toFixed(1)} hours`}
+                >
+                  {d}
+                </button>
+              );
+            }
+            return grid;
+          })()}
         </div>
 
         {/* Legend */}
