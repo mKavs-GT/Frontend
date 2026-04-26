@@ -56,7 +56,7 @@ export default function TicketManager({ user, onReview }) {
     try {
       const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/tickets/${id}/review`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`
