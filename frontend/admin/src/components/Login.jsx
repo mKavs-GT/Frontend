@@ -11,26 +11,43 @@ const allowedUsers = [
 ];
 
 export default function Login({ onLogin }) {
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== 'trial123') {
-      setError('Invalid password. Please use trial123.');
-      return;
-    }
-    
-    const searchVal = identifier.trim().toLowerCase();
-    const user = allowedUsers.find(u => u.uid.toLowerCase() === searchVal || u.email.toLowerCase() === searchVal);
-    
-    if (!user) {
-      setError('Invalid UID or Email. User not found.');
-      return;
-    }
+    setError('');
+    setIsLoading(true);
 
-    onLogin(user);
+    try {
+      const res = await fetch(`${host}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: identifier, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Merge backend data with frontend role mapping (if needed)
+      const mappedUser = {
+        ...data.agent,
+        token: data.token,
+        // Match the frontend's expected properties
+        firstName: data.agent.name.split(' ')[0],
+        avatar: allowedUsers.find(u => u.email === data.agent.email)?.avatar || `https://ui-avatars.com/api/?name=${data.agent.name}&background=random`,
+        isExecutive: data.agent.role === 'executive' || data.agent.email === 'agent01mrk@gmail.com'
+      };
+
+      onLogin(mappedUser);
+    } catch (err) {
+      setError(err.message || 'Connection to server failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -84,9 +101,10 @@ export default function Login({ onLogin }) {
 
           <button 
             type="submit"
-            className="mt-4 w-full py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md active:scale-[0.98]"
+            disabled={isLoading}
+            className="mt-4 w-full py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md active:scale-[0.98] disabled:opacity-70"
           >
-            Sign In
+            {isLoading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
