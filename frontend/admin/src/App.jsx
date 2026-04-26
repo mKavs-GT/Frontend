@@ -33,10 +33,10 @@ import NotificationCenter from './components/NotificationCenter';
 import { TEAM_MEMBERS } from './constants/users';
 
 const STATUS_CONFIG = {
-  focus: { label: 'Focus Mode', color: 'blue', icon: <Zap size={14} /> },
-  break: { label: 'Break', color: 'amber', icon: <Coffee size={14} /> },
-  deepwork: { label: 'Deep Work', color: 'purple', icon: <CheckCircle size={14} /> },
-  offline: { label: 'Offline', color: 'gray', icon: <Moon size={14} /> }
+  focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
+  break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
+  deepwork: { label: 'DEEP WORK', color: 'green', icon: <CheckCircle size={14} /> },
+  offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> }
 };
 
 export default function App() {
@@ -470,9 +470,8 @@ export default function App() {
              {Object.entries(STATUS_CONFIG).map(([key, config]) => {
                const isActive = currentStatus === key;
                const colors = {
-                 blue: isActive ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 green: isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  amber: isActive ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
-                 purple: isActive ? 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  gray: isActive ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500'
                };
                
@@ -571,18 +570,19 @@ function TeamMember({ name, role, status, avatar }) {
   const config = STATUS_CONFIG[status] || STATUS_CONFIG.offline;
   
   const statusColors = {
-    blue: 'bg-blue-500 shadow-blue-500/20',
+    green: 'bg-emerald-500 shadow-emerald-500/20',
     amber: 'bg-amber-500 shadow-amber-500/20',
-    purple: 'bg-purple-500 shadow-purple-500/20',
     gray: 'bg-zinc-400 shadow-zinc-400/20'
   };
-
+  
   const badgeColors = {
-    blue: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400',
-    amber: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400',
-    purple: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400',
-    gray: 'bg-zinc-50 dark:bg-zinc-800/50 text-zinc-500'
+    focus: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20',
+    break: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/20',
+    deepwork: 'bg-emerald-500 text-white border-emerald-400 shadow-sm shadow-emerald-500/20',
+    offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700'
   };
+
+  const badgeClass = badgeColors[status] || badgeColors.offline;
 
   return (
     <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all cursor-pointer group shadow-sm hover:shadow-md">
@@ -593,7 +593,7 @@ function TeamMember({ name, role, status, avatar }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
           <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{name}</h4>
-          <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${badgeColors[config.color]}`}>
+          <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-300`}>
             {config.label}
           </span>
         </div>
