@@ -29,15 +29,59 @@ document.addEventListener('DOMContentLoaded', () => {
         'General': [] // Fallback
     };
 
+    // --- CSS for Animated Status Dot ---
+    const style = document.createElement('style');
+    style.textContent = `
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 8px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .status-dot.connected {
+            background-color: #10b981; /* Green */
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-green 2s infinite;
+        }
+        .status-dot.disconnected {
+            background-color: #ef4444; /* Red */
+            box-shadow: 0 0 8px #ef4444;
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    `;
+    document.head.appendChild(style);
+
     // --- WebSocket Connection ---
     function connectWebSocket() {
         console.log('Attempting WS connection...');
-        ws = new WebSocket('ws://localhost:3001/customer');
+        
+        // Determine WebSocket URL based on environment
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        let wsUrl = isLocal ? 'ws://localhost:3000/customer' : 'wss://api.mkavs.com/customer';
+        
+        // If config is available, we can use it to derive the base URL dynamically
+        if (typeof MKAVS_CONFIG !== 'undefined' && MKAVS_CONFIG.API_BASE_URL) {
+            wsUrl = MKAVS_CONFIG.API_BASE_URL.replace(/^http/, 'ws') + '/customer';
+        }
+
+        ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
             console.log('Connected to Live Chat Server');
             const title = document.querySelector('.panel-header .title');
-            if (title) title.textContent = 'Kairon (Connected)';
+            if (title) title.innerHTML = 'Kairon <span class="status-dot connected" title="Connected"></span>';
             // Send initial handshake to register customer and get staff list
             ws.send(JSON.stringify({}));
         };
@@ -55,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ws.onclose = () => {
             console.log('Disconnected from Live Chat Server');
             const title = document.querySelector('.panel-header .title');
-            if (title) title.textContent = 'Kairon (Disconnected)';
+            if (title) title.innerHTML = 'Kairon <span class="status-dot disconnected" title="Disconnected"></span>';
             setTimeout(connectWebSocket, 3000); // Reconnect
         };
 

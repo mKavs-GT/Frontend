@@ -832,7 +832,11 @@
   <div id="request-popup-container" aria-live="assertive"></div>
 
   <script>
-    const WS_BASE = 'ws://localhost:3001';
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    let wsHost = isLocal ? 'ws://localhost:3000' : 'wss://api.mkavs.com';
+    // If the dashboard is hosted on the same domain as the API, we could also do:
+    // let wsHost = window.location.protocol === 'https:' ? 'wss://' : 'ws://' + window.location.host;
+    const WS_BASE = wsHost;
 
     let myId = null, myName = 'Live Agent', ws = null;
     const sessions = {};
