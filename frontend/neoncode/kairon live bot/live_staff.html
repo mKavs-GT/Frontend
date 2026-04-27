@@ -832,11 +832,10 @@
   <div id="request-popup-container" aria-live="assertive"></div>
 
   <script>
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-        ? 'localhost:3000' 
-        : 'mkavs-backend.onrender.com';
-    const WS_BASE = `${protocol}//${host}`;
+    let WS_BASE = 'ws://localhost:3001';
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      WS_BASE = 'wss://api.mkavs.com';
+    }
 
     let myId = null, myName = 'Live Agent', ws = null;
     const sessions = {};
