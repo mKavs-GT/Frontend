@@ -32,7 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- WebSocket Connection ---
     function connectWebSocket() {
         console.log('Attempting WS connection...');
-        ws = new WebSocket('ws://localhost:3001/customer');
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const host = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+            ? 'localhost:3000' 
+            : 'mkavs-backend.onrender.com';
+        ws = new WebSocket(`${protocol}//${host}/customer`);
 
         ws.onopen = () => {
             console.log('Connected to Live Chat Server');
