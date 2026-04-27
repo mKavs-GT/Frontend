@@ -24,8 +24,7 @@ const COLUMN_TITLES = {
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
-export default function ProjectManager({ user }) {
-  const [projects, setProjects] = useState([]);
+export default function ProjectManager({ user, projects = [], onRefresh }) {
   const [expandedProjects, setExpandedProjects] = useState(new Set());
   const [activeSprintMap, setActiveSprintMap] = useState({});
   
@@ -42,28 +41,13 @@ export default function ProjectManager({ user }) {
   const [taskFormData, setTaskFormData] = useState({ content: '', priority: 'medium', assignees: [] });
 
   useEffect(() => {
-    fetchProjects();
-    const interval = setInterval(fetchProjects, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const res = await fetch('/api/admin-projects');
-      if (res.ok) {
-        const data = await res.json();
-        setProjects(data);
-        if (expandedProjects.size === 0 && data.length > 0) {
-          setExpandedProjects(new Set([data[0]._id]));
-          if (data[0].sprints.length > 0) {
-            setActiveSprintMap(prev => ({ ...prev, [data[0]._id]: data[0].sprints[0]._id }));
-          }
-        }
+    if (expandedProjects.size === 0 && projects.length > 0) {
+      setExpandedProjects(new Set([projects[0]._id]));
+      if (projects[0].sprints.length > 0) {
+        setActiveSprintMap(prev => ({ ...prev, [projects[0]._id]: projects[0].sprints[0]._id }));
       }
-    } catch (err) {
-      console.error('Fetch projects failed:', err);
     }
-  };
+  }, [projects]);
 
   const sortTasks = (tasks) => {
     return [...tasks].sort((a, b) => {
@@ -83,7 +67,7 @@ export default function ProjectManager({ user }) {
         body: JSON.stringify(projectFormData)
       });
       if (res.ok) {
-        fetchProjects();
+        onRefresh();
         setIsProjectModalOpen(false);
         setProjectFormData({ name: '', description: '' });
       }
@@ -101,7 +85,7 @@ export default function ProjectManager({ user }) {
         body: JSON.stringify(sprintFormData)
       });
       if (res.ok) {
-        fetchProjects();
+        onRefresh();
         setIsSprintModalOpen(false);
         setSprintFormData({ dueDate: '' });
       }
@@ -139,7 +123,7 @@ export default function ProjectManager({ user }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ columns: newColumns, progress, newTask })
       });
-      fetchProjects();
+      onRefresh();
       setIsTaskModalOpen(false);
       setTaskFormData({ content: '', priority: 'medium', assignees: [] });
     } catch (err) {
@@ -165,7 +149,7 @@ export default function ProjectManager({ user }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ columns: newColumns, progress })
       });
-      fetchProjects();
+      onRefresh();
     } catch (err) {
       console.error('Move task failed:', err);
     }

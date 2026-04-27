@@ -39,6 +39,7 @@ import GodMode from './components/GodMode';
 import NotificationCenter from './components/NotificationCenter';
 import TicketManager from './components/TicketManager';
 import { TEAM_MEMBERS } from './constants/users';
+import { calculateDailyGoal } from './utils/taskMetrics';
 
 const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
@@ -89,8 +90,35 @@ export default function App() {
   const [onlineStaff, setOnlineStaff] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [projectsLoading, setProjectsLoading] = useState(true);
   const wsRef = useRef(null);
   const reconnectTimerRef = useRef(null);
+
+  const fetchProjects = async () => {
+    try {
+      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const res = await fetch(`${host}/api/admin-projects`);
+      if (res.ok) {
+        const data = await res.json();
+        setProjects(data);
+      }
+    } catch (err) {
+      console.error('Fetch projects failed:', err);
+    } finally {
+      setProjectsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchProjects();
+      const interval = setInterval(fetchProjects, 10000); // 10s sync
+      return () => clearInterval(interval);
+    }
+  }, [user]);
+
+  const dailyStats = calculateDailyGoal(projects, user);
   
   // Apply dark mode and smooth transitions
   useEffect(() => {
@@ -523,10 +551,15 @@ export default function App() {
                 <div className="relative z-10 mt-auto">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-bold uppercase tracking-widest text-indigo-100">Daily Goal</span>
-                    <span className="text-sm font-bold text-white">3/5 tasks completed</span>
+                    <span className="text-sm font-bold text-white">{dailyStats.completed}/{dailyStats.total} tasks completed</span>
                   </div>
                   <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
-                    <motion.div initial={{width:0}} animate={{width:'60%'}} transition={{duration:1, delay:0.3}} className="h-full bg-white rounded-full"></motion.div>
+                    <motion.div 
+                      initial={{width:0}} 
+                      animate={{width:`${dailyStats.percent}%`}} 
+                      transition={{duration:1, delay:0.3}} 
+                      className="h-full bg-white rounded-full"
+                    ></motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -609,7 +642,7 @@ export default function App() {
             </div>
 
             <AnimatePresence mode="wait">
-              {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} /></motion.div>}
+              {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
               {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} /></motion.div>}
               {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
               {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}

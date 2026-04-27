@@ -36,12 +36,13 @@ export default function Login({ onLogin }) {
       }
 
       // Merge backend data with frontend role mapping (if needed)
+      const userFromList = allowedUsers.find(u => u.email === data.agent.email);
       const mappedUser = {
         ...data.agent,
         token: data.token,
-        // Match the frontend's expected properties
+        uid: userFromList?.uid,
         firstName: data.agent.name.split(' ')[0],
-        avatar: allowedUsers.find(u => u.email === data.agent.email)?.avatar || `https://ui-avatars.com/api/?name=${data.agent.name}&background=random`,
+        avatar: userFromList?.avatar || `https://ui-avatars.com/api/?name=${data.agent.name}&background=random`,
         isExecutive: data.agent.role === 'executive' || data.agent.email === 'agent01mrk@gmail.com'
       };
 
