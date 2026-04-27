@@ -32,19 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- WebSocket Connection ---
     function connectWebSocket() {
         console.log('Attempting WS connection...');
-        let wsUrl = 'ws://localhost:3001/customer';
-        if (window.MKAVS_CONFIG && window.MKAVS_CONFIG.API_BASE_URL) {
-            let base = window.MKAVS_CONFIG.API_BASE_URL.replace(/^http/, 'ws');
-            if (base.includes('localhost')) {
-                wsUrl = 'ws://localhost:3001/customer';
-            } else {
-                wsUrl = base + '/customer';
-            }
-        } else if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-            wsUrl = 'wss://api.mkavs.com/customer';
-        }
-        
-        ws = new WebSocket(wsUrl);
+        ws = new WebSocket('ws://localhost:3001/customer');
 
         ws.onopen = () => {
             console.log('Connected to Live Chat Server');
