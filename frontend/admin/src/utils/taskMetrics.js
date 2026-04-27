@@ -11,32 +11,31 @@ export const calculateDailyGoal = (projects, user) => {
   let completedTasks = 0;
 
   projects.forEach(project => {
-    // Assuming the last sprint is the "active" one
-    const activeSprint = project.sprints && project.sprints.length > 0 
-      ? project.sprints[project.sprints.length - 1] 
-      : null;
+    if (project.sprints && project.sprints.length > 0) {
+      project.sprints.forEach(sprint => {
+        if (sprint.columns) {
+          const columns = sprint.columns;
+          const allColumnKeys = Object.keys(columns); // allTasks, ongoing, testing, live
+          
+          allColumnKeys.forEach(colKey => {
+            const tasks = columns[colKey] || [];
+            tasks.forEach(task => {
+              // Check if user is assigned to this task
+              const isAssigned = task.assignees && task.assignees.some(a => 
+                (a.userId && a.userId === user.uid) ||
+                (a.userId && a.userId === user.email) ||
+                (a.email && a.email.toLowerCase() === user.email?.toLowerCase())
+              );
 
-    if (activeSprint && activeSprint.columns) {
-      const columns = activeSprint.columns;
-      const allColumnKeys = Object.keys(columns); // allTasks, ongoing, testing, live
-      
-      allColumnKeys.forEach(colKey => {
-        const tasks = columns[colKey] || [];
-        tasks.forEach(task => {
-          // Check if user is assigned to this task
-          const isAssigned = task.assignees && task.assignees.some(a => 
-            (a.userId && a.userId === user.uid) ||
-            (a.userId && a.userId === user.email) ||
-            (a.email && a.email.toLowerCase() === user.email?.toLowerCase())
-          );
-
-          if (isAssigned) {
-            totalTasks++;
-            if (colKey === 'live') {
-              completedTasks++;
-            }
-          }
-        });
+              if (isAssigned) {
+                totalTasks++;
+                if (colKey === 'live') {
+                  completedTasks++;
+                }
+              }
+            });
+          });
+        }
       });
     }
   });
