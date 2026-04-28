@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- WebSocket Connection ---
     function connectWebSocket() {
         console.log('Attempting WS connection...');
-        ws = new WebSocket('ws://localhost:3000/customer');
+        ws = new WebSocket('ws://127.0.0.1:3000/customer');
 
         ws.onopen = () => {
             console.log('Connected to Live Chat Server');

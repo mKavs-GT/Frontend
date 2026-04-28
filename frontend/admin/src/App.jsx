@@ -40,6 +40,7 @@ import NotificationCenter from './components/NotificationCenter';
 import TicketManager from './components/TicketManager';
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
+import kaironIcon from '../../neoncode/kairon live bot/little.png';
 
 const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
@@ -458,6 +459,12 @@ export default function App() {
           <SidebarItem icon={<Clock size={22} />} active={activeView === 'time'} onClick={() => setActiveView('time')} tooltip="Time Tracker" />
           <SidebarItem icon={<TicketIcon size={22} />} active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} tooltip="Approval Tickets" />
           <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
+          <SidebarItem 
+            icon={<img src={kaironIcon} alt="Kairon Live Bot" className="w-[24px] h-[24px] object-contain drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] transition-all" />} 
+            active={activeView === 'kairon'} 
+            onClick={() => setActiveView('kairon')} 
+            tooltip="Kairon Live Bot" 
+          />
           <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
           <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
           {user.isExecutive && (
@@ -647,6 +654,7 @@ export default function App() {
               {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
               {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
               {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
+              {activeView === 'kairon' && <motion.div key="kairon" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="w-full h-[800px]"><iframe src="/neoncode/kairon%20live%20bot/live_staff.html" className="w-full h-full border-0 rounded-[2rem] shadow-sm"></iframe></motion.div>}
               {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
               {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM /></motion.div>}
               {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
