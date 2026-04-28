@@ -231,6 +231,7 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; }
 .footer-cta-bar { background: var(--accent); padding: 40px 0; }
 .footer-cta-inner { display: flex; justify-content: space-between; align-items: center; }
 .footer-cta-inner h2 { font-size: 1.8rem; }
+.footer-cta-inner .text-accent { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
 .footer-cta-inner .btn { background: #fff; color: var(--accent); border-color: #fff; }
 .footer-cta-inner .btn:hover { background: transparent; color: #fff; }
 .footer-main { padding: 60px 0 40px; }
