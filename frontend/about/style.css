@@ -1007,11 +1007,17 @@ p {
 
 .arcane-item .arcane-desc {
     font-size: 1.15rem;
-    color: #eee;
+    color: #ffffff;
     line-height: 1.6;
     max-width: 500px;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
+    text-shadow: none;
     font-weight: 400;
+}
+
+.arcane-item:nth-child(1) .arcane-desc,
+.arcane-item:nth-child(3) .arcane-desc,
+.arcane-item:nth-child(4) .arcane-desc {
+    color: #000000;
 }
 
 @media (max-width: 900px) {

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALERAK | BRUTAL MAGIC</title>
+  <title>MKAVS | Branding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -12,9 +12,11 @@
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
     :root {
-      --bg: #030303;
+      --bg: #1F1F1F;
       /* Slightly darker */
       --fg: #e0e0e0;
       --accent: #ccff00;
@@ -24,18 +26,6 @@
       --easing: cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
-    /* --- GRAIN OVERLAY --- */
-    .noise {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9998;
-      opacity: 0.07;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
 
     /* --- SCROLL CONTENT WRAPPER --- */
     #scroll-content {
@@ -47,7 +37,6 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      cursor: none;
     }
 
     body {
@@ -373,7 +362,7 @@
     /* --- CONTENT SECTIONS --- */
     .section-dark {
       min-height: 80vh;
-      background: #080808;
+      background: #181818;
       display: flex;
       align-items: center;
       padding: 10vw;
@@ -601,54 +590,94 @@
 </head>
 
 <body>
-  <div class="noise"></div>
-  <div id="cursor"></div>
 
-  <nav class="brutal-nav">
-    <a href="https://www.alerak.studio" class="nav-logo magnetic" style="text-decoration: none;">ALERAK</a>
-    <ul class="nav-menu">
-      <li><a href="#" class="nav-link magnetic" data-text="WORK">WORK</a></li>
-      <li><a href="#" class="nav-link magnetic" data-text="ABOUT">ABOUT</a></li>
-      <li><a href="#" class="nav-link magnetic" data-text="LABS">LABS</a></li>
-    </ul>
-    <button class="cta-btn magnetic"><span>LET'S TALK</span></button>
+  <!-- MAIN TOOLBAR (Fixed on top) -->
+  <nav id="main-toolbar"
+    class="fixed top-0 left-0 right-0 p-2 pt-4 md:p-4 md:pt-7 w-full bg-transparent z-[70] transition-transform duration-700 ease-out"
+    style="font-family: 'Outfit', sans-serif;">
+    <div class="flex justify-between items-center max-w-7xl mx-auto">
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <!-- Logo/Home links -->
+          <a href="../index.html" id="toolbar-home-link"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Home</a>
+          <a href="../about/about.html" class="text-lg text-white hover:text-[#c7f908] transition-colors">About</a>
+          <a href="index.html#our-works" class="text-lg text-white hover:text-[#c7f908] transition-colors">Our Work</a>
+          <a href="branding.html" class="text-lg text-white hover:text-[#c7f908] transition-colors">Branding</a>
+        </div>
+      </div>
+      <button class="md:hidden text-lg ml-auto pointer-events-auto text-white">&#x2261;</button>
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <a href="../pricingpage/pricing.html"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Pricing</a>
+          <a href="../consult/consult.html" class="text-lg text-white hover:text-[#c7f908] transition-colors">Book
+            Us</a>
+          <a href="../support/support.html"
+            class="text-lg text-white hover:text-[#c7f908] transition-colors">Support</a>
+          <!-- Login Button Styled -->
+          <a href="../loginpg/login.html"
+            class="login-btn text-lg text-white hover:text-[#c7f908] transition-colors">Login</a>
+        </div>
+        <div class="flex space-x-4 text-xl">
+          <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://discord.gg/KhnQfB6MrH" target="_blank" class="text-white hover:text-[#c7f908]"><i
+              class="fa-brands fa-discord"></i></a>
+          <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+            class="text-white hover:text-[#c7f908]"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="../profile/profile.html" class="text-white hover:text-[#c7f908]"><i
+              class="fa-regular fa-user"></i></a>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <div id="scroll-content">
     <section class="hero">
       <div class="hero-title-container">
         <h1>
-          <div class="word">BRUTAL</div><br>
-          <div class="word">MAGIC</div>
+          <div class="word">Lets</div><br>
+          <div class="word">Brand</div>
         </h1>
       </div>
 
       <div class="tape-wrapper">
-        <div class="tape-text">
-          ALERAK STUDIO ✦ SCROLL VELOCITY ✦ INTERACTIVE SYSTEMS ✦ ALERAK STUDIO ✦ SCROLL VELOCITY ✦
-          INTERACTIVE SYSTEMS ✦
+        <div class="tape-text" style="display:flex; align-items:center; gap:2rem;">
+          <span>GRAPHIC DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>WEB
+            DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>BRANDING</span><img
+            src="../images/blacklogo.png" class="h-8 inline-block">
+          <span>GRAPHIC DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>WEB
+            DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>BRANDING</span><img
+            src="../images/blacklogo.png" class="h-8 inline-block">
+          <span>GRAPHIC DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>WEB
+            DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>BRANDING</span><img
+            src="../images/blacklogo.png" class="h-8 inline-block">
+          <span>GRAPHIC DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>WEB
+            DESIGN</span><img src="../images/blacklogo.png" class="h-8 inline-block"><span>BRANDING</span><img
+            src="../images/blacklogo.png" class="h-8 inline-block">
         </div>
       </div>
     </section>
 
     <section class="section-dark">
       <p class="big-text">
-        WE BUILD <span>DIGITAL EXPERIENCES</span> THAT DEFY GRAVITY. NO TEMPLATES. NO LIMITS. JUST <span>PURE
+        WE BUILD <span>DIGITAL EXPERIENCES</span> NO TEMPLATES. NO LIMITS. JUST <span>PURE
           CODE</span> AND <span>RAW AESTHETICS</span>.
       </p>
     </section>
+
   </div> <!-- END SCROLL CONTE/NT (Avoid conflict with pinning) -->
 
   <section id="projects">
     <div class="project-left">
       <div class="project-left-content">
-        <div class="overline">Selected Works</div>
-        <h2 class="project-title">Crafting spaces that <br><em>inspire</em> living.</h2>
+        <h2 class="project-title">Lets Brand <br><em>Your</em> Website</h2>
         <p class="project-description">
-          We bridge the gap between function and artistry. Explore our curated selection of residential and commercial
-          architectural projects.
+          Your website deserves a look that hits instantly — colors that vibe, fonts that speak, and a style that feels
+          you. We don't guess. We design with intention.
         </p>
-        <a href="#" class="btn-arrow magnetic">
+        <a href="../index.html#our-works" class="btn-arrow magnetic">
           View All Projects
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -662,81 +691,53 @@
     <div class="project-right">
       <div class="cards-grid">
 
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/i1.png" alt="Architecture 1">
+        <div
+          class="project-card group cursor-pointer h-full flex flex-col justify-between p-10 bg-[#080808] border border-[#222] hover:border-[#c7f908] transition-colors duration-500 min-h-[450px]"
+          onclick="window.location.href='../colopg/color.html'">
+          <div>
+            <h3 class="font-['Syncopate'] text-3xl font-bold text-white mb-6 uppercase tracking-wider">Color Palettes
+            </h3>
+            <p class="text-[#888] text-lg leading-relaxed font-light">We craft custom palettes based on your energy,
+              your audience, and the message you wanna send.</p>
+            <img src="cp.png" alt="Color Palette Preview" class="w-full mt-6 rounded-lg object-cover"
+              style="height: 300px;">
           </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>The Stone House</h3>
-              <p>Residential</p>
-            </div>
-            <div class="meta-right">2023</div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/i2.png" alt="Architecture 2">
-          </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>Azure Villa</h3>
-              <p>Luxury Living</p>
-            </div>
-            <div class="meta-right">2023</div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/i3.png" alt="Architecture 3">
-          </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>Apex Tower</h3>
-              <p>Commercial</p>
-            </div>
-            <div class="meta-right">2022</div>
+          <div class="mt-8 flex items-center justify-between">
+            <a href="../colopg/color.html"
+              class="text-white font-bold uppercase tracking-widest text-sm group-hover:text-[#c7f908] transition-colors flex items-center gap-2">
+              Check Color Palette
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="transform group-hover:translate-x-2 transition-transform duration-300">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
           </div>
         </div>
 
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/i4.png" alt="Architecture 4">
+        <div
+          class="project-card group cursor-pointer h-full flex flex-col justify-between p-10 bg-[#080808] border border-[#222] hover:border-[#c7f908] transition-colors duration-500 min-h-[450px]"
+          onclick="window.location.href='../fontspg/fonts.html'">
+          <div>
+            <h3 class="font-['Syncopate'] text-3xl font-bold text-white mb-6 uppercase tracking-wider">FOnt
+              Palettes</h3>
+            <p class="text-[#888] text-lg leading-relaxed font-light">Clean, modern, classy, loud, soft — we pick fonts
+              that match your brand's personality.</p>
+            <img src="fp.jpg" alt="Font Palette Preview" class="w-full mt-6 rounded-lg object-cover"
+              style="height: 300px;">
           </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>Nordic Loft</h3>
-              <p>Interior</p>
-            </div>
-            <div class="meta-right">2022</div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/i5.png" alt="Architecture 5">
-          </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>Glass Pavilion</h3>
-              <p>Concept</p>
-            </div>
-            <div class="meta-right">2021</div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="img-wrapper">
-            <img src="images/image.png" alt="Architecture 6">
-          </div>
-          <div class="card-meta">
-            <div class="meta-left">
-              <h3>Eco Sanctuary</h3>
-              <p>Sustainable</p>
-            </div>
-            <div class="meta-right">2021</div>
+          <div class="mt-8 flex items-center justify-between">
+            <a href="../fontspg/fonts.html"
+              class="text-white font-bold uppercase tracking-widest text-sm group-hover:text-[#c7f908] transition-colors flex items-center gap-2">
+              Check Fonts
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="transform group-hover:translate-x-2 transition-transform duration-300">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
           </div>
         </div>
 
@@ -744,16 +745,81 @@
     </div>
   </section>
 
-  <div class="spacer">
-    <span>Next Section</span>
-  </div>
+  <link rel="stylesheet" href="../footer.css">
+  <!-- Digital Journey Section -->
+  <section class="digital-journey-section">
+    <div class="dj-container">
+      <div class="dj-content">
+        <div class="dj-text-group">
+          <h1 class="dj-title">
+            YOUR <br>
+            <span class="text-blue">
+              DIGITAL JOURNEY
+            </span><br>
+            <span class="text-lime">STARTS HERE.</span>
+          </h1>
 
-  <footer
-    style="height: 40vh; background: var(--fg); color: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-    <h2 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom:1rem;"><a href="https://www.alerak.studio"
-        style="color: inherit; text-decoration: none;">ALERAK</a></h2>
-    <p>© 2026</p>
-  </footer>
+          <div class="dj-buttons">
+            <a href="../consult/consult.html" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-primary">
+                BOOK NOW
+              </button>
+            </a>
+            <a href="../pricingpage/pricing.html" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-secondary">
+                VIEW PLANS
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="dj-video-group">
+          <span class="video-wrapper">
+            <video src="../images/mascot.mp4" class="dj-video" autoplay loop muted playsinline>
+              Your browser does not support the video tag.
+            </video>
+          </span>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <div class="footer-header-container">
+          <h2 class="footer-title">
+            JOIN OUR COMMUNITY
+          </h2>
+        </div>
+        <div class="footer-curve">
+          <div class="footer-socials">
+            <div class="social-links">
+              <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://discord.gg/KhnQfB6MrH"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" target="_blank"
+                rel="noopener noreferrer">
+                <i class="fa-brands fa-discord"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+            <div class="about-policy-links">
+              <a href="../docs/T&C and Privacy Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy
+                Policy</a>
+              <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund
+                Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright-text">
+        &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+      </div>
+    </div>
+  </section>
 
 
   <script>
@@ -771,124 +837,11 @@
       });
     });
 
-    // --- MAGNET & CURSOR ---
-    const cursor = document.getElementById("cursor");
-    const magneticElements = document.querySelectorAll(".magnetic");
-
-    let mouseX = 0,
-      mouseY = 0;
-    let cursorX = 0,
-      cursorY = 0;
-
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
     function lerp(start, end, factor) {
       return start + (end - start) * factor;
     }
 
-    function animateCursor() {
-      cursorX = lerp(cursorX, mouseX, 0.15);
-      cursorY = lerp(cursorY, mouseY, 0.15);
-      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
 
-    magneticElements.forEach((el) => {
-      el.addEventListener("mousemove", (e) => {
-        const rect = el.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const dist = 0.5; // Magnetic strength
-
-        const moveX = (e.clientX - centerX) * dist;
-        const moveY = (e.clientY - centerY) * dist;
-
-        el.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        cursor.classList.add("magnet");
-      });
-
-      el.addEventListener("mouseleave", () => {
-        el.style.transform = "translate(0, 0)";
-        cursor.classList.remove("magnet");
-      });
-    });
-
-    // --- NAVBAR STATE & 3D TILT ---
-    const nav = document.querySelector(".brutal-nav");
-    let isScrolled = false;
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 100) {
-        if (!isScrolled) {
-          nav.classList.add("scrolled");
-          isScrolled = true;
-        }
-      } else {
-        if (isScrolled) {
-          nav.classList.remove("scrolled");
-          nav.style.transform = "";
-          isScrolled = false;
-        }
-      }
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (!isScrolled) return;
-      const cx = window.innerWidth / 2;
-      const cy = 100; // Pivot near top
-
-      // Subtle tilt
-      const rx = (e.clientY - cy) * 0.02;
-      const ry = (e.clientX - cx) * 0.02;
-
-      // Constrain
-      const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
-      nav.style.transform = `translateX(-50%) perspective(1000px) rotateX(${-clamp(
-        rx,
-        -10,
-        10
-      )}deg) rotateY(${clamp(ry, -10, 10)}deg)`;
-    });
-
-    // --- SCROLL VELOCITY SKEW ---
-    const content = document.getElementById("scroll-content");
-    let currentScroll = 0;
-    let targetScroll = 0;
-    let skew = 0;
-
-    // Note: For native scroll skewing, we just monitor scroll speed
-    // We aren't hijacking scroll here (keeping it native for UX), just adding effect
-    let lastScrollTop = 0;
-
-    function scrollLoop() {
-      const scrollTop = window.scrollY;
-      const velocity = scrollTop - lastScrollTop;
-      lastScrollTop = scrollTop;
-
-      // Smooth skew approach
-      // Target skew is based on velocity
-      // We clamp it to avoid too much distortion
-      const maxSkew = 5.0;
-      const speed = Math.min(Math.max(velocity * 0.1, -maxSkew), maxSkew);
-
-      // Lerp current skew to target speed
-      skew = lerp(skew, speed, 0.1);
-
-      // round to avoid blurry pixel issues if needed, but smooth is better for transform
-      if (Math.abs(skew) > 0.01) {
-        content.style.transform = `skewY(${skew}deg)`;
-      } else {
-        content.style.transform = `skewY(0deg)`;
-      }
-
-      requestAnimationFrame(scrollLoop);
-    }
-    scrollLoop();
 
     // --- HACKER TEXT RE-INIT ---
     const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

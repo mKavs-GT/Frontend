@@ -1,4 +1,4 @@
-{
+﻿{
   "cleanUrls": true,
   "redirects": [
     {
@@ -38,11 +38,11 @@
     },
     {
       "source": "/branding.html",
-      "destination": "/frontend/branding.html"
+      "destination": "/frontend/branding/branding.html"
     },
     {
       "source": "/branding",
-      "destination": "/frontend/branding.html"
+      "destination": "/frontend/branding/branding.html"
     },
     {
       "source": "/brandpg/:path*",
