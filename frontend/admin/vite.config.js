@@ -78,6 +78,35 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // React core — tiny, always needed, cache-forever
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-is/')) {
+            return 'vendor-react';
+          }
+          // Framer Motion — large animation library
+          if (id.includes('node_modules/framer-motion/')) {
+            return 'vendor-framer';
+          }
+          // Recharts + its d3 deps
+          if (id.includes('node_modules/recharts/') || id.includes('node_modules/d3-') || id.includes('node_modules/victory-') || id.includes('node_modules/internmap/') || id.includes('node_modules/robust-predicates/')) {
+            return 'vendor-recharts';
+          }
+          // Lucide icons
+          if (id.includes('node_modules/lucide-react/')) {
+            return 'vendor-lucide';
+          }
+          // Everything else in node_modules goes into a general vendor chunk
+          if (id.includes('node_modules/')) {
+            return 'vendor-misc';
+          }
+        }
+      }
+    }
+  },
   server: {
     proxy: {
       '/api': {
