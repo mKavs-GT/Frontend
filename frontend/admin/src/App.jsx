@@ -661,7 +661,7 @@ export default function App() {
                 {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
                 {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
                 {activeView === 'kairon' && <motion.div key="kairon" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="w-full h-[800px]"><iframe 
-                  src="/neoncode/kairon%20live%20bot/live_staff.html"
+                  src="/neoncode/kairon-live-bot/live_staff.html"
                   className="w-full h-full border-0 rounded-[2rem] shadow-sm"
                   title="Kairon Live Staff Dashboard"
                   allow="autoplay; clipboard-write"
