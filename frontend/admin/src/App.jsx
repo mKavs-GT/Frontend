@@ -661,18 +661,7 @@ export default function App() {
                 {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
                 {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
                 {activeView === 'kairon' && <motion.div key="kairon" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="w-full h-[800px]"><iframe 
-                  src={(() => {
-                    const host = window.location.hostname;
-                    if (host === 'localhost' || host === '127.0.0.1') return "/neoncode/kairon%20live%20bot/live_staff.html";
-                    // If on admin.mkavs.com, point to mkavs.com
-                    if (host.includes('dev.mkavs.com') || host.includes('dev.mkas.com')) return `https://${host.replace('admin.', '')}/neoncode/kairon%20live%20bot/live_staff.html`;
-                    if (host.includes('mkavs.com')) return "https://mkavs.com/neoncode/kairon%20live%20bot/live_staff.html";
-                    if (host.includes('mkas.com')) return "https://mkas.com/neoncode/kairon%20live%20bot/live_staff.html";
-                    // Fallback: strip first subdomain (e.g., admin.domain.com -> domain.com)
-                    const parts = host.split('.');
-                    if (parts.length > 2) return `https://${parts.slice(1).join('.')}/neoncode/kairon%20live%20bot/live_staff.html`;
-                    return "/neoncode/kairon%20live%20bot/live_staff.html";
-                  })()}
+                  src="/neoncode/kairon%20live%20bot/live_staff.html"
                   className="w-full h-full border-0 rounded-[2rem] shadow-sm"
                   title="Kairon Live Staff Dashboard"
                   allow="autoplay; clipboard-write"
