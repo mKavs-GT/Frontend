@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-text-dark: var(--text-dark);
+  --color-light-green: var(--light-green);
+  --color-beige: var(--beige);
+  --color-beige-dark: var(--beige-dark);
+  --color-white: var(--white);
+  --color-card-border: var(--card-border);
+  --color-link: var(--link);
+  --color-error: var(--error);
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root {
+  --primary: #2D6A4F;
+  --secondary: #F4C430;
+  --accent: #FAFAFA;
+  --text-dark: #1A1A1A;
+  --light-green: #D8F3DC;
+  --beige: #FAF7F2;
+  --beige-dark: #F5F0E8;
+  --white: #FFFFFF;
+  --card-border: transparent;
+  --link: #2D6A4F; /* primary by default */
+  --error: #EF4444; /* standard red */
+}
+
+/* Light / Dark Mode */
+[data-theme="dark"] {
+  --beige: #1A1A1A;
+  --beige-dark: #2A2A2A;
+  --text-dark: #F0F0F0;
+  --white: #2A2A2A;
+  --accent: #2A2A2A;
+  --card-border: #333333;
+}
+
+/* Deuteranopia (Green Blindness) */
+[data-colorblind="deuteranopia"] {
+  --primary: #1565C0; /* Blue instead of green */
+  --light-green: #BBDEFB;
+  --link: #1565C0;
+  --error: #E65100; /* Orange instead of red */
+}
+
+/* Protanopia (Red Blindness) */
+[data-colorblind="protanopia"] {
+  --primary: #9E9D24; /* Yellow-Green instead of green */
+  --light-green: #F0F4C3;
+  --link: #9E9D24;
+  --error: #00695C; /* Teal instead of red */
+}
+
+/* Tritanopia (Blue Blindness) */
+[data-colorblind="tritanopia"] {
+  --secondary: #F57C00; /* Orange instead of yellow */
+  /* If there were any blues, they would be Pink #AD1457 */
+}
+
+/* High Contrast Mode */
+[data-colorblind="high-contrast"] {
+  --beige: #000000;
+  --beige-dark: #000000;
+  --white: #000000;
+  --accent: #000000;
+  --text-dark: #FFFFFF;
+  --primary: #FFFF00;
+  --secondary: #FFFF00;
+  --light-green: #000000;
+  --card-border: #FFFF00;
+  --link: #00FFFF;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-beige);
+    color: var(--color-text-dark);
+    font-family: var(--font-sans);
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  
+  /* Keyboard Navigation Focus Rings */
+  body.keyboard-nav *:focus {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
+
+  /* Screen Reader Only Utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Skip to main content link styling */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-secondary);
+    color: #1A1A1A;
+    padding: 8px;
+    z-index: 9999;
+    font-weight: bold;
+    transition: top 0.2s;
+  }
+  
+  .skip-link:focus {
+    top: 0;
+  }
+}
