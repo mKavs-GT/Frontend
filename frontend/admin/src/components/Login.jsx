@@ -12,7 +12,7 @@ const allowedUsers = [
 
 export default function Login({ onLogin }) {
   const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('trial123');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
@@ -73,7 +73,7 @@ export default function Login({ onLogin }) {
 
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Welcome to MKAVS</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your UID and password to access the dashboard.</p>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your UID to access the dashboard.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -85,17 +85,6 @@ export default function Login({ onLogin }) {
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="e.g. agent03mrss@gmail.com or MGT-DEV-01"
               className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-sm"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Password</label>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
             />
           </div>
 
