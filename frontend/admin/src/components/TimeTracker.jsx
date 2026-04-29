@@ -19,7 +19,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
   const fetchStats = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/time-entries/stats`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
@@ -32,7 +32,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
   const fetchHistory = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/time-entries/history`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
@@ -84,7 +84,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
     setIsSubmitting(true);
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const entryDate = new Date(selectedDate);
 
       const res = await fetch(`${host}/api/tickets`, {

@@ -15,7 +15,7 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState('trial123');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+  const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

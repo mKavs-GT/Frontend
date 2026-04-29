@@ -99,7 +99,7 @@ export default function App() {
 
   const fetchProjects = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/admin-projects`);
       if (res.ok) {
         const data = await res.json();
@@ -259,7 +259,7 @@ export default function App() {
 
   const fetchInitialStatus = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/staff-status`);
       const data = await res.json();
       if (data.staff) setOnlineStaff(data.staff);
@@ -270,7 +270,7 @@ export default function App() {
 
   const fetchTicketStats = async () => {
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const res = await fetch(`${host}/api/tickets/stats`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
@@ -312,7 +312,7 @@ export default function App() {
     const connect = () => {
       // Use ws:// for local development and wss:// for production
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const host = window.location.hostname === 'localhost' ? 'localhost:3000' : 'mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'localhost:3000' : 'mkavs-backend.onrender.com';
       const wsUrl = `${protocol}//${host}/staff`;
       
       try {
@@ -376,7 +376,7 @@ export default function App() {
     setStatusError(null);
 
     try {
-      const host = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
+      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       
       // Attempt HTTP update (Reliable fallback)
       fetch(`${host}/api/staff-status`, {
