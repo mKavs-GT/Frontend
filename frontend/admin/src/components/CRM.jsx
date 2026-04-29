@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Phone, Mail, Calendar, Building, Briefcase, DollarSign, MessageSquare, ExternalLink, FileText, TrendingUp, CheckCircle, Clock, AlertCircle, X } from 'lucide-react';
+import { Users, Phone, Mail, Calendar, Building, Briefcase, DollarSign, MessageSquare, ExternalLink, TrendingUp } from 'lucide-react';
 
 const mockUsers = [
   { id: 1, name: 'Alice Waverly', email: 'alice@quantum.io', phone: '+1 555-0101', company: 'Quantum Tech', role: 'CEO', signedUp: '2026-04-10', status: 'Active Trial', location: 'San Francisco, CA', ltv: '$0.00' },
@@ -8,12 +8,6 @@ const mockUsers = [
   { id: 3, name: 'Sarah Jenkins', email: 's.jenkins@studio.design', phone: '+1 555-0103', company: 'Studio 45', role: 'Founder', signedUp: '2026-04-15', status: 'Lead', location: 'London, UK', ltv: '$0.00' },
   { id: 4, name: 'Marcus Tyree', email: 'mtyree@growth.co', phone: '+1 555-0104', company: 'GrowthCo', role: 'Marketing Dir.', signedUp: '2026-04-18', status: 'Active Trial', location: 'Austin, TX', ltv: '$0.00' },
   { id: 5, name: 'Emma Watson', email: 'emma@watson.dev', phone: '+1 555-0105', company: 'Self-Employed', role: 'Freelancer', signedUp: '2026-04-20', status: 'Inactive', location: 'Berlin, DE', ltv: '$450' },
-];
-
-const mockInvoices = [
-  { id: 'INV-2041', client: 'Nexus Logistics', amount: '$4,500', status: 'Paid', date: 'Apr 18, 2026' },
-  { id: 'INV-2042', client: 'Alpha Capital', amount: '$12,000', status: 'Sent', date: 'Apr 20, 2026' },
-  { id: 'INV-2043', client: 'GrowthCo', amount: '$2,100', status: 'Overdue', date: 'Apr 05, 2026' },
 ];
 
 const mockConsultations = [
@@ -54,16 +48,6 @@ export default function CRM() {
             }`}
           >
             <MessageSquare size={16} /> Consultations
-          </button>
-          <button
-            onClick={() => setActiveTab('financials')}
-            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
-              activeTab === 'financials' 
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm' 
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
-          >
-            <DollarSign size={16} /> Financials
           </button>
         </div>
       </div>
@@ -243,90 +227,6 @@ export default function CRM() {
         </div>
       )}
 
-      {activeTab === 'financials' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 overflow-hidden">
-          {/* Invoice Tracker */}
-          <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col relative overflow-hidden">
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
-              <FileText size={18} /> Invoice Tracker
-            </h3>
-            <div className="flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar">
-              {mockInvoices.map(inv => (
-                <div key={inv.id} className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex justify-between items-center group hover:border-indigo-500/30 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-zinc-900 flex items-center justify-center text-zinc-400 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm">
-                      <FileText size={16} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-zinc-900 dark:text-white">{inv.client}</h4>
-                      <p className="text-[10px] font-semibold text-zinc-500 mt-0.5">{inv.id} • {inv.date}</p>
-                    </div>
-                  </div>
-                  <div className="text-right flex flex-col items-end gap-1">
-                    <p className="text-sm font-black text-zinc-900 dark:text-white font-mono">{inv.amount}</p>
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest flex items-center gap-1 ${
-                      inv.status === 'Paid' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400' :
-                      inv.status === 'Overdue' ? 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400' :
-                      'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400'
-                    }`}>
-                      {inv.status === 'Paid' && <CheckCircle size={8}/>}
-                      {inv.status === 'Overdue' && <X size={8}/>}
-                      {inv.status === 'Sent' && <Clock size={8}/>}
-                      {inv.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="mt-6 py-3 w-full rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold text-xs hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors">
-              + Auto-Generate from Time Tracker
-            </button>
-          </div>
-
-          {/* Profitability Calculator */}
-          <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
-            
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2 relative z-10 flex items-center gap-2">
-              <TrendingUp size={18} className="text-emerald-500"/> Profitability Calculator
-            </h3>
-            <p className="text-xs text-zinc-500 mb-6 relative z-10">Real-time margin analysis based on tracked hours.</p>
-
-            <div className="flex flex-col gap-6 relative z-10 flex-1">
-              <div className="bg-zinc-900 dark:bg-zinc-100 p-6 rounded-2xl flex flex-col gap-2 shadow-xl">
-                <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Project: Nexus Backend</p>
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium mb-1">Effective Hourly Rate</p>
-                    <p className="text-3xl font-black text-white dark:text-zinc-900 tracking-tighter">$145.50</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-bold text-emerald-400 dark:text-emerald-600">+45% Margin</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col justify-center">
-                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Total Client Paid</p>
-                  <p className="text-xl font-black text-zinc-900 dark:text-white font-mono">$12,450</p>
-                </div>
-                <div className="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col justify-center">
-                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Team Hours Logged</p>
-                  <p className="text-xl font-black text-zinc-900 dark:text-white font-mono">85.5 hrs</p>
-                </div>
-              </div>
-
-              <div className="mt-auto p-4 rounded-xl border border-amber-200/50 dark:border-amber-900/30 bg-amber-50/50 dark:bg-amber-500/5 flex items-start gap-3">
-                <AlertCircle size={16} className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-xs font-medium text-amber-800 dark:text-amber-200 leading-relaxed">
-                  Warning: Design team has logged 12 hours over the estimate. Effective hourly rate is dropping by $4.50/hr.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );
