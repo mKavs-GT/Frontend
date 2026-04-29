@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Determine WebSocket URL based on environment
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        let wsUrl = isLocal ? 'ws://localhost:3000/customer' : 'wss://api.mkavs.com/customer';
+        let wsUrl = isLocal ? 'ws://127.0.0.1:3000/customer' : 'wss://api.mkavs.com/customer';
         
         // If config is available, we can use it to derive the base URL dynamically
         if (typeof MKAVS_CONFIG !== 'undefined' && MKAVS_CONFIG.API_BASE_URL) {
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Server confirmed it is routing the request to an agent
             case 'request_sent':
-                appendMessage(`Request sent to ${data.requested || 'an agent'}. Please wait...`, 'system');
+                appendMessage('Connecting to a live agent. Please wait...', 'system');
                 break;
 
             case 'staff_message':
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Step 1 — specific named agent requested and confirmed online
         if (name && window.onlineAgents.includes(name)) {
             ws.send(JSON.stringify({ type: 'request_staff', requestedStaff: name }));
-            appendMessage(`Connecting to ${name}...`, 'system');
+            appendMessage('Connecting to a live agent...', 'system');
             return;
         }
 
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const priorityTarget = priority.find(p => window.onlineAgents.includes(p));
         if (priorityTarget) {
             ws.send(JSON.stringify({ type: 'request_staff', requestedStaff: priorityTarget }));
-            appendMessage(`Connecting to ${priorityTarget}...`, 'system');
+            appendMessage('Connecting to a live agent...', 'system');
             return;
         }
 
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Uses request_any so the server picks the least-loaded available agent.
         if (window.onlineAgents.length > 0) {
             ws.send(JSON.stringify({ type: 'request_any' }));
-            appendMessage('I\'m checking for an available agent, one moment...', 'system');
+            appendMessage('Connecting to a live agent...', 'system');
             return;
         }
 

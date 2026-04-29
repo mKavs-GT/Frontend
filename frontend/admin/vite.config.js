@@ -2,6 +2,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,6 +17,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: null,
@@ -44,9 +53,41 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true
+      },
+      workbox: {
+        navigateFallbackDenylist: [/^\/neoncode/]
       }
     })
   ],
+  build: {
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // React core — tiny, always needed, cache-forever
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-is/')) {
+            return 'vendor-react';
+          }
+          // Framer Motion — large animation library
+          if (id.includes('node_modules/framer-motion/')) {
+            return 'vendor-framer';
+          }
+          // Recharts + its d3 deps
+          if (id.includes('node_modules/recharts/') || id.includes('node_modules/d3-') || id.includes('node_modules/victory-') || id.includes('node_modules/internmap/') || id.includes('node_modules/robust-predicates/')) {
+            return 'vendor-recharts';
+          }
+          // Lucide icons
+          if (id.includes('node_modules/lucide-react/')) {
+            return 'vendor-lucide';
+          }
+          // Everything else in node_modules goes into a general vendor chunk
+          if (id.includes('node_modules/')) {
+            return 'vendor-misc';
+          }
+        }
+      }
+    }
+  },
   server: {
     proxy: {
       '/api': {

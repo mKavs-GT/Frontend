@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Kanban, 
@@ -28,18 +28,20 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import ProjectManager from './components/ProjectManager';
-import TimeTracker from './components/TimeTracker';
-import Profile from './components/Profile';
-import Vault from './components/Vault';
-import Login from './components/Login';
-import TeamTracker from './components/TeamTracker';
-import CRM from './components/CRM';
-import GodMode from './components/GodMode';
-import NotificationCenter from './components/NotificationCenter';
-import TicketManager from './components/TicketManager';
+// Lazy-load all view components — each becomes its own chunk downloaded on demand
+const ProjectManager = lazy(() => import('./components/ProjectManager'));
+const TimeTracker = lazy(() => import('./components/TimeTracker'));
+const Profile = lazy(() => import('./components/Profile'));
+const Vault = lazy(() => import('./components/Vault'));
+const Login = lazy(() => import('./components/Login'));
+const TeamTracker = lazy(() => import('./components/TeamTracker'));
+const CRM = lazy(() => import('./components/CRM'));
+const GodMode = lazy(() => import('./components/GodMode'));
+const NotificationCenter = lazy(() => import('./components/NotificationCenter'));
+const TicketManager = lazy(() => import('./components/TicketManager'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
+const kaironIcon = '/kairon-icon.png';
 
 const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
@@ -458,6 +460,12 @@ export default function App() {
           <SidebarItem icon={<Clock size={22} />} active={activeView === 'time'} onClick={() => setActiveView('time')} tooltip="Time Tracker" />
           <SidebarItem icon={<TicketIcon size={22} />} active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} tooltip="Approval Tickets" />
           <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
+          <SidebarItem 
+            icon={<img src={kaironIcon} alt="Kairon Live Bot" className="w-[24px] h-[24px] object-contain drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] transition-all" />} 
+            active={activeView === 'kairon'} 
+            onClick={() => setActiveView('kairon')} 
+            tooltip="Kairon Live Bot" 
+          />
           <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
           <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
           {user.isExecutive && (
@@ -641,16 +649,28 @@ export default function App() {
               </motion.div>
             </div>
 
-            <AnimatePresence mode="wait">
-              {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
-              {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} /></motion.div>}
-              {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
-              {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
-              {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
-              {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
-              {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM /></motion.div>}
-              {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
-            </AnimatePresence>
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-64">
+                <div className="w-8 h-8 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
+              </div>
+            }>
+              <AnimatePresence mode="wait">
+                {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
+                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} /></motion.div>}
+                {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
+                {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
+                {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
+                {activeView === 'kairon' && <motion.div key="kairon" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="w-full h-[800px]"><iframe 
+                  src="/neoncode/kairon-live-bot/live_staff.html"
+                  className="w-full h-full border-0 rounded-[2rem] shadow-sm"
+                  title="Kairon Live Staff Dashboard"
+                  allow="autoplay; clipboard-write"
+                ></iframe></motion.div>}
+                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
+                {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM /></motion.div>}
+                {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
+              </AnimatePresence>
+            </Suspense>
           </div>
         </div>
       </main>
