@@ -6,6 +6,21 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+// Helper: recursively copy a directory
+function copyDirSync(src, dest) {
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath  = path.join(src,  entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -38,6 +53,19 @@ export default defineConfig({
             next();
           }
         });
+      }
+    },
+    // ── Build-time plugin: copy neoncode → dist/neoncode ──
+    // In dev mode the `serve-neoncode` middleware above handles requests;
+    // in production we need the actual files copied into the output dir.
+    {
+      name: 'copy-neoncode',
+      apply: 'build',
+      writeBundle() {
+        const src  = path.join(__dirname, '../neoncode');
+        const dest = path.join(__dirname, 'dist', 'neoncode');
+        copyDirSync(src, dest);
+        console.log('[copy-neoncode] Copied neoncode/ → dist/neoncode/');
       }
     },
     VitePWA({
@@ -75,6 +103,9 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true
+      },
+      workbox: {
+        navigateFallbackDenylist: [/^\/neoncode/]
       }
     })
   ],
