@@ -1,0 +1,38 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "initiatives": "Initiatives",
+    "gallery": "Gallery",
+    "tracker": "Project Tracker",
+    "donate": "Donate",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Planting Seeds of Change",
+    "subtitle": "Empowering communities and nurturing nature for a sustainable future.",
+    "getInvolved": "Get Involved",
+    "donateNow": "Donate Now"
+  },
+  "impact": {
+    "seedsPlanted": "Seeds Planted",
+    "livesTouched": "Lives Touched",
+    "projectsCompleted": "Projects Completed",
+    "volunteers": "Volunteers"
+  },
+  "about": {
+    "snapshotTitle": "About Vidhaigal Trust",
+    "mission": "Our mission is to plant the seeds of change, foster growth, and make a lasting community impact. We believe every small act of kindness grows into a forest of opportunities.",
+    "readMore": "Read Our Story"
+  },
+  "initiatives": {
+    "title": "Featured Initiatives",
+    "learnMore": "Learn More"
+  },
+  "footer": {
+    "description": "Planting seeds of change, growth, and community impact across the nation.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "copyright": "© 2026 Vidhaigal Trust. All rights reserved."
+  }
+}

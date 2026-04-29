@@ -6,6 +6,8 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -15,31 +17,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    {
-      name: 'serve-neoncode',
-      configureServer(server) {
-        server.middlewares.use('/neoncode', (req, res, next) => {
-          // Decode URL to handle spaces properly (like %20 in 'kairon live bot')
-          const decodedUrl = decodeURIComponent(req.url.split('?')[0]);
-          const filePath = path.join(__dirname, '../neoncode', decodedUrl);
-          
-          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-            const ext = path.extname(filePath);
-            let contentType = 'text/plain';
-            if (ext === '.html') contentType = 'text/html';
-            else if (ext === '.css') contentType = 'text/css';
-            else if (ext === '.js') contentType = 'application/javascript';
-            else if (ext === '.png') contentType = 'image/png';
-            else if (ext === '.svg') contentType = 'image/svg+xml';
-            
-            res.setHeader('Content-Type', contentType);
-            fs.createReadStream(filePath).pipe(res);
-          } else {
-            next();
-          }
-        });
-      }
-    },
+
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: null,
@@ -75,6 +53,9 @@ export default defineConfig({
       },
       devOptions: {
         enabled: true
+      },
+      workbox: {
+        navigateFallbackDenylist: [/^\/neoncode/]
       }
     })
   ],
