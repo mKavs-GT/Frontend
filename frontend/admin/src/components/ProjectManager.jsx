@@ -132,27 +132,26 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
     }
   };
 
-  const moveTask = async (projectId, sprintId, task, fromCol, toCol) => {
-    const project = projects.find(p => p._id === projectId);
-    const sprint = project.sprints.find(s => s._id === sprintId);
-    const newColumns = JSON.parse(JSON.stringify(sprint.columns));
-    
-    newColumns[fromCol] = newColumns[fromCol].filter(t => t.id !== task.id);
-    newColumns[toCol].push(task);
-
-    const total = Object.values(newColumns).reduce((acc, col) => acc + col.length, 0);
-    const live = newColumns.live.length;
-    const progress = total === 0 ? 0 : Math.round((live / total) * 100);
-
+  const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
     try {
-      await fetch(`/api/admin-projects/${projectId}/sprints/${sprintId}`, {
+      const res = await fetch(`/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ columns: newColumns, progress })
+        body: JSON.stringify({ 
+          transition: { taskId, fromCol, toCol }
+        })
       });
+      
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error || 'Failed to move task');
+        return;
+      }
+      
       onRefresh();
     } catch (err) {
       console.error('Move task failed:', err);
+      alert('Network error moving task');
     }
   };
 
@@ -260,6 +259,26 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                               {sortTasks(sprint.columns[key] || []).map(task => (
                                 <div key={task.id} className="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 group relative">
                                   <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight pr-6 mb-3">{task.content}</p>
+                                  
+                                  {/* Workflow Actions */}
+                                  <div className="mb-4">
+                                    {key === 'allTasks' && task.assignees.some(a => a.userId === user.email || a.userId === user.uid) && (
+                                      <button onClick={() => moveTask(project._id, sprint._id, task.id, 'allTasks', 'ongoing')} className="w-full py-2 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-sm active:scale-95">Accept Task</button>
+                                    )}
+                                    {key === 'ongoing' && task.assignees.some(a => a.userId === user.email || a.userId === user.uid) && (
+                                      <label className="flex items-center gap-2 cursor-pointer group/check">
+                                        <input type="checkbox" onChange={() => moveTask(project._id, sprint._id, task.id, 'ongoing', 'testing')} className="w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500" />
+                                        <span className="text-[10px] font-bold text-zinc-500 group-hover/check:text-indigo-600 uppercase tracking-widest">Mark as Done</span>
+                                      </label>
+                                    )}
+                                    {key === 'testing' && user.email === 'agent05mrm@gmail.com' && (
+                                      <button onClick={() => moveTask(project._id, sprint._id, task.id, 'testing', 'approval')} className="w-full py-2 rounded-xl bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-amber-600 transition-all shadow-sm active:scale-95">Testing Complete</button>
+                                    )}
+                                    {key === 'approval' && user.email === 'agent01mrk@gmail.com' && (
+                                      <button onClick={() => moveTask(project._id, sprint._id, task.id, 'approval', 'live')} className="w-full py-2 rounded-xl bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-sm active:scale-95">Approve & Live</button>
+                                    )}
+                                  </div>
+
                                   <div className="flex items-center justify-between mt-2">
                                     <div className="flex -space-x-2">
                                       {task.assignees.map((a, i) => (
@@ -274,11 +293,11 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                       }`}>
                                         {task.priority}
                                       </span>
-                                      {user?.isExecutive && key !== 'live' && (
+                                      {user?.isExecutive && !['approval', 'live'].includes(key) && (
                                         <button onClick={() => {
                                           const keys = Object.keys(COLUMN_TITLES);
                                           const nextKey = keys[keys.indexOf(key) + 1];
-                                          moveTask(project._id, sprint._id, task, key, nextKey);
+                                          moveTask(project._id, sprint._id, task.id, key, nextKey);
                                         }} className="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-indigo-600">
                                           <ChevronRight size={14} />
                                         </button>
