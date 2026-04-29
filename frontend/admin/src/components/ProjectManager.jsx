@@ -19,6 +19,7 @@ const COLUMN_TITLES = {
   allTasks: 'All Tasks',
   ongoing: 'Ongoing',
   testing: 'Testing',
+  approval: 'Approval',
   live: 'Live'
 };
 
@@ -231,13 +232,13 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         {Object.entries(COLUMN_TITLES).map(([key, title]) => (
                           <div key={key} className="bg-zinc-50/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/50 dark:border-zinc-800/30 flex flex-col gap-4">
                             <div className="flex items-center justify-between mb-2 px-1">
                               <h5 className="font-black text-zinc-900 dark:text-white uppercase tracking-tighter text-xs opacity-70">{title}</h5>
                               <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black bg-white dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-full shadow-sm">{sprint.columns[key].length}</span>
+                                <span className="text-[10px] font-black bg-white dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-full shadow-sm">{(sprint.columns[key] || []).length}</span>
                                 {user?.isExecutive && (
                                   <button 
                                     onClick={() => {
@@ -256,7 +257,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                             </div>
 
                             <div className="flex flex-col gap-3 min-h-[100px]">
-                              {sortTasks(sprint.columns[key]).map(task => (
+                              {sortTasks(sprint.columns[key] || []).map(task => (
                                 <div key={task.id} className="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 group relative">
                                   <p className="text-sm font-bold text-zinc-900 dark:text-white leading-tight pr-6 mb-3">{task.content}</p>
                                   <div className="flex items-center justify-between mt-2">
