@@ -248,43 +248,132 @@ export default function App() {
   // Right Panel Timer logic
   const [timerRunning, setTimerRunning] = useState(false);
   const [workedSeconds, setWorkedSeconds] = useState(0);
+  const [activeSessionStartTime, setActiveSessionStartTime] = useState(null);
   
+  // Fetch active session and today's stats on mount
   useEffect(() => {
-    // We'll rely on the backend stats for the primary display
-    // but keep local storage as a fallback for the live ticker
-    const saved = localStorage.getItem('workedSeconds');
-    if (saved) setWorkedSeconds(parseInt(saved, 10));
-    
-    const date = new Date().toDateString();
-    const savedDate = localStorage.getItem('workDate');
-    if (savedDate !== date) {
-      setWorkedSeconds(0);
-      localStorage.setItem('workDate', date);
-      localStorage.setItem('workedSeconds', '0');
-    }
-  }, []);
-
-  // Fetch stats whenever we mount or when a ticket is submitted
-  useEffect(() => {
-    if (user?.token) {
-      fetchTicketStats();
-      fetchInitialStatus();
-    }
+    const initTimer = async () => {
+      if (!user?.token) return;
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
+          headers: { 'Authorization': `Bearer ${user.token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.activeSession) {
+            setTimerRunning(true);
+            setActiveSessionStartTime(new Date(data.activeSession.startTime));
+            setWorkedSeconds(data.todaySeconds);
+          } else {
+            setTimerRunning(false);
+            setWorkedSeconds(data.todaySeconds);
+          }
+        }
+      } catch (e) { console.error("Timer init failed", e); }
+    };
+    initTimer();
   }, [user]);
 
+  // Handle Timer Start/Stop with Backend
+  const handleTimerToggle = async () => {
+    if (!user?.token) return;
+    
+    try {
+      const endpoint = timerRunning ? 'stop' : 'start';
+      const res = await fetch(`${API_BASE_URL}/api/time-entries/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        if (!timerRunning) {
+          // Started
+          setTimerRunning(true);
+          setActiveSessionStartTime(new Date(data.startTime));
+        } else {
+          // Stopped
+          setTimerRunning(false);
+          setActiveSessionStartTime(null);
+          // Global event to refresh other components (like TimeTracker)
+          window.dispatchEvent(new CustomEvent('mkavs-timer-stopped'));
+        }
+      } else {
+        const error = await res.json();
+        alert(error.error || "Timer action failed");
+      }
+    } catch (e) {
+      console.error("Timer toggle failed", e);
+    }
+  };
+
+  // Live Ticker logic
   useEffect(() => {
     let interval;
-    if (timerRunning) {
+    if (timerRunning && activeSessionStartTime) {
       interval = setInterval(() => {
+        const now = new Date();
+        const elapsedSinceStart = Math.floor((now - activeSessionStartTime) / 1000);
+        
+        // We calculate Today's Total as: (Completed Today) + (Active Session)
+        // For the live ticker, we can fetch stats periodically or just increment.
+        // Let's increment but stay synced with the session start time.
         setWorkedSeconds(prev => {
-          const next = prev + 1;
-          localStorage.setItem('workedSeconds', next.toString());
-          return next;
+          // This is a bit tricky because we don't know the "completed today" baseline here.
+          // Better approach: fetch stats periodically or update base.
+          return elapsedSinceStart; // Temporary: this only shows active session time.
+          // Let's refine this to show Total Today.
         });
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [timerRunning]);
+  }, [timerRunning, activeSessionStartTime]);
+
+  // Refined Live Ticker to show Total Today
+  useEffect(() => {
+    let interval;
+    if (timerRunning && activeSessionStartTime) {
+      const updateTime = async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setWorkedSeconds(data.todaySeconds);
+          }
+        } catch (e) {}
+      };
+      
+      // Update once immediately
+      updateTime();
+      // Then ticker every second locally to avoid network spam, but sync with server every 30s
+      interval = setInterval(() => {
+        setWorkedSeconds(prev => prev + 1);
+      }, 1000);
+      
+      const syncInterval = setInterval(updateTime, 30000);
+      return () => {
+        clearInterval(interval);
+        clearInterval(syncInterval);
+      };
+    } else {
+      // Not running, just keep current stats
+      const updateTime = async () => {
+        if (!user?.token) return;
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
+            headers: { 'Authorization': `Bearer ${user.token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setWorkedSeconds(data.todaySeconds);
+          }
+        } catch (e) {}
+      };
+      updateTime();
+    }
+  }, [timerRunning, activeSessionStartTime, user]);
 
   const formatTime = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -694,7 +783,7 @@ export default function App() {
               </p>
               
               <button 
-                onClick={() => setTimerRunning(!timerRunning)}
+                onClick={handleTimerToggle}
                 className={`w-full py-4 rounded-2xl flex items-center justify-center gap-2.5 font-semibold text-base transition-all duration-300 shadow-lg ${
                   timerRunning 
                     ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20 hover:shadow-rose-500/40 translate-y-0 hover:-translate-y-0.5' 

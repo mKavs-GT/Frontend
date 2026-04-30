@@ -45,6 +45,14 @@ export default function TimeTracker({ user, onTicketSubmit }) {
   useEffect(() => {
     fetchStats();
     fetchHistory();
+
+    const handleRefresh = () => {
+      fetchStats();
+      fetchHistory();
+    };
+
+    window.addEventListener('mkavs-timer-stopped', handleRefresh);
+    return () => window.removeEventListener('mkavs-timer-stopped', handleRefresh);
   }, []);
 
   const getWeeklyData = () => {
