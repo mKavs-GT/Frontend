@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
-const apiBase = () => ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
 
 const STATUS_COLORS = {
   Assigned: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
@@ -18,7 +18,7 @@ function Avatar({ src, name, size = 'md' }) {
   const initials = (name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const colors = ['from-indigo-500 to-purple-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
   const color = colors[(name || '').charCodeAt(0) % colors.length];
-  if (src) return <img src={src.startsWith('http') ? src : `${apiBase()}${src}`} alt={name} className={`${sz} rounded-2xl object-cover ring-2 ring-zinc-800`} />;
+  if (src) return <img src={src.startsWith('http') ? src : `${API_BASE_URL}${src}`} alt={name} className={`${sz} rounded-2xl object-cover ring-2 ring-zinc-800`} />;
   return <div className={`${sz} rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center font-bold text-white ring-2 ring-zinc-800`}>{initials}</div>;
 }
 
@@ -69,8 +69,8 @@ export default function ProjectManagement({ user }) {
     setLoading(true); setError(null);
     try {
       const [uRes, pRes] = await Promise.all([
-        fetch(`${apiBase()}/api/admin/users`, { credentials: 'include', headers: authHeader }),
-        fetch(`${apiBase()}/api/projects`, { credentials: 'include', headers: authHeader }),
+        fetch(`${API_BASE_URL}/api/admin/users`, { credentials: 'include', headers: authHeader }),
+        fetch(`${API_BASE_URL}/api/projects`, { credentials: 'include', headers: authHeader }),
       ]);
       const usersData = await uRes.json();
       const projectsData = await pRes.json();
@@ -341,7 +341,7 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
   const saveMeetings = async (newMeetings) => {
     setLoading(true);
     try {
-      const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
         method: 'PUT',
         headers: { ...authHeader, 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -570,12 +570,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
       const fd = new FormData();
       fd.append('file', deliverableFile);
       try {
-        const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}/upload`, {
+        const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/upload`, {
           method: 'POST', headers: authHeader, credentials: 'include', body: fd,
         });
         const data = await res.json();
         if (res.ok && data.attachment) {
-          finalLink = apiBase() + data.attachment.path;
+          finalLink = API_BASE_URL + data.attachment.path;
           onUpdate(client.email, c => ({
             ...c,
             adminData: { ...c.adminData, attachments: [...(c.adminData?.attachments || []), data.attachment] }
@@ -591,7 +591,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
     const newDeliverables = [{ title: deliverableForm.title, link: finalLink, uploadDate: new Date() }, ...deliverables];
     
     try {
-      const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
         method: 'PUT',
         headers: { ...authHeader, 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -615,7 +615,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
     updated.splice(index, 1);
     
     try {
-      const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
         method: 'PUT',
         headers: { ...authHeader, 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -637,7 +637,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
       const fd = new FormData();
       fd.append('file', file);
       try {
-        const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}/upload`, {
+        const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/upload`, {
           method: 'POST', headers: authHeader, credentials: 'include', body: fd,
         });
         const data = await res.json();
@@ -656,7 +656,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
   const doDelete = async (att) => {
     setDeleteId(att.path);
     try {
-      await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(client.email)}/attachment`, {
+      await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/attachment`, {
         method: 'DELETE', headers: { ...authHeader, 'Content-Type': 'application/json' },
         credentials: 'include', body: JSON.stringify({ filePath: att.path }),
       });

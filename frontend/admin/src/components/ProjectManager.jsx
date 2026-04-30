@@ -14,6 +14,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { TEAM_MEMBERS } from '../constants/users';
+import { API_BASE_URL } from '../config';
 
 const COLUMN_TITLES = {
   allTasks: 'All Tasks',
@@ -26,7 +27,6 @@ const COLUMN_TITLES = {
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
 export default function ProjectManager({ user, projects = [], onRefresh }) {
-  const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
   const [expandedProjects, setExpandedProjects] = useState(new Set());
   const [activeSprintMap, setActiveSprintMap] = useState({});
   
@@ -63,7 +63,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${host}/api/admin-projects`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   const handleCreateSprint = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${host}/api/admin-projects/${selectedProjectId}/sprints`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${selectedProjectId}/sprints`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
     const progress = total === 0 ? 0 : Math.round((live / total) * 100);
 
     try {
-      const res = await fetch(`${host}/api/admin-projects/${selectedProjectId}/sprints/${selectedSprintId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${selectedProjectId}/sprints/${selectedSprintId}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
 
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
     try {
-      const res = await fetch(`${host}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

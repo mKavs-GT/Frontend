@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Plus, AlertCircle, Check } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 // Real weekly data will be calculated from the history state
 
@@ -19,8 +20,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
   const fetchStats = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/time-entries/stats`, {
+      const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       const data = await res.json();
@@ -32,8 +32,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
   const fetchHistory = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/time-entries/history`, {
+      const res = await fetch(`${API_BASE_URL}/api/time-entries/history`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       const data = await res.json();
@@ -84,10 +83,9 @@ export default function TimeTracker({ user, onTicketSubmit }) {
 
     setIsSubmitting(true);
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
       const entryDate = new Date(selectedDate);
 
-      const res = await fetch(`${host}/api/tickets`, {
+      const res = await fetch(`${API_BASE_URL}/api/tickets`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

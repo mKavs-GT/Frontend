@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { API_BASE_URL } from '../config';
 
 const allowedUsers = [
   { uid: 'MGT-EXE-01', email: 'agent01mrk@gmail.com', name: 'Mr.K', firstName: 'Mr.K', avatar: 'https://i.pravatar.cc/150?u=krishawn', role: 'Executive', isExecutive: true },
@@ -15,9 +16,6 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname) 
-    ? 'http://localhost:3000' 
-    : 'https://mkavs-backend.onrender.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

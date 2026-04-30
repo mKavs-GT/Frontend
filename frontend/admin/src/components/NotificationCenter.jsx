@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, Clock, X } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function NotificationCenter({ user }) {
   const [notifications, setNotifications] = useState([]);
@@ -17,7 +18,7 @@ export default function NotificationCenter({ user }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch(`/api/admin-projects/notifications/${user.uid}`);
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/notifications/${user.uid}`);
       if (res.ok) {
         const data = await res.json();
         setNotifications(data);
@@ -30,7 +31,7 @@ export default function NotificationCenter({ user }) {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`/api/admin-projects/notifications/${id}/read`, { method: 'PUT' });
+      await fetch(`${API_BASE_URL}/api/admin-projects/notifications/${id}/read`, { method: 'PUT' });
       setNotifications(prev => prev.map(n => n._id === id ? { ...n, read: true } : n));
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (err) {

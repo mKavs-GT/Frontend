@@ -29,6 +29,7 @@ import {
   X,
   Folder
 } from 'lucide-react';
+import { API_BASE_URL, WS_URL } from './config';
 // Helper to handle lazy loading errors (e.g. when a new version is deployed and old chunks are gone)
 const lazyWithRetry = (componentImport) =>
   lazy(async () => {
@@ -113,9 +114,6 @@ export default function App() {
     };
   }, []);
 
-  const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname) 
-    ? 'http://localhost:3000' 
-    : 'https://mkavs-backend.onrender.com';
 
   const [activeView, setActiveView] = useState(() => localStorage.getItem('mkavs_admin_active_view') || 'project');
   
@@ -399,13 +397,8 @@ export default function App() {
     }, 5000);
 
     const connect = () => {
-      // Use ws:// for local development and wss:// for production
-      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'localhost:3000' : 'mkavs-backend.onrender.com';
-      const wsUrl = `${protocol}//${host}/staff`;
-      
       try {
-        const ws = new WebSocket(wsUrl);
+        const ws = new WebSocket(WS_URL);
         wsRef.current = ws;
 
         ws.onopen = () => {

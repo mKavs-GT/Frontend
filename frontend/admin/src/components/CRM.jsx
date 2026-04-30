@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Phone, Mail, Calendar, Building, Briefcase, DollarSign, MessageSquare, ExternalLink, TrendingUp, Loader2, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
-const apiBase = () =>
-  ['localhost', '127.0.0.1'].includes(window.location.hostname)
-    ? 'http://localhost:3000'
-    : 'https://mkavs-backend.onrender.com';
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return null;
   if (imagePath.startsWith('http')) return imagePath;
-  return `${apiBase()}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+  return `${API_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
 
 const mockUsers = [
@@ -39,7 +36,7 @@ export default function CRM({ user }) {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${apiBase()}/api/admin/users`, { 
+        const res = await fetch(`${API_BASE_URL}/api/admin/users`, { 
           credentials: 'include',
           headers: {
             'Authorization': user?.token ? `Bearer ${user.token}` : ''
@@ -62,7 +59,7 @@ export default function CRM({ user }) {
       const targetUser = dbUsers.find(u => u._id === userId);
       if (!targetUser || !targetUser.email) throw new Error("User email not found");
 
-      const res = await fetch(`${apiBase()}/api/admin/user/${encodeURIComponent(targetUser.email)}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(targetUser.email)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

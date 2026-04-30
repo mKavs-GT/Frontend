@@ -15,6 +15,7 @@ import {
   Check,
   X
 } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function TicketManager({ user, onReview }) {
   const [tickets, setTickets] = useState([]);
@@ -26,8 +27,7 @@ export default function TicketManager({ user, onReview }) {
 
   const fetchTickets = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/tickets`, {
+      const res = await fetch(`${API_BASE_URL}/api/tickets`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       const data = await res.json();
@@ -54,8 +54,7 @@ export default function TicketManager({ user, onReview }) {
 
     setIsProcessing(true);
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/tickets/${id}/review`, {
+      const res = await fetch(`${API_BASE_URL}/api/tickets/${id}/review`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
