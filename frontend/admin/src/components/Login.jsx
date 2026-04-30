@@ -12,7 +12,7 @@ const allowedUsers = [
 
 export default function Login({ onLogin }) {
   const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('trial123');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
@@ -88,8 +88,22 @@ export default function Login({ onLogin }) {
             />
           </div>
 
+          <div>
+            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Password</label>
+            <input 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-sm"
+            />
+          </div>
+
           {error && (
-            <p className="text-rose-500 text-sm font-semibold text-center">{error}</p>
+            <div className="text-center space-y-1">
+              <p className="text-rose-500 text-sm font-semibold">{error}</p>
+              <p className="text-indigo-500 dark:text-indigo-400 text-sm font-medium">Hint: The password is 123</p>
+            </div>
           )}
 
           <button 
