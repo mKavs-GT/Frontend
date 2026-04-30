@@ -265,9 +265,9 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                      <div className="flex flex-col lg:flex-row gap-6 overflow-x-auto pb-6 hide-scrollbar">
                         {Object.entries(COLUMN_TITLES).map(([key, title]) => (
-                          <div key={key} className="bg-zinc-50/50 dark:bg-zinc-900/30 rounded-[2rem] p-5 border border-zinc-200/50 dark:border-zinc-800/30 flex flex-col gap-4">
+                          <div key={key} className="flex-shrink-0 w-full lg:w-[320px] bg-zinc-50/50 dark:bg-zinc-900/30 rounded-[2.5rem] p-6 border border-zinc-200/50 dark:border-zinc-800/30 flex flex-col gap-5">
                             <div className="flex items-center justify-between mb-2 px-1">
                               <h5 className="font-black text-zinc-900 dark:text-white uppercase tracking-tighter text-xs opacity-70">{title}</h5>
                               <div className="flex items-center gap-2">
@@ -283,19 +283,21 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                     className="flex items-center gap-1 text-[10px] font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-1 rounded-lg hover:bg-indigo-100 transition-all"
                                   >
                                     <Plus size={12} />
-                                    <span>ADD TASK</span>
+                                    <span>ADD</span>
                                   </button>
                                 )}
                               </div>
                             </div>
 
-                            <div className="flex flex-col gap-3 min-h-[100px]">
+                            <div className="flex flex-col gap-4 min-h-[150px]">
                                 {sortTasks(sprint.columns[key] || []).map(task => (
-                                  <div key={task.id} className="bg-white dark:bg-zinc-900 p-5 rounded-[1.5rem] shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col min-h-[160px] transition-all hover:border-indigo-500/30 group">
+                                  <div key={task.id} className="bg-white dark:bg-zinc-900 p-5 rounded-[2rem] shadow-md border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col min-h-[180px] transition-all hover:border-indigo-500/30 group">
                                     {/* Header: Title + Priority */}
                                     <div className="flex items-start justify-between gap-3 mb-4">
-                                      <p className="text-sm font-bold text-zinc-900 dark:text-white leading-snug line-clamp-3 flex-1">{task.content}</p>
-                                      <span className={`shrink-0 text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${
+                                      <p className="text-[13px] font-bold text-zinc-900 dark:text-white leading-tight flex-1 line-clamp-2 overflow-hidden overflow-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical' }}>
+                                        {task.content}
+                                      </p>
+                                      <span className={`shrink-0 text-[8px] font-black uppercase px-2 py-0.5 rounded-md ${
                                         task.priority === 'high' ? 'bg-rose-500/10 text-rose-500' : 
                                         task.priority === 'medium' ? 'bg-amber-500/10 text-amber-500' : 
                                         'bg-indigo-500/10 text-indigo-500'
@@ -305,42 +307,41 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                     </div>
                                     
                                     {/* Body: Action Area (Stacked Vertically) */}
-                                    <div className="flex flex-col gap-2.5 mb-6">
+                                    <div className="flex flex-col gap-3 mb-6">
                                       {key === 'allTasks' && task.assignees.some(a => a.userId === user.email || a.userId === user.uid) && (
-                                        <button onClick={() => moveTask(project._id, sprint._id, task.id, 'allTasks', 'ongoing')} className="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-sm active:scale-95">Accept Task</button>
+                                        <button onClick={() => moveTask(project._id, sprint._id, task.id, 'allTasks', 'ongoing')} className="w-full py-3 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 active:scale-95">Accept Task</button>
                                       )}
                                       
                                       {key === 'ongoing' && task.assignees.some(a => a.userId === user.email || a.userId === user.uid) && (
-                                        <div className="flex items-center justify-center py-1">
+                                        <div className="flex items-center justify-center py-2 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-xl border border-indigo-100/50 dark:border-indigo-500/10">
                                           <input 
                                             type="checkbox" 
                                             onChange={() => moveTask(project._id, sprint._id, task.id, 'ongoing', 'testing')} 
                                             className="w-6 h-6 rounded-lg border-zinc-300 dark:border-zinc-700 text-indigo-600 focus:ring-indigo-500 cursor-pointer transition-all hover:scale-110" 
-                                            title="Mark as Done"
                                           />
                                         </div>
                                       )}
                                       
                                       {key === 'testing' && user.email === 'agent05mrm@gmail.com' && (
-                                        <label className="flex items-center justify-center gap-2 cursor-pointer group/check w-full py-2.5 px-3 rounded-xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200/50 dark:border-amber-500/20 hover:bg-amber-100/50 transition-all">
+                                        <label className="flex items-center justify-center gap-3 cursor-pointer group/check w-full py-3 px-3 rounded-xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200/50 dark:border-amber-500/20 hover:bg-amber-100/50 transition-all">
                                           <input type="checkbox" onChange={() => moveTask(project._id, sprint._id, task.id, 'testing', 'approval')} className="w-5 h-5 rounded-md border-amber-300 text-amber-600 focus:ring-amber-500" />
-                                          <span className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Testing Complete</span>
+                                          <span className="text-[9px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest whitespace-nowrap">Testing Complete</span>
                                         </label>
                                       )}
                                       
                                       {key === 'approval' && user.email === 'agent01mrk@gmail.com' && (
-                                        <label className="flex items-center justify-center gap-2 cursor-pointer group/check w-full py-2.5 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-200/50 dark:border-emerald-500/20 hover:bg-emerald-100/50 transition-all">
+                                        <label className="flex items-center justify-center gap-3 cursor-pointer group/check w-full py-3 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-200/50 dark:border-emerald-500/20 hover:bg-emerald-100/50 transition-all">
                                           <input type="checkbox" onChange={() => moveTask(project._id, sprint._id, task.id, 'approval', 'live')} className="w-5 h-5 rounded-md border-emerald-300 text-emerald-600 focus:ring-emerald-500" />
-                                          <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-widest">Approve & Live</span>
+                                          <span className="text-[9px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-widest whitespace-nowrap">Approve & Live</span>
                                         </label>
                                       )}
                                     </div>
 
                                     {/* Footer: Assignees + Meta */}
-                                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+                                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
                                       <div className="flex -space-x-2">
                                         {task.assignees.map((a, i) => (
-                                          <img key={i} src={a.avatar} alt={a.name} title={a.name} className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm" />
+                                          <img key={i} src={a.avatar} alt={a.name} title={a.name} className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm" />
                                         ))}
                                       </div>
                                       
@@ -350,8 +351,8 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                             const keys = Object.keys(COLUMN_TITLES);
                                             const nextKey = keys[keys.indexOf(key) + 1];
                                             moveTask(project._id, sprint._id, task.id, key, nextKey);
-                                          }} className="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-indigo-600 transition-colors">
-                                            <ChevronRight size={14} />
+                                          }} className="p-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-indigo-600 transition-colors">
+                                            <ChevronRight size={16} />
                                           </button>
                                         )}
                                       </div>
