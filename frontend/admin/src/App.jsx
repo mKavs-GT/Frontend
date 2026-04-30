@@ -160,7 +160,7 @@ export default function App() {
       setIsValidating(true);
       try {
         const res = await fetch(`${API_BASE_URL}/api/admin/verify`, {
-          headers: { 'Authorization': `Bearer ${user.token}` }
+          headers: { 'Authorization': `Bearer ${user.token.trim()}` }
         });
         
         if (!res.ok) {
@@ -362,7 +362,7 @@ export default function App() {
     try {
       const res = await fetch(`${API_BASE_URL}/api/tickets/stats`, {
         headers: {
-          'Authorization': `Bearer ${user.token}`
+          'Authorization': `Bearer ${user.token.trim()}`
         }
       });
       if (res.ok) {
