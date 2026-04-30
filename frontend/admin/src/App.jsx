@@ -26,7 +26,8 @@ import {
   Search,
   Info,
   Menu,
-  X
+  X,
+  Folder
 } from 'lucide-react';
 // Lazy-load all view components — each becomes its own chunk downloaded on demand
 const ProjectManager = lazy(() => import('./components/ProjectManager'));
@@ -39,6 +40,7 @@ const CRM = lazy(() => import('./components/CRM'));
 const GodMode = lazy(() => import('./components/GodMode'));
 const NotificationCenter = lazy(() => import('./components/NotificationCenter'));
 const TicketManager = lazy(() => import('./components/TicketManager'));
+const ProjectManagement = lazy(() => import('./components/ProjectManagement'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
 const kaironIcon = '/kairon-icon.png';
@@ -466,6 +468,12 @@ export default function App() {
             onClick={() => setActiveView('kairon')} 
             tooltip="Kairon Live Bot" 
           />
+          <SidebarItem 
+            icon={<Folder size={22} />} 
+            active={activeView === 'project_management'} 
+            onClick={() => setActiveView('project_management')} 
+            tooltip="Project Management" 
+          />
           <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
           <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
           {user.isExecutive && (
@@ -543,111 +551,7 @@ export default function App() {
         {/* Dynamic Content */}
         <div className="flex-1 overflow-y-auto p-6 lg:p-8 relative z-0">
           <div className="max-w-7xl mx-auto w-full">
-            {/* Bento Header Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              {/* Hero Block */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="md:col-span-2 p-8 rounded-[2rem] bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 text-white shadow-xl shadow-indigo-500/10 relative overflow-hidden border border-white/10 flex flex-col justify-between min-h-[200px]"
-              >
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-                <div className="relative z-10">
-                  <h2 className="text-3xl font-bold mb-2 tracking-tight">Welcome Back {user.firstName}, Let's Code! 🚀</h2>
-                  <p className="text-indigo-100 text-sm font-medium mb-6">Your dashboard is looking great today.</p>
-                </div>
-                <div className="relative z-10 mt-auto">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-bold uppercase tracking-widest text-indigo-100">Daily Goal</span>
-                    <span className="text-sm font-bold text-white">{dailyStats.completed}/{dailyStats.total} tasks completed</span>
-                  </div>
-                  <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{width:0}} 
-                      animate={{width:`${dailyStats.percent}%`}} 
-                      transition={{duration:1, delay:0.3}} 
-                      className="h-full bg-white rounded-full"
-                    ></motion.div>
-                  </div>
-                </div>
-              </motion.div>
 
-              {/* Approval Tickets Pulse */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                onClick={() => setActiveView('tickets')}
-                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-all cursor-pointer hover:shadow-md h-full"
-              >
-                <div className="flex justify-between items-start">
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Tickets</p>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${ticketStats.pending > 0 && !ticketStatsLoading ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-500 animate-pulse' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
-                    <TicketIcon size={16} />
-                  </div>
-                </div>
-                
-                <div className="mt-4">
-                  {ticketStatsLoading ? (
-                    <div className="h-10 w-16 bg-zinc-100 dark:bg-zinc-800 animate-pulse rounded-lg opacity-50"></div>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                    >
-                      <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{ticketStats.pending}</p>
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Pending Approval</p>
-                    </motion.div>
-                  )}
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
-                  {ticketStatsLoading ? (
-                    <div className="h-3 w-20 bg-zinc-100 dark:bg-zinc-800 animate-pulse rounded opacity-50"></div>
-                  ) : (
-                    <div className="flex gap-3">
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                        <span className="text-[10px] font-bold text-zinc-400">{ticketStats.approvedToday}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
-                        <span className="text-[10px] font-bold text-zinc-400">{ticketStats.rejectedToday}</span>
-                      </div>
-                    </div>
-                  )}
-                  <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest group-hover:translate-x-1 transition-transform">View All →</span>
-                </div>
-              </motion.div>
-
-              {/* Special Mentions Card */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="p-6 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors"
-              >
-                <div className="flex justify-between items-start">
-                  <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Special Mentions</p>
-                  <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  </div>
-                </div>
-                <div className="mt-4 flex-1 flex flex-col">
-                  {user?.isExecutive ? (
-                    <textarea 
-                      value={specialMention}
-                      onChange={handleSpecialMentionChange}
-                      className="w-full h-full bg-transparent resize-none text-xs font-medium text-zinc-600 dark:text-zinc-400 leading-relaxed italic focus:outline-none focus:ring-2 focus:ring-indigo-500/50 rounded-lg p-1 -ml-1 transition-all"
-                      placeholder="Type a special mention here..."
-                    />
-                  ) : (
-                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 leading-relaxed italic line-clamp-3 whitespace-pre-wrap">"{specialMention}"</p>
-                  )}
-                  <p className="text-[10px] font-bold text-zinc-400 mt-2 uppercase tracking-widest">— Message from Admin</p>
-                </div>
-              </motion.div>
-            </div>
 
             <Suspense fallback={
               <div className="flex items-center justify-center h-64">
@@ -667,8 +571,9 @@ export default function App() {
                   allow="autoplay; clipboard-write"
                 ></iframe></motion.div>}
                 {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
-                {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM /></motion.div>}
+                {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
                 {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
+                {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManagement user={user} /></motion.div>}
               </AnimatePresence>
             </Suspense>
           </div>
