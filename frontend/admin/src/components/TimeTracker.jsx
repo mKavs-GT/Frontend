@@ -6,25 +6,24 @@ import { API_BASE_URL } from '../config';
 
 // Real weekly data will be calculated from the history state
 
-export default function TimeTracker({ user, onTicketSubmit, liveWorkedSeconds }) {
+export default function TimeTracker({ user, onTicketSubmit, completedTodaySeconds, currentSessionSeconds, completedMonthSeconds }) {
   const [view, setView] = useState('weekly');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [viewDate, setViewDate] = useState(new Date()); // For calendar navigation
+  const [viewDate, setViewDate] = useState(new Date()); 
   const [showManualEntry, setShowManualEntry] = useState(false);
   
-  const [stats, setStats] = useState({ todayHours: 0, monthHours: 0 });
+  const [stats, setStats] = useState({ completedTodaySeconds: 0, completedMonthSeconds: 0 });
   const [history, setHistory] = useState({ dailyLogs: {} });
   const [manualEntry, setManualEntry] = useState({ hours: '', projectName: '', reason: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [wasSubmitted, setWasSubmitted] = useState(false);
 
-  const formatToClock = (decimalHours) => {
-    if (!decimalHours && decimalHours !== 0) return '0:00';
-    // Convert decimal hours back to total minutes for consistent clock formatting
-    const totalMinutes = Math.round(decimalHours * 60);
-    const h = Math.floor(totalMinutes / 60);
-    const m = totalMinutes % 60;
-    return `${h}:${m.toString().padStart(2, '0')}`;
+  const formatDuration = (totalSeconds) => {
+    if (!totalSeconds && totalSeconds !== 0) return '00:00:00';
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
   };
 
   const fetchStats = async () => {
@@ -217,8 +216,8 @@ export default function TimeTracker({ user, onTicketSubmit, liveWorkedSeconds })
                <CalendarIcon size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Total Today</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">
-               {liveWorkedSeconds !== undefined ? formatToClock(liveWorkedSeconds / 3600) : formatToClock(stats.todayHours)}
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10 font-mono">
+               {formatDuration(completedTodaySeconds + currentSessionSeconds)}
              </p>
           </div>
           <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
@@ -227,7 +226,9 @@ export default function TimeTracker({ user, onTicketSubmit, liveWorkedSeconds })
                <Clock size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Monthly Total</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{formatToClock(stats.monthHours)}</p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10 font-mono">
+               {formatDuration(completedMonthSeconds + currentSessionSeconds)}
+             </p>
           </div>
         </div>
 
@@ -371,14 +372,16 @@ export default function TimeTracker({ user, onTicketSubmit, liveWorkedSeconds })
               <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
                 Hours on {selectedDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}
               </p>
-              <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
+              <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter font-mono">
                 {(() => {
                   const dateStr = selectedDate.toISOString().split('T')[0];
                   const todayStr = new Date().toISOString().split('T')[0];
-                  if (dateStr === todayStr && liveWorkedSeconds !== undefined) {
-                    return formatToClock(liveWorkedSeconds / 3600);
+                  if (dateStr === todayStr) {
+                    return formatDuration(completedTodaySeconds + currentSessionSeconds);
                   }
-                  return formatToClock(history?.dailyLogs?.[dateStr] || 0);
+                  // History logs are decimal hours, convert to seconds
+                  const decimalHours = history?.dailyLogs?.[dateStr] || 0;
+                  return formatDuration(Math.round(decimalHours * 3600));
                 })()}
               </p>
             </div>

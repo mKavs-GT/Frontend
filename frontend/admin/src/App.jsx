@@ -245,58 +245,67 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Right Panel Timer logic
+  // Time Tracker State (Product Requirements: Separate session from total)
   const [timerRunning, setTimerRunning] = useState(false);
-  const [workedSeconds, setWorkedSeconds] = useState(0);
+  const [completedTodaySeconds, setCompletedTodaySeconds] = useState(0);
+  const [completedMonthSeconds, setCompletedMonthSeconds] = useState(0);
+  const [currentSessionSeconds, setCurrentSessionSeconds] = useState(0);
   const [activeSessionStartTime, setActiveSessionStartTime] = useState(null);
   
-  // Unified Timer & Stats Logic
+  // Helper: Format seconds to HH:MM:SS
+  const formatDuration = (totalSeconds) => {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
+  };
+
+  // Sync Logic
   useEffect(() => {
-    let ticker;
-    let syncer;
+    if (!user?.token) return;
 
     const fetchCurrentStats = async () => {
-      if (!user?.token) return;
       try {
         const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
           headers: { 'Authorization': `Bearer ${user.token}` }
         });
         if (res.ok) {
           const data = await res.json();
-          setWorkedSeconds(data.todaySeconds);
+          setCompletedTodaySeconds(data.completedTodaySeconds || 0);
+          setCompletedMonthSeconds(data.completedMonthSeconds || 0);
           
-          // Sync running state from server
           if (data.activeSession) {
             setTimerRunning(true);
-            setActiveSessionStartTime(new Date(data.activeSession.startTime));
+            const start = new Date(data.activeSession.startTime);
+            setActiveSessionStartTime(start);
+            setCurrentSessionSeconds(Math.floor((new Date() - start) / 1000));
           } else {
             setTimerRunning(false);
             setActiveSessionStartTime(null);
+            setCurrentSessionSeconds(0);
           }
         }
-      } catch (e) { console.error("Stats fetch failed", e); }
+      } catch (e) { console.error("Stats sync failed", e); }
     };
 
-    // Initial sync
     fetchCurrentStats();
+  }, [user]);
 
-    // If timer is running, start the local ticker and periodic sync
-    if (timerRunning) {
+  // Ticker Logic (Derive from timestamps to prevent drift)
+  useEffect(() => {
+    let ticker;
+    if (timerRunning && activeSessionStartTime) {
       ticker = setInterval(() => {
-        setWorkedSeconds(prev => prev + 1);
+        const now = new Date();
+        const elapsed = Math.floor((now - activeSessionStartTime) / 1000);
+        setCurrentSessionSeconds(elapsed);
       }, 1000);
-      
-      // Re-sync with server every 60s to ensure accuracy
-      syncer = setInterval(fetchCurrentStats, 60000);
+    } else {
+      setCurrentSessionSeconds(0);
     }
+    return () => clearInterval(ticker);
+  }, [timerRunning, activeSessionStartTime]);
 
-    return () => {
-      clearInterval(ticker);
-      clearInterval(syncer);
-    };
-  }, [user, timerRunning]); // Re-run when user changes or timer is toggled
-
-  // Handle Timer Start/Stop with Backend
   const handleTimerToggle = async () => {
     if (!user?.token) return;
     
@@ -310,29 +319,27 @@ export default function App() {
       if (res.ok) {
         const data = await res.json();
         if (!timerRunning) {
-          // Started
+          // Starting
           setTimerRunning(true);
-          setActiveSessionStartTime(new Date(data.startTime));
+          const start = new Date(data.startTime);
+          setActiveSessionStartTime(start);
+          setCurrentSessionSeconds(0);
         } else {
-          // Stopped
+          // Stopping (Pause)
+          setCompletedTodaySeconds(prev => prev + currentSessionSeconds);
+          setCompletedMonthSeconds(prev => prev + currentSessionSeconds);
+          
           setTimerRunning(false);
           setActiveSessionStartTime(null);
-          // Global event to refresh other components (like TimeTracker)
+          setCurrentSessionSeconds(0);
+          
           window.dispatchEvent(new CustomEvent('mkavs-timer-stopped'));
         }
       } else {
         const error = await res.json();
-        alert(error.error || "Timer action failed");
+        alert(error.error || "Timer failed");
       }
-    } catch (e) {
-      console.error("Timer toggle failed", e);
-    }
-  };
-
-  const formatTime = (totalSeconds) => {
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+    } catch (e) { console.error("Toggle error", e); }
   };
 
   const generateStandup = () => {
@@ -685,7 +692,7 @@ export default function App() {
             }>
               <AnimatePresence mode="wait">
                 {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
-                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} liveWorkedSeconds={workedSeconds} /></motion.div>}
+                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} completedTodaySeconds={completedTodaySeconds} currentSessionSeconds={currentSessionSeconds} completedMonthSeconds={completedMonthSeconds} /></motion.div>}
                 {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
                 {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
                 {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
@@ -730,9 +737,16 @@ export default function App() {
             <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             
             <div className="flex flex-col items-center relative z-10">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-1">Total Today</p>
-              <p className="text-[2.75rem] leading-none font-mono font-bold text-zinc-900 dark:text-white mb-8 tracking-tighter">
-                {formatTime(workedSeconds)}
+              <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Current Session</p>
+              <p className="text-4xl font-black text-zinc-900 dark:text-white mb-6 tracking-tighter font-mono">
+                {formatDuration(currentSessionSeconds)}
+              </p>
+              
+              <div className="w-full h-px bg-zinc-100 dark:bg-zinc-800/50 mb-6" />
+
+              <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Total Today</p>
+              <p className="text-xl font-bold text-zinc-500 dark:text-zinc-400 mb-8 tracking-tight font-mono">
+                {formatDuration(completedTodaySeconds + currentSessionSeconds)}
               </p>
               
               <button 
