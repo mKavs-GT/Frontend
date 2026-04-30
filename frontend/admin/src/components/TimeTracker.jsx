@@ -19,10 +19,11 @@ export default function TimeTracker({ user, onTicketSubmit, completedTodaySecond
   const [wasSubmitted, setWasSubmitted] = useState(false);
 
   const formatDuration = (totalSeconds) => {
-    if (!totalSeconds && totalSeconds !== 0) return '00:00:00';
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = Math.floor(totalSeconds % 60);
+    if (typeof totalSeconds !== 'number' || isNaN(totalSeconds)) return '00:00:00';
+    const absSeconds = Math.max(0, Math.floor(totalSeconds));
+    const h = Math.floor(absSeconds / 3600);
+    const m = Math.floor((absSeconds % 3600) / 60);
+    const s = absSeconds % 60;
     return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
   };
 

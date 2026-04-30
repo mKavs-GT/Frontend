@@ -254,9 +254,11 @@ export default function App() {
   
   // Helper: Format seconds to HH:MM:SS
   const formatDuration = (totalSeconds) => {
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
+    if (typeof totalSeconds !== 'number' || isNaN(totalSeconds)) return '00:00:00';
+    const absSeconds = Math.max(0, Math.floor(totalSeconds));
+    const h = Math.floor(absSeconds / 3600);
+    const m = Math.floor((absSeconds % 3600) / 60);
+    const s = absSeconds % 60;
     return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
   };
 
@@ -274,11 +276,16 @@ export default function App() {
           setCompletedTodaySeconds(data.completedTodaySeconds || 0);
           setCompletedMonthSeconds(data.completedMonthSeconds || 0);
           
-          if (data.activeSession) {
+          if (data.activeSession && data.activeSession.startTime) {
             setTimerRunning(true);
             const start = new Date(data.activeSession.startTime);
-            setActiveSessionStartTime(start);
-            setCurrentSessionSeconds(Math.floor((new Date() - start) / 1000));
+            if (!isNaN(start.getTime())) {
+              setActiveSessionStartTime(start);
+              setCurrentSessionSeconds(Math.floor((new Date() - start) / 1000));
+            } else {
+              setTimerRunning(false);
+              setActiveSessionStartTime(null);
+            }
           } else {
             setTimerRunning(false);
             setActiveSessionStartTime(null);
@@ -294,10 +301,10 @@ export default function App() {
   // Ticker Logic (Derive from timestamps to prevent drift)
   useEffect(() => {
     let ticker;
-    if (timerRunning && activeSessionStartTime) {
+    if (timerRunning && activeSessionStartTime && !isNaN(activeSessionStartTime.getTime())) {
       ticker = setInterval(() => {
         const now = new Date();
-        const elapsed = Math.floor((now - activeSessionStartTime) / 1000);
+        const elapsed = Math.max(0, Math.floor((now - activeSessionStartTime) / 1000));
         setCurrentSessionSeconds(elapsed);
       }, 1000);
     } else {
@@ -316,14 +323,19 @@ export default function App() {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       
+      const data = await res.json();
       if (res.ok) {
-        const data = await res.json();
         if (!timerRunning) {
           // Starting
           setTimerRunning(true);
           const start = new Date(data.startTime);
-          setActiveSessionStartTime(start);
-          setCurrentSessionSeconds(0);
+          if (!isNaN(start.getTime())) {
+            setActiveSessionStartTime(start);
+            setCurrentSessionSeconds(0);
+          } else {
+            setTimerRunning(false);
+            alert("Server returned invalid start time");
+          }
         } else {
           // Stopping (Pause)
           setCompletedTodaySeconds(prev => prev + currentSessionSeconds);
@@ -336,8 +348,13 @@ export default function App() {
           window.dispatchEvent(new CustomEvent('mkavs-timer-stopped'));
         }
       } else {
-        const error = await res.json();
-        alert(error.error || "Timer failed");
+        // Handle cases like already running or no active session
+        if (data.error && (data.error.includes("already running") || data.error.includes("No active"))) {
+          // Re-sync UI state if it got out of sync with backend
+          window.location.reload(); 
+        } else {
+          alert(data.error || "Timer failed");
+        }
       }
     } catch (e) { console.error("Toggle error", e); }
   };
