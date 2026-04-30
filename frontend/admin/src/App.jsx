@@ -68,6 +68,29 @@ export default function App() {
     localStorage.removeItem('mkavs_admin_user');
   };
 
+  // Global 401 handler to clear session immediately when token is invalid
+  useEffect(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+      if (response.status === 401) {
+        window.dispatchEvent(new CustomEvent('mkavs-unauthorized'));
+      }
+      return response;
+    };
+
+    const handleUnauthorized = () => {
+      console.warn("Unauthorized API call detected. Logging out...");
+      handleLogout();
+    };
+    
+    window.addEventListener('mkavs-unauthorized', handleUnauthorized);
+    return () => {
+      window.fetch = originalFetch;
+      window.removeEventListener('mkavs-unauthorized', handleUnauthorized);
+    };
+  }, []);
+
   const [activeView, setActiveView] = useState('project'); // 'project', 'time', 'profile', 'vault'
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('mkavs_theme');

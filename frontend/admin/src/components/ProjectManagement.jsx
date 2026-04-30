@@ -72,11 +72,18 @@ export default function ProjectManagement({ user }) {
         fetch(`${apiBase()}/api/admin/users`, { credentials: 'include', headers: authHeader }),
         fetch(`${apiBase()}/api/projects`, { credentials: 'include', headers: authHeader }),
       ]);
-      const users = await uRes.json();
-      const { projects: proj } = await pRes.json();
-      const assigned = (users || []).filter(u => ['Assigned', 'Active'].includes(u.adminData?.projectStatus));
+      const usersData = await uRes.json();
+      const projectsData = await pRes.json();
+      
+      if (!uRes.ok) throw new Error(usersData.error || 'Failed to load users');
+      if (!pRes.ok) throw new Error(projectsData.error || 'Failed to load projects');
+      
+      const users = Array.isArray(usersData) ? usersData : (usersData.users || []);
+      const proj = projectsData.projects || [];
+      
+      const assigned = users.filter(u => ['Assigned', 'Active'].includes(u.adminData?.projectStatus));
       setClients(assigned);
-      setProjects(proj || []);
+      setProjects(proj);
     } catch (e) { setError(e.message); }
     finally { setLoading(false); }
   }, []);

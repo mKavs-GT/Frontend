@@ -23,16 +23,21 @@ export default function Login({ onLogin }) {
     setIsLoading(true);
 
     try {
+      // Resolve UID to email if user entered a UID
+      const resolvedEmail = allowedUsers.find(
+        u => u.uid.toLowerCase() === identifier.toLowerCase() || u.email.toLowerCase() === identifier.toLowerCase()
+      )?.email || identifier;
+
       const res = await fetch(`${host}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: identifier, password })
+        body: JSON.stringify({ email: resolvedEmail, password })
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.error || data.message || 'Login failed');
       }
 
       // Merge backend data with frontend role mapping (if needed)
