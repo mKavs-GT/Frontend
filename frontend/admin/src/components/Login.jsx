@@ -30,7 +30,7 @@ export default function Login({ onLogin }) {
         u => u.uid.toLowerCase() === identifier.toLowerCase() || u.email.toLowerCase() === identifier.toLowerCase()
       )?.email || identifier;
 
-      const res = await fetch(`${host}/api/admin/login`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: resolvedEmail, password })
@@ -109,7 +109,7 @@ export default function Login({ onLogin }) {
           {error && (
             <div className="text-center space-y-1">
               <p className="text-rose-500 text-sm font-semibold">{error}</p>
-              <p className="text-indigo-500 dark:text-indigo-400 text-sm font-medium">Hint: The password is 123</p>
+              <p className="text-indigo-500 dark:text-indigo-400 text-sm font-medium">Hint: Password is 123 (or trial123)</p>
             </div>
           )}
 

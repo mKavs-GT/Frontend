@@ -29,18 +29,36 @@ import {
   X,
   Folder
 } from 'lucide-react';
-// Lazy-load all view components — each becomes its own chunk downloaded on demand
-const ProjectManager = lazy(() => import('./components/ProjectManager'));
-const TimeTracker = lazy(() => import('./components/TimeTracker'));
-const Profile = lazy(() => import('./components/Profile'));
-const Vault = lazy(() => import('./components/Vault'));
-const Login = lazy(() => import('./components/Login'));
-const TeamTracker = lazy(() => import('./components/TeamTracker'));
-const CRM = lazy(() => import('./components/CRM'));
-const GodMode = lazy(() => import('./components/GodMode'));
-const NotificationCenter = lazy(() => import('./components/NotificationCenter'));
-const TicketManager = lazy(() => import('./components/TicketManager'));
-const ProjectManagement = lazy(() => import('./components/ProjectManagement'));
+// Helper to handle lazy loading errors (e.g. when a new version is deployed and old chunks are gone)
+const lazyWithRetry = (componentImport) =>
+  lazy(async () => {
+    try {
+      return await componentImport();
+    } catch (error) {
+      console.error("Chunk load failed:", error);
+      // If the error is about a missing module, it usually means a new deployment happened
+      // and the browser is trying to load a chunk from a previous build.
+      // Reloading the page will fetch the latest index.html and chunk manifests.
+      if (error.message.includes("Failed to fetch dynamically imported module") || 
+          error.message.includes("loading chunk")) {
+        window.location.reload();
+      }
+      throw error;
+    }
+  });
+
+// Lazy-load all view components
+const ProjectManager = lazyWithRetry(() => import('./components/ProjectManager'));
+const TimeTracker = lazyWithRetry(() => import('./components/TimeTracker'));
+const Profile = lazyWithRetry(() => import('./components/Profile'));
+const Vault = lazyWithRetry(() => import('./components/Vault'));
+const Login = lazyWithRetry(() => import('./components/Login'));
+const TeamTracker = lazyWithRetry(() => import('./components/TeamTracker'));
+const CRM = lazyWithRetry(() => import('./components/CRM'));
+const GodMode = lazyWithRetry(() => import('./components/GodMode'));
+const NotificationCenter = lazyWithRetry(() => import('./components/NotificationCenter'));
+const TicketManager = lazyWithRetry(() => import('./components/TicketManager'));
+const ProjectManagement = lazyWithRetry(() => import('./components/ProjectManagement'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
 const kaironIcon = '/kairon-icon.png';
@@ -79,10 +97,13 @@ export default function App() {
       return response;
     };
 
-    const handleUnauthorized = (e) => {
-      // Ignore background errors if we're just starting up or if it's not a definitive 401
-      console.warn("Unauthorized API call detected. Logging out...");
-      handleLogout();
+    const handleUnauthorized = () => {
+      // Only log out if we actually have a user session to clear
+      // This prevents interrupting the login process itself
+      if (user) {
+        console.warn("Unauthorized API call detected. Logging out...");
+        handleLogout();
+      }
     };
     
     window.addEventListener('mkavs-unauthorized', handleUnauthorized);
