@@ -79,7 +79,8 @@ export default function App() {
       return response;
     };
 
-    const handleUnauthorized = () => {
+    const handleUnauthorized = (e) => {
+      // Ignore background errors if we're just starting up or if it's not a definitive 401
       console.warn("Unauthorized API call detected. Logging out...");
       handleLogout();
     };
@@ -91,7 +92,16 @@ export default function App() {
     };
   }, []);
 
-  const [activeView, setActiveView] = useState('project'); // 'project', 'time', 'profile', 'vault'
+  const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname) 
+    ? 'http://localhost:3000' 
+    : 'https://mkavs-backend.onrender.com';
+
+  const [activeView, setActiveView] = useState(() => localStorage.getItem('mkavs_admin_active_view') || 'project');
+  
+  useEffect(() => {
+    localStorage.setItem('mkavs_admin_active_view', activeView);
+  }, [activeView]);
+
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('mkavs_theme');
     return saved !== null ? JSON.parse(saved) : true;
@@ -119,13 +129,48 @@ export default function App() {
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectsLoading, setProjectsLoading] = useState(true);
+  const [isValidating, setIsValidating] = useState(false);
   const wsRef = useRef(null);
   const reconnectTimerRef = useRef(null);
 
+  // Initial Session Verification
+  useEffect(() => {
+    const verifySession = async () => {
+      if (!user?.token) return;
+      
+      setIsValidating(true);
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/admin/verify`, {
+          headers: { 'Authorization': `Bearer ${user.token}` }
+        });
+        
+        if (!res.ok) {
+          if (res.status === 401) {
+            console.warn("Session invalid on mount. Logging out.");
+            handleLogout();
+          }
+        } else {
+          const data = await res.json();
+          // Update user info from server if needed (roles, names, etc)
+          if (data.agent) {
+            setUser(prev => ({ ...prev, ...data.agent }));
+          }
+        }
+      } catch (err) {
+        console.warn("Session verification failed (Server might be down). Staying in offline mode.", err);
+      } finally {
+        setIsValidating(false);
+      }
+    };
+
+    verifySession();
+  }, []);
+
   const fetchProjects = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/admin-projects`);
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects`, {
+        headers: user?.token ? { 'Authorization': `Bearer ${user.token}` } : {}
+      });
       if (res.ok) {
         const data = await res.json();
         setProjects(data);
@@ -284,8 +329,7 @@ export default function App() {
 
   const fetchInitialStatus = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/staff-status`);
+      const res = await fetch(`${API_BASE_URL}/api/staff-status`);
       const data = await res.json();
       if (data.staff) setOnlineStaff(data.staff);
     } catch (e) {
@@ -295,8 +339,7 @@ export default function App() {
 
   const fetchTicketStats = async () => {
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      const res = await fetch(`${host}/api/tickets/stats`, {
+      const res = await fetch(`${API_BASE_URL}/api/tickets/stats`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
@@ -401,10 +444,8 @@ export default function App() {
     setStatusError(null);
 
     try {
-      const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
-      
       // Attempt HTTP update (Reliable fallback)
-      fetch(`${host}/api/staff-status`, {
+      fetch(`${API_BASE_URL}/api/staff-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: user.name, status })
