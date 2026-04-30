@@ -157,6 +157,13 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   };
 
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
+    if (!user?.token) {
+      alert('Your session has expired. Please log in again.');
+      localStorage.removeItem('mkavs_admin_user');
+      window.location.reload();
+      return;
+    }
+
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',

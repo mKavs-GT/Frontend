@@ -164,16 +164,18 @@ export default function App() {
         });
         
         if (!res.ok) {
-          if (res.status === 401) {
-            console.warn("Session invalid on mount. Logging out.");
-            handleLogout();
-          }
+          console.warn('[AUTH] Session verification failed');
+          setUser(null);
+          localStorage.removeItem('mkavs_admin_user');
         } else {
           const data = await res.json();
-          // Update user info from server if needed (roles, names, etc)
-          if (data.agent) {
-            setUser(prev => ({ ...prev, ...data.agent }));
-          }
+          // Keep current user but potentially update from server, preserving token
+          setUser(prev => {
+            if (!prev) return null;
+            const updated = { ...prev, ...data.agent };
+            localStorage.setItem('mkavs_admin_user', JSON.stringify(updated));
+            return updated;
+          });
         }
       } catch (err) {
         console.warn("Session verification failed (Server might be down). Staying in offline mode.", err);
