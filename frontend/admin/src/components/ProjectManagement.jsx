@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import palettesData from '../data/palettes.js';
+import fontsData from '../data/fonts.js';
 
 
 const STATUS_COLORS = {
@@ -799,16 +801,20 @@ function AssetsTab({ client, authHeader, onUpdate }) {
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">🎨 Favorite Palettes</p>
           </div>
           <div className="p-4 grid grid-cols-2 gap-3">
-            {palettes.map((p, i) => p ? (
-              <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
-                <div className="flex h-10">
-                  {(p.colors || []).slice(0, 5).map((c, ci) => (
-                    <div key={ci} className="flex-1" style={{ backgroundColor: c }} />
-                  ))}
+            {palettes.map((pName, i) => {
+              const p = palettesData.find(pd => pd.name === pName);
+              if (!p) return null;
+              return (
+                <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
+                  <div className="flex h-10">
+                    {(p.colors || []).slice(0, 5).map((c, ci) => (
+                      <div key={ci} className="flex-1" style={{ backgroundColor: c }} />
+                    ))}
+                  </div>
+                  <p className="text-[11px] font-semibold text-zinc-300 px-2.5 py-2 truncate">{p.name || `Palette ${i + 1}`}</p>
                 </div>
-                <p className="text-[11px] font-semibold text-zinc-300 px-2.5 py-2 truncate">{p.name || `Palette ${i + 1}`}</p>
-              </div>
-            ) : null)}
+              );
+            })}
           </div>
         </div>
       )}
@@ -819,17 +825,21 @@ function AssetsTab({ client, authHeader, onUpdate }) {
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">🔤 Favorite Fonts</p>
           </div>
           <div className="p-4 grid grid-cols-2 gap-3">
-            {fonts.map((f, i) => f ? (
-              <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 flex flex-col">
-                <div className="h-20 flex items-center justify-center bg-zinc-950/50 overflow-hidden relative group">
-                  <span className="text-4xl font-normal text-zinc-300" style={{ fontFamily: f.family || f.name || 'sans-serif' }}>Aa</span>
+            {fonts.map((fName, i) => {
+              const f = fontsData.find(fd => fd.name === fName);
+              if (!f) return null;
+              return (
+                <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 flex flex-col">
+                  <div className="h-20 flex items-center justify-center bg-zinc-950/50 overflow-hidden relative group">
+                    <span className="text-4xl font-normal text-zinc-300" style={{ fontFamily: f.family || f.name || 'sans-serif' }}>Ag</span>
+                  </div>
+                  <div className="p-3 border-t border-zinc-800 flex flex-col">
+                    <p className="text-xs font-bold text-white truncate">{f.name}</p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5 capitalize">{f.category || 'Typography'}</p>
+                  </div>
                 </div>
-                <div className="p-3 border-t border-zinc-800 flex flex-col">
-                  <p className="text-xs font-bold text-white truncate">{f.name}</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5 capitalize">{f.category || 'Typography'}</p>
-                </div>
-              </div>
-            ) : null)}
+              );
+            })}
           </div>
         </div>
       )}
@@ -862,12 +872,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-900/40 transition-colors group">
                 <span className="text-xl flex-shrink-0">{getIcon(att.name)}</span>
                 <div className="flex-1 min-w-0">
-                  <a href={`${API_BASE_URL}${att.path}`} target="_blank" rel="noreferrer"
+                  <a href={`${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}`} target="_blank" rel="noreferrer"
                     className="text-sm font-medium text-zinc-200 hover:text-indigo-400 transition-colors truncate block">{att.name || 'File'}</a>
                   <p className="text-[10px] text-zinc-600 mt-0.5">{att.size} · {att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={att.path ? `${API_BASE_URL}${att.path}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
+                  <a href={att.path ? `${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
                   <button onClick={() => doDelete(att)} disabled={deleteId === att.path} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors disabled:opacity-40">
                     {deleteId === att.path ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
                   </button>

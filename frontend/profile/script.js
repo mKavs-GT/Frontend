@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render Deliverables
                 renderDeliverables(user.adminData);
 
+                // Render Uploaded Attachments
+                renderAttachments(user.adminData);
+
                 // Render New Admin Fields
                 renderMeetings(user.adminData);
                 renderBilling(user.adminData);
@@ -190,6 +193,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const dateStr = item.uploadDate ? new Date(item.uploadDate).toLocaleDateString() : 'Recently calculated';
 
+            // Make deliverables downloadable using the /api/download route if it's a local file
+            const downloadLink = item.link.startsWith('/uploads') ? 
+                `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(item.link)}` : item.link;
+
             html += `
                 <div class="card asset-card">
                     <i class="${iconClass} asset-icon ${iconColor}"></i>
@@ -197,7 +204,38 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${item.title}</h4>
                         <p>Uploaded: ${dateStr}</p>
                     </div>
-                    <a href="${item.link}" target="_blank" class="btn-icon" title="Download or View" style="text-decoration: none; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <a href="${downloadLink}" target="_blank" class="btn-icon" title="Download" style="text-decoration: none; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-download"></i></a>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // Render Uploaded Attachments
+    function renderAttachments(adminData) {
+        const container = document.getElementById('uploadedFilesContainer');
+        if (!container) return;
+
+        if (!adminData || !adminData.attachments || adminData.attachments.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        let html = '<h3 style="font-size: 14px; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Uploaded Reference Files</h3>';
+        
+        adminData.attachments.forEach(att => {
+            const dateStr = att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : 'Recently uploaded';
+            const downloadLink = att.path ? `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#';
+
+            html += `
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; transition: all 0.2s;">
+                    <i class="fa-solid fa-paperclip" style="font-size: 1.5rem; color: var(--text-muted);"></i>
+                    <div style="flex: 1; min-width: 0;">
+                        <h4 style="margin: 0; font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${att.name || 'File'}</h4>
+                        <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">${att.size} • ${dateStr}</p>
+                    </div>
+                    <a href="${downloadLink}" target="_blank" style="padding: 10px; background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.color='#fff';"><i class="fa-solid fa-download"></i></a>
                 </div>
             `;
         });
