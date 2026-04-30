@@ -193,18 +193,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const dateStr = item.uploadDate ? new Date(item.uploadDate).toLocaleDateString() : 'Recently calculated';
 
-            // Make deliverables downloadable using the /api/download route if it's a local file
-            const downloadLink = item.link.startsWith('/uploads') ? 
-                `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(item.link)}` : item.link;
+            // Determine the final link
+            let downloadLink = item.link;
+            if (item.link && item.link.includes('/uploads/')) {
+                // It's a local upload - use the download endpoint
+                const path = item.link.includes('://') ? new URL(item.link).pathname : item.link;
+                downloadLink = `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+            } else if (item.link && !item.link.includes('://') && !item.link.startsWith('/') && !item.link.startsWith('#')) {
+                // External link without protocol - add https://
+                downloadLink = `https://${item.link}`;
+            }
 
             html += `
-                <div class="card asset-card">
-                    <i class="${iconClass} asset-icon ${iconColor}"></i>
-                    <div class="asset-info">
-                        <h4>${item.title}</h4>
-                        <p>Uploaded: ${dateStr}</p>
+                <div style="display: flex; align-items: center; gap: 15px; padding: 18px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; transition: all 0.2s; margin-bottom: 12px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.15)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.02)'; this.style.borderColor='rgba(255, 255, 255, 0.08)';">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(199, 249, 8, 0.1); border: 1px solid rgba(199, 249, 8, 0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="${iconClass}" style="color: var(--accent); font-size: 1.1rem;"></i>
                     </div>
-                    <a href="${downloadLink}" target="_blank" class="btn-icon" title="Download" style="text-decoration: none; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-download"></i></a>
+                    <div style="flex: 1; min-width: 0;">
+                        <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                            <p style="margin: 0; font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">${dateStr}</p>
+                            <span style="color: rgba(255,255,255,0.2); font-size: 10px;">•</span>
+                            <p style="margin: 0; font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.7;">${item.link}</p>
+                        </div>
+                    </div>
+                    <a href="${downloadLink}" target="_blank" title="Download" style="width: 38px; height: 38px; background: rgba(255, 255, 255, 0.05); color: var(--accent); border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.color='var(--accent)'; this.style.transform='scale(1)';">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
                 </div>
             `;
         });

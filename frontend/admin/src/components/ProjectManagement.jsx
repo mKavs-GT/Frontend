@@ -622,7 +622,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
         });
         const data = await res.json();
         if (res.ok && data.attachment) {
-          finalLink = API_BASE_URL + data.attachment.path;
+          finalLink = data.attachment.path; // Store relative path: /uploads/filename.ext
           onUpdate(client.email, c => ({
             ...c,
             adminData: { ...c.adminData, attachments: [...(c.adminData?.attachments || []), data.attachment] }
@@ -741,23 +741,28 @@ function AssetsTab({ client, authHeader, onUpdate }) {
         <AnimatePresence>
           {isAddingDeliverable && (
             <motion.form initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-b border-zinc-800/60 bg-zinc-900/30" onSubmit={handleAddDeliverable}>
-              <div className="p-4 space-y-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Deliverable Title</label>
+              className="overflow-hidden border-b border-zinc-800/60 bg-zinc-900/20" onSubmit={handleAddDeliverable}>
+              <div className="p-5 space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400">Deliverable Title</label>
                   <input required value={deliverableForm.title} onChange={e => setDeliverableForm({...deliverableForm, title: e.target.value})} placeholder="e.g., Final Logo Package"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50" />
+                    className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600" />
                 </div>
-                <div className="grid grid-cols-2 gap-3 items-end">
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Download Link / URL</label>
-                    <input disabled={!!deliverableFile} value={deliverableForm.link} onChange={e => setDeliverableForm({...deliverableForm, link: e.target.value})} placeholder="https://..."
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 disabled:opacity-50" />
+                
+                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center">
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-semibold text-zinc-400">External URL</label>
+                    <input disabled={!!deliverableFile} value={deliverableForm.link} onChange={e => setDeliverableForm({...deliverableForm, link: e.target.value})} placeholder="https://drive.google.com/..."
+                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600 disabled:opacity-40 disabled:cursor-not-allowed" />
                   </div>
-                  <div className="flex flex-col">
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5 text-center">OR UPLOAD LOCALLY</label>
-                    <label className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-center cursor-pointer transition-colors truncate">
-                      {deliverableFile ? deliverableFile.name : 'Choose File...'}
+                  
+                  <div className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-5">OR</div>
+                  
+                  <div className="space-y-1.5 flex flex-col justify-end h-full">
+                    <label className="text-[11px] font-semibold text-zinc-400">Upload File</label>
+                    <label className={`w-full flex items-center justify-center gap-2 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm cursor-pointer transition-all ${deliverableFile ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'}`}>
+                      <Upload size={14} />
+                      <span className="truncate">{deliverableFile ? deliverableFile.name : 'Select from computer'}</span>
                       <input type="file" className="hidden" onChange={e => {
                         setDeliverableFile(e.target.files[0] || null);
                         if (e.target.files[0]) setDeliverableForm({...deliverableForm, link: ''});
@@ -765,9 +770,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                     </label>
                   </div>
                 </div>
-                <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center">
-                  {savingDeliverable ? <Loader2 size={14} className="animate-spin" /> : 'Add Deliverable'}
-                </button>
+
+                <div className="pt-2">
+                  <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+                    {savingDeliverable ? <Loader2 size={16} className="animate-spin" /> : <><CheckCircle2 size={16} /> Save Deliverable</>}
+                  </button>
+                </div>
               </div>
             </motion.form>
           )}
@@ -777,20 +785,41 @@ function AssetsTab({ client, authHeader, onUpdate }) {
           <div className="flex items-center justify-center py-8 text-zinc-600 gap-2 text-xs italic"><Folder size={16} /><span>No deliverables uploaded yet</span></div>
         ) : (
           <div className="flex flex-col divide-y divide-zinc-800/40">
-            {deliverables.map((d, i) => d ? (
-              <div key={i} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-900/40 transition-colors group">
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0"><Paperclip size={13} className="text-indigo-400" /></div>
+            {deliverables.map((d, i) => {
+              if (!d) return null;
+              
+              // Determine the final link
+              let downloadLink = d.link;
+              if (d.link?.includes('/uploads/')) {
+                // It's a local upload - use the download endpoint
+                const path = d.link.includes('://') ? new URL(d.link).pathname : d.link;
+                downloadLink = `${API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+              } else if (d.link && !d.link.includes('://') && !d.link.startsWith('/') && !d.link.startsWith('#')) {
+                // External link without protocol
+                downloadLink = `https://${d.link}`;
+              }
+
+              return (
+              <div key={i} className="flex items-center gap-4 px-5 py-4 hover:bg-zinc-900/40 transition-colors group">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0"><Folder size={16} className="text-indigo-400" /></div>
                 <div className="flex-1 min-w-0">
-                  <a href={d.link} target="_blank" rel="noreferrer" className="text-sm font-medium text-zinc-200 group-hover:text-indigo-400 transition-colors truncate block">{d.title || 'Deliverable'}</a>
+                  <div className="flex flex-col">
+                    <a href={downloadLink} target="_blank" rel="noreferrer" className="text-[13px] font-semibold text-zinc-200 group-hover:text-indigo-400 transition-colors truncate">{d.title || 'Deliverable'}</a>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] text-zinc-500 font-medium tracking-wide uppercase">{d.uploadDate ? new Date(d.uploadDate).toLocaleDateString() : ''}</span>
+                      <span className="text-zinc-700 text-[10px]">•</span>
+                      <span className="text-[10px] text-zinc-500 truncate max-w-[250px]">{d.link}</span>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={d.link} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
-                  <button onClick={() => handleDeleteDeliverable(i)} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors">
-                    <Trash2 size={12} />
+                  <a href={downloadLink} target="_blank" rel="noreferrer" className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={14} /></a>
+                  <button onClick={() => handleDeleteDeliverable(i)} className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors">
+                    <Trash2 size={14} />
                   </button>
                 </div>
               </div>
-            ) : null)}
+            )})}
           </div>
         )}
       </div>
