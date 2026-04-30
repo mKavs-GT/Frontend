@@ -27,8 +27,11 @@ async function init() {
 }
 
 async function checkAuth() {
+    const apiBase = (typeof MKAVS_CONFIG !== 'undefined') ? MKAVS_CONFIG.API_BASE_URL : 'http://127.0.0.1:3000';
     try {
-        const response = await fetch('/api/user/me');
+        const response = await fetch(`${apiBase}/api/user/me`, {
+            credentials: 'include'
+        });
         if (!response.ok) {
             // Not signed in - clear all local favorites
             localStorage.removeItem('mKavs_font_likes');
@@ -180,11 +183,13 @@ window.toggleLike = function(event, id) {
     localStorage.setItem('mKavs_font_likes', JSON.stringify([...likedFonts]));
 
     // Sync with backend
-    fetch('/api/user/favorites/sync', {
+    const apiBase = (typeof MKAVS_CONFIG !== 'undefined') ? MKAVS_CONFIG.API_BASE_URL : 'http://127.0.0.1:3000';
+    fetch(`${apiBase}/api/user/favorites/sync`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
             fonts: [...likedFonts]
         })

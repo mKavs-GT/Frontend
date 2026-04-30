@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
+import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 
@@ -249,16 +249,61 @@ function OverviewTab({ client }) {
         </Section>
       )}
       {client.consultations?.length > 0 && (
-        <Section title="Consultations" icon={MessageSquare}>
-          <div className="flex flex-col gap-2">
-            {client.consultations.slice(0, 3).map((c, i) => (
-              <div key={i} className="p-3 rounded-xl bg-zinc-900 border border-zinc-800">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">{c.tier || 'General'}</span>
-                  <span className="text-[10px] text-zinc-500">{c.date ? new Date(c.date).toLocaleDateString() : ''}</span>
+        <Section title="Consultation History" icon={MessageSquare}>
+          <div className="flex flex-col gap-3">
+            {client.consultations.map((c, i) => (
+              <div key={i} className="group p-4 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 hover:border-indigo-500/30 transition-all duration-300 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest border border-indigo-500/20">
+                      {c.plan || c.tier || 'General Inquiry'}
+                    </span>
+                    {c.connectPreference && (
+                      <span className="px-2 py-1 rounded-md bg-zinc-800 text-zinc-400 text-[10px] font-bold uppercase tracking-widest border border-zinc-700/50">
+                        Prefers: {c.connectPreference}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5 bg-zinc-950/50 px-2 py-1 rounded-md border border-zinc-800/50">
+                    <Calendar size={12} className="text-indigo-400" />
+                    {(c.timestamp || c.date) ? new Date(c.timestamp || c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown Date'}
+                  </span>
                 </div>
-                <p className="text-sm text-zinc-300">{c.description || c.message || 'No details'}</p>
-                {c.preference && <p className="text-xs text-zinc-500 mt-1">Preference: {c.preference}</p>}
+
+                <div className="mb-3 p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/50 shadow-inner">
+                  <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                    {c.projectInfo || c.description || c.message || 'No project information provided.'}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 mt-1 pt-3 border-t border-zinc-800/50">
+                  {c.name && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <User size={13} className="text-zinc-500" />
+                      {c.name}
+                    </div>
+                  )}
+                  {(c.email || client.email) && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <Mail size={13} className="text-rose-400" />
+                      {c.email || client.email}
+                    </div>
+                  )}
+                  {(c.phone || client.phone) && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <Phone size={13} className="text-emerald-500/80" />
+                      {c.phone || client.phone}
+                    </div>
+                  )}
+                  {c.discord && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <MessageSquare size={13} className="text-[#5865F2]" />
+                      {c.discord}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
