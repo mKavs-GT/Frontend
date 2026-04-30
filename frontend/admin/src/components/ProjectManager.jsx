@@ -158,7 +158,6 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
 
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
     try {
-    try {
       const res = await fetch(`${host}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',
         headers: { 
