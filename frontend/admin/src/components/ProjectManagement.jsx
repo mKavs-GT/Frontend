@@ -862,12 +862,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-900/40 transition-colors group">
                 <span className="text-xl flex-shrink-0">{getIcon(att.name)}</span>
                 <div className="flex-1 min-w-0">
-                  <a href={`${apiBase()}${att.path}`} target="_blank" rel="noreferrer"
+                  <a href={`${API_BASE_URL}${att.path}`} target="_blank" rel="noreferrer"
                     className="text-sm font-medium text-zinc-200 hover:text-indigo-400 transition-colors truncate block">{att.name || 'File'}</a>
                   <p className="text-[10px] text-zinc-600 mt-0.5">{att.size} · {att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={att.path ? `${apiBase()}${att.path}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
+                  <a href={att.path ? `${API_BASE_URL}${att.path}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
                   <button onClick={() => doDelete(att)} disabled={deleteId === att.path} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors disabled:opacity-40">
                     {deleteId === att.path ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
                   </button>
