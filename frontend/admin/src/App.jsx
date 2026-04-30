@@ -360,6 +360,9 @@ export default function App() {
 
   const fetchTicketStats = async () => {
     try {
+      if (user?.token) {
+        console.log(`[DEBUG] Fetching ticket stats with token starting with: ${user.token.substring(0, 10)}...`);
+      }
       const res = await fetch(`${API_BASE_URL}/api/tickets/stats`, {
         headers: {
           'Authorization': `Bearer ${user.token.trim()}`
