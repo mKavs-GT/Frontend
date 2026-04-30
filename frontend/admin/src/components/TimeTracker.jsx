@@ -18,6 +18,15 @@ export default function TimeTracker({ user, onTicketSubmit }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [wasSubmitted, setWasSubmitted] = useState(false);
 
+  const formatToClock = (decimalHours) => {
+    if (!decimalHours && decimalHours !== 0) return '0:00';
+    // Convert decimal hours back to total minutes for consistent clock formatting
+    const totalMinutes = Math.round(decimalHours * 60);
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return `${h}:${m.toString().padStart(2, '0')}`;
+  };
+
   const fetchStats = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
@@ -208,7 +217,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                <CalendarIcon size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Total Today</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{stats.todayHours}<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{formatToClock(stats.todayHours)}</p>
           </div>
           <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10"></div>
@@ -216,7 +225,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                <Clock size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Monthly Total</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{stats.monthHours}<span className="text-2xl font-semibold text-zinc-400 ml-2 tracking-normal">hrs</span></p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{formatToClock(stats.monthHours)}</p>
           </div>
         </div>
 
@@ -361,7 +370,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                 Hours on {selectedDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}
               </p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0).toFixed(2)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
+                {formatToClock(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0)}
               </p>
             </div>
             <button 
