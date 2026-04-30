@@ -685,7 +685,7 @@ export default function App() {
             }>
               <AnimatePresence mode="wait">
                 {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
-                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} /></motion.div>}
+                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} liveWorkedSeconds={workedSeconds} /></motion.div>}
                 {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
                 {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
                 {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}

@@ -6,7 +6,7 @@ import { API_BASE_URL } from '../config';
 
 // Real weekly data will be calculated from the history state
 
-export default function TimeTracker({ user, onTicketSubmit }) {
+export default function TimeTracker({ user, onTicketSubmit, liveWorkedSeconds }) {
   const [view, setView] = useState('weekly');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [viewDate, setViewDate] = useState(new Date()); // For calendar navigation
@@ -217,7 +217,9 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                <CalendarIcon size={120} />
              </div>
              <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 relative z-10">Total Today</p>
-             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">{formatToClock(stats.todayHours)}</p>
+             <p className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter relative z-10">
+               {liveWorkedSeconds !== undefined ? formatToClock(liveWorkedSeconds / 3600) : formatToClock(stats.todayHours)}
+             </p>
           </div>
           <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10"></div>
@@ -370,7 +372,14 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                 Hours on {selectedDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}
               </p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {formatToClock(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0)}
+                {(() => {
+                  const dateStr = selectedDate.toISOString().split('T')[0];
+                  const todayStr = new Date().toISOString().split('T')[0];
+                  if (dateStr === todayStr && liveWorkedSeconds !== undefined) {
+                    return formatToClock(liveWorkedSeconds / 3600);
+                  }
+                  return formatToClock(history?.dailyLogs?.[dateStr] || 0);
+                })()}
               </p>
             </div>
             <button 
