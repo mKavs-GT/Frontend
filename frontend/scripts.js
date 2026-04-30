@@ -181,7 +181,7 @@ function cycleCarousel(direction) {
     // Prepare Physical Tracking array
     const nodes = [leftImg, centerImg, rightImg];
     const containers = [leftContainer, zoomImageContainer, rightContainer];
-    
+
     // Snapshot strictly absolute bounding coordinates globally!
     const rects = containers.map(c => c.getBoundingClientRect());
     const starts = nodes.map(n => window.getComputedStyle(n));
@@ -208,13 +208,13 @@ function cycleCarousel(direction) {
         // Elevate the element transitioning into the center space above others, safely under arrows (z-index 50)
         const tIdx = targetIndices[i];
         if (tIdx === 1) clone.style.zIndex = '42';
-        else if (i === 1) clone.style.zIndex = '41'; 
-        else clone.style.zIndex = '40'; 
+        else if (i === 1) clone.style.zIndex = '41';
+        else clone.style.zIndex = '40';
 
         slide3.appendChild(clone);
 
         const targetRect = rects[tIdx];
-        const targetStyle = starts[tIdx]; 
+        const targetStyle = starts[tIdx];
 
         // Leverage Web Animations execution API to smoothly fly layout
         const anim = clone.animate([
@@ -246,11 +246,11 @@ function cycleCarousel(direction) {
         rightImg.src = sources[2];
 
         nodes.forEach(n => n.style.removeProperty('visibility'));
-        
+
         // Wait 1 extra frame to guarantee the browser repaints the new images before deleting clones
         requestAnimationFrame(() => {
             clones.forEach(c => c.clone.remove());
-            
+
             requestAnimationFrame(() => {
                 nodes.forEach(n => n.style.removeProperty('transition'));
                 isCarouselAnimating = false;
@@ -397,7 +397,7 @@ function updateScrollState(newGlobalY, instant = false) {
                 slide.style.pointerEvents = 'none'; // Prevent interaction while actively moving 
                 if (index === 1) slide.classList.add('rounded-t-[40px]', 'md:rounded-t-[80px]');
             }
-            
+
             if (instant) {
                 // Restore transitions for subsequent usage
                 setTimeout(() => { slide.style.transition = ''; }, 50);
@@ -422,7 +422,7 @@ function updateScrollState(newGlobalY, instant = false) {
     }
     else if (newSlideIndex === 2) { // Slide 3 (Flip logic + Scroll Appended Content)
         handleSlide3Flip(localScrollY, instant);
-        
+
         const slide3 = document.getElementById('slide-3');
         const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
         if (localScrollY > slide3AnimLimit) {
@@ -442,7 +442,7 @@ function updateScrollState(newGlobalY, instant = false) {
     // 6. Save scroll position to resume if navigating back
     try {
         sessionStorage.setItem('mKavs_saved_scroll', newGlobalY);
-    } catch(e) {}
+    } catch (e) { }
 }
 
 function handleVideoPlayback(index) {
@@ -553,7 +553,7 @@ function handleSlide3Flip(localY, instant = false) {
             arrows.style.transform = `translate(-50%, ${translateY})`;
             arrows.style.pointerEvents = collapseProgress > 0.8 ? 'auto' : 'none'; // Only clickable when visible
         }
-        
+
         // Handle Phase 3 Title Header Fade In
         const slide3Header = document.getElementById('slide-3-header');
         if (slide3Header) {
@@ -599,7 +599,7 @@ function handleSlide3Flip(localY, instant = false) {
                     const thumbs = thumbnailGallery.querySelectorAll('img');
                     thumbs.forEach((img, idx) => {
                         if (instant) {
-                             img.classList.add('thumb-visible');
+                            img.classList.add('thumb-visible');
                         } else {
                             setTimeout(() => {
                                 img.classList.add('thumb-visible');
@@ -823,7 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const carouselLeft = document.getElementById('carousel-left');
     const carouselRight = document.getElementById('carousel-right');
-    
+
     if (carouselLeft) {
         carouselLeft.addEventListener('click', () => {
             cycleCarousel('left');
@@ -831,7 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (carouselRight) {
         carouselRight.addEventListener('click', () => {
-             cycleCarousel('right');
+            cycleCarousel('right');
         });
     }
 
@@ -913,13 +913,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         observer.observe(slide2Marquee);
     }
-    
+
     // --- Intersection Observer for Video (Play when seen) ---
     if (endCapVideoSlide5) {
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    endCapVideoSlide5.play().catch(() => {});
+                    endCapVideoSlide5.play().catch(() => { });
                 } else {
                     endCapVideoSlide5.pause();
                 }
@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Wheel
     window.addEventListener('wheel', (e) => {
         if (e.target.closest('#kairon-panel') || e.target.closest('#kairon-button')) return;
-        
+
         // Prevent native scroll
         e.preventDefault();
 
@@ -1112,13 +1112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Logo Pop + Toolbar Slide Down
         if (poppingLogo) {
             if (instant) {
-                 poppingLogo.style.transition = 'none';
-                 poppingLogo.classList.remove('opacity-0', 'scale-0');
-                 poppingLogo.classList.add('opacity-100', 'scale-100');
-                 setTimeout(() => poppingLogo.style.transition = '', 50);
+                poppingLogo.style.transition = 'none';
+                poppingLogo.classList.remove('opacity-0', 'scale-0');
+                poppingLogo.classList.add('opacity-100', 'scale-100');
+                setTimeout(() => poppingLogo.style.transition = '', 50);
             } else {
-                 poppingLogo.classList.remove('opacity-0', 'scale-0');
-                 poppingLogo.classList.add('opacity-100', 'scale-100');
+                poppingLogo.classList.remove('opacity-0', 'scale-0');
+                poppingLogo.classList.add('opacity-100', 'scale-100');
             }
         }
         if (mainToolbar) {
@@ -1218,7 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     targetScrollY = globalScrollY;
                 }
             }
-            
+
             if (preloader) {
                 preloader.style.display = 'none';
                 preloader.remove(); // Remove immediately to prevent any flash
@@ -1250,9 +1250,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let animationStarted = false;
 
         const startLoadingAnimation = () => {
-             if (animationStarted) return;
-             animationStarted = true;
-             requestAnimationFrame(updateLoader);
+            if (animationStarted) return;
+            animationStarted = true;
+            requestAnimationFrame(updateLoader);
         };
 
         // Ensure video is playing/ready before we start the visual progress bar
@@ -1273,11 +1273,11 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateLoader(timestamp) {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
-            
+
             // Progress is a factor of time (min 3s) and window loading state
             // If document is not loaded, we can slow down after 90%
             let progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
-            
+
             // "More if needed" logic: hold at 98% if page isn't fully ready
             if (progress > 98 && document.readyState !== 'complete') {
                 progress = 98;
@@ -1324,7 +1324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     // Mark as loaded to prevent future flicker
                     document.body.dataset.loaded = "true";
-                    
+
                     // Re-calculate in case of lateloading images
                     calculateSlideHeights();
                     const currentBoundaries = getSlideBoundaries();
@@ -1439,7 +1439,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Keep target clamped in case of dynamic resize
             const maxScroll = Math.max(0, totalVirtualHeight - window.innerHeight);
             targetScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
-            
+
             if (Math.abs(targetScrollY - globalScrollY) > 0.5) {
                 let lerpedY = globalScrollY + (targetScrollY - globalScrollY) * 0.08;
                 updateScrollState(lerpedY);
