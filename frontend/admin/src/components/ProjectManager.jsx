@@ -26,6 +26,7 @@ const COLUMN_TITLES = {
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
 export default function ProjectManager({ user, projects = [], onRefresh }) {
+  const host = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:3000' : 'https://mkavs-backend.onrender.com';
   const [expandedProjects, setExpandedProjects] = useState(new Set());
   const [activeSprintMap, setActiveSprintMap] = useState({});
   
@@ -62,36 +63,50 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin-projects', {
+      const res = await fetch(`${host}/api/admin-projects`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify(projectFormData)
       });
       if (res.ok) {
         onRefresh();
         setIsProjectModalOpen(false);
         setProjectFormData({ name: '', description: '' });
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to create project');
       }
     } catch (err) {
       console.error('Create project failed:', err);
+      alert('Network error creating project');
     }
   };
 
   const handleCreateSprint = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/admin-projects/${selectedProjectId}/sprints`, {
+      const res = await fetch(`${host}/api/admin-projects/${selectedProjectId}/sprints`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify(sprintFormData)
       });
       if (res.ok) {
         onRefresh();
         setIsSprintModalOpen(false);
         setSprintFormData({ dueDate: '' });
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to create sprint');
       }
     } catch (err) {
       console.error('Create sprint failed:', err);
+      alert('Network error creating sprint');
     }
   };
 
@@ -119,24 +134,37 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
     const progress = total === 0 ? 0 : Math.round((live / total) * 100);
 
     try {
-      await fetch(`/api/admin-projects/${selectedProjectId}/sprints/${selectedSprintId}`, {
+      const res = await fetch(`${host}/api/admin-projects/${selectedProjectId}/sprints/${selectedSprintId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify({ columns: newColumns, progress, newTask })
       });
-      onRefresh();
-      setIsTaskModalOpen(false);
-      setTaskFormData({ content: '', priority: 'medium', assignees: [] });
+      if (res.ok) {
+        onRefresh();
+        setIsTaskModalOpen(false);
+        setTaskFormData({ content: '', priority: 'medium', assignees: [] });
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to create task');
+      }
     } catch (err) {
       console.error('Create task failed:', err);
+      alert('Network error creating task');
     }
   };
 
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
     try {
-      const res = await fetch(`/api/admin-projects/${projectId}/sprints/${sprintId}`, {
+    try {
+      const res = await fetch(`${host}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
         body: JSON.stringify({ 
           transition: { taskId, fromCol, toCol }
         })
@@ -272,10 +300,16 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                       </label>
                                     )}
                                     {key === 'testing' && user.email === 'agent05mrm@gmail.com' && (
-                                      <button onClick={() => moveTask(project._id, sprint._id, task.id, 'testing', 'approval')} className="w-full py-2 rounded-xl bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-amber-600 transition-all shadow-sm active:scale-95">Testing Complete</button>
+                                      <label className="flex items-center gap-2 cursor-pointer group/check w-full py-2 px-3 rounded-xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200/50 dark:border-amber-500/20 hover:bg-amber-100 transition-all">
+                                        <input type="checkbox" onChange={() => moveTask(project._id, sprint._id, task.id, 'testing', 'approval')} className="w-4 h-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500" />
+                                        <span className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Testing Complete</span>
+                                      </label>
                                     )}
                                     {key === 'approval' && user.email === 'agent01mrk@gmail.com' && (
-                                      <button onClick={() => moveTask(project._id, sprint._id, task.id, 'approval', 'live')} className="w-full py-2 rounded-xl bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-sm active:scale-95">Approve & Live</button>
+                                      <label className="flex items-center gap-2 cursor-pointer group/check w-full py-2 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-200/50 dark:border-emerald-500/20 hover:bg-emerald-100 transition-all">
+                                        <input type="checkbox" onChange={() => moveTask(project._id, sprint._id, task.id, 'approval', 'live')} className="w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500" />
+                                        <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-widest">Approve & Live</span>
+                                      </label>
                                     )}
                                   </div>
 
