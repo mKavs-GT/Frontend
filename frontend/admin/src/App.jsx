@@ -250,9 +250,12 @@ export default function App() {
   const [workedSeconds, setWorkedSeconds] = useState(0);
   const [activeSessionStartTime, setActiveSessionStartTime] = useState(null);
   
-  // Fetch active session and today's stats on mount
+  // Unified Timer & Stats Logic
   useEffect(() => {
-    const initTimer = async () => {
+    let ticker;
+    let syncer;
+
+    const fetchCurrentStats = async () => {
       if (!user?.token) return;
       try {
         const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
@@ -260,19 +263,38 @@ export default function App() {
         });
         if (res.ok) {
           const data = await res.json();
+          setWorkedSeconds(data.todaySeconds);
+          
+          // Sync running state from server
           if (data.activeSession) {
             setTimerRunning(true);
             setActiveSessionStartTime(new Date(data.activeSession.startTime));
-            setWorkedSeconds(data.todaySeconds);
           } else {
             setTimerRunning(false);
-            setWorkedSeconds(data.todaySeconds);
+            setActiveSessionStartTime(null);
           }
         }
-      } catch (e) { console.error("Timer init failed", e); }
+      } catch (e) { console.error("Stats fetch failed", e); }
     };
-    initTimer();
-  }, [user]);
+
+    // Initial sync
+    fetchCurrentStats();
+
+    // If timer is running, start the local ticker and periodic sync
+    if (timerRunning) {
+      ticker = setInterval(() => {
+        setWorkedSeconds(prev => prev + 1);
+      }, 1000);
+      
+      // Re-sync with server every 60s to ensure accuracy
+      syncer = setInterval(fetchCurrentStats, 60000);
+    }
+
+    return () => {
+      clearInterval(ticker);
+      clearInterval(syncer);
+    };
+  }, [user, timerRunning]); // Re-run when user changes or timer is toggled
 
   // Handle Timer Start/Stop with Backend
   const handleTimerToggle = async () => {
@@ -306,74 +328,6 @@ export default function App() {
       console.error("Timer toggle failed", e);
     }
   };
-
-  // Live Ticker logic
-  useEffect(() => {
-    let interval;
-    if (timerRunning && activeSessionStartTime) {
-      interval = setInterval(() => {
-        const now = new Date();
-        const elapsedSinceStart = Math.floor((now - activeSessionStartTime) / 1000);
-        
-        // We calculate Today's Total as: (Completed Today) + (Active Session)
-        // For the live ticker, we can fetch stats periodically or just increment.
-        // Let's increment but stay synced with the session start time.
-        setWorkedSeconds(prev => {
-          // This is a bit tricky because we don't know the "completed today" baseline here.
-          // Better approach: fetch stats periodically or update base.
-          return elapsedSinceStart; // Temporary: this only shows active session time.
-          // Let's refine this to show Total Today.
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timerRunning, activeSessionStartTime]);
-
-  // Refined Live Ticker to show Total Today
-  useEffect(() => {
-    let interval;
-    if (timerRunning && activeSessionStartTime) {
-      const updateTime = async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
-            headers: { 'Authorization': `Bearer ${user.token}` }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setWorkedSeconds(data.todaySeconds);
-          }
-        } catch (e) {}
-      };
-      
-      // Update once immediately
-      updateTime();
-      // Then ticker every second locally to avoid network spam, but sync with server every 30s
-      interval = setInterval(() => {
-        setWorkedSeconds(prev => prev + 1);
-      }, 1000);
-      
-      const syncInterval = setInterval(updateTime, 30000);
-      return () => {
-        clearInterval(interval);
-        clearInterval(syncInterval);
-      };
-    } else {
-      // Not running, just keep current stats
-      const updateTime = async () => {
-        if (!user?.token) return;
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/time-entries/stats`, {
-            headers: { 'Authorization': `Bearer ${user.token}` }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setWorkedSeconds(data.todaySeconds);
-          }
-        } catch (e) {}
-      };
-      updateTime();
-    }
-  }, [timerRunning, activeSessionStartTime, user]);
 
   const formatTime = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);

@@ -51,8 +51,14 @@ export default function TimeTracker({ user, onTicketSubmit }) {
       fetchHistory();
     };
 
+    // Auto-refresh stats every 10 seconds to show progress if timer is running
+    const interval = setInterval(fetchStats, 10000);
+
     window.addEventListener('mkavs-timer-stopped', handleRefresh);
-    return () => window.removeEventListener('mkavs-timer-stopped', handleRefresh);
+    return () => {
+      window.removeEventListener('mkavs-timer-stopped', handleRefresh);
+      clearInterval(interval);
+    };
   }, []);
 
   const getWeeklyData = () => {
@@ -144,7 +150,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
         d.setDate(sunday.getDate() + i);
         const dStr = d.toISOString().split('T')[0];
         const hours = history.dailyLogs && history.dailyLogs[dStr] ? history.dailyLogs[dStr] : 0;
-        data.push({ name: days[i], hours: parseFloat(Number(hours).toFixed(1)) });
+        data.push({ name: days[i], hours: parseFloat(Number(hours).toFixed(2)) });
       }
     } else if (view === 'monthly') {
       // Group by weeks or 5-day blocks for monthly view
@@ -159,7 +165,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
           const dStr = d.toISOString().split('T')[0];
           blockHours += (history.dailyLogs && history.dailyLogs[dStr]) ? history.dailyLogs[dStr] : 0;
         }
-        data.push({ name: `${i}-${Math.min(i+4, daysInMonth)}`, hours: parseFloat(blockHours.toFixed(1)) });
+        data.push({ name: `${i}-${Math.min(i+4, daysInMonth)}`, hours: parseFloat(blockHours.toFixed(2)) });
       }
     } else {
       // Yearly - group by months
@@ -355,7 +361,7 @@ export default function TimeTracker({ user, onTicketSubmit }) {
                 Hours on {selectedDate.toLocaleDateString('default', { month: 'short', day: 'numeric' })}
               </p>
               <p className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                {(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0).toFixed(1)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
+                {(history?.dailyLogs?.[selectedDate.toISOString().split('T')[0]] || 0).toFixed(2)} <span className="text-sm font-semibold text-zinc-400 tracking-normal ml-1">hrs</span>
               </p>
             </div>
             <button 
