@@ -1450,4 +1450,39 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(smoothScrollLoop);
     }
     requestAnimationFrame(smoothScrollLoop);
+
+    // --- 3D TILT EFFECT ---
+    const tiltCards = document.querySelectorAll('.tilt-effect');
+
+    tiltCards.forEach(card => {
+        // Inject glow overlay div
+        const glowEl = document.createElement('div');
+        glowEl.classList.add('tilt-glow');
+        card.appendChild(glowEl);
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Calculate rotation: max ±15 degrees
+            const rotateX = ((y - centerY) / centerY) * -15;
+            const rotateY = ((x - centerX) / centerX) * 15;
+
+            // Apply 3D transform
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+            // Update glow position
+            const glowX = (x / rect.width) * 100;
+            const glowY = (y / rect.height) * 100;
+            glowEl.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(199, 249, 8, 0.15) 0%, transparent 60%)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
 });

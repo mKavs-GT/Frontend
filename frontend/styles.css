@@ -904,3 +904,64 @@ html {
     border-radius: 6px;
     border: 1px solid #f1f5f9;
 }
+
+/* ==================================== */
+/* 3D TILT EFFECT                       */
+/* ==================================== */
+
+.tilt-effect {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+    will-change: transform;
+}
+
+/* Depth layers for child elements - parallax depth */
+.tilt-effect > h3,
+.tilt-effect > .flex > h3,
+.tilt-effect > div > h3,
+.tilt-effect > div > div > h3 {
+    transform: translateZ(40px);
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+.tilt-effect > p,
+.tilt-effect > div > p,
+.tilt-effect > div > div > p {
+    transform: translateZ(20px);
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+.tilt-effect > div > a,
+.tilt-effect > div > div > a {
+    transform: translateZ(50px);
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+.tilt-effect > i,
+.tilt-effect > div > i,
+.tilt-effect > div > div > i {
+    transform: translateZ(30px);
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+.tilt-effect > div > img,
+.tilt-effect > .mt-auto > img,
+.tilt-effect > div > div > img {
+    transform: translateZ(15px);
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+/* Tilt glow effect overlay */
+.tilt-effect .tilt-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 5;
+}
+
+.tilt-effect:hover .tilt-glow {
+    opacity: 1;
+}
