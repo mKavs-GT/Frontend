@@ -1102,7 +1102,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
       status: 'Paid',
       link: fileLink,
       transactionId: invoiceForm.transactionId,
-      method: invoiceForm.paymentMethod
+      paymentMethod: invoiceForm.paymentMethod
     };
 
     const updatedInvoices = [newInvoice, ...invoices];
@@ -1338,10 +1338,10 @@ function BillingTab({ client, authHeader, onUpdate }) {
                               <CalendarIcon size={10} className="text-zinc-500" />
                               <span className="text-[10px] font-bold text-zinc-400">{inv.date}</span>
                             </div>
-                            {inv.method && (
+                            {inv.paymentMethod && (
                               <div className="flex items-center gap-1.5">
                                 <CreditCard size={10} className="text-zinc-500" />
-                                <span className="text-[10px] font-bold text-zinc-400">{inv.method}</span>
+                                <span className="text-[10px] font-bold text-zinc-400">{inv.paymentMethod}</span>
                               </div>
                             )}
                           </div>

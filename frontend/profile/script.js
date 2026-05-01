@@ -383,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div style="display: flex; flex-direction: column; gap: 2px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <span class="inv-date" style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;">${i.date}</span>
+                                ${i.paymentMethod ? `<span style="width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span><span style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(255,255,255,0.03); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);">${i.paymentMethod}</span>` : ''}
                                 ${i.transactionId ? `<span style="width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span><span style="font-size: 9px; color: var(--accent); opacity: 0.7; font-family: monospace;">ID: ${i.transactionId}</span>` : ''}
                             </div>
                             <span class="inv-desc" style="font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.2px;">${i.description}</span>
