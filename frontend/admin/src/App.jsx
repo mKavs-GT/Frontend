@@ -693,18 +693,6 @@ export default function App() {
         <div className="px-8 mt-2 mb-2">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Your Status</p>
-            <AnimatePresence>
-              {presenceError && (
-                <motion.span 
-                  initial={{ opacity: 0, x: 5 }} 
-                  animate={{ opacity: 1, x: 0 }} 
-                  exit={{ opacity: 0 }}
-                  className="text-[10px] font-bold text-rose-500"
-                >
-                  {presenceError}
-                </motion.span>
-              )}
-            </AnimatePresence>
           </div>
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex flex-wrap gap-1 mb-4">
              {Object.entries(STATUS_CONFIG).map(([key, config]) => {
