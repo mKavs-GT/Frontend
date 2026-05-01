@@ -314,31 +314,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const sub = adminData?.subscription;
         if (!sub || !sub.planName) {
-            subContainer.innerHTML = '<div class="card billing-card active-plan" style="text-align: center; color: var(--text-muted);"><h4>No Active Subscription</h4></div>';
+            subContainer.innerHTML = `
+                <div class="card billing-card active-plan" style="text-align: center; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px;">
+                    <i class="fa-solid fa-credit-card" style="font-size: 1.5rem; margin-bottom: 0.8rem; opacity: 0.3;"></i>
+                    <h4 style="margin: 0; font-size: 0.9rem;">NO ACTIVE SUBSCRIPTION</h4>
+                    <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.6;">Your project is currently in review.</p>
+                </div>`;
         } else {
             subContainer.innerHTML = `
-                <div class="card billing-card active-plan">
-                    <h4>Active Subscription</h4>
-                    <div class="plan-price"><h2>${sub.price}</h2></div>
-                    <p class="plan-name">${sub.planName}</p>
-                    <p class="renewal">Next billing: ${sub.nextBilling}</p>
+                <div class="card billing-card active-plan" style="padding: 24px; border: 1px solid rgba(204, 255, 0, 0.15); background: linear-gradient(165deg, rgba(204, 255, 0, 0.08) 0%, rgba(0, 0, 0, 0.2) 100%); position: relative; overflow: hidden;">
+                    <!-- Decorative background element -->
+                    <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: var(--accent); opacity: 0.03; filter: blur(40px); border-radius: 50%;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; background: rgba(204, 255, 0, 0.1); padding: 2px 8px; border-radius: 4px;">Active Plan</span>
+                                ${sub.invoiceNumber ? `<span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">#${sub.invoiceNumber}</span>` : ''}
+                            </div>
+                            <h2 style="font-size: 1.8rem; font-weight: 900; color: #fff; margin: 0; letter-spacing: -0.5px;">${sub.planName}</h2>
+                        </div>
+                        <div style="text-align: right;">
+                             <div style="font-size: 1.8rem; font-weight: 900; color: #fff; letter-spacing: -0.5px;">${sub.price}</div>
+                             <div style="font-size: 10px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; margin-top: 2px;">Monthly</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                                <i class="fa-regular fa-calendar-check" style="font-size: 0.9rem;"></i>
+                            </div>
+                            <div>
+                                <p style="font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin: 0; letter-spacing: 0.5px;">Next Payment</p>
+                                <p style="font-size: 13px; color: #fff; font-weight: 700; margin: 0;">${sub.nextBilling || 'To be scheduled'}</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent);"></span>
+                            <span style="font-size: 10px; color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Renewal Sync</span>
+                        </div>
+                    </div>
                 </div>
             `;
         }
 
         const invoices = adminData?.invoices || [];
         if (invoices.length === 0) {
-            invContainer.innerHTML = '<div class="empty-consultation">No payment history available.</div>';
+            invContainer.innerHTML = `
+                <div class="empty-consultation" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+                    <i class="fa-solid fa-file-invoice-dollar" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.2;"></i>
+                    <p>No payment history available yet.</p>
+                </div>`;
         } else {
-            invContainer.innerHTML = invoices.map(i => `
-                <div class="invoice-item">
-                    <span class="inv-date">${i.date}</span>
-                    <span class="inv-desc">${i.description}</span>
-                    <span class="inv-amount">${i.amount}</span>
-                    <span class="status status-paid" style="background: ${i.status.toLowerCase() !== 'paid' ? 'rgba(255,59,48,0.1)' : ''}; color: ${i.status.toLowerCase() !== 'paid' ? '#ff3b30' : ''}">${i.status}</span>
-                    ${i.link ? `<a href="${i.link}" target="_blank" class="btn-icon" title="View"><i class="fa-solid fa-download"></i></a>` : ''}
+            invContainer.innerHTML = invoices.map(i => {
+                let downloadLink = i.link;
+                if (i.link && i.link.includes('/uploads/')) {
+                    const path = i.link.includes('://') ? new URL(i.link).pathname : i.link;
+                    downloadLink = `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+                }
+
+                return `
+                <div class="invoice-item" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; cursor: default;" onmouseover="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='rgba(255,255,255,0.08)';" onmouseout="this.style.background='rgba(255,255,255,0.01)'; this.style.borderColor='rgba(255,255,255,0.04)';">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                            <i class="fa-solid fa-file-invoice" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="inv-date" style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;">${i.date}</span>
+                                ${i.transactionId ? `<span style="width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span><span style="font-size: 9px; color: var(--accent); opacity: 0.7; font-family: monospace;">ID: ${i.transactionId}</span>` : ''}
+                            </div>
+                            <span class="inv-desc" style="font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.2px;">${i.description}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="text-align: right;">
+                            <span class="inv-amount" style="display: block; font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 2px;">${i.amount}</span>
+                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);"></span>
+                                <span class="status status-paid" style="font-size: 9px; color: #00ff88; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Paid</span>
+                            </div>
+                        </div>
+                        ${downloadLink ? `
+                            <a href="${downloadLink}" target="_blank" rel="noreferrer" title="Download Invoice" style="width: 32px; height: 32px; border-radius: 10px; background: rgba(204, 255, 0, 0.05); border: 1px solid rgba(204, 255, 0, 0.1); color: var(--accent); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000';" onmouseout="this.style.background='rgba(204, 255, 0, 0.05)'; this.style.color='var(--accent)';">
+                                <i class="fa-solid fa-download" style="font-size: 0.85rem;"></i>
+                            </a>
+                        ` : ''}
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
     }
 

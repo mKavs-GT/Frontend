@@ -1022,26 +1022,15 @@ body {
 
 /* Billing */
 .billing-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-.billing-card { display: flex; flex-direction: column; gap: 0.5rem; }
-.active-plan { border-color: var(--accent); background: linear-gradient(145deg, rgba(204,255,0,0.05) 0%, rgba(0,0,0,0) 100%); }
-.active-plan h4 { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-.plan-price h2 { display: inline; font-size: 2.5rem; font-family: var(--font-heading); color: var(--text-main); }
-.plan-price span { color: var(--text-muted); }
-.plan-name { font-size: 1.1rem; font-weight: 600; }
-.renewal { font-size: 0.85rem; color: var(--text-muted); }
-.invoice-item {
+.billing-card { border-radius: 20px; overflow: hidden; position: relative; }
+.active-plan { border-color: rgba(204,255,0,0.2); background: linear-gradient(145deg, rgba(204,255,0,0.05) 0%, rgba(0,0,0,0.1) 100%); }
+
+.invoice-list {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem;
-  border-bottom: 1px solid var(--card-border);
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0;
 }
-.invoice-item span { font-size: 0.95rem; }
-.inv-date { width: 100px; color: var(--text-muted); }
-.inv-desc { flex: 1; }
-.inv-amount { width: 100px; text-align: right; font-weight: 600; }
-.status-paid { background: rgba(0, 255, 136, 0.1); color: #00ff88; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; text-align: center; }
+
 
 /* Messages */
 .message-item {

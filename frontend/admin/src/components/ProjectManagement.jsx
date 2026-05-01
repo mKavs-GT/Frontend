@@ -1,9 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
+import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar as CalendarIcon, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, ChevronLeft, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2, Plus, FileText, Download, ChevronDown, Smartphone, Wallet } from 'lucide-react';
+import { DeliveryScheduler } from './ui/delivery-scheduler.jsx';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Calendar } from './ui/calendar';
+import { Button } from './ui/button';
+import { format } from 'date-fns';
 import { API_BASE_URL } from '../config';
 import palettesData from '../data/palettes.js';
 import fontsData from '../data/fonts.js';
+import ReactorKnob from './ui/control-knob.jsx';
 
 
 const STATUS_COLORS = {
@@ -11,7 +17,7 @@ const STATUS_COLORS = {
   Active: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
   Progress: 'bg-violet-500/15 text-violet-400 border-violet-500/30',
   'On Hold': 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-  Completed: 'bg-zinc-500/15 text-zinc-400 border-zinc-500/30',
+  Completed: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
   Unassigned: 'bg-zinc-800/50 text-zinc-500 border-zinc-700/50',
 };
 
@@ -25,13 +31,13 @@ function Avatar({ src, name, size = 'md' }) {
 }
 
 function Badge({ status }) {
-  return <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border ${STATUS_COLORS[status] || STATUS_COLORS.Unassigned}`}>{status}</span>;
+  return <span className={`text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full border ${STATUS_COLORS[status] || STATUS_COLORS.Unassigned}`}>{status}</span>;
 }
 
 function ProgressBar({ value = 0 }) {
   return (
-    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
+    <div className="h-1 bg-zinc-800/80 rounded-full overflow-hidden mt-2">
+      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
     </div>
   );
 }
@@ -39,10 +45,10 @@ function ProgressBar({ value = 0 }) {
 function InfoRow({ icon: Icon, label, value }) {
   if (!value) return null;
   return (
-    <div className="flex items-center gap-3 py-2.5 border-b border-zinc-800/60 last:border-0">
-      <div className="w-7 h-7 rounded-lg bg-zinc-800/80 flex items-center justify-center flex-shrink-0"><Icon size={13} className="text-zinc-400" /></div>
+    <div className="flex items-center gap-4 py-3 border-b border-zinc-800/40 last:border-0">
+      <div className="w-8 h-8 rounded-xl bg-zinc-800/60 border border-zinc-700/40 flex items-center justify-center flex-shrink-0"><Icon size={13} className="text-zinc-400" /></div>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-widest">{label}</p>
+        <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">{label}</p>
         <p className="text-sm font-medium text-zinc-200 truncate mt-0.5">{value}</p>
       </div>
     </div>
@@ -83,7 +89,7 @@ export default function ProjectManagement({ user }) {
       const users = Array.isArray(usersData) ? usersData : (usersData.users || []);
       const proj = projectsData.projects || [];
       
-      const assigned = users.filter(u => ['Assigned', 'Active'].includes(u.adminData?.projectStatus));
+      const assigned = users.filter(u => ['Assigned', 'Active', 'Completed'].includes(u.adminData?.projectStatus));
       setClients(assigned);
       setProjects(proj);
     } catch (e) { setError(e.message); }
@@ -100,105 +106,286 @@ export default function ProjectManagement({ user }) {
   });
 
   return (
-    <div className="flex flex-col gap-6 h-full">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5"><Layers size={20} className="text-indigo-400" />Project Management</h2>
-          <p className="text-sm text-zinc-500 mt-1">Assigned clients and their project workspaces.</p>
+    <div className="flex flex-col gap-0 h-full rounded-2xl overflow-hidden border border-zinc-800/50 bg-zinc-950/60">
+
+      {/* Top Bar */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/50 bg-zinc-900/40 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+            <Layers size={16} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-[15px] font-bold text-white leading-none">Project Management</h2>
+            <p className="text-[11px] text-zinc-500 mt-0.5">
+              {loading ? 'Loading…' : `${clients.length} active client${clients.length !== 1 ? 's' : ''}`}
+            </p>
+          </div>
         </div>
-        <button onClick={fetchAll} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
-          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh
+        <button onClick={fetchAll}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all">
+          <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Refresh
         </button>
       </div>
 
       {loading ? (
-        <div className="flex-1 flex items-center justify-center"><Loader2 size={32} className="animate-spin text-zinc-600" /></div>
+        <div className="flex-1 flex items-center justify-center"><Loader2 size={24} className="animate-spin text-zinc-700" /></div>
       ) : error ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-zinc-500"><AlertCircle size={32} className="text-rose-500" /><p className="text-sm">{error}</p></div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-3"><AlertCircle size={24} className="text-rose-500/70" /><p className="text-sm text-zinc-500">{error}</p></div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 flex-1 min-h-0">
+        <div className="flex flex-1 min-h-0">
 
-          {/* Client List */}
-          <div className="lg:col-span-2 flex flex-col gap-3">
-            <div className="relative">
-              <Users size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
-              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients…"
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-indigo-500/50 transition-colors" />
+          {/* Left Sidebar */}
+          <div className={`group/sidebar relative flex-shrink-0 flex flex-col border-r border-zinc-800/50 bg-zinc-900/20 transition-[width] duration-300 ease-in-out overflow-hidden ${
+            selected ? 'w-[60px] hover:w-[280px]' : 'w-[280px]'
+          }`}>
+
+            {/* Search row */}
+            <div className="flex-shrink-0 border-b border-zinc-800/40" style={{ height: '52px' }}>
+              {/* Collapsed: centered icon */}
+              <div className={`absolute inset-x-0 flex items-center justify-center transition-opacity duration-200 ${selected ? 'opacity-100 group-hover/sidebar:opacity-0' : 'opacity-0 pointer-events-none'}`} style={{ height: '52px' }}>
+                <Users size={16} className="text-zinc-600" />
+              </div>
+              {/* Expanded: full search input */}
+              <div className={`px-3 py-3 transition-opacity duration-200 ${selected ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}>
+                <div className="relative">
+                  <Users size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none" />
+                  <input
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    placeholder="Search clients…"
+                    className="w-full pl-8 pr-3 py-2 rounded-lg bg-zinc-900/80 border border-zinc-800/80 text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-zinc-700 transition-all"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-2 overflow-y-auto pr-1 hide-scrollbar flex-1">
+
+            {/* Client list */}
+            <div className="flex-1 overflow-y-auto hide-scrollbar flex flex-col">
               {filtered.length === 0 && (
-                <div className="flex flex-col items-center justify-center h-40 text-zinc-600 gap-2"><Folder size={32} /><p className="text-sm font-medium">No assigned clients</p></div>
+                <div className="flex flex-col items-center justify-center h-40 text-zinc-700 gap-2">
+                  <Folder size={18} />
+                  <p className={`text-[10px] font-medium uppercase tracking-widest whitespace-nowrap transition-opacity duration-200 ${selected ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}>No clients</p>
+                </div>
               )}
-              {filtered.map(client => {
-                const proj = getProject(client);
-                const isActive = selected?._id === client._id;
-                return (
-                  <motion.button key={client._id} onClick={() => { setSelected(client); setActiveTab('Overview'); }}
-                    initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all group ${isActive ? 'bg-indigo-500/10 border-indigo-500/40' : 'bg-zinc-900/60 border-zinc-800/60 hover:border-zinc-700'}`}>
-                    <div className="flex items-center gap-3">
-                      <Avatar src={client.image} name={client.displayName || client.username} size="sm" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="font-bold text-sm text-white truncate">{client.displayName || client.username || 'Unknown'}</p>
-                          <Badge status={client.adminData?.projectStatus || 'Assigned'} />
-                        </div>
-                        <p className="text-xs text-zinc-500 truncate mt-0.5">{client.email}</p>
-                        {proj && <ProgressBar value={proj.adminData?.projectProgress || 0} />}
+              {/* Collapsed: icon strip */}
+              <div className={`flex flex-col gap-1.5 p-2 transition-opacity duration-150 ${selected ? 'opacity-100 group-hover/sidebar:opacity-0 absolute inset-x-0' : 'opacity-0 hidden'}`}>
+                {filtered.map(client => {
+                  const isActive = selected?._id === client._id;
+                  return (
+                    <button key={client._id + '-icon'}
+                      onClick={() => { setSelected(isActive ? null : client); setActiveTab('Overview'); }}
+                      title={client.displayName || client.username}
+                      className={`flex items-center justify-center w-full py-1.5 rounded-xl transition-all ${isActive ? 'bg-indigo-500/15' : 'hover:bg-zinc-800/50'}`}>
+                      <div className="relative">
+                        <Avatar src={client.image} name={client.displayName || client.username} size="sm" />
+                        {isActive && <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-gradient-to-b from-indigo-500 to-violet-500 rounded-full" />}
                       </div>
-                      <ChevronRight size={14} className={`flex-shrink-0 text-zinc-600 transition-colors ${isActive ? 'text-indigo-400' : 'group-hover:text-zinc-400'}`} />
-                    </div>
-                  </motion.button>
-                );
-              })}
+                    </button>
+                  );
+                })}
+              </div>
+              {/* Expanded: full cards */}
+              <div className={`flex flex-col gap-1.5 p-2 transition-opacity duration-200 ${selected ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}>
+                {filtered.map((client, index) => {
+                  const proj = getProject(client);
+                  const progress = proj?.adminData?.projectProgress || 0;
+                  const isActive = selected?._id === client._id;
+                  const status = client.adminData?.projectStatus || 'Assigned';
+                  return (
+                    <motion.button key={client._id}
+                      onClick={() => { setSelected(isActive ? null : client); setActiveTab('Overview'); }}
+                      initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.04 }}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      title={client.displayName || client.username}
+                      className={`w-full text-left rounded-xl border transition-all duration-200 group/row relative overflow-hidden ${
+                        isActive
+                          ? 'bg-indigo-500/10 border-indigo-500/30 shadow-md shadow-indigo-500/10'
+                          : 'bg-zinc-900/0 border-zinc-800/0 hover:bg-zinc-800/50 hover:border-zinc-700/60 hover:shadow-lg hover:shadow-black/20'
+                      }`}>
+                      {/* Active indicator bar */}
+                      {isActive && (
+                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-indigo-500 to-violet-600 rounded-r-full" />
+                      )}
+                      {/* Hover shimmer */}
+                      {!isActive && (
+                        <div className="absolute inset-0 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent" />
+                      )}
+                      <div className="flex items-center gap-3 px-3 py-3 pl-4">
+                        {/* Avatar with progress ring */}
+                        <div className="relative flex-shrink-0">
+                          <svg className="absolute -inset-1 rotate-[-90deg]" width="44" height="44" viewBox="0 0 44 44">
+                            <circle cx="22" cy="22" r="19" fill="none" stroke="currentColor" strokeWidth="2"
+                              className={isActive ? 'text-indigo-500/20' : 'text-zinc-800/60'} />
+                            <motion.circle cx="22" cy="22" r="19" fill="none"
+                              stroke="url(#pg)"
+                              strokeWidth="2" strokeLinecap="round"
+                              strokeDasharray={119}
+                              initial={{ strokeDashoffset: 119 }}
+                              animate={{ strokeDashoffset: 119 - (progress / 100) * 119 }}
+                              transition={{ duration: 0.8, ease: 'easeOut' }}
+                            />
+                            <defs>
+                              <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#6366f1" />
+                                <stop offset="100%" stopColor="#a855f7" />
+                              </linearGradient>
+                            </defs>
+                          </svg>
+                          <Avatar src={client.image} name={client.displayName || client.username} size="sm" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1.5 mb-0.5">
+                            <p className={`font-semibold text-[13px] truncate transition-colors ${isActive ? 'text-white' : 'text-zinc-300 group-hover/row:text-white'}`}>
+                              {client.displayName || client.username || 'Unknown'}
+                            </p>
+                            <Badge status={status} />
+                          </div>
+                          <p className={`text-[11px] truncate transition-colors ${isActive ? 'text-zinc-500' : 'text-zinc-600 group-hover/row:text-zinc-500'}`}>{client.email}</p>
+                          {proj && (
+                            <div className="flex items-center gap-2 mt-1.5">
+                              <div className="flex-1 h-[3px] bg-zinc-800 rounded-full overflow-hidden">
+                                <motion.div
+                                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${progress}%` }}
+                                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-zinc-600 flex-shrink-0">{progress}%</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex-shrink-0 border-t border-zinc-800/40 relative" style={{ height: '40px' }}>
+              {/* Collapsed: centered dot */}
+              <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 ${selected ? 'opacity-100 group-hover/sidebar:opacity-0' : 'opacity-0'}`}>
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              </div>
+              {/* Expanded: stat */}
+              <div className={`absolute inset-0 flex items-center px-4 gap-2 transition-opacity duration-200 ${selected ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}>
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+                <p className="text-[11px] text-zinc-600 whitespace-nowrap">
+                  {clients.filter(c => c.adminData?.projectStatus === 'Active').length} active projects
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Detail Panel */}
-          <div className="lg:col-span-3 bg-zinc-900/60 backdrop-blur-xl rounded-[2rem] border border-zinc-800/60 flex flex-col overflow-hidden">
+          {/* Right Detail Panel */}
+          <div className="flex-1 flex flex-col overflow-hidden bg-zinc-950/40">
             <AnimatePresence mode="wait">
               {!selected ? (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="flex-1 flex flex-col items-center justify-center text-zinc-600 gap-3">
-                  <Users size={48} /><p className="text-sm font-bold uppercase tracking-widest">Select a client</p>
+                  className="flex-1 flex flex-col items-center justify-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-center">
+                    <Users size={22} className="text-zinc-700" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[13px] font-semibold text-zinc-500">Select a client</p>
+                    <p className="text-[11px] text-zinc-700 mt-1">Choose a client from the sidebar to open their workspace</p>
+                  </div>
                 </motion.div>
               ) : (
-                <motion.div key={selected._id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} className="flex flex-col h-full">
-                  {/* Header */}
-                  <div className="px-7 pt-6 pb-5 border-b border-zinc-800/60">
-                    <div className="flex items-start gap-4">
-                      <Avatar src={selected.image} name={selected.displayName || selected.username} size="lg" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-3">
-                          <div>
-                            <h3 className="text-lg font-bold text-white">{selected.displayName || selected.username}</h3>
-                            <p className="text-xs text-zinc-500 mt-0.5">{selected.jobTitle}{selected.company ? ` · ${selected.company}` : ''}</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge status={selected.adminData?.projectStatus || 'Assigned'} />
-                            <button onClick={() => setSelected(null)} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition-colors"><X size={14} /></button>
+                <motion.div key={selected._id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col h-full">
+                  {/* Client header */}
+                  <div className="flex-shrink-0 bg-zinc-900/30 border-b border-zinc-800/50">
+                    {/* Dynamic progress strip */}
+                    {(() => {
+                      const proj = getProject(selected);
+                      const progress = proj?.adminData?.projectProgress || 0;
+                      const color = progress >= 80 ? 'from-emerald-500 to-teal-400'
+                        : progress >= 50 ? 'from-indigo-500 via-violet-500 to-purple-500'
+                        : progress >= 20 ? 'from-amber-500 to-orange-400'
+                        : 'from-zinc-600 to-zinc-500';
+                      return (
+                        <div className="relative h-[3px] w-full bg-zinc-800/80">
+                          <motion.div
+                            className={`absolute left-0 top-0 h-full rounded-r-full bg-gradient-to-r ${color}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.max(progress, 2)}%` }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                          />
+                          {/* Glow effect */}
+                          <motion.div
+                            className={`absolute top-0 h-full w-12 blur-sm bg-gradient-to-r ${color} opacity-60`}
+                            initial={{ left: 0 }}
+                            animate={{ left: `calc(${Math.max(progress, 2)}% - 48px)` }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                          />
+                          {/* Progress label */}
+                          {progress > 0 && (
+                            <motion.div
+                              className="absolute right-3 -top-5 text-[10px] font-bold text-zinc-500"
+                              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                              {progress}% complete
+                            </motion.div>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    <div className="px-6 pt-4 pb-0">
+                      {/* Top row: avatar + info + actions */}
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="relative flex-shrink-0">
+                          <Avatar src={selected.image} name={selected.displayName || selected.username} size="lg" />
+                          <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-zinc-900 flex-shrink-0" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <h3 className="text-[16px] font-bold text-white leading-tight truncate">{selected.displayName || selected.username}</h3>
+                              <p className="text-[12px] text-zinc-500 mt-0.5 truncate">
+                                {[selected.jobTitle, selected.company].filter(Boolean).join('  ·  ') || 'No job title'}
+                              </p>
+                              <p className="text-[11px] text-zinc-600 mt-0.5 truncate">{selected.email}</p>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
+                              <Badge status={selected.adminData?.projectStatus || 'Assigned'} />
+                              <button onClick={() => setSelected(null)}
+                                className="w-7 h-7 rounded-lg bg-zinc-800/60 border border-zinc-700/50 text-zinc-500 hover:text-white hover:bg-zinc-700 transition-all flex items-center justify-center">
+                                <X size={12} />
+                              </button>
+                            </div>
                           </div>
                         </div>
-                        {/* Tab nav */}
-                        <div className="flex gap-1 mt-4 bg-zinc-950/50 rounded-xl p-1">
-                          {TABS.map(t => (
-                            <button key={t} onClick={() => setActiveTab(t)}
-                              className={`flex-1 px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === t ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' : 'text-zinc-500 hover:text-zinc-300'}`}>
-                              {t}
-                            </button>
-                          ))}
-                        </div>
+                      </div>
+
+                      {/* Tabs — underline style */}
+                      <div className="flex gap-0 border-b border-zinc-800/0">
+                        {TABS.map(t => (
+                          <button key={t} onClick={() => setActiveTab(t)}
+                            className={`relative px-4 py-2.5 text-[12px] font-semibold transition-all ${
+                              activeTab === t ? 'text-white' : 'text-zinc-600 hover:text-zinc-400'
+                            }`}>
+                            {t}
+                            {activeTab === t && (
+                              <motion.div layoutId="tab-underline"
+                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
+                              />
+                            )}
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>
 
                   {/* Tab Content */}
-                  <div className="flex-1 overflow-y-auto px-7 py-5 hide-scrollbar">
+                  <div className="flex-1 overflow-y-auto px-6 py-5 hide-scrollbar">
                     <AnimatePresence mode="wait">
-                      {activeTab === 'Overview' && <OverviewTab key="o" client={selected} />}
-                      {activeTab === 'Project' && <ProjectTab key="p" client={selected} project={getProject(selected)} />}
+                      {activeTab === 'Overview' && <OverviewTab key="o" client={selected} project={getProject(selected)} authHeader={authHeader} onUpdate={updateClientLocally} />}
+                      {activeTab === 'Project' && <ProjectTab key="p" client={selected} project={getProject(selected)} authHeader={authHeader} onUpdate={updateClientLocally} />}
                       {activeTab === 'Schedule' && <ScheduleTab key="s" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
-                      {activeTab === 'Billing' && <BillingTab key="b" client={selected} />}
+                      {activeTab === 'Billing' && <BillingTab key="b" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
                       {activeTab === 'Messages' && <MessagesTab key="m" client={selected} />}
                       {activeTab === 'Assets' && <AssetsTab key="a" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
                     </AnimatePresence>
@@ -207,6 +394,7 @@ export default function ProjectManagement({ user }) {
               )}
             </AnimatePresence>
           </div>
+
         </div>
       )}
     </div>
@@ -214,20 +402,127 @@ export default function ProjectManagement({ user }) {
 }
 
 function TabPanel({ children }) {
-  return <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex flex-col gap-4">{children}</motion.div>;
+  return <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.2 }} className="flex flex-col gap-5">{children}</motion.div>;
 }
 
 function Section({ title, icon: Icon, children }) {
   return (
-    <div className="bg-zinc-950/50 rounded-2xl p-5 border border-zinc-800/50">
-      {title && <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4 flex items-center gap-1.5"><Icon size={11} />{title}</p>}
+    <div className="bg-zinc-900/40 rounded-2xl p-5 border border-zinc-800/40 backdrop-blur-sm">
+      {title && (
+        <div className="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-800/50">
+          <div className="w-6 h-6 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center"><Icon size={11} className="text-indigo-400" /></div>
+          <p className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{title}</p>
+        </div>
+      )}
       {children}
     </div>
   );
 }
 
-function OverviewTab({ client }) {
-  const ad = client.adminData || {};
+function TimelineDisplay({ startDate, endDate, client, authHeader, onUpdate, editable = false }) {
+  const [date, setDate] = useState({
+    from: startDate ? new Date(startDate) : undefined,
+    to: endDate ? new Date(endDate) : undefined
+  });
+  const [open, setOpen] = useState(false);
+  const [updating, setUpdating] = useState(false);
+
+  // Sync state if props change externally
+  useEffect(() => {
+    setDate({
+      from: startDate ? new Date(startDate) : undefined,
+      to: endDate ? new Date(endDate) : undefined
+    });
+  }, [startDate, endDate]);
+
+  const handleSave = async () => {
+    if (!client || !authHeader || !onUpdate) return;
+    setUpdating(true);
+    
+    const formattedStart = date?.from ? format(date.from, "MMM d, yyyy") : "";
+    const formattedEnd = date?.to ? format(date.to, "MMM d, yyyy") : "";
+
+    // Only send the date fields — do NOT spread full adminData
+    // to avoid overwriting other fields like projectProgress with stale values
+    const patch = {
+      projectStartDate: formattedStart,
+      projectEndDate: formattedEnd
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: patch })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, ...patch } }));
+        setOpen(false);
+      }
+    } catch (err) {
+      console.error('Failed to update timeline dates:', err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const Content = (
+    <div className={`flex items-center gap-3 w-full ${editable ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}>
+      <div className="flex-1 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/60 flex items-center gap-3 relative overflow-hidden group">
+        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+          <CalendarIcon size={14} className="text-emerald-400" />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-0.5">Start Date</span>
+          <span className="text-xs font-medium text-zinc-200 truncate">{startDate || "Not specified"}</span>
+        </div>
+      </div>
+      <div className="w-4 h-[1px] bg-zinc-800 flex-shrink-0" />
+      <div className="flex-1 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/60 flex items-center gap-3 relative overflow-hidden group">
+        <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center flex-shrink-0">
+          <CalendarIcon size={14} className="text-rose-400" />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-0.5">End Date</span>
+          <span className="text-xs font-medium text-zinc-200 truncate">{endDate || "Not specified"}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!editable) {
+    return Content;
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        {Content}
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0 border-zinc-800 bg-zinc-950" align="start">
+        <div className="p-3">
+          <Calendar
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
+          <div className="flex justify-end gap-2 mt-4 pt-4 border-t border-zinc-800/50">
+            <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="default" size="sm" onClick={handleSave} disabled={updating} className="min-w-[100px]">
+              {updating ? <Loader2 size={14} className="animate-spin mx-auto" /> : "Save Timeline"}
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function OverviewTab({ client, project, authHeader, onUpdate }) {
+  const ad = { ...(project?.adminData || {}), ...(client?.adminData || {}) };
   return (
     <TabPanel>
       <Section title="Contact Information" icon={Mail}>
@@ -236,6 +531,10 @@ function OverviewTab({ client }) {
         <InfoRow icon={Building2} label="Company" value={client.company} />
         <InfoRow icon={Briefcase} label="Job Title" value={client.jobTitle} />
         <InfoRow icon={MapPin} label="Country" value={client.country} />
+      </Section>
+      
+      <Section title="Project Timeline" icon={CalendarIcon}>
+        <TimelineDisplay startDate={ad.projectStartDate} endDate={ad.projectEndDate} client={client} authHeader={authHeader} onUpdate={onUpdate} />
       </Section>
       {(ad.deliverables?.length > 0) && (
         <Section title="Deliverables" icon={Paperclip}>
@@ -269,7 +568,7 @@ function OverviewTab({ client }) {
                     )}
                   </div>
                   <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5 bg-zinc-950/50 px-2 py-1 rounded-md border border-zinc-800/50">
-                    <Calendar size={12} className="text-indigo-400" />
+                    <CalendarIcon size={12} className="text-indigo-400" />
                     {(c.timestamp || c.date) ? new Date(c.timestamp || c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown Date'}
                   </span>
                 </div>
@@ -315,62 +614,106 @@ function OverviewTab({ client }) {
   );
 }
 
-function ProjectTab({ client, project }) {
-  const ad = project?.adminData || client?.adminData || {};
+function ProjectTab({ client, project, authHeader, onUpdate }) {
+  // Merge project and client adminData — client.adminData is always up-to-date
+  // because onUpdate patches it directly, while project may be stale from initial fetch.
+  const ad = { ...(project?.adminData || {}), ...(client?.adminData || {}) };
   const progress = ad.projectProgress || 0;
+  const [updating, setUpdating] = useState(false);
+
+  const handleProgressSave = async (newProgress) => {
+    setUpdating(true);
+    try {
+      // Only send the fields being changed — do NOT spread ad here,
+      // as ad may contain stale empty-string dates from the project document
+      // that would overwrite values already saved on the User document.
+      const patch = { projectProgress: newProgress };
+      if (newProgress === 100) {
+        patch.projectStatus = 'Completed';
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: patch })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, ...patch } }));
+      }
+    } catch (err) {
+      console.error('Failed to update progress:', err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   if (!project) return (
     <TabPanel><div className="flex flex-col items-center justify-center py-12 text-zinc-600 gap-3"><Folder size={36} /><p className="text-sm">No project workspace yet.</p></div></TabPanel>
   );
+
   return (
     <TabPanel>
-      <div className="grid grid-cols-2 gap-3">
-        <Section title="Progress" icon={BarChart2}>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <svg width={64} height={64} className="rotate-[-90deg]">
-                <circle cx={32} cy={32} r={26} fill="none" stroke="currentColor" strokeWidth={5} className="text-zinc-800" />
-                <motion.circle cx={32} cy={32} r={26} fill="none" stroke="url(#g2)" strokeWidth={5} strokeLinecap="round"
-                  strokeDasharray={163} initial={{ strokeDashoffset: 163 }} animate={{ strokeDashoffset: 163 - (progress / 100) * 163 }} transition={{ duration: 1 }} />
-                <defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="#a855f7" /></linearGradient></defs>
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-white">{progress}%</span>
-            </div>
-            <div>
-              <p className="text-2xl font-black text-white">{progress}%</p>
-              <p className="text-xs text-zinc-500">Complete</p>
-            </div>
-          </div>
-        </Section>
-        <Section title="Status" icon={Tag}>
-          <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg border ${STATUS_COLORS[ad.projectStatus] || STATUS_COLORS.Active}`}>{ad.projectStatus || 'Active'}</span>
-          {ad.projectStartDate && <p className="text-xs text-zinc-500 mt-3">Start: <span className="text-zinc-300">{ad.projectStartDate}</span></p>}
-          {ad.projectEndDate && <p className="text-xs text-zinc-500 mt-1">End: <span className="text-zinc-300">{ad.projectEndDate}</span></p>}
-        </Section>
-      </div>
-      {ad.projectDescription && (
-        <Section title="Description" icon={Folder}>
-          <p className="text-sm text-zinc-300 leading-relaxed">{ad.projectDescription}</p>
-        </Section>
-      )}
-      {ad.projectTags?.length > 0 && (
-        <Section title="Tags" icon={Tag}>
-          <div className="flex flex-wrap gap-2">
-            {ad.projectTags.map(t => <span key={t} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">{t}</span>)}
-          </div>
-        </Section>
-      )}
-      {ad.tasks?.length > 0 && (
-        <Section title="Tasks" icon={CheckCircle2}>
-          <div className="flex flex-col gap-2">
-            {ad.tasks.map((t, i) => (
-              <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
-                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${t.status === 'Completed' ? 'bg-emerald-500' : t.status === 'In Progress' ? 'bg-indigo-500' : 'bg-zinc-600'}`} />
-                <p className="text-sm text-zinc-300 flex-1 truncate">{t.task}</p>
-                <span className="text-[10px] text-zinc-500 flex-shrink-0">{t.dueDate}</span>
+        <div className="flex flex-col gap-5">
+          <ReactorKnob 
+            initialValue={progress} 
+            loading={updating}
+            onSave={handleProgressSave} 
+          />
+
+          <Section title="Status & Timeline" icon={Tag}>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <span className={`text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-xl border ${STATUS_COLORS[ad.projectStatus] || STATUS_COLORS.Active}`}>
+                  {ad.projectStatus || 'Active'}
+                </span>
               </div>
-            ))}
-          </div>
-        </Section>
+              <TimelineDisplay startDate={ad.projectStartDate} endDate={ad.projectEndDate} client={client} authHeader={authHeader} onUpdate={onUpdate} editable={true} />
+            </div>
+          </Section>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          {ad.projectDescription && (
+            <Section title="Project Scope" icon={Briefcase}>
+              <p className="text-sm text-zinc-400 leading-relaxed italic border-l-2 border-zinc-800 pl-4 py-1">
+                "{ad.projectDescription}"
+              </p>
+            </Section>
+          )}
+
+          {ad.projectTags?.length > 0 && (
+            <Section title="Classification" icon={Tag}>
+              <div className="flex flex-wrap gap-2">
+                {ad.projectTags.map(t => (
+                  <span key={t} className="text-[10px] font-bold px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </Section>
+          )}
+        </div>
+
+      {ad.tasks?.length > 0 && (
+        <div className="mt-5">
+          <Section title="Key Milestones" icon={CheckCircle2}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {ad.tasks.map((t, i) => (
+                <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/50 border border-zinc-800/60 group/task hover:border-zinc-700 transition-all">
+                  <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${t.status === 'Completed' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : t.status === 'In Progress' ? 'bg-indigo-500 animate-pulse' : 'bg-zinc-700'}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-zinc-300 truncate font-medium">{t.task}</p>
+                    <p className="text-[10px] text-zinc-600 mt-0.5">{t.dueDate || 'No date set'}</p>
+                  </div>
+                  <div className="opacity-0 group-hover/task:opacity-100 transition-opacity">
+                    <ChevronRight size={14} className="text-zinc-700" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        </div>
       )}
     </TabPanel>
   );
@@ -430,7 +773,7 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
   return (
     <TabPanel>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-white flex items-center gap-2"><Calendar className="text-indigo-400" size={18} /> Scheduling</h3>
+        <h3 className="text-lg font-bold text-white flex items-center gap-2"><CalendarIcon className="text-indigo-400" size={18} /> Scheduling</h3>
         <button onClick={() => setIsAdding(!isAdding)} className="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold transition-colors">
           {isAdding ? 'Cancel' : '+ New Meeting'}
         </button>
@@ -438,40 +781,97 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
 
       <AnimatePresence>
         {isAdding && (
-          <motion.form initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden mb-6" onSubmit={handleAdd}>
-            <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 space-y-3">
-              <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Meeting Title</label>
-                <input required value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="e.g., Project Kickoff"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Date</label>
-                  <input required type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 [color-scheme:dark]" />
+          <motion.form 
+            initial={{ opacity: 0, y: 20, scale: 0.98 }} 
+            animate={{ opacity: 1, y: 0, scale: 1 }} 
+            exit={{ opacity: 0, y: 20, scale: 0.98 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="mb-8" 
+            onSubmit={handleAdd}
+          >
+            <div className="p-6 rounded-[2rem] bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-sm space-y-6 shadow-2xl">
+              <div className="space-y-4">
+                <div className="group">
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2.5 ml-1">Meeting Title</label>
+                  <input 
+                    required 
+                    value={form.title} 
+                    onChange={e => setForm({...form, title: e.target.value})} 
+                    placeholder="e.g., Creative Direction Sync"
+                    className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all" 
+                  />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Time</label>
-                  <input type="time" value={form.time} onChange={e => setForm({...form, time: e.target.value})}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 [color-scheme:dark]" />
+                
+                <DeliveryScheduler 
+                  className="bg-zinc-950/80 border-zinc-800/50 mt-2"
+                  timeZone="Pacific Standard Time"
+                  timeSlots={['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM']}
+                  onSchedule={({ date, time }) => {
+                    setForm({ ...form, date: date.toISOString().split('T')[0], time });
+                  }}
+                  onCancel={() => setIsAdding(false)}
+                />
+
+                <AnimatePresence>
+                  {form.date && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between group overflow-hidden relative"
+                    >
+                       <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 blur-2xl pointer-events-none" />
+                       <div className="flex items-center gap-4 relative z-10">
+                          <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
+                            <Clock size={18} className="text-indigo-400" />
+                          </div>
+                          <div className="flex flex-col">
+                             <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Confirmed Time Slot</span>
+                             <span className="text-sm font-bold text-white">
+                               {new Date(form.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })} at {form.time}
+                             </span>
+                          </div>
+                       </div>
+                       <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center relative z-10">
+                         <CheckCircle2 size={16} className="text-emerald-400" />
+                       </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="group">
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2.5 ml-1">Meeting Location</label>
+                  <div className="relative">
+                    <input 
+                      value={form.link} 
+                      onChange={e => setForm({...form, link: e.target.value})} 
+                      placeholder="Zoom, Google Meet, or physical address"
+                      className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 pl-11 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all" 
+                    />
+                    <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-indigo-400 transition-colors" />
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Location / Meeting Link</label>
-                <input value={form.link} onChange={e => setForm({...form, link: e.target.value})} placeholder="https://zoom.us/j/..."
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50" />
+
+              <div className="flex gap-3 pt-2">
+                <button 
+                  type="submit" 
+                  disabled={loading || !form.date || !form.time} 
+                  className="flex-1 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white text-sm font-black rounded-2xl transition-all shadow-[0_10px_30px_rgba(79,70,229,0.2)] disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-2 uppercase tracking-widest"
+                >
+                  {loading ? <Loader2 size={18} className="animate-spin" /> : (
+                    <>
+                      <CalendarIcon size={18} />
+                      Finalize Meeting
+                    </>
+                  )}
+                </button>
               </div>
-              <button disabled={loading} type="submit" className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center">
-                {loading ? <Loader2 size={16} className="animate-spin" /> : 'Schedule Meeting'}
-              </button>
             </div>
           </motion.form>
         )}
       </AnimatePresence>
 
-      <Section title="Upcoming Meetings" icon={Calendar}>
+      <Section title="Upcoming Meetings" icon={CalendarIcon}>
         {upcoming.length === 0 ? <p className="text-sm text-zinc-600 italic">No upcoming meetings.</p> : (
           <div className="flex flex-col gap-2">
             {upcoming.map((m, i) => {
@@ -479,7 +879,7 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
               return (
                 <div key={i} className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col gap-3 group">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center flex-shrink-0"><Calendar size={16} className="text-indigo-400" /></div>
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center flex-shrink-0"><CalendarIcon size={16} className="text-indigo-400" /></div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-white">{m.title}</p>
                       <p className="text-xs text-zinc-400 mt-0.5">{new Date(m.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} {m.time && `at ${m.time}`}</p>
@@ -523,43 +923,486 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
   );
 }
 
-function BillingTab({ client }) {
+function DatePickerField({ value, onChange, label, placeholder = "Select date" }) {
+  const [open, setOpen] = useState(false);
+  const [tempDate, setTempDate] = useState(value ? (() => {
+    const [y, m, d] = value.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  })() : undefined);
+
+  // Update temp date when popover opens
+  useEffect(() => {
+    if (open) {
+      if (value) {
+        const [y, m, d] = value.split('-').map(Number);
+        setTempDate(new Date(y, m - 1, d));
+      } else {
+        setTempDate(undefined);
+      }
+    }
+  }, [open, value]);
+
+  const handleApply = () => {
+    if (tempDate) {
+      const y = tempDate.getFullYear();
+      const m = String(tempDate.getMonth() + 1).padStart(2, '0');
+      const d = String(tempDate.getDate()).padStart(2, '0');
+      onChange(`${y}-${m}-${d}`);
+    }
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">{label}</label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <div className="relative group cursor-pointer">
+            <input 
+              readOnly
+              value={value ? format(new Date(value.split('-')[0], value.split('-')[1]-1, value.split('-')[2]), 'MMM d, yyyy') : ''} 
+              placeholder={placeholder}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 font-bold focus:outline-none focus:border-indigo-500/50 pr-10 cursor-pointer transition-colors group-hover:border-zinc-700" 
+            />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 group-hover:text-indigo-400 transition-colors pointer-events-none">
+              <CalendarIcon size={14} />
+            </div>
+          </div>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0 border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[100] rounded-2xl overflow-hidden" align="start">
+          <div className="p-4 flex flex-col gap-1">
+            <div className="flex items-center justify-between mb-2 px-1">
+              <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Select Date</span>
+              {value && (
+                <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+                  {format(new Date(value.split('-')[0], value.split('-')[1]-1, value.split('-')[2]), 'MMM d, yyyy')}
+                </span>
+              )}
+            </div>
+            
+            <div className="bg-zinc-900/40 rounded-xl border border-zinc-800/50 p-1">
+              <Calendar
+                mode="single"
+                selected={tempDate}
+                onSelect={setTempDate}
+                initialFocus
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t border-zinc-800/60">
+              <button 
+                type="button"
+                onClick={() => setOpen(false)}
+                className="px-4 py-2 text-[11px] font-bold text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                type="button"
+                onClick={handleApply}
+                className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-[11px] font-black rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                APPLY DATE
+              </button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
+function BillingTab({ client, authHeader, onUpdate }) {
   const ad = client.adminData || {};
   const sub = ad.subscription || {};
   const invoices = ad.invoices || [];
+  const status = ad.projectStatus || 'Unassigned';
+  const isActive = status === 'Active';
+
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [invoiceForm, setInvoiceForm] = useState({
+    description: '',
+    amount: '',
+    date: new Date().toISOString().split('T')[0],
+    invoiceNumber: sub.invoiceNumber || '',
+    transactionId: '',
+    paymentMethod: 'Bank Transfer'
+  });
+  const [invoiceFile, setInvoiceFile] = useState(null);
+
+  const PRICING_PLANS = {
+    'tier1': { name: 'Starter', price: '₹7,200' },
+    'tier2': { name: 'Growth', price: '₹12,600' },
+    'tier3': { name: 'Business', price: '₹15,000' },
+    'tier4': { name: 'E-com', price: '₹24,500' }
+  };
+
+  // Auto-fill based on consultation if not set
+  const consultationPlan = client.consultations?.[0]?.plan;
+  const recommendedPlan = PRICING_PLANS[consultationPlan] || { name: 'Custom', price: '' };
+
+  const handleUpdateSubscription = async (e) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+    
+    const updatedSub = {
+      planName: sub.planName || recommendedPlan.name,
+      price: sub.price || recommendedPlan.price,
+      nextBilling: sub.nextBilling || '',
+      invoiceNumber: invoiceForm.invoiceNumber
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { subscription: updatedSub } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, subscription: updatedSub } }));
+      }
+    } catch (err) {
+      console.error('Failed to update subscription:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUploadInvoice = async (e) => {
+    e.preventDefault();
+    if (!invoiceFile && !invoiceForm.description) return;
+    
+    setUploading(true);
+    let fileLink = '';
+
+    if (invoiceFile) {
+      const fd = new FormData();
+      fd.append('file', invoiceFile);
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/upload`, {
+          method: 'POST', headers: authHeader, credentials: 'include', body: fd,
+        });
+        const data = await res.json();
+        if (res.ok && data.attachment) {
+          fileLink = data.attachment.path;
+        }
+      } catch (err) {
+        console.error('Invoice upload failed', err);
+        setUploading(false);
+        return;
+      }
+    }
+
+    const newInvoice = {
+      description: invoiceForm.description || `Invoice #${invoiceForm.invoiceNumber}`,
+      amount: invoiceForm.amount,
+      date: invoiceForm.date,
+      status: 'Paid',
+      link: fileLink,
+      transactionId: invoiceForm.transactionId,
+      method: invoiceForm.paymentMethod
+    };
+
+    const updatedInvoices = [newInvoice, ...invoices];
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { invoices: updatedInvoices } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, invoices: updatedInvoices } }));
+        setInvoiceForm({ ...invoiceForm, description: '', amount: '', transactionId: '', paymentMethod: 'Bank Transfer' });
+        setInvoiceFile(null);
+      }
+    } catch (err) {
+      console.error('Failed to save invoice:', err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const [confirmingDelete, setConfirmingDelete] = useState(null);
+
+  const handleDeleteInvoice = async (index) => {
+    setConfirmingDelete(null);
+    const updatedInvoices = invoices.filter((_, i) => i !== index);
+    
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { invoices: updatedInvoices } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, invoices: updatedInvoices } }));
+      }
+    } catch (err) {
+      console.error('Failed to delete invoice:', err);
+    }
+  };
+
+  if (!isActive) {
+    return (
+      <TabPanel>
+        <div className="flex flex-col items-center justify-center py-20 text-zinc-600 gap-4">
+          <div className="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+            <CreditCard size={32} />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-bold text-zinc-400">Billing Unavailable</p>
+            <p className="text-xs mt-1">Project must be in "Active" state to manage billing.</p>
+          </div>
+        </div>
+      </TabPanel>
+    );
+  }
+
   return (
     <TabPanel>
-      {(sub.planName || sub.price) && (
-        <Section title="Subscription Plan" icon={CreditCard}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-bold text-lg text-white">{sub.planName || 'Custom Plan'}</p>
-              {sub.nextBilling && <p className="text-xs text-zinc-500 mt-1">Next billing: {sub.nextBilling}</p>}
-            </div>
-            {sub.price && <span className="text-2xl font-black text-indigo-400">{sub.price}</span>}
-          </div>
-        </Section>
-      )}
-      {invoices.length > 0 && (
-        <Section title="Invoice History" icon={CreditCard}>
-          <div className="flex flex-col gap-2">
-            {invoices.map((inv, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-zinc-200 truncate">{inv.description}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">{inv.date}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <Section title="Subscription Status" icon={CreditCard}>
+            <div className="p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800/50 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1">Active Plan</p>
+                  <p className="font-bold text-lg text-white">{sub.planName || recommendedPlan.name}</p>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${inv.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>{inv.status}</span>
-                <span className="text-sm font-bold text-white ml-2">{inv.amount}</span>
-                {inv.link && <a href={inv.link} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-indigo-400 transition-colors"><ExternalLink size={13} /></a>}
+                <div className="text-right">
+                  <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1">Price</p>
+                  <p className="font-bold text-lg text-indigo-400">{sub.price || recommendedPlan.price}</p>
+                </div>
               </div>
-            ))}
-          </div>
+              <div className="pt-4 border-t border-zinc-800/50">
+                <DatePickerField 
+                  label="Next Billing"
+                  value={sub.nextBilling}
+                  onChange={(val) => onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, subscription: { ...c.adminData.subscription, nextBilling: val } } }))}
+                />
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                <div className="flex-1">
+                   <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Invoice #</label>
+                   <input 
+                    value={invoiceForm.invoiceNumber} 
+                    onChange={e => setInvoiceForm({...invoiceForm, invoiceNumber: e.target.value})}
+                    placeholder="INV-001"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                  />
+                </div>
+                <button 
+                  onClick={handleUpdateSubscription}
+                  disabled={loading}
+                  className="mt-5 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[10px] font-bold rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {loading ? '...' : 'Update Info'}
+                </button>
+              </div>
+            </div>
+          </Section>
+
+          <Section title="Record New Payment" icon={Plus}>
+            <form onSubmit={handleUploadInvoice} className="p-4 rounded-2xl bg-zinc-900/50 border border-zinc-800/50 space-y-4">
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Description</label>
+                  <input 
+                    required
+                    value={invoiceForm.description} 
+                    onChange={e => setInvoiceForm({...invoiceForm, description: e.target.value})}
+                    placeholder="e.g., Monthly Maintenance Fee"
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Amount</label>
+                    <input 
+                      required
+                      value={invoiceForm.amount} 
+                      onChange={e => setInvoiceForm({...invoiceForm, amount: e.target.value})}
+                      placeholder="₹7,200"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                    />
+                  </div>
+                  <DatePickerField 
+                    label="Date Paid"
+                    value={invoiceForm.date}
+                    onChange={(val) => setInvoiceForm({...invoiceForm, date: val})}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Transaction ID</label>
+                    <input 
+                      value={invoiceForm.transactionId} 
+                      onChange={e => setInvoiceForm({...invoiceForm, transactionId: e.target.value})}
+                      placeholder="TXN123..."
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Payment Method</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button type="button" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 flex items-center justify-between hover:border-zinc-700 transition-colors">
+                          <div className="flex items-center gap-2">
+                            {(() => {
+                              const m = invoiceForm.paymentMethod;
+                              if (m === 'Stripe') return <CreditCard size={14} className="text-indigo-400" />;
+                              if (m === 'UPI') return <Smartphone size={14} className="text-emerald-400" />;
+                              if (m === 'Bank Transfer') return <Building2 size={14} className="text-amber-400" />;
+                              if (m === 'PayPal') return <Wallet size={14} className="text-sky-400" />;
+                              return <CreditCard size={14} className="text-zinc-500" />;
+                            })()}
+                            <span>{invoiceForm.paymentMethod}</span>
+                          </div>
+                          <ChevronDown size={14} className="text-zinc-500" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-1 bg-zinc-950/95 backdrop-blur-xl border-zinc-800 shadow-2xl rounded-xl">
+                        {[
+                          { id: 'Bank Transfer', icon: Building2, color: 'text-amber-400' },
+                          { id: 'Stripe', icon: CreditCard, color: 'text-indigo-400' },
+                          { id: 'UPI', icon: Smartphone, color: 'text-emerald-400' },
+                          { id: 'PayPal', icon: Wallet, color: 'text-sky-400' },
+                          { id: 'Cash', icon: CreditCard, color: 'text-zinc-400' }
+                        ].map((method) => (
+                          <button
+                            key={method.id}
+                            type="button"
+                            onClick={() => setInvoiceForm({...invoiceForm, paymentMethod: method.id})}
+                            className={`w-full flex items-center gap-3 px-3 py-2 text-xs rounded-lg transition-all ${invoiceForm.paymentMethod === method.id ? 'bg-indigo-500/10 text-white' : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'}`}
+                          >
+                            <method.icon size={14} className={method.color} />
+                            <span className="font-bold">{method.id}</span>
+                            {invoiceForm.paymentMethod === method.id && <div className="ml-auto w-1 h-1 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />}
+                          </button>
+                        ))}
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Invoice File (Optional)</label>
+                  <label className={`w-full flex items-center justify-center gap-2 border border-dashed border-zinc-800 rounded-lg px-4 py-3 text-xs cursor-pointer transition-all ${invoiceFile ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-zinc-950 text-zinc-500 hover:bg-zinc-900'}`}>
+                    <Upload size={14} />
+                    <span className="truncate">{invoiceFile ? invoiceFile.name : 'Click to upload PDF/Image'}</span>
+                    <input type="file" className="hidden" onChange={e => setInvoiceFile(e.target.files[0] || null)} />
+                  </label>
+                </div>
+              </div>
+              <button 
+                type="submit"
+                disabled={uploading}
+                className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                {uploading ? <Loader2 size={16} className="animate-spin" /> : <><CheckCircle2 size={14} /> Record Payment & Upload</>}
+              </button>
+            </form>
+          </Section>
+        </div>
+
+        <Section title="Payment History" icon={Clock}>
+          {invoices.length === 0 ? (
+            <div className="py-12 flex flex-col items-center justify-center text-zinc-600 gap-2 italic">
+              <CreditCard size={24} />
+              <p className="text-xs">No payment records found.</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {invoices.map((inv, i) => {
+                let downloadLink = inv.link;
+                if (inv.link?.includes('/uploads/')) {
+                  const path = inv.link.includes('://') ? new URL(inv.link).pathname : inv.link;
+                  downloadLink = `${API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+                }
+                
+                return (
+                  <div key={i} className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all group">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-500 group-hover:text-emerald-400 transition-colors shrink-0">
+                          <FileText size={18} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-black text-white truncate mb-1">{inv.description}</p>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <div className="flex items-center gap-1.5">
+                              <CalendarIcon size={10} className="text-zinc-500" />
+                              <span className="text-[10px] font-bold text-zinc-400">{inv.date}</span>
+                            </div>
+                            {inv.method && (
+                              <div className="flex items-center gap-1.5">
+                                <CreditCard size={10} className="text-zinc-500" />
+                                <span className="text-[10px] font-bold text-zinc-400">{inv.method}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0 flex flex-col items-end gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <p className="text-base font-black text-white">{inv.amount}</p>
+                          {confirmingDelete !== i && (
+                            <button 
+                              onClick={() => setConfirmingDelete(i)}
+                              className="p-1 rounded bg-zinc-950 border border-zinc-800 text-zinc-600 hover:text-red-500 hover:border-red-500/50 transition-all ml-1"
+                              title="Delete Record"
+                            >
+                              <Trash2 size={10} />
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-[9px] font-black px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-tighter">Verified</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {confirmingDelete === i && (
+                      <div className="mt-4 pt-3 border-t border-zinc-800/50 animate-in fade-in slide-in-from-top-1">
+                        <div className="flex items-center justify-between bg-red-500/5 border border-red-500/20 rounded-xl px-3 py-1.5">
+                          <span className="text-[10px] font-bold text-red-400">Permanently delete record?</span>
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => setConfirmingDelete(null)} className="text-[10px] font-bold text-zinc-400 hover:text-zinc-200 px-2 py-1">Cancel</button>
+                            <button onClick={() => handleDeleteInvoice(i)} className="bg-red-500 hover:bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-lg transition-all">DELETE</button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {(inv.transactionId || downloadLink) && confirmingDelete !== i && (
+                      <div className="mt-4 pt-3 border-t border-zinc-800/50 flex items-center justify-between min-h-[32px]">
+                        <div className="flex items-center gap-2">
+                          {inv.transactionId && (
+                            <div className="px-2 py-1 rounded bg-zinc-950 border border-zinc-800 flex items-center gap-2">
+                              <span className="text-[9px] font-black text-zinc-600 uppercase">TXN ID</span>
+                              <span className="text-[10px] font-mono text-indigo-400 font-bold">{inv.transactionId}</span>
+                            </div>
+                          )}
+                        </div>
+                        {downloadLink && (
+                          <a href={downloadLink} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-zinc-500 hover:text-white text-[10px] font-bold transition-colors bg-zinc-950 px-3 py-1 rounded-lg border border-zinc-800 hover:border-zinc-600">
+                            <Download size={12} />
+                            DOWNLOAD
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </Section>
-      )}
-      {!sub.planName && invoices.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-12 text-zinc-600 gap-2"><CreditCard size={32} /><p className="text-sm">No billing info yet.</p></div>
-      )}
+      </div>
     </TabPanel>
   );
 }
