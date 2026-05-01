@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
+import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
+import palettesData from '../data/palettes.js';
+import fontsData from '../data/fonts.js';
 
 
 const STATUS_COLORS = {
@@ -249,16 +251,61 @@ function OverviewTab({ client }) {
         </Section>
       )}
       {client.consultations?.length > 0 && (
-        <Section title="Consultations" icon={MessageSquare}>
-          <div className="flex flex-col gap-2">
-            {client.consultations.slice(0, 3).map((c, i) => (
-              <div key={i} className="p-3 rounded-xl bg-zinc-900 border border-zinc-800">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">{c.tier || 'General'}</span>
-                  <span className="text-[10px] text-zinc-500">{c.date ? new Date(c.date).toLocaleDateString() : ''}</span>
+        <Section title="Consultation History" icon={MessageSquare}>
+          <div className="flex flex-col gap-3">
+            {client.consultations.map((c, i) => (
+              <div key={i} className="group p-4 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 hover:border-indigo-500/30 transition-all duration-300 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest border border-indigo-500/20">
+                      {c.plan || c.tier || 'General Inquiry'}
+                    </span>
+                    {c.connectPreference && (
+                      <span className="px-2 py-1 rounded-md bg-zinc-800 text-zinc-400 text-[10px] font-bold uppercase tracking-widest border border-zinc-700/50">
+                        Prefers: {c.connectPreference}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5 bg-zinc-950/50 px-2 py-1 rounded-md border border-zinc-800/50">
+                    <Calendar size={12} className="text-indigo-400" />
+                    {(c.timestamp || c.date) ? new Date(c.timestamp || c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown Date'}
+                  </span>
                 </div>
-                <p className="text-sm text-zinc-300">{c.description || c.message || 'No details'}</p>
-                {c.preference && <p className="text-xs text-zinc-500 mt-1">Preference: {c.preference}</p>}
+
+                <div className="mb-3 p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/50 shadow-inner">
+                  <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                    {c.projectInfo || c.description || c.message || 'No project information provided.'}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 mt-1 pt-3 border-t border-zinc-800/50">
+                  {c.name && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <User size={13} className="text-zinc-500" />
+                      {c.name}
+                    </div>
+                  )}
+                  {(c.email || client.email) && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <Mail size={13} className="text-rose-400" />
+                      {c.email || client.email}
+                    </div>
+                  )}
+                  {(c.phone || client.phone) && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <Phone size={13} className="text-emerald-500/80" />
+                      {c.phone || client.phone}
+                    </div>
+                  )}
+                  {c.discord && (
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                      <MessageSquare size={13} className="text-[#5865F2]" />
+                      {c.discord}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -575,7 +622,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
         });
         const data = await res.json();
         if (res.ok && data.attachment) {
-          finalLink = API_BASE_URL + data.attachment.path;
+          finalLink = data.attachment.path; // Store relative path: /uploads/filename.ext
           onUpdate(client.email, c => ({
             ...c,
             adminData: { ...c.adminData, attachments: [...(c.adminData?.attachments || []), data.attachment] }
@@ -694,23 +741,28 @@ function AssetsTab({ client, authHeader, onUpdate }) {
         <AnimatePresence>
           {isAddingDeliverable && (
             <motion.form initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-b border-zinc-800/60 bg-zinc-900/30" onSubmit={handleAddDeliverable}>
-              <div className="p-4 space-y-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Deliverable Title</label>
+              className="overflow-hidden border-b border-zinc-800/60 bg-zinc-900/20" onSubmit={handleAddDeliverable}>
+              <div className="p-5 space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-semibold text-zinc-400">Deliverable Title</label>
                   <input required value={deliverableForm.title} onChange={e => setDeliverableForm({...deliverableForm, title: e.target.value})} placeholder="e.g., Final Logo Package"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50" />
+                    className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600" />
                 </div>
-                <div className="grid grid-cols-2 gap-3 items-end">
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Download Link / URL</label>
-                    <input disabled={!!deliverableFile} value={deliverableForm.link} onChange={e => setDeliverableForm({...deliverableForm, link: e.target.value})} placeholder="https://..."
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 disabled:opacity-50" />
+                
+                <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center">
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-semibold text-zinc-400">External URL</label>
+                    <input disabled={!!deliverableFile} value={deliverableForm.link} onChange={e => setDeliverableForm({...deliverableForm, link: e.target.value})} placeholder="https://drive.google.com/..."
+                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600 disabled:opacity-40 disabled:cursor-not-allowed" />
                   </div>
-                  <div className="flex flex-col">
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5 text-center">OR UPLOAD LOCALLY</label>
-                    <label className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-center cursor-pointer transition-colors truncate">
-                      {deliverableFile ? deliverableFile.name : 'Choose File...'}
+                  
+                  <div className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-5">OR</div>
+                  
+                  <div className="space-y-1.5 flex flex-col justify-end h-full">
+                    <label className="text-[11px] font-semibold text-zinc-400">Upload File</label>
+                    <label className={`w-full flex items-center justify-center gap-2 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm cursor-pointer transition-all ${deliverableFile ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'}`}>
+                      <Upload size={14} />
+                      <span className="truncate">{deliverableFile ? deliverableFile.name : 'Select from computer'}</span>
                       <input type="file" className="hidden" onChange={e => {
                         setDeliverableFile(e.target.files[0] || null);
                         if (e.target.files[0]) setDeliverableForm({...deliverableForm, link: ''});
@@ -718,9 +770,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                     </label>
                   </div>
                 </div>
-                <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center">
-                  {savingDeliverable ? <Loader2 size={14} className="animate-spin" /> : 'Add Deliverable'}
-                </button>
+
+                <div className="pt-2">
+                  <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+                    {savingDeliverable ? <Loader2 size={16} className="animate-spin" /> : <><CheckCircle2 size={16} /> Save Deliverable</>}
+                  </button>
+                </div>
               </div>
             </motion.form>
           )}
@@ -730,20 +785,41 @@ function AssetsTab({ client, authHeader, onUpdate }) {
           <div className="flex items-center justify-center py-8 text-zinc-600 gap-2 text-xs italic"><Folder size={16} /><span>No deliverables uploaded yet</span></div>
         ) : (
           <div className="flex flex-col divide-y divide-zinc-800/40">
-            {deliverables.map((d, i) => d ? (
-              <div key={i} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-900/40 transition-colors group">
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0"><Paperclip size={13} className="text-indigo-400" /></div>
+            {deliverables.map((d, i) => {
+              if (!d) return null;
+              
+              // Determine the final link
+              let downloadLink = d.link;
+              if (d.link?.includes('/uploads/')) {
+                // It's a local upload - use the download endpoint
+                const path = d.link.includes('://') ? new URL(d.link).pathname : d.link;
+                downloadLink = `${API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+              } else if (d.link && !d.link.includes('://') && !d.link.startsWith('/') && !d.link.startsWith('#')) {
+                // External link without protocol
+                downloadLink = `https://${d.link}`;
+              }
+
+              return (
+              <div key={i} className="flex items-center gap-4 px-5 py-4 hover:bg-zinc-900/40 transition-colors group">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0"><Folder size={16} className="text-indigo-400" /></div>
                 <div className="flex-1 min-w-0">
-                  <a href={d.link} target="_blank" rel="noreferrer" className="text-sm font-medium text-zinc-200 group-hover:text-indigo-400 transition-colors truncate block">{d.title || 'Deliverable'}</a>
+                  <div className="flex flex-col">
+                    <a href={downloadLink} target="_blank" rel="noreferrer" className="text-[13px] font-semibold text-zinc-200 group-hover:text-indigo-400 transition-colors truncate">{d.title || 'Deliverable'}</a>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] text-zinc-500 font-medium tracking-wide uppercase">{d.uploadDate ? new Date(d.uploadDate).toLocaleDateString() : ''}</span>
+                      <span className="text-zinc-700 text-[10px]">•</span>
+                      <span className="text-[10px] text-zinc-500 truncate max-w-[250px]">{d.link}</span>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={d.link} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
-                  <button onClick={() => handleDeleteDeliverable(i)} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors">
-                    <Trash2 size={12} />
+                  <a href={downloadLink} target="_blank" rel="noreferrer" className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={14} /></a>
+                  <button onClick={() => handleDeleteDeliverable(i)} className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors">
+                    <Trash2 size={14} />
                   </button>
                 </div>
               </div>
-            ) : null)}
+            )})}
           </div>
         )}
       </div>
@@ -754,16 +830,20 @@ function AssetsTab({ client, authHeader, onUpdate }) {
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">🎨 Favorite Palettes</p>
           </div>
           <div className="p-4 grid grid-cols-2 gap-3">
-            {palettes.map((p, i) => p ? (
-              <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
-                <div className="flex h-10">
-                  {(p.colors || []).slice(0, 5).map((c, ci) => (
-                    <div key={ci} className="flex-1" style={{ backgroundColor: c }} />
-                  ))}
+            {palettes.map((pName, i) => {
+              const p = palettesData.find(pd => pd.name === pName);
+              if (!p) return null;
+              return (
+                <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
+                  <div className="flex h-10">
+                    {(p.colors || []).slice(0, 5).map((c, ci) => (
+                      <div key={ci} className="flex-1" style={{ backgroundColor: c }} />
+                    ))}
+                  </div>
+                  <p className="text-[11px] font-semibold text-zinc-300 px-2.5 py-2 truncate">{p.name || `Palette ${i + 1}`}</p>
                 </div>
-                <p className="text-[11px] font-semibold text-zinc-300 px-2.5 py-2 truncate">{p.name || `Palette ${i + 1}`}</p>
-              </div>
-            ) : null)}
+              );
+            })}
           </div>
         </div>
       )}
@@ -774,17 +854,21 @@ function AssetsTab({ client, authHeader, onUpdate }) {
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">🔤 Favorite Fonts</p>
           </div>
           <div className="p-4 grid grid-cols-2 gap-3">
-            {fonts.map((f, i) => f ? (
-              <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 flex flex-col">
-                <div className="h-20 flex items-center justify-center bg-zinc-950/50 overflow-hidden relative group">
-                  <span className="text-4xl font-normal text-zinc-300" style={{ fontFamily: f.family || f.name || 'sans-serif' }}>Aa</span>
+            {fonts.map((fName, i) => {
+              const f = fontsData.find(fd => fd.name === fName);
+              if (!f) return null;
+              return (
+                <div key={i} className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900 flex flex-col">
+                  <div className="h-20 flex items-center justify-center bg-zinc-950/50 overflow-hidden relative group">
+                    <span className="text-4xl font-normal text-zinc-300" style={{ fontFamily: f.family || f.name || 'sans-serif' }}>Ag</span>
+                  </div>
+                  <div className="p-3 border-t border-zinc-800 flex flex-col">
+                    <p className="text-xs font-bold text-white truncate">{f.name}</p>
+                    <p className="text-[10px] text-zinc-500 mt-0.5 capitalize">{f.category || 'Typography'}</p>
+                  </div>
                 </div>
-                <div className="p-3 border-t border-zinc-800 flex flex-col">
-                  <p className="text-xs font-bold text-white truncate">{f.name}</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5 capitalize">{f.category || 'Typography'}</p>
-                </div>
-              </div>
-            ) : null)}
+              );
+            })}
           </div>
         </div>
       )}
@@ -817,12 +901,12 @@ function AssetsTab({ client, authHeader, onUpdate }) {
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-900/40 transition-colors group">
                 <span className="text-xl flex-shrink-0">{getIcon(att.name)}</span>
                 <div className="flex-1 min-w-0">
-                  <a href={`${apiBase()}${att.path}`} target="_blank" rel="noreferrer"
+                  <a href={`${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}`} target="_blank" rel="noreferrer"
                     className="text-sm font-medium text-zinc-200 hover:text-indigo-400 transition-colors truncate block">{att.name || 'File'}</a>
                   <p className="text-[10px] text-zinc-600 mt-0.5">{att.size} · {att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={att.path ? `${apiBase()}${att.path}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
+                  <a href={att.path ? `${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
                   <button onClick={() => doDelete(att)} disabled={deleteId === att.path} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors disabled:opacity-40">
                     {deleteId === att.path ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
                   </button>

@@ -34,7 +34,7 @@
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.location.href = "./mobile/index.html";
         }
-        
+
         const navEntries = performance.getEntriesByType('navigation');
         const navType = navEntries.length > 0 ? navEntries[0].type : '';
         const isReload = navType === 'reload';
@@ -44,15 +44,21 @@
         if (sessionStorage.getItem('preloaderShown') || isReload || isWorksHash) {
             document.documentElement.classList.add('skip-preloader-transition');
             if (isWorksHash) {
-               document.documentElement.classList.add('jumping-to-works');
+                document.documentElement.classList.add('jumping-to-works');
             }
             // Ensure preloaderShown is set for future reloads if it was just isReload
             sessionStorage.setItem('preloaderShown', 'true');
         }
     </script>
     <style>
-        .skip-preloader-transition #preloader { display: none !important; transition: none !important; }
-        .jumping-to-works #slide-1 { opacity: 0 !important; }
+        .skip-preloader-transition #preloader {
+            display: none !important;
+            transition: none !important;
+        }
+
+        .jumping-to-works #slide-1 {
+            opacity: 0 !important;
+        }
     </style>
 </head>
 
@@ -63,7 +69,8 @@
         <div class="relative flex flex-col items-center justify-center h-full w-full">
             <!-- Video Container -->
             <div class="relative">
-                <video id="mascot-preloader-video" autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
+                <video id="mascot-preloader-video" autoplay muted loop playsinline
+                    class="w-32 md:w-48 h-auto object-contain">
                     <source src="images/mascot.mp4" type="video/mp4">
                 </video>
                 <!-- Progress Bar Overlapping Base -->
@@ -107,12 +114,15 @@
                         <!-- Added Toolbar Logo -->
 
                         <a href="index.html" id="toolbar-home-link"
-                            class="text-lg text-white hover:text-[#c7f908] transition-colors" rel="noopener noreferrer">Home</a>
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors"
+                            rel="noopener noreferrer">Home</a>
                         <a href="about/about.html" class="text-lg text-white hover:text-[#c7f908] transition-colors"
                             rel="noopener noreferrer">About</a>
                         <a href="#slide-3" class="text-lg text-white hover:text-[#c7f908] transition-colors">Our
                             Work</a>
-                        <a href="branding/branding.html" class="text-lg text-white hover:text-[#c7f908] transition-colors" rel="noopener noreferrer">Branding</a>
+                        <a href="branding/branding.html"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors"
+                            rel="noopener noreferrer">Branding</a>
                     </div>
                 </div>
                 <button class="md:hidden text-lg ml-auto pointer-events-auto">&#x2261;</button>
@@ -120,15 +130,18 @@
                     class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
                     <div class="space-x-6 whitespace-nowrap flex items-center">
 
-                        <a href="pricingpage/pricing.html" class="text-lg text-white hover:text-[#c7f908] transition-colors"
+                        <a href="pricingpage/pricing.html"
+                            class="text-lg text-white hover:text-[#c7f908] transition-colors"
                             rel="noopener noreferrer">Pricing</a>
-                        <a href="consult/consult.html" class="auth-consult-btn text-lg text-white hover:text-[#c7f908] transition-colors"
+                        <a href="consult/consult.html"
+                            class="auth-consult-btn text-lg text-white hover:text-[#c7f908] transition-colors"
                             rel="noopener noreferrer">Book Us</a>
                         <a href="support/support.html" class="text-lg text-white hover:text-[#c7f908] transition-colors"
                             rel="noopener noreferrer">Support</a>
                         <!-- Login Button Styled -->
                         <a href="loginpg/login.html" id="desktop-login-btn"
-                            class="login-btn text-lg text-white hover:text-[#c7f908] transition-colors" rel="noopener noreferrer">Login</a>
+                            class="login-btn text-lg text-white hover:text-[#c7f908] transition-colors"
+                            rel="noopener noreferrer">Login</a>
                     </div>
                     <div class="flex space-x-4 text-xl">
                         <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
@@ -139,7 +152,8 @@
                         <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
                             class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
                                 class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="/loginpg/login.html" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-regular fa-user"></i></a>
+                        <a href="/loginpg/login.html" class="text-white hover:text-[#c7f908]"
+                            rel="noopener noreferrer"><i class="fa-regular fa-user"></i></a>
                     </div>
                 </div>
             </div>
@@ -219,11 +233,13 @@
                 <div
                     class="absolute bottom-12 right-0 left-0 flex justify-center md:justify-end max-w-7xl mx-auto px-4 pointer-events-none z-50">
                     <div class="flex flex-col items-center space-y-3 pointer-events-auto">
-                        <a href="./docs/Brochure.pdf" target="_blank" class="bg-white text-[#0C1AC1] hover:bg-[#c7f908] hover:text-[#0C1AC1] font-bold py-1.5 px-4 rounded-full shadow-2xl border border-[#0C1AC1] button-transition text-xs inline-block text-center mb-2">
+                        <a href="./docs/Brochure.pdf" target="_blank"
+                            class="bg-white text-[#0C1AC1] hover:bg-[#c7f908] hover:text-[#0C1AC1] font-bold py-1.5 px-4 rounded-full shadow-2xl border border-[#0C1AC1] button-transition text-xs inline-block text-center mb-2">
                             VIEW BROCHURE
                         </a>
 
-                        <a href="./loginpg/login.html" id="get-started-button" class="pulsate bg-[#c7f908] text-[#0C1AC1] hover:bg-white hover:text-[#c7f908] hover:border-[#0C1AC1] font-bold py-3 px-8 rounded-full shadow-2xl border-2 border-[#0C1AC1] button-transition transform translate-x-full opacity-0 transition-all duration-500 ease-out text-lg inline-block text-center"
+                        <a href="./loginpg/login.html" id="get-started-button"
+                            class="pulsate bg-[#c7f908] text-[#0C1AC1] hover:bg-white hover:text-[#c7f908] hover:border-[#0C1AC1] font-bold py-3 px-8 rounded-full shadow-2xl border-2 border-[#0C1AC1] button-transition transform translate-x-full opacity-0 transition-all duration-500 ease-out text-lg inline-block text-center"
                             rel="noopener noreferrer">
                             GET STARTED
                         </a>
@@ -594,7 +610,8 @@
                     <div id="zoom-image-flipper" class="transform-style-preserve-3d w-full h-full">
                         <img id="zoom-image-front" src="images/4.jpeg" alt=""
                             class="flip-face flip-face-front w-full h-full object-contain rounded-xl">
-                        <a id="zoom-image-link" href="./portfolio/4/index.html" class="flip-face flip-face-back w-full h-full block" rel="noopener noreferrer">
+                        <a id="zoom-image-link" href="./portfolio/4/index.html"
+                            class="flip-face flip-face-back w-full h-full block" rel="noopener noreferrer">
                             <img id="zoom-image-back" src="images/thumb4.png" alt="Zoom Target Back"
                                 class="w-full h-full object-contain rounded-xl">
                         </a>
@@ -981,11 +998,13 @@
                 </h1>
 
                 <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 mb-24">
-                    <a href="./loginpg/login.html" class="auth-consult-btn button-transition px-12 py-4 bg-[#C7F908] rounded-full text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
+                    <a href="./loginpg/login.html"
+                        class="auth-consult-btn button-transition px-12 py-4 bg-[#C7F908] rounded-full text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         BOOK NOW
                     </a>
-                    <a href="./loginpg/login.html" class="auth-pricing-btn button-transition px-12 py-4 bg-transparent rounded-full text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
+                    <a href="./loginpg/login.html"
+                        class="auth-pricing-btn button-transition px-12 py-4 bg-transparent rounded-full text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         VIEW PLANS
                     </a>
@@ -1074,7 +1093,7 @@
             <button id="kairon-button" aria-label="Open chat">
                 <img src="./about/images/little.png" alt="Kairon">
             </button>
-            <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window" >
+            <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window">
                 <div class="panel-header">
                     <div class="left-section">
                         <div class="logo-placeholder">
@@ -1141,4 +1160,3 @@
 </body>
 
 </html>
-

@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render Deliverables
                 renderDeliverables(user.adminData);
 
+                // Render Uploaded Attachments
+                renderAttachments(user.adminData);
+
                 // Render New Admin Fields
                 renderMeetings(user.adminData);
                 renderBilling(user.adminData);
@@ -172,32 +175,87 @@ document.addEventListener('DOMContentLoaded', () => {
         const deliverables = adminData.deliverables;
 
         deliverables.forEach(item => {
-            // Determine icon based on simple title keyword matching
-            let iconClass = 'fa-solid fa-cloud-arrow-down';
-            let iconColor = 'color-blue';
-            const titleLower = item.title.toLowerCase();
+            const isFile = item.link && item.link.includes('/uploads/');
             
-            if (titleLower.includes('zip') || titleLower.includes('pack') || titleLower.includes('archive')) {
-                iconClass = 'fa-solid fa-file-zipper';
-                iconColor = 'color-accent';
-            } else if (titleLower.includes('pdf') || titleLower.includes('guidelines') || titleLower.includes('document')) {
-                iconClass = 'fa-solid fa-file-pdf';
-                iconColor = 'text-danger';
-            } else if (titleLower.includes('image') || titleLower.includes('logo') || titleLower.includes('png') || titleLower.includes('svg')) {
-                iconClass = 'fa-solid fa-image';
-                iconColor = 'color-purple';
+            // Determine icon based on file type or if it's a link
+            let iconClass = isFile ? 'fa-solid fa-file-arrow-down' : 'fa-solid fa-arrow-up-right-from-square';
+            let iconColor = isFile ? 'var(--accent)' : '#6366f1'; // Green for files, Indigo for links
+
+            if (isFile) {
+                const titleLower = item.title.toLowerCase();
+                if (titleLower.includes('zip') || titleLower.includes('pack')) iconClass = 'fa-solid fa-file-zipper';
+                else if (titleLower.includes('pdf')) iconClass = 'fa-solid fa-file-pdf';
+                else if (titleLower.includes('image') || titleLower.includes('png') || titleLower.includes('svg')) iconClass = 'fa-solid fa-image';
             }
 
             const dateStr = item.uploadDate ? new Date(item.uploadDate).toLocaleDateString() : 'Recently calculated';
 
+            // Determine the final link and action UI
+            let downloadLink = item.link;
+            let actionIcon = 'fa-solid fa-download';
+            let actionTitle = 'Download File';
+
+            if (isFile) {
+                const path = item.link.includes('://') ? new URL(item.link).pathname : item.link;
+                downloadLink = `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+            } else {
+                actionIcon = 'fa-solid fa-arrow-up-right-from-square';
+                actionTitle = 'Open Link';
+                if (item.link && !item.link.includes('://') && !item.link.startsWith('/') && !item.link.startsWith('#')) {
+                    downloadLink = `https://${item.link}`;
+                }
+            }
+
             html += `
-                <div class="card asset-card">
-                    <i class="${iconClass} asset-icon ${iconColor}"></i>
-                    <div class="asset-info">
-                        <h4>${item.title}</h4>
-                        <p>Uploaded: ${dateStr}</p>
+                <div style="display: flex; align-items: center; gap: 15px; padding: 18px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; transition: all 0.2s; margin-bottom: 12px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.04)'; this.style.borderColor='rgba(255, 255, 255, 0.15)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.02)'; this.style.borderColor='rgba(255, 255, 255, 0.08)';">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: ${isFile ? 'rgba(199, 249, 8, 0.1)' : 'rgba(99, 102, 241, 0.1)'}; border: 1px solid ${isFile ? 'rgba(199, 249, 8, 0.2)' : 'rgba(99, 102, 241, 0.2)'}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="${iconClass}" style="color: ${iconColor}; font-size: 1.1rem;"></i>
                     </div>
-                    <a href="${item.link}" target="_blank" class="btn-icon" title="Download or View" style="text-decoration: none; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
+                            <span style="font-size: 9px; padding: 2px 6px; border-radius: 4px; background: ${isFile ? 'rgba(199, 249, 8, 0.1)' : 'rgba(99, 102, 241, 0.1)'}; color: ${isFile ? 'var(--accent)' : '#818cf8'}; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid ${isFile ? 'rgba(199, 249, 8, 0.2)' : 'rgba(99, 102, 241, 0.2)'};">${isFile ? 'File' : 'Link'}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                            <p style="margin: 0; font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">${dateStr}</p>
+                            <span style="color: rgba(255,255,255,0.2); font-size: 10px;">•</span>
+                            <p style="margin: 0; font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.7;">${item.link}</p>
+                        </div>
+                    </div>
+                    <a href="${downloadLink}" target="_blank" title="${actionTitle}" style="width: 38px; height: 38px; background: rgba(255, 255, 255, 0.05); color: ${iconColor}; border-radius: 10px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='${iconColor}'; this.style.color='#000'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.color='${iconColor}'; this.style.transform='scale(1)';">
+                        <i class="${actionIcon}"></i>
+                    </a>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // Render Uploaded Attachments
+    function renderAttachments(adminData) {
+        const container = document.getElementById('uploadedFilesContainer');
+        if (!container) return;
+
+        if (!adminData || !adminData.attachments || adminData.attachments.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        let html = '<h3 style="font-size: 14px; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Uploaded Reference Files</h3>';
+        
+        adminData.attachments.forEach(att => {
+            const dateStr = att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : 'Recently uploaded';
+            const downloadLink = att.path ? `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#';
+
+            html += `
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; transition: all 0.2s;">
+                    <i class="fa-solid fa-paperclip" style="font-size: 1.5rem; color: var(--text-muted);"></i>
+                    <div style="flex: 1; min-width: 0;">
+                        <h4 style="margin: 0; font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${att.name || 'File'}</h4>
+                        <p style="margin: 3px 0 0; font-size: 12px; color: var(--text-muted);">${att.size} • ${dateStr}</p>
+                    </div>
+                    <a href="${downloadLink}" target="_blank" style="padding: 10px; background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.color='#fff';"><i class="fa-solid fa-download"></i></a>
                 </div>
             `;
         });
