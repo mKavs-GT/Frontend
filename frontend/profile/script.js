@@ -565,7 +565,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `}).join('');
         }
-        }
     }
 
     // Render Messages
