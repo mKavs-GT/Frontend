@@ -30,6 +30,8 @@ import {
   Folder
 } from 'lucide-react';
 import { API_BASE_URL, WS_URL } from './config';
+import { usePresence } from './hooks/usePresence';
+import socketService from './services/SocketService';
 // Helper to handle lazy loading errors (e.g. when a new version is deployed and old chunks are gone)
 const lazyWithRetry = (componentImport) =>
   lazy(async () => {
@@ -68,7 +70,9 @@ const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
   break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
   deepwork: { label: 'DEEP WORK', color: 'purple', icon: <CheckCircle size={14} /> },
-  offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> }
+  offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> },
+  zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> },
+  standup: { label: 'STANDUP', color: 'green', icon: <Users size={14} /> }
 };
 
 export default function App() {
@@ -136,14 +140,18 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
 
-  const [currentStatus, setCurrentStatus] = useState(() => localStorage.getItem('mkavs_staff_status') || 'offline');
-  const [statusLoading, setStatusLoading] = useState(false);
-  const [statusError, setStatusError] = useState(null);
-  const [isSynced, setIsSynced] = useState(false);
-  const [syncCount, setSyncCount] = useState(0);
-  const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
   const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
-  const [onlineStaff, setOnlineStaff] = useState([]);
+  
+  // Use new presence hook
+  const { 
+    status: currentStatus, 
+    teamPresence, 
+    isSynced, 
+    syncCount, 
+    error: presenceError, 
+    updateStatus: handleStatusChange 
+  } = usePresence(user, localStorage.getItem('mkavs_staff_status') || 'offline');
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -454,127 +462,27 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
-
-    // Heartbeat to keep status fresh for others
-    const heartbeat = setInterval(() => {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
+    
+    // Heartbeat to keep status fresh for Kairon (Legacy compatibility)
+    const kaironHeartbeat = setInterval(() => {
+        socketService.send({
           type: 'staff_online',
           staffName: user.name,
           email: user.email,
-          status: currentStatus
-        }));
-      }
-    }, 5000);
+          status: currentStatus,
+          isChatAgent: true
+        });
+    }, 10000);
 
-    const connect = () => {
-      try {
-        const ws = new WebSocket(WS_URL);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-          setIsSynced(true);
-          ws.send(JSON.stringify({ 
-            type: 'staff_online', 
-            staffName: user.name, 
-            email: user.email,
-            status: currentStatus 
-          }));
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.type === 'staff_list') {
-              setOnlineStaff(data.staff);
-              setSyncCount(data.syncCount || 0);
-            }
-          } catch (e) {
-            console.error("WS Message Error:", e);
-          }
-        };
-
-        ws.onclose = () => {
-          setIsSynced(false);
-          console.log("WS Disconnected. Reconnecting in 1s...");
-          reconnectTimerRef.current = setTimeout(connect, 1000);
-        };
-
-        ws.onerror = (err) => console.warn("Presence WS Error:", err);
-      } catch (e) {
-        console.error("WS Connection failed:", e);
-        reconnectTimerRef.current = setTimeout(connect, 5000);
-      }
-    };
-
-    connect();
-
-    return () => {
-      clearInterval(heartbeat);
-      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
-      if (wsRef.current) {
-        wsRef.current.onclose = null;
-        wsRef.current.close();
-      }
-    };
+    return () => clearInterval(kaironHeartbeat);
   }, [user, currentStatus]);
 
-  const handleStatusChange = async (status) => {
-    if (statusLoading) return;
-    
-    const prevStatus = currentStatus;
-    setCurrentStatus(status);
-    localStorage.setItem('mkavs_staff_status', status);
-    setStatusLoading(true);
-    setStatusError(null);
-
-    try {
-      // Attempt HTTP update (Reliable fallback)
-      fetch(`${API_BASE_URL}/api/staff-status`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: user.name, status })
-      }).catch(e => console.warn("HTTP Status sync failed", e));
-
-      // Attempt WebSocket update (Instant)
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
-          type: 'update_status',
-          staffName: user.name,
-          email: user.email,
-          status: status
-        }));
-      }
-      
-      // We no longer call fetchInitialStatus() here to avoid the flicker.
-      // The WebSocket 'staff_list' broadcast will update the team list naturally.
-      setTimeout(() => {
-        setStatusLoading(false);
-      }, 300);
-    } catch (e) {
-      setStatusError(e.message);
-      setCurrentStatus(prevStatus); // Rollback
-      setStatusLoading(false);
-      setTimeout(() => setStatusError(null), 3000);
-    }
-  };
+  // handleStatusChange is now provided by usePresence hook
 
   const getStaffStatus = (member) => {
-    const userEmail = user.email?.toLowerCase().trim() || '';
     const memberEmail = member.email?.toLowerCase().trim() || '';
-    const userName = user.name?.toLowerCase().trim() || user.displayName?.toLowerCase().trim() || '';
-    const memberName = member.name?.toLowerCase().trim() || '';
-    
-    // If this is ME, always return currentStatus immediately
-    if ((memberEmail && memberEmail === userEmail) || (memberName && memberName === userName)) {
-      return currentStatus;
-    }
-    
-    const s = onlineStaff.find(s => 
-      (s.email && s.email.toLowerCase().trim() === memberEmail) || 
-      (s.name && s.name.toLowerCase().trim() === memberName)
-    );
-    return s ? s.status : 'offline';
+    const presence = teamPresence[memberEmail];
+    return presence ? presence.status : 'offline';
   };
 
   if (!user) {
@@ -719,7 +627,7 @@ export default function App() {
                   title="Kairon Live Staff Dashboard"
                   allow="autoplay; clipboard-write"
                 ></iframe></motion.div>}
-                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
+                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} teamPresence={teamPresence} /></motion.div>}
                 {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
                 {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
                 {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManagement user={user} /></motion.div>}
@@ -788,14 +696,14 @@ export default function App() {
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Your Status</p>
             <AnimatePresence>
-              {statusError && (
+              {presenceError && (
                 <motion.span 
                   initial={{ opacity: 0, x: 5 }} 
                   animate={{ opacity: 1, x: 0 }} 
                   exit={{ opacity: 0 }}
                   className="text-[10px] font-bold text-rose-500"
                 >
-                  {statusError}
+                  {presenceError}
                 </motion.span>
               )}
             </AnimatePresence>
@@ -813,9 +721,8 @@ export default function App() {
                return (
                  <button 
                    key={key}
-                   disabled={statusLoading}
                    onClick={() => handleStatusChange(key)}
-                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'} ${statusLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'}`}
                  >
                    <span className="flex items-center justify-center gap-1.5">
                      {config.icon}
@@ -828,7 +735,10 @@ export default function App() {
           
           <div className="grid grid-cols-2 gap-2">
             <button 
-              onClick={() => setIsZenMode(true)}
+              onClick={() => {
+                setIsZenMode(true);
+                handleStatusChange('zen');
+              }}
               className="py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
             >
               <Coffee size={14} /> Zen Mode
@@ -851,7 +761,7 @@ export default function App() {
             <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Team Status</h3>
             <div className="flex items-center gap-2">
               <button 
-                onClick={() => alert(JSON.stringify(onlineStaff, null, 2))}
+                onClick={() => alert(JSON.stringify(teamPresence, null, 2))}
                 className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
                 title="Debug Sync Data"
               >
