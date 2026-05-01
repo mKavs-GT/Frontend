@@ -741,126 +741,365 @@ p {
     color: #0c19ad;
 }
 
-.founder {
-    background-color: #1a1a1a;
+/* Separation Marquee */
+.about-marquee {
+    width: 100vw;
+    background-color: #111;
+    color: #fff;
+    padding: 1.5rem 0;
+    overflow: hidden;
     position: relative;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    display: flex;
 }
 
-/* ... existing founder styles ... */
-
-.founder::before {
-    content: '';
-    position: absolute;
-    top: 2rem;
-    left: 0;
-    bottom: 2rem;
-    width: 47%;
-    background: linear-gradient(to right, #DDB979, #D1A149 33%);
-    border-radius: 0 150% 150% 0 / 0 100% 100% 0;
-    z-index: 1;
+.about-marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: about-marquee-scroll 25s linear infinite;
 }
 
-/* Ensure content sits above the background */
-.founder .char-content {
-    position: relative;
-    z-index: 2;
-}
-
-.founder .char-text {
-    margin-left: 6rem;
-}
-
-.founder .char-image-container {
-    margin-left: -10rem;
-}
-
-.founder-title {
-    color: var(--color-gold-founder, #DCAE5B);
-    font-size: 5rem;
-    font-weight: 900;
+.about-marquee-track span {
+    font-size: 1.4rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 0.5rem;
-    line-height: 1;
+    padding-right: 1.5rem;
 }
 
-.founder-subtitle {
-    font-size: 2.5rem;
-    color: #fff;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+@keyframes about-marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
-.founder-divider {
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    margin: 1.5rem 0;
-}
-
-.founder-desc {
-    color: #ccc;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    background: transparent;
-    padding: 0;
-    border: none;
-}
-
-.founder-quote-box {
+/* Founder Section */
+.founder-section {
+    background-color: #fafafa;
+    padding: 8rem 2rem;
     position: relative;
-    padding: 1rem 3rem;
-    margin-top: 1rem;
-    background: transparent;
+    overflow: hidden;
+}
+
+.founder-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 5rem;
+    align-items: flex-start;
+}
+
+/* Image Column */
+.founder-image-column.new-layout {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #e6f0f2;
+    aspect-ratio: 4/4.5;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+.founder-image-column.new-layout img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Text Column */
+.founder-text-column.new-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.founder-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.5px;
+}
+
+.founder-role {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.founder-intro {
+    font-size: 1.05rem;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.founder-hr {
     border: none;
+    border-top: 1px solid #eaeaea;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-.quote-mark {
-    font-family: serif;
-    font-size: 6rem;
-    color: rgba(220, 174, 91, 0.2);
-    position: absolute;
-    line-height: 1;
-}
-
-.open-quote {
-    top: -20px;
-    left: 10px;
-}
-
-.close-quote {
-    bottom: -60px;
-    right: 15px;
+.founder-subhead {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
 }
 
 .founder-quote-text {
-    color: #fff;
     font-size: 1.25rem;
+    color: #222;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
     font-style: italic;
-    line-height: 1.8;
-    position: relative;
-    z-index: 2;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.founder-quote-text::before {
+    content: '\201C';
+    color: #0c19ad;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-right: 0.2rem;
+    line-height: 0;
+    vertical-align: -0.2rem;
+}
+
+.founder-quote-text::after {
+    content: '\201D';
+    color: #0c19ad;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-left: 0.1rem;
+    line-height: 0;
+    vertical-align: -0.6rem;
+}
+
+.founder-checklist-title {
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.founder-checklist {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
-.founder-signature-container {
+.founder-checklist li {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.5;
 }
 
-.founder-signature-image {
-    width: 200px;
-    height: auto;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    /* Assuming sign.png is black or needs to be white/gold, adjust as needed */
+.founder-checklist li i {
+    color: #111;
+    font-size: 1.2rem;
+    margin-top: 0.15rem;
 }
 
+.founder-linkedin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0c19ad;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    align-self: flex-start;
+}
+
+.founder-linkedin-btn:hover {
+    color: #111;
+    transform: translateX(5px);
+}
+
+@media (max-width: 900px) {
+    .founder-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+
+/* Team Section */
+.team-section {
+    background-color: #fafafa;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+    margin-bottom: 5rem;
+}
+
+.team-header-left {
+    flex: 1;
+}
+
+.team-tag {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.team-tag sup {
+    font-size: 0.6em;
+    vertical-align: super;
+    margin-left: 0.1rem;
+}
+
+.team-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #111;
+    text-transform: none;
+    letter-spacing: -1px;
+}
+
+.team-header-right {
+    flex: 1;
+    padding-top: 2rem;
+}
+
+.team-desc {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-member-img {
+    width: 100%;
+    aspect-ratio: 3.5/4;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background-color: #eee;
+}
+
+.team-member-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-member:hover .team-member-img img {
+    transform: scale(1.05);
+}
+
+.team-member-info {
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.team-member-role-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.team-member-role {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.team-member-name {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0;
+    margin-bottom: 0.25rem;
+}
+
+.team-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #f0f0f0;
+    color: #444;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.85rem;
+}
+
+.team-social-link:hover {
+    background-color: #0c19ad;
+    color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .team-header {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .team-header-right {
+        padding-top: 0;
+    }
+
+    .team-title {
+        font-size: 2.5rem;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 
 /* CTA Section */
