@@ -353,20 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
     };
 
-        if (!recordingLink && !notes && (!documents || documents.length === 0)) {
-            bodyHtml = `
-                <div style="padding: 60px 20px; text-align: center; color: var(--text-muted); opacity: 0.6;">
-                    <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
-                    <p style="font-size: 14px; font-weight: 700;">No additional assets were shared for this session.</p>
-                </div>
-            `;
-        }
-
-        document.getElementById('modalBody').innerHTML = bodyHtml;
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    };
-
     window.closeMeetingModal = function() {
         document.getElementById('meetingResourceModal').style.display = 'none';
         document.body.style.overflow = 'auto';
