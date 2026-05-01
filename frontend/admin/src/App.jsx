@@ -30,7 +30,7 @@ import {
   Folder
 } from 'lucide-react';
 import { API_BASE_URL, WS_URL } from './config';
-import { usePresence } from './hooks/usePresence';
+import { useTeamPresence } from './hooks/useTeamPresence';
 import socketService from './services/SocketService';
 // Helper to handle lazy loading errors (e.g. when a new version is deployed and old chunks are gone)
 const lazyWithRetry = (componentImport) =>
@@ -140,17 +140,19 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
 
-  const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
-  
-  // Use new presence hook
+  // Use new team presence hook
   const { 
-    status: currentStatus, 
-    teamPresence, 
+    presenceMap, 
     isSynced, 
-    syncCount, 
-    error: presenceError, 
-    updateStatus: handleStatusChange 
-  } = usePresence(user, localStorage.getItem('mkavs_staff_status') || 'offline');
+    updateMyStatus: handleStatusChange,
+    getMemberPresence
+  } = useTeamPresence(user);
+
+  // Derived current user status
+  const currentStatus = useMemo(() => {
+    if (!user) return 'offline';
+    return getMemberPresence(user.email).status;
+  }, [user, getMemberPresence]);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
@@ -479,11 +481,7 @@ export default function App() {
 
   // handleStatusChange is now provided by usePresence hook
 
-  const getStaffStatus = (member) => {
-    const memberEmail = member.email?.toLowerCase().trim() || '';
-    const presence = teamPresence[memberEmail];
-    return presence ? presence.status : 'offline';
-  };
+  // getStaffStatus is replaced by getMemberPresence from hook
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
@@ -775,25 +773,17 @@ export default function App() {
           
           <div className="space-y-2">
             {TEAM_MEMBERS.map(member => {
-              const userEmail = user?.email?.toLowerCase().trim() || '';
-              const userName = (user?.name || user?.displayName)?.toLowerCase().trim() || '';
               const memberEmail = member.email?.toLowerCase().trim() || '';
-              const memberName = member.name?.toLowerCase().trim() || '';
+              const presence = getMemberPresence(memberEmail);
               
-              const isMe = (memberEmail && memberEmail === userEmail) || (memberName && memberName === userName);
-              
-              // Get data from teamPresence
-              const presence = teamPresence[memberEmail] || {};
-              const displayStatus = isMe ? currentStatus : (presence.status || 'offline');
-              const isOnline = isMe ? true : (presence.isOnline || false);
-
               return (
                 <TeamMember 
                   key={member.email}
                   name={member.name} 
                   role={member.role} 
-                  status={displayStatus} 
-                  isOnline={isOnline}
+                  status={presence.status} 
+                  isOnline={presence.isOnline}
+                  isSyncing={presence.isSyncing}
                   avatar={member.avatar} 
                 />
               );
@@ -811,7 +801,7 @@ export default function App() {
               <div className="flex items-center gap-1.5">
                 <div className={`w-1.5 h-1.5 rounded-full ${isSynced ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 animate-pulse'}`}></div>
                 <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">
-                  {isSynced ? `Synced (${syncCount})` : 'Offline'}
+                  {isSynced ? 'Synced' : 'Offline'}
                 </span>
               </div>
             </div>
@@ -862,8 +852,10 @@ function SidebarItem({ icon, active, onClick, tooltip }) {
   );
 }
 
-function TeamMember({ name, role, status, isOnline, avatar }) {
-  const config = STATUS_CONFIG[status] || STATUS_CONFIG.offline;
+function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
+  const config = isSyncing 
+    ? { label: 'SYNCING...', color: 'gray', icon: <Clock size={10} className="animate-spin" /> }
+    : (STATUS_CONFIG[status] || STATUS_CONFIG.offline);
   
   const statusColors = {
     green: 'bg-emerald-500 shadow-emerald-500/20',
@@ -891,8 +883,10 @@ function TeamMember({ name, role, status, isOnline, avatar }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{name}</h4>
-          <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-500`}>
+          <h4 className={`text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate ${isSyncing ? 'text-zinc-400 italic' : 'text-zinc-900 dark:text-white'}`}>
+            {name}
+          </h4>
+          <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-500 ${isSyncing ? 'opacity-50' : ''}`}>
             {config.label}
           </span>
         </div>

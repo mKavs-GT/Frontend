@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, CheckCircle, XCircle, ChevronDown, User, Calendar, Activity, Zap } from 'lucide-react';
 import { TEAM_MEMBERS } from '../constants/users';
+import { useTeamPresence } from '../hooks/useTeamPresence';
 
 const mockTeamData = [
   { id: 1, name: 'Krishawn Rahul', role: 'Executive Admin', avatar: 'https://i.pravatar.cc/150?u=krishawn', daily: '9.5h', weekly: '48h', monthly: '190h', status: 'online', tasks: 2 },
@@ -17,7 +18,8 @@ const mockRequests = [
   { id: 102, name: 'Michael Antony', date: 'Apr 21', total: '8h', breakdown: '5h on Backend Setup, 3h on DB Migration', avatar: 'https://i.pravatar.cc/150?u=michael' },
 ];
 
-export default function TeamTracker({ user, teamPresence = {} }) {
+export default function TeamTracker({ user }) {
+  const { getMemberPresence } = useTeamPresence(user);
   const [timeFilter, setTimeFilter] = useState('weekly'); // daily, weekly, monthly
   const [requests, setRequests] = useState(mockRequests);
 
@@ -47,7 +49,7 @@ export default function TeamTracker({ user, teamPresence = {} }) {
              </h3>
              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 relative z-10">
                 {TEAM_MEMBERS.map(member => {
-                  const presence = teamPresence[member.email.toLowerCase().trim()] || {};
+                  const presence = getMemberPresence(member.email);
                   const status = presence.status || 'offline';
                   const isOnline = presence.isOnline || false;
                   
@@ -92,7 +94,7 @@ export default function TeamTracker({ user, teamPresence = {} }) {
 
             <div className="flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar">
               {TEAM_MEMBERS.map(member => {
-                const presence = teamPresence[member.email.toLowerCase().trim()] || {};
+                const presence = getMemberPresence(member.email);
                 const status = presence.status || 'offline';
                 const isOnline = presence.isOnline || false;
                 
