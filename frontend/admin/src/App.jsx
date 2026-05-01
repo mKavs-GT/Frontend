@@ -424,15 +424,6 @@ export default function App() {
     );
   }
 
-  const fetchInitialStatus = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/staff-status`);
-      const data = await res.json();
-      if (data.staff) setOnlineStaff(data.staff);
-    } catch (e) {
-      console.warn("Failed to fetch initial staff status", e);
-    }
-  };
 
   const fetchTicketStats = async () => {
     try {
@@ -457,7 +448,6 @@ export default function App() {
 
   useEffect(() => {
     if (user?.token) {
-      fetchInitialStatus();
       fetchTicketStats();
     }
   }, [user]);
@@ -625,7 +615,7 @@ export default function App() {
                   title="Kairon Live Staff Dashboard"
                   allow="autoplay; clipboard-write"
                 ></iframe></motion.div>}
-                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} teamPresence={teamPresence} /></motion.div>}
+                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} /></motion.div>}
                 {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
                 {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
                 {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManagement user={user} /></motion.div>}
@@ -747,7 +737,7 @@ export default function App() {
             <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Team Status</h3>
             <div className="flex items-center gap-2">
               <button 
-                onClick={() => alert(JSON.stringify(teamPresence, null, 2))}
+                onClick={() => alert(JSON.stringify(presenceMap, null, 2))}
                 className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
                 title="Debug Sync Data"
               >
