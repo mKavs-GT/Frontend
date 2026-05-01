@@ -10,6 +10,30 @@ const getImageUrl = (imagePath) => {
   return `${API_BASE_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
 
+const openGmailReply = (email, name = 'there', service = 'Consultation') => {
+  if (!email || !email.includes('@')) {
+    alert("Invalid or missing email address.");
+    return;
+  }
+
+  const subject = encodeURIComponent(`Re: Your ${service} Consultation Request - MKAVS`);
+  const body = encodeURIComponent(`Hi ${name},\n\nThank you for reaching out regarding your interest in our ${service} services. I've reviewed your request and would love to discuss how we can help.\n\nBest regards,\nAdmin Team`);
+
+  // Primary Gmail URL (fs=1 opens in fullscreen compose mode)
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+  
+  // Standard mailto fallback
+  const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+
+  // Attempt to open Gmail in a new tab
+  const newTab = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+  
+  // If browser blocks the popup or Gmail fails to open, fallback to mailto
+  if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+    window.location.href = mailtoUrl;
+  }
+};
+
 const mockUsers = [
   { id: 1, name: 'Alice Waverly', email: 'alice@quantum.io', phone: '+1 555-0101', company: 'Quantum Tech', role: 'CEO', signedUp: '2026-04-10', status: 'Active Trial', location: 'San Francisco, CA', ltv: '$0.00' },
   { id: 2, name: 'David Chen', email: 'david.c@nexus.net', phone: '+1 555-0102', company: 'Nexus Logistics', role: 'Operations', signedUp: '2026-04-12', status: 'Pro Subscriber', location: 'New York, NY', ltv: '$12,450' },
@@ -473,7 +497,10 @@ export default function CRM({ user }) {
                 </div>
 
                 <div className="flex gap-2 mt-auto">
-                  <button className="flex-1 py-2.5 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-xs font-bold transition-colors">
+                  <button 
+                    onClick={() => openGmailReply(req.email, req.name, req.service)}
+                    className="flex-1 py-2.5 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-xs font-bold transition-colors"
+                  >
                     Reply
                   </button>
                   <button className="w-10 flex items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
