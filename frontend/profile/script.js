@@ -263,6 +263,115 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = html;
     }
 
+    // Meeting Modal Handlers
+    window.openMeetingModal = function(title, dateStr, status, recordingLink, notes, documentsJson) {
+        const modal = document.getElementById('meetingResourceModal');
+        const documents = JSON.parse(decodeURIComponent(documentsJson));
+        
+        document.getElementById('modalMeetingTitle').textContent = title;
+        document.getElementById('modalMeetingDate').textContent = dateStr;
+        const statusEl = document.getElementById('modalMeetingStatus');
+        statusEl.textContent = status;
+        statusEl.style.color = status === 'Completed' ? '#00ff88' : '#ff3b30';
+        statusEl.style.background = status === 'Completed' ? 'rgba(0,255,136,0.1)' : 'rgba(255,59,48,0.1)';
+        statusEl.style.borderColor = status === 'Completed' ? 'rgba(0,255,136,0.2)' : 'rgba(255,59,48,0.2)';
+
+        let bodyHtml = '';
+
+        // Recording Section
+        if (recordingLink) {
+            bodyHtml += `
+                <div style="margin-bottom: 32px;">
+                    <h4 style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-video"></i> Session Recording
+                    </h4>
+                    <a href="${recordingLink}" target="_blank" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(204, 255, 0, 0.03); border: 1px solid rgba(204, 255, 0, 0.1); border-radius: 20px; text-decoration: none; transition: 0.3s;" onmouseover="this.style.background='rgba(204, 255, 0, 0.06)'; this.style.borderColor='rgba(204, 255, 0, 0.2)';" onmouseout="this.style.background='rgba(204, 255, 0, 0.03)'; this.style.borderColor='rgba(204, 255, 0, 0.1)';">
+                        <div style="width: 44px; height: 44px; border-radius: 14px; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <p style="margin: 0; font-size: 14px; font-weight: 800; color: #fff;">Watch Cloud Recording</p>
+                            <p style="margin: 2px 0 0; font-size: 11px; color: var(--text-muted); font-weight: 600;">Access the full video archive</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 0.8rem;"></i>
+                    </a>
+                </div>
+            `;
+        }
+
+        // Notes Section
+        if (notes) {
+            bodyHtml += `
+                <div style="margin-bottom: 32px;">
+                    <h4 style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-note-sticky"></i> Meeting Summary
+                    </h4>
+                    <div style="padding: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;">
+                        <p style="margin: 0; font-size: 14px; color: #cbd5e1; line-height: 1.7; font-weight: 500;">${notes}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Documents Section
+        if (documents && documents.length > 0) {
+            bodyHtml += `
+                <div>
+                    <h4 style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-folder-open"></i> Shared Assets & Docs
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                        ${documents.map(doc => {
+                            const downloadUrl = doc.path.startsWith('http') ? doc.path : `/api/download?file=${encodeURIComponent(doc.path)}`;
+                            return `
+                                <a href="${downloadUrl}" target="_blank" style="display: flex; align-items: center; gap: 14px; padding: 14px 20px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 16px; text-decoration: none; transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.04)'; this.style.borderColor='rgba(255,255,255,0.08)';" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.04)';">
+                                    <i class="fa-solid fa-file-lines" style="color: var(--text-muted); font-size: 1rem;"></i>
+                                    <div style="flex: 1;">
+                                        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #fff;">${doc.name}</p>
+                                        <p style="margin: 2px 0 0; font-size: 10px; color: var(--text-muted); font-weight: 600;">${doc.size || 'Unknown size'}</p>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-down-to-bracket" style="color: var(--text-muted); font-size: 0.8rem;"></i>
+                                </a>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        if (!recordingLink && !notes && (!documents || documents.length === 0)) {
+            bodyHtml = `
+                <div style="padding: 60px 20px; text-align: center; color: var(--text-muted); opacity: 0.6;">
+                    <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
+                    <p style="font-size: 14px; font-weight: 700;">No additional assets were shared for this session.</p>
+                </div>
+            `;
+        }
+
+        document.getElementById('modalBody').innerHTML = bodyHtml;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+        if (!recordingLink && !notes && (!documents || documents.length === 0)) {
+            bodyHtml = `
+                <div style="padding: 60px 20px; text-align: center; color: var(--text-muted); opacity: 0.6;">
+                    <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
+                    <p style="font-size: 14px; font-weight: 700;">No additional assets were shared for this session.</p>
+                </div>
+            `;
+        }
+
+        document.getElementById('modalBody').innerHTML = bodyHtml;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeMeetingModal = function() {
+        document.getElementById('meetingResourceModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
     // Render Meetings
     function renderMeetings(adminData) {
         const upContainer = document.getElementById('upcomingMeetingsContainer');
@@ -270,39 +379,81 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!upContainer || !histContainer) return;
 
         const meetings = adminData?.meetings || [];
-        const upcoming = meetings.filter(m => m.status === 'Upcoming');
-        const history = meetings.filter(m => m.status !== 'Upcoming');
+        const upcoming = meetings.filter(m => m.status === 'Upcoming').sort((a, b) => new Date(a.date) - new Date(b.date));
+        const history = meetings.filter(m => m.status !== 'Upcoming').sort((a, b) => new Date(b.date) - new Date(a.date));
 
         if (upcoming.length === 0) {
-            upContainer.innerHTML = '<div class="empty-consultation">No upcoming meetings scheduled.</div>';
+            upContainer.innerHTML = `
+                <div style="padding: 40px; text-align: center; color: var(--text-muted); background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.05); border-radius: 24px;">
+                    <i class="fa-solid fa-calendar-day" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.2;"></i>
+                    <p style="font-size: 12px; font-weight: 500;">No upcoming meetings. <a href="/consult/consult.html" style="color: var(--accent); text-decoration: none; font-weight: 700;">Schedule one?</a></p>
+                </div>`;
         } else {
             upContainer.innerHTML = upcoming.map(m => `
-                <div class="meeting-card">
-                    <div class="meeting-date" style="padding: 10px; text-align: center;">
-                        <span class="day" style="font-size: 1.2rem; display: block; font-weight: bold; color: var(--accent);">${m.date}</span>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; margin-bottom: 12px; position: relative; overflow: hidden; transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.025)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #000; box-shadow: 0 10px 30px rgba(204, 255, 0, 0.2);">
+                            <span style="font-size: 10px; font-weight: 900; text-transform: uppercase;">${new Date(m.date).toLocaleDateString([], { month: 'short' })}</span>
+                            <span style="font-size: 1.4rem; font-weight: 900; line-height: 1;">${new Date(m.date).getDate()}</span>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 16px; font-weight: 800; color: #fff; margin: 0;">${m.title}</h4>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px;">
+                                <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;"><i class="fa-regular fa-clock" style="margin-right: 4px;"></i> ${m.time}</span>
+                                <span style="width: 4px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 50%;"></span>
+                                <span style="font-size: 11px; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Confirmed</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="meeting-details">
-                        <h4>${m.title}</h4>
-                        <p>${m.time}</p>
-                    </div>
-                    <div class="meeting-actions">
-                        ${m.link ? `<a href="${m.link}" target="_blank" class="btn-primary join-btn" style="text-decoration:none;">Join Now</a>` : ''}
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        ${m.link ? `
+                            <a href="${m.link}" target="_blank" class="btn-primary" style="padding: 10px 24px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; box-shadow: 0 8px 25px rgba(204, 255, 0, 0.25);">Join Session</a>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
         }
 
         if (history.length === 0) {
-            histContainer.innerHTML = '<div class="empty-consultation">No meeting history.</div>';
+            histContainer.innerHTML = `
+                <div style="padding: 40px; text-align: center; color: var(--text-muted); opacity: 0.6;">
+                    <i class="fa-solid fa-clock-rotate-left" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.2;"></i>
+                    <p style="font-size: 12px; font-weight: 500;">Your past sessions will appear here.</p>
+                </div>`;
         } else {
-            histContainer.innerHTML = history.map(m => `
-                <div class="history-item">
-                    <div>
-                        <h5>${m.title}</h5>
-                        <p class="meta">${m.date} at ${m.time} - <span style="color: ${m.status === 'Completed' ? 'var(--accent)' : 'var(--text-danger)'}">${m.status}</span></p>
+            const assets = adminData?.meetingAssets || {};
+            histContainer.innerHTML = history.map(m => {
+                const recording = (assets.recordings || []).find(r => r.meetingTitle === m.title && r.meetingDate === m.date);
+                const note = (assets.notes || []).find(n => n.meetingTitle === m.title && n.meetingDate === m.date);
+                const docs = (assets.documents || []).filter(d => d.meetingTitle === m.title && d.meetingDate === m.date);
+
+                const docsJson = encodeURIComponent(JSON.stringify(docs));
+                const dateStr = new Date(m.date).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+                const hasAssets = recording?.link || docs.length > 0;
+                
+                return `
+                <div onclick="openMeetingModal('${m.title.replace(/'/g, "\\'")}', '${dateStr}', '${m.status}', '${(recording?.link || '').replace(/'/g, "\\'")}', '${(note?.content || '').replace(/'/g, "\\'")}', '${docsJson}')" 
+                     style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 20px; margin-bottom: 10px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;"
+                     onmouseover="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(-2px)';"
+                     onmouseout="this.style.background='rgba(255,255,255,0.01)'; this.style.borderColor='rgba(255,255,255,0.04)'; this.style.transform='translateY(0)';"
+                >
+                    <div style="display: flex; align-items: center; gap: 18px;">
+                        <div style="width: 40px; height: 40px; border-radius: 12px; background: ${m.status === 'Completed' ? 'rgba(0, 255, 136, 0.05)' : 'rgba(255, 59, 48, 0.05)'}; border: 1px solid ${m.status === 'Completed' ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 59, 48, 0.1)'}; display: flex; align-items: center; justify-content: center; color: ${m.status === 'Completed' ? '#00ff88' : '#ff3b30'};">
+                            <i class="fa-solid ${m.status === 'Completed' ? 'fa-check' : 'fa-xmark'}" style="font-size: 0.9rem;"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 14px; font-weight: 700; color: #fff; margin: 0;">${m.title}</h5>
+                            <p style="font-size: 10px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;">${dateStr} at ${m.time}</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        ${hasAssets ? `
+                            <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: rgba(204, 255, 0, 0.1); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(204, 255, 0, 0.15); text-transform: uppercase; letter-spacing: 0.5px;">Assets Ready</span>
+                        ` : ''}
+                        <i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 0.7rem; opacity: 0.5;"></i>
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
         }
     }
 
@@ -374,65 +525,202 @@ document.addEventListener('DOMContentLoaded', () => {
                     downloadLink = `${MKAVS_CONFIG.API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
                 }
 
+                const isPaid = i.status?.toLowerCase() === 'paid';
+                const method = i.paymentMethod || 'Other';
+                
+                // Color mapping for methods
+                const methodColors = {
+                    'UPI': { bg: 'rgba(59, 130, 246, 0.1)', text: '#60a5fa', border: 'rgba(59, 130, 246, 0.2)' },
+                    'Bank Transfer': { bg: 'rgba(16, 185, 129, 0.1)', text: '#34d399', border: 'rgba(16, 185, 129, 0.2)' },
+                    'Credit Card': { bg: 'rgba(239, 68, 68, 0.1)', text: '#f87171', border: 'rgba(239, 68, 68, 0.2)' },
+                    'Stripe': { bg: 'rgba(99, 102, 241, 0.1)', text: '#818cf8', border: 'rgba(99, 102, 241, 0.2)' }
+                };
+                const mStyle = methodColors[method] || { bg: 'rgba(255, 255, 255, 0.05)', text: '#94a3b8', border: 'rgba(255, 255, 255, 0.1)' };
+
                 return `
-                <div class="invoice-item" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; cursor: default;" onmouseover="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='rgba(255,255,255,0.08)';" onmouseout="this.style.background='rgba(255,255,255,0.01)'; this.style.borderColor='rgba(255,255,255,0.04)';">
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                            <i class="fa-solid fa-file-invoice" style="font-size: 1.1rem;"></i>
+                <div class="invoice-item" style="display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; margin-bottom: 14px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: default; position: relative; overflow: hidden;" onmouseover="this.style.background='rgba(255,255,255,0.03)'; this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255,255,255,0.015)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.transform='translateY(0)';">
+                    <div style="display: flex; align-items: center; gap: 20px; flex: 1; min-width: 0;">
+                        <div style="width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; color: var(--text-muted); flex-shrink: 0;">
+                            <i class="fa-solid fa-receipt" style="font-size: 1.2rem; opacity: 0.8;"></i>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 2px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span class="inv-date" style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;">${i.date}</span>
-                                ${i.paymentMethod ? `<span style="width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span><span style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(255,255,255,0.03); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);">${i.paymentMethod}</span>` : ''}
-                                ${i.transactionId ? `<span style="width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span><span style="font-size: 9px; color: var(--accent); opacity: 0.7; font-family: monospace;">ID: ${i.transactionId}</span>` : ''}
+                        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+                                <span style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">${i.date}</span>
+                                <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span>
+                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: ${mStyle.bg}; color: ${mStyle.text}; padding: 2px 8px; border-radius: 6px; border: 1px solid ${mStyle.border};">${method}</span>
+                                ${i.transactionId ? `
+                                    <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.1);"></span>
+                                    <span style="font-size: 10px; color: var(--accent); font-weight: 700; letter-spacing: 0.2px; opacity: 0.9; font-family: 'JetBrains Mono', 'Courier New', monospace;">ID: ${i.transactionId}</span>
+                                ` : ''}
                             </div>
-                            <span class="inv-desc" style="font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.2px;">${i.description}</span>
+                            <span style="font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">${i.description}</span>
                         </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 20px;">
+                    
+                    <div style="display: flex; align-items: center; gap: 32px; flex-shrink: 0; margin-left: 20px;">
                         <div style="text-align: right;">
-                            <span class="inv-amount" style="display: block; font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 2px;">${i.amount}</span>
+                            <span style="display: block; font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 2px;">${i.amount}</span>
                             <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
-                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);"></span>
-                                <span class="status status-paid" style="font-size: 9px; color: #00ff88; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Paid</span>
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 12px rgba(0, 255, 136, 0.5);"></span>
+                                <span style="font-size: 10px; color: #00ff88; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">${i.status || 'PAID'}</span>
                             </div>
                         </div>
+                        
                         ${downloadLink ? `
-                            <a href="${downloadLink}" target="_blank" rel="noreferrer" title="Download Invoice" style="width: 32px; height: 32px; border-radius: 10px; background: rgba(204, 255, 0, 0.05); border: 1px solid rgba(204, 255, 0, 0.1); color: var(--accent); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000';" onmouseout="this.style.background='rgba(204, 255, 0, 0.05)'; this.style.color='var(--accent)';">
-                                <i class="fa-solid fa-download" style="font-size: 0.85rem;"></i>
+                            <a href="${downloadLink}" target="_blank" rel="noreferrer" title="Download Official Invoice" style="width: 40px; height: 40px; border-radius: 12px; background: rgba(204, 255, 0, 0.04); border: 1px solid rgba(204, 255, 0, 0.1); color: var(--accent); display: flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none;" onmouseover="this.style.background='var(--accent)'; this.style.color='#000'; this.style.boxShadow='0 0 15px rgba(204, 255, 0, 0.2)';" onmouseout="this.style.background='rgba(204, 255, 0, 0.04)'; this.style.color='var(--accent)'; this.style.boxShadow='none';">
+                                <i class="fa-solid fa-arrow-down-to-bracket" style="font-size: 1rem;"></i>
                             </a>
+                        ` : `
+                            <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;" title="Invoice not attached">
+                                <i class="fa-solid fa-slash" style="font-size: 0.8rem;"></i>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `}).join('');
+        }
+        }
+    }
+
+    // Render Messages
+    let showAllMessages = false;
+    window.toggleArchivedMessages = () => {
+        showAllMessages = !showAllMessages;
+        // Re-render the tab
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (activeTab && activeTab.textContent.includes('Messages')) {
+            activeTab.click(); // Trigger re-render
+        }
+    };
+
+    function renderMessages(adminData) {
+        const msgContainer = document.getElementById('messagesContainer');
+        if (!msgContainer) return;
+
+        const allMessages = adminData?.messages || [];
+        const hasArchived = allMessages.some(m => m.isArchived);
+        const messages = allMessages.filter(m => showAllMessages || !m.isArchived);
+        
+        // Header and Compose area
+        let html = `
+            <div style="margin-bottom: 24px; padding: 24px; background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.04); border-radius: 24px;">
+                <h4 style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-paper-plane"></i> Quick Message to Admin
+                </h4>
+                <div style="position: relative;">
+                    <textarea id="clientMsgInput" placeholder="How can we help you today?..." style="width: 100%; height: 100px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px; color: #fff; font-size: 13px; resize: none; focus: outline-none; transition: all 0.3s ease;" onfocus="this.style.borderColor='var(--accent)'; this.style.background='rgba(0,0,0,0.3)';" onblur="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(0,0,0,0.2)';"></textarea>
+                    <button onclick="sendClientMessage()" style="position: absolute; bottom: 12px; right: 12px; padding: 8px 16px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(204, 255, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        Send Message <i class="fa-solid fa-arrow-right" style="font-size: 0.7rem;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h4 style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin: 0;">
+                    <i class="fa-solid fa-comments"></i> Direct Support Thread
+                </h4>
+                ${hasArchived ? `
+                    <button onclick="toggleArchivedMessages()" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); padding: 4px 12px; border-radius: 8px; font-size: 9px; font-weight: 800; cursor: pointer; transition: all 0.3s;">
+                        ${showAllMessages ? 'HIDE HISTORY' : 'SHOW HISTORY'}
+                    </button>
+                ` : ''}
+            </div>
+            
+            <div id="messageThread" style="display: flex; flex-direction: column; gap: 12px;">
+        `;
+
+        if (messages.length === 0) {
+            html += `
+                <div style="padding: 40px; text-align: center; color: var(--text-muted); background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.05); border-radius: 24px;">
+                    <i class="fa-solid fa-comment-dots" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.1;"></i>
+                    <p style="font-size: 13px; font-weight: 500;">Your conversation history will appear here.</p>
+                </div>`;
+        } else {
+            const sorted = [...messages].reverse();
+            html += sorted.map(m => {
+                const isAdmin = m.senderRole === 'admin';
+                const date = new Date(m.date);
+                const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                
+                // Subject colors
+                const getSubjectStyles = (sub) => {
+                    switch(sub) {
+                        case 'Milestone Reached': return 'background: rgba(0, 255, 136, 0.1); border-color: rgba(0, 255, 136, 0.2); color: #00ff88;';
+                        case 'Action Required': return 'background: rgba(255, 170, 0, 0.1); border-color: rgba(255, 170, 0, 0.2); color: #ffaa00;';
+                        case 'Billing Update': return 'background: rgba(255, 0, 102, 0.1); border-color: rgba(255, 0, 102, 0.2); color: #ff0066;';
+                        case 'File Uploaded': return 'background: rgba(0, 204, 255, 0.1); border-color: rgba(0, 204, 255, 0.2); color: #00ccff;';
+                        default: return 'background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff;';
+                    }
+                };
+
+                return `
+                <div style="display: flex; flex-direction: column; align-items: ${isAdmin ? 'flex-start' : 'flex-end'}; max-width: 90%; align-self: ${isAdmin ? 'flex-start' : 'flex-end'}; position: relative; margin-bottom: 8px; ${m.isArchived ? 'opacity: 0.5;' : ''}">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 0 4px;">
+                        ${isAdmin ? `<div style="width: 24px; height: 24px; border-radius: 8px; background: var(--accent); color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fa-solid fa-headset"></i></div>` : ''}
+                        <span style="font-size: 10px; font-weight: 900; color: ${isAdmin ? 'var(--accent)' : 'var(--text-muted)'}; text-transform: uppercase; letter-spacing: 1px;">${isAdmin ? 'Official Support' : 'Your Message'}</span>
+                        <span style="font-size: 9px; color: rgba(255,255,255,0.2); font-weight: 700;">${dateStr} • ${timeStr}</span>
+                    </div>
+                    
+                    <div style="padding: 18px 24px; background: ${isAdmin ? 'rgba(255,255,255,0.02)' : 'rgba(204, 255, 0, 0.03)'}; border: 1px solid ${isAdmin ? 'rgba(255,255,255,0.05)' : 'rgba(204, 255, 0, 0.1)'}; border-radius: ${isAdmin ? '4px 24px 24px 24px' : '24px 24px 4px 24px'}; position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.1);" onmouseover="this.style.background='${isAdmin ? 'rgba(255,255,255,0.04)' : 'rgba(204, 255, 0, 0.05)'}'; this.style.borderColor='${isAdmin ? 'rgba(255,255,255,0.1)' : 'rgba(204, 255, 0, 0.2)'}';">
+                        
+                        ${m.subject && m.subject !== 'Update' ? `
+                            <div style="display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 6px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; border: 1px solid transparent; ${getSubjectStyles(m.subject)}">
+                                ${m.subject}
+                            </div>
+                        ` : ''}
+
+                        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: ${isAdmin ? '#cbd5e1' : '#fff'}; font-weight: 500; letter-spacing: 0.2px;">${m.content}</p>
+                        
+                        ${!m.isRead && isAdmin ? `
+                            <div style="position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 4px;">
+                                <span style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 2s infinite;"></span>
+                                <span style="font-size: 8px; color: var(--accent); font-weight: 900; text-transform: uppercase;">New</span>
+                            </div>
                         ` : ''}
                     </div>
                 </div>
             `}).join('');
         }
+        
+        html += `</div>`;
+        msgContainer.innerHTML = html;
     }
 
-    // Render Messages
-    function renderMessages(adminData) {
-        const msgContainer = document.getElementById('messagesContainer');
-        if (!msgContainer) return;
+    // Client Message Logic
+    window.sendClientMessage = async function() {
+        const input = document.getElementById('clientMsgInput');
+        const content = input.value.trim();
+        if (!content) return;
 
-        const messages = adminData?.messages || [];
-        if (messages.length === 0) {
-            msgContainer.innerHTML = '<div class="empty-consultation">Inbox is empty.</div>';
-        } else {
-            // Reverse so newest is first
-            const sorted = [...messages].reverse();
-            msgContainer.innerHTML = sorted.map(m => `
-                <div class="message-item ${m.isRead ? '' : 'unread'}">
-                    <div class="msg-avatar"><img src="../images/LOGOI.png" alt="Admin"></div>
-                    <div class="msg-content">
-                        <div class="msg-header">
-                            <h5>${m.sender || 'System Admin'}</h5>
-                            <span class="time">${new Date(m.date).toLocaleDateString()}</span>
-                        </div>
-                        <p>${m.content}</p>
-                    </div>
-                </div>
-            `).join('');
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`${MKAVS_CONFIG.API_BASE_URL}/api/user/message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Adjust if session based
+                },
+                body: JSON.stringify({ content })
+            });
+
+            if (res.ok) {
+                input.value = '';
+                // Reload data to show new message
+                const data = await res.json();
+                renderMessages({ messages: data.messages });
+            }
+        } catch (err) {
+            console.error('Failed to send message:', err);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
-    }
+    };
 
     // Initialize profile
     loadUserProfile();

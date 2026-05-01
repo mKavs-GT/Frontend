@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar as CalendarIcon, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, ChevronLeft, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2, Plus, FileText, Download, ChevronDown, Smartphone, Wallet } from 'lucide-react';
+import { Users, User, Mail, Phone, Building2, MapPin, Briefcase, Calendar as CalendarIcon, BarChart2, Tag, Paperclip, MessageSquare, CreditCard, Layers, RefreshCw, ChevronRight, ChevronLeft, Loader2, AlertCircle, Folder, ExternalLink, CheckCircle2, Clock, X, Upload, Trash2, Plus, FileText, Download, ChevronDown, Smartphone, Wallet, Send, Sparkles } from 'lucide-react';
 import { DeliveryScheduler } from './ui/delivery-scheduler.jsx';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar } from './ui/calendar';
@@ -13,9 +13,9 @@ import ReactorKnob from './ui/control-knob.jsx';
 
 
 const STATUS_COLORS = {
-  Assigned: 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30',
+  Assigned: 'bg-accent-500/15 text-accent-400 border-accent-500/30',
   Active: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  Progress: 'bg-violet-500/15 text-violet-400 border-violet-500/30',
+  Progress: 'bg-brand-brand-purple-500/15 text-brand-brand-purple-400 border-brand-brand-purple-500/30',
   'On Hold': 'bg-amber-500/15 text-amber-400 border-amber-500/30',
   Completed: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
   Unassigned: 'bg-zinc-800/50 text-zinc-500 border-zinc-700/50',
@@ -24,7 +24,7 @@ const STATUS_COLORS = {
 function Avatar({ src, name, size = 'md' }) {
   const sz = size === 'lg' ? 'w-16 h-16 text-xl' : size === 'sm' ? 'w-9 h-9 text-xs' : 'w-11 h-11 text-sm';
   const initials = (name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-  const colors = ['from-indigo-500 to-purple-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
+  const colors = ['from-accent-500 to-brand-purple-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
   const color = colors[(name || '').charCodeAt(0) % colors.length];
   if (src) return <img src={src.startsWith('http') ? src : `${API_BASE_URL}${src}`} alt={name} className={`${sz} rounded-2xl object-cover ring-2 ring-zinc-800`} />;
   return <div className={`${sz} rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center font-bold text-white ring-2 ring-zinc-800`}>{initials}</div>;
@@ -37,7 +37,7 @@ function Badge({ status }) {
 function ProgressBar({ value = 0 }) {
   return (
     <div className="h-1 bg-zinc-800/80 rounded-full overflow-hidden mt-2">
-      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500" />
+      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-accent-500 via-brand-brand-purple-500 to-brand-purple-500" />
     </div>
   );
 }
@@ -111,7 +111,7 @@ export default function ProjectManagement({ user }) {
       {/* Top Bar */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/50 bg-zinc-900/40 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-500 to-brand-brand-purple-600 flex items-center justify-center shadow-lg shadow-accent-500/20 flex-shrink-0">
             <Layers size={16} className="text-white" />
           </div>
           <div>
@@ -175,10 +175,10 @@ export default function ProjectManagement({ user }) {
                     <button key={client._id + '-icon'}
                       onClick={() => { setSelected(isActive ? null : client); setActiveTab('Overview'); }}
                       title={client.displayName || client.username}
-                      className={`flex items-center justify-center w-full py-1.5 rounded-xl transition-all ${isActive ? 'bg-indigo-500/15' : 'hover:bg-zinc-800/50'}`}>
+                      className={`flex items-center justify-center w-full py-1.5 rounded-xl transition-all ${isActive ? 'bg-accent-500/15' : 'hover:bg-zinc-800/50'}`}>
                       <div className="relative">
                         <Avatar src={client.image} name={client.displayName || client.username} size="sm" />
-                        {isActive && <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-gradient-to-b from-indigo-500 to-violet-500 rounded-full" />}
+                        {isActive && <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-gradient-to-b from-accent-500 to-brand-brand-purple-500 rounded-full" />}
                       </div>
                     </button>
                   );
@@ -201,12 +201,12 @@ export default function ProjectManagement({ user }) {
                       title={client.displayName || client.username}
                       className={`w-full text-left rounded-xl border transition-all duration-200 group/row relative overflow-hidden ${
                         isActive
-                          ? 'bg-indigo-500/10 border-indigo-500/30 shadow-md shadow-indigo-500/10'
+                          ? 'bg-accent-500/10 border-accent-500/30 shadow-md shadow-accent-500/10'
                           : 'bg-zinc-900/0 border-zinc-800/0 hover:bg-zinc-800/50 hover:border-zinc-700/60 hover:shadow-lg hover:shadow-black/20'
                       }`}>
                       {/* Active indicator bar */}
                       {isActive && (
-                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-indigo-500 to-violet-600 rounded-r-full" />
+                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-accent-500 to-brand-brand-purple-600 rounded-r-full" />
                       )}
                       {/* Hover shimmer */}
                       {!isActive && (
@@ -217,7 +217,7 @@ export default function ProjectManagement({ user }) {
                         <div className="relative flex-shrink-0">
                           <svg className="absolute -inset-1 rotate-[-90deg]" width="44" height="44" viewBox="0 0 44 44">
                             <circle cx="22" cy="22" r="19" fill="none" stroke="currentColor" strokeWidth="2"
-                              className={isActive ? 'text-indigo-500/20' : 'text-zinc-800/60'} />
+                              className={isActive ? 'text-accent-500/20' : 'text-zinc-800/60'} />
                             <motion.circle cx="22" cy="22" r="19" fill="none"
                               stroke="url(#pg)"
                               strokeWidth="2" strokeLinecap="round"
@@ -247,7 +247,7 @@ export default function ProjectManagement({ user }) {
                             <div className="flex items-center gap-2 mt-1.5">
                               <div className="flex-1 h-[3px] bg-zinc-800 rounded-full overflow-hidden">
                                 <motion.div
-                                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
+                                  className="h-full rounded-full bg-gradient-to-r from-accent-500 to-brand-brand-purple-500"
                                   initial={{ width: 0 }}
                                   animate={{ width: `${progress}%` }}
                                   transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -303,7 +303,7 @@ export default function ProjectManagement({ user }) {
                       const proj = getProject(selected);
                       const progress = proj?.adminData?.projectProgress || 0;
                       const color = progress >= 80 ? 'from-emerald-500 to-teal-400'
-                        : progress >= 50 ? 'from-indigo-500 via-violet-500 to-purple-500'
+                        : progress >= 50 ? 'from-accent-500 via-brand-brand-purple-500 to-brand-purple-500'
                         : progress >= 20 ? 'from-amber-500 to-orange-400'
                         : 'from-zinc-600 to-zinc-500';
                       return (
@@ -370,7 +370,7 @@ export default function ProjectManagement({ user }) {
                             {t}
                             {activeTab === t && (
                               <motion.div layoutId="tab-underline"
-                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
+                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent-500 to-brand-brand-purple-500 rounded-full"
                               />
                             )}
                           </button>
@@ -386,7 +386,7 @@ export default function ProjectManagement({ user }) {
                       {activeTab === 'Project' && <ProjectTab key="p" client={selected} project={getProject(selected)} authHeader={authHeader} onUpdate={updateClientLocally} />}
                       {activeTab === 'Schedule' && <ScheduleTab key="s" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
                       {activeTab === 'Billing' && <BillingTab key="b" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
-                      {activeTab === 'Messages' && <MessagesTab key="m" client={selected} />}
+                      {activeTab === 'Messages' && <MessagesTab key="m" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
                       {activeTab === 'Assets' && <AssetsTab key="a" client={selected} authHeader={authHeader} onUpdate={updateClientLocally} />}
                     </AnimatePresence>
                   </div>
@@ -410,7 +410,7 @@ function Section({ title, icon: Icon, children }) {
     <div className="bg-zinc-900/40 rounded-2xl p-5 border border-zinc-800/40 backdrop-blur-sm">
       {title && (
         <div className="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-800/50">
-          <div className="w-6 h-6 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center"><Icon size={11} className="text-indigo-400" /></div>
+          <div className="w-6 h-6 rounded-lg bg-accent-500/10 border border-accent-500/20 flex items-center justify-center"><Icon size={11} className="text-accent-400" /></div>
           <p className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{title}</p>
         </div>
       )}
@@ -541,9 +541,9 @@ function OverviewTab({ client, project, authHeader, onUpdate }) {
           <div className="flex flex-col gap-2">
             {ad.deliverables.map((d, i) => (
               <a key={i} href={d.link} target="_blank" rel="noreferrer"
-                className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-indigo-500/40 transition-all group">
+                className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-accent-500/40 transition-all group">
                 <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">{d.title}</span>
-                <ExternalLink size={13} className="text-zinc-600 group-hover:text-indigo-400 transition-colors" />
+                <ExternalLink size={13} className="text-zinc-600 group-hover:text-accent-400 transition-colors" />
               </a>
             ))}
           </div>
@@ -553,12 +553,12 @@ function OverviewTab({ client, project, authHeader, onUpdate }) {
         <Section title="Consultation History" icon={MessageSquare}>
           <div className="flex flex-col gap-3">
             {client.consultations.map((c, i) => (
-              <div key={i} className="group p-4 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 hover:border-indigo-500/30 transition-all duration-300 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div key={i} className="group p-4 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 hover:border-accent-500/30 transition-all duration-300 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent-500 to-brand-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest border border-indigo-500/20">
+                    <span className="px-2 py-1 rounded-md bg-accent-500/10 text-accent-400 text-[10px] font-black uppercase tracking-widest border border-accent-500/20">
                       {c.plan || c.tier || 'General Inquiry'}
                     </span>
                     {c.connectPreference && (
@@ -568,7 +568,7 @@ function OverviewTab({ client, project, authHeader, onUpdate }) {
                     )}
                   </div>
                   <span className="text-xs font-medium text-zinc-500 flex items-center gap-1.5 bg-zinc-950/50 px-2 py-1 rounded-md border border-zinc-800/50">
-                    <CalendarIcon size={12} className="text-indigo-400" />
+                    <CalendarIcon size={12} className="text-accent-400" />
                     {(c.timestamp || c.date) ? new Date(c.timestamp || c.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown Date'}
                   </span>
                 </div>
@@ -701,7 +701,7 @@ function ProjectTab({ client, project, authHeader, onUpdate }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {ad.tasks.map((t, i) => (
                 <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/50 border border-zinc-800/60 group/task hover:border-zinc-700 transition-all">
-                  <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${t.status === 'Completed' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : t.status === 'In Progress' ? 'bg-indigo-500 animate-pulse' : 'bg-zinc-700'}`} />
+                  <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${t.status === 'Completed' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : t.status === 'In Progress' ? 'bg-accent-500 animate-pulse' : 'bg-zinc-700'}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-zinc-300 truncate font-medium">{t.task}</p>
                     <p className="text-[10px] text-zinc-600 mt-0.5">{t.dueDate || 'No date set'}</p>
@@ -769,12 +769,159 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
 
   // Helper to find original index of a meeting in the full array
   const getOriginalIndex = (meeting) => meetings.indexOf(meeting);
+  const [editingResources, setEditingResources] = useState(null); // originalIndex
+  const [resourceForm, setResourceForm] = useState({ recordingLink: '', notes: '', documents: [] });
+  const [uploadingMeetingDoc, setUploadingMeetingDoc] = useState(false);
+  const meetingFileRef = useRef(null);
+
+  const handleOpenResources = (index) => {
+    const m = meetings[index];
+    const assets = client.adminData?.meetingAssets || {};
+    
+    // Find recording and notes for this specific meeting
+    const recording = (assets.recordings || []).find(r => r.meetingTitle === m.title && r.meetingDate === m.date);
+    const note = (assets.notes || []).find(n => n.meetingTitle === m.title && n.meetingDate === m.date);
+    const docs = (assets.documents || []).filter(d => d.meetingTitle === m.title && d.meetingDate === m.date);
+
+    setEditingResources(index);
+    setResourceForm({
+      recordingLink: recording?.link || '',
+      notes: note?.content || '',
+      documents: docs || []
+    });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingMeetingDoc(true);
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('meetingTitle', meetings[editingResources].title);
+    fd.append('meetingDate', meetings[editingResources].date);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/meeting-upload`, {
+        method: 'POST',
+        headers: authHeader,
+        credentials: 'include',
+        body: fd,
+      });
+      const data = await res.json();
+      if (res.ok && data.document) {
+        setResourceForm(prev => ({
+          ...prev,
+          documents: [...prev.documents, data.document]
+        }));
+        
+        // Update local client state immediately for the assets
+        onUpdate(client.email, c => {
+          const currentAssets = c.adminData?.meetingAssets || { recordings: [], documents: [], notes: [] };
+          return {
+            ...c,
+            adminData: {
+              ...c.adminData,
+              meetingAssets: {
+                ...currentAssets,
+                documents: [...(currentAssets.documents || []), data.document]
+              }
+            }
+          };
+        });
+      }
+    } catch (err) {
+      console.error('Meeting file upload failed', err);
+    } finally {
+      setUploadingMeetingDoc(false);
+    }
+  };
+
+  const removeMeetingDoc = async (docPath) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}/meeting-attachment`, {
+        method: 'DELETE',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ filePath: docPath }),
+      });
+      
+      if (res.ok) {
+        setResourceForm(prev => ({
+          ...prev,
+          documents: prev.documents.filter(d => d.path !== docPath)
+        }));
+        
+        onUpdate(client.email, c => ({
+          ...c,
+          adminData: {
+            ...c.adminData,
+            meetingAssets: {
+              ...c.adminData.meetingAssets,
+              documents: (c.adminData.meetingAssets.documents || []).filter(d => d.path !== docPath)
+            }
+          }
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to delete meeting document:', err);
+    }
+  };
+
+  const saveResources = async () => {
+    setLoading(true);
+    const m = meetings[editingResources];
+    const currentAssets = client.adminData?.meetingAssets || { recordings: [], documents: [], notes: [] };
+    
+    // Update recordings
+    let updatedRecordings = [...(currentAssets.recordings || [])];
+    const recIdx = updatedRecordings.findIndex(r => r.meetingTitle === m.title && r.meetingDate === m.date);
+    if (recIdx > -1) {
+      updatedRecordings[recIdx].link = resourceForm.recordingLink;
+    } else {
+      updatedRecordings.push({ meetingTitle: m.title, meetingDate: m.date, link: resourceForm.recordingLink });
+    }
+
+    // Update notes
+    let updatedNotes = [...(currentAssets.notes || [])];
+    const noteIdx = updatedNotes.findIndex(n => n.meetingTitle === m.title && n.meetingDate === m.date);
+    if (noteIdx > -1) {
+      updatedNotes[noteIdx].content = resourceForm.notes;
+    } else {
+      updatedNotes.push({ meetingTitle: m.title, meetingDate: m.date, content: resourceForm.notes });
+    }
+
+    const newAssets = {
+      ...currentAssets,
+      recordings: updatedRecordings,
+      notes: updatedNotes,
+      // documents are already handled by handleFileUpload/removeMeetingDoc for simplicity or we can sync them here too
+      documents: (currentAssets.documents || []) // Assuming documents are kept in sync via upload/delete calls
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { meetingAssets: newAssets } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({ ...c, adminData: { ...c.adminData, meetingAssets: newAssets } }));
+        setEditingResources(null);
+      }
+    } catch (err) {
+      console.error('Failed to save meeting assets:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <TabPanel>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-white flex items-center gap-2"><CalendarIcon className="text-indigo-400" size={18} /> Scheduling</h3>
-        <button onClick={() => setIsAdding(!isAdding)} className="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold transition-colors">
+        <h3 className="text-lg font-bold text-white flex items-center gap-2"><CalendarIcon className="text-accent-400" size={18} /> Scheduling</h3>
+        <button onClick={() => setIsAdding(!isAdding)} className="px-3 py-1.5 rounded-lg bg-accent-500/10 text-accent-400 hover:bg-accent-500/20 text-xs font-bold transition-colors">
           {isAdding ? 'Cancel' : '+ New Meeting'}
         </button>
       </div>
@@ -782,23 +929,21 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
       <AnimatePresence>
         {isAdding && (
           <motion.form 
-            initial={{ opacity: 0, y: 20, scale: 0.98 }} 
-            animate={{ opacity: 1, y: 0, scale: 1 }} 
-            exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="mb-8" 
-            onSubmit={handleAdd}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            onSubmit={handleAdd} 
+            className="mb-8 overflow-hidden"
           >
-            <div className="p-6 rounded-[2rem] bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-sm space-y-6 shadow-2xl">
-              <div className="space-y-4">
+            <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 flex flex-col gap-5">
+              <div className="flex flex-col gap-4">
                 <div className="group">
-                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2.5 ml-1">Meeting Title</label>
+                  <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2.5 ml-1">Meeting Purpose</label>
                   <input 
-                    required 
                     value={form.title} 
                     onChange={e => setForm({...form, title: e.target.value})} 
                     placeholder="e.g., Creative Direction Sync"
-                    className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all" 
+                    className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-accent-500/50 focus:ring-4 focus:ring-accent-500/5 transition-all" 
                   />
                 </div>
                 
@@ -817,15 +962,15 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
                     <motion.div 
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between group overflow-hidden relative"
+                      className="p-4 rounded-2xl bg-accent-500/10 border border-accent-500/20 flex items-center justify-between group overflow-hidden relative"
                     >
-                       <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 blur-2xl pointer-events-none" />
+                       <div className="absolute top-0 right-0 w-24 h-24 bg-accent-500/5 blur-2xl pointer-events-none" />
                        <div className="flex items-center gap-4 relative z-10">
-                          <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-                            <Clock size={18} className="text-indigo-400" />
+                          <div className="w-10 h-10 rounded-xl bg-accent-500/20 border border-accent-500/30 flex items-center justify-center">
+                            <Clock size={18} className="text-accent-400" />
                           </div>
                           <div className="flex flex-col">
-                             <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Confirmed Time Slot</span>
+                             <span className="text-[10px] font-black text-accent-400 uppercase tracking-widest">Confirmed Time Slot</span>
                              <span className="text-sm font-bold text-white">
                                {new Date(form.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })} at {form.time}
                              </span>
@@ -845,9 +990,9 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
                       value={form.link} 
                       onChange={e => setForm({...form, link: e.target.value})} 
                       placeholder="Zoom, Google Meet, or physical address"
-                      className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 pl-11 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all" 
+                      className="w-full bg-zinc-950/50 border border-zinc-800/80 rounded-2xl px-4 py-3.5 pl-11 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-accent-500/50 focus:ring-4 focus:ring-accent-500/5 transition-all" 
                     />
-                    <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-indigo-400 transition-colors" />
+                    <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-accent-400 transition-colors" />
                   </div>
                 </div>
               </div>
@@ -856,7 +1001,7 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
                 <button 
                   type="submit" 
                   disabled={loading || !form.date || !form.time} 
-                  className="flex-1 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white text-sm font-black rounded-2xl transition-all shadow-[0_10px_30px_rgba(79,70,229,0.2)] disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-2 uppercase tracking-widest"
+                  className="flex-1 py-4 bg-gradient-to-r from-accent-500 to-brand-brand-purple-600 hover:from-accent-600 hover:to-brand-brand-purple-700 text-white text-sm font-black rounded-2xl transition-all shadow-[0_10px_30_rgba(79,70,229,0.2)] disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-2 uppercase tracking-widest"
                 >
                   {loading ? <Loader2 size={18} className="animate-spin" /> : (
                     <>
@@ -879,11 +1024,11 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
               return (
                 <div key={i} className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col gap-3 group">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center flex-shrink-0"><CalendarIcon size={16} className="text-indigo-400" /></div>
+                    <div className="w-10 h-10 rounded-xl bg-accent-500/15 border border-accent-500/30 flex items-center justify-center flex-shrink-0"><CalendarIcon size={16} className="text-accent-400" /></div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-white">{m.title}</p>
                       <p className="text-xs text-zinc-400 mt-0.5">{new Date(m.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} {m.time && `at ${m.time}`}</p>
-                      {m.link && <a href={m.link} target="_blank" rel="noreferrer" className="text-[11px] text-indigo-400 hover:text-indigo-300 mt-1.5 inline-flex items-center gap-1"><ExternalLink size={10} /> Join Meeting</a>}
+                      {m.link && <a href={m.link} target="_blank" rel="noreferrer" className="text-[11px] text-accent-400 hover:text-accent-300 mt-1.5 inline-flex items-center gap-1"><ExternalLink size={10} /> Join Meeting</a>}
                     </div>
                   </div>
                   <div className="flex items-center justify-end gap-2 border-t border-zinc-800/50 pt-3 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -899,20 +1044,125 @@ function ScheduleTab({ client, authHeader, onUpdate }) {
       </Section>
 
       {past.length > 0 && (
-        <Section title="Past Meetings" icon={Clock}>
-          <div className="flex flex-col gap-2">
+        <Section title="Meeting Archives" icon={Clock}>
+          <div className="flex flex-col gap-3">
             {past.map((m, i) => {
               const oIndex = getOriginalIndex(m);
+              const isEditing = editingResources === oIndex;
+
               return (
-                <div key={i} className="p-3.5 rounded-xl bg-zinc-950/50 border border-zinc-800/50 flex flex-col gap-2 group">
-                  <div className="flex items-center gap-3">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border flex-shrink-0 ${m.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'}`}>{m.status}</span>
-                    <p className="text-sm font-medium text-zinc-400 truncate">{m.title}</p>
-                    <p className="text-xs text-zinc-600 ml-auto flex-shrink-0">{new Date(m.date).toLocaleDateString()}</p>
+                <div key={i} className="rounded-2xl bg-zinc-950/40 border border-zinc-800/60 overflow-hidden transition-all hover:border-zinc-700/80">
+                  <div className="p-4 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${m.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                         {m.status === 'Completed' ? <CheckCircle2 size={14} /> : <X size={14} />}
+                       </div>
+                       <div className="flex flex-col">
+                         <p className="text-sm font-bold text-zinc-200">{m.title}</p>
+                         <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">{new Date(m.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                       </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                       {m.status === 'Completed' && (
+                         <button 
+                           onClick={() => handleOpenResources(oIndex)}
+                           className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-accent-400 hover:border-accent-500/30 text-[10px] font-black uppercase tracking-widest transition-all"
+                         >
+                           {isEditing ? 'Discard' : (m.recordingLink || m.documents?.length > 0 ? 'Edit Assets' : 'Add Assets')}
+                         </button>
+                       )}
+                       <button onClick={() => handleDelete(oIndex)} className="p-2 text-zinc-600 hover:text-rose-400 transition-colors">
+                         <Trash2 size={14} />
+                       </button>
+                    </div>
                   </div>
-                  <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                     <button onClick={() => handleDelete(oIndex)} className="text-xs font-bold text-rose-400/70 hover:text-rose-400 transition-colors">Delete Record</button>
-                  </div>
+
+                  <AnimatePresence>
+                    {isEditing && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="border-t border-zinc-800/80 bg-zinc-900/20"
+                      >
+                        <div className="p-5 flex flex-col gap-4">
+                          <div>
+                            <label className="block text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-2 ml-1">Recording Link</label>
+                            <input 
+                              value={resourceForm.recordingLink}
+                              onChange={e => setResourceForm({...resourceForm, recordingLink: e.target.value})}
+                              placeholder="vimeo.com/..., zoom.us/rec/..."
+                              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-700 focus:outline-none focus:border-accent-500/50"
+                            />
+                          </div>
+                          
+                          <div>
+                            <div className="flex items-center justify-between mb-2">
+                              <label className="block text-[9px] font-black text-zinc-500 uppercase tracking-widest ml-1">Session Documents</label>
+                              <button 
+                                onClick={() => meetingFileRef.current?.click()} 
+                                disabled={uploadingMeetingDoc}
+                                className="text-[9px] font-black text-accent-400 hover:text-accent-300 uppercase flex items-center gap-1 transition-colors disabled:opacity-50"
+                              >
+                                {uploadingMeetingDoc ? <Loader2 size={10} className="animate-spin" /> : <Upload size={10} />}
+                                Upload Document
+                              </button>
+                              <input 
+                                type="file" 
+                                ref={meetingFileRef} 
+                                onChange={handleFileUpload} 
+                                className="hidden" 
+                              />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              {resourceForm.documents.length === 0 ? (
+                                <div className="py-4 border border-dashed border-zinc-800 rounded-xl flex flex-col items-center justify-center opacity-40">
+                                  <FileText size={16} className="mb-1 text-zinc-500" />
+                                  <p className="text-[10px] font-bold">No documents attached.</p>
+                                </div>
+                              ) : (
+                                resourceForm.documents.map((doc, idx) => (
+                                  <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800/50 hover:border-zinc-700/50 transition-all group">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-8 h-8 rounded-lg bg-accent-500/10 flex items-center justify-center text-accent-400">
+                                        <FileText size={14} />
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <p className="text-[11px] font-bold text-zinc-200">{doc.name}</p>
+                                        <p className="text-[9px] text-zinc-500 font-medium">{doc.size} • {new Date(doc.uploadDate).toLocaleDateString()}</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <a 
+                                        href={`${API_BASE_URL}${doc.path}`} 
+                                        download={doc.name}
+                                        target="_blank" 
+                                        rel="noreferrer"
+                                        className="p-2 text-zinc-500 hover:text-accent-400 transition-colors"
+                                      >
+                                        <Download size={14} />
+                                      </a>
+                                      <button 
+                                        onClick={() => removeMeetingDoc(doc.path)} 
+                                        className="p-2 text-zinc-500 hover:text-rose-400 transition-colors"
+                                      >
+                                        <Trash2 size={14} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-end gap-3 mt-2">
+                             <button onClick={() => setEditingResources(null)} className="text-[10px] font-bold text-zinc-500">Cancel</button>
+                             <button onClick={saveResources} className="px-4 py-2 bg-accent-500 text-white text-[10px] font-black rounded-lg uppercase tracking-widest shadow-lg shadow-accent-500/20">Sync Resources</button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
@@ -962,9 +1212,9 @@ function DatePickerField({ value, onChange, label, placeholder = "Select date" }
               readOnly
               value={value ? format(new Date(value.split('-')[0], value.split('-')[1]-1, value.split('-')[2]), 'MMM d, yyyy') : ''} 
               placeholder={placeholder}
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 font-bold focus:outline-none focus:border-indigo-500/50 pr-10 cursor-pointer transition-colors group-hover:border-zinc-700" 
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 font-bold focus:outline-none focus:border-accent-500/50 pr-10 cursor-pointer transition-colors group-hover:border-zinc-700" 
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 group-hover:text-indigo-400 transition-colors pointer-events-none">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 group-hover:text-accent-400 transition-colors pointer-events-none">
               <CalendarIcon size={14} />
             </div>
           </div>
@@ -974,7 +1224,7 @@ function DatePickerField({ value, onChange, label, placeholder = "Select date" }
             <div className="flex items-center justify-between mb-2 px-1">
               <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Select Date</span>
               {value && (
-                <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+                <span className="text-[9px] font-bold text-accent-400 bg-accent-500/10 px-2 py-0.5 rounded-full border border-accent-500/20">
                   {format(new Date(value.split('-')[0], value.split('-')[1]-1, value.split('-')[2]), 'MMM d, yyyy')}
                 </span>
               )}
@@ -1000,7 +1250,7 @@ function DatePickerField({ value, onChange, label, placeholder = "Select date" }
               <button 
                 type="button"
                 onClick={handleApply}
-                className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-[11px] font-black rounded-xl shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="px-6 py-2 bg-gradient-to-r from-accent-600 to-brand-brand-purple-600 hover:from-accent-500 hover:to-brand-brand-purple-500 text-white text-[11px] font-black rounded-xl shadow-lg shadow-accent-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 APPLY DATE
               </button>
@@ -1176,7 +1426,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1">Price</p>
-                  <p className="font-bold text-lg text-indigo-400">{sub.price || recommendedPlan.price}</p>
+                  <p className="font-bold text-lg text-accent-400">{sub.price || recommendedPlan.price}</p>
                 </div>
               </div>
               <div className="pt-4 border-t border-zinc-800/50">
@@ -1193,13 +1443,13 @@ function BillingTab({ client, authHeader, onUpdate }) {
                     value={invoiceForm.invoiceNumber} 
                     onChange={e => setInvoiceForm({...invoiceForm, invoiceNumber: e.target.value})}
                     placeholder="INV-001"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-accent-500/50" 
                   />
                 </div>
                 <button 
                   onClick={handleUpdateSubscription}
                   disabled={loading}
-                  className="mt-5 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[10px] font-bold rounded-lg transition-colors disabled:opacity-50"
+                  className="mt-5 px-4 py-2 bg-accent-500 hover:bg-accent-600 text-white text-[10px] font-bold rounded-lg transition-colors disabled:opacity-50"
                 >
                   {loading ? '...' : 'Update Info'}
                 </button>
@@ -1217,7 +1467,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                     value={invoiceForm.description} 
                     onChange={e => setInvoiceForm({...invoiceForm, description: e.target.value})}
                     placeholder="e.g., Monthly Maintenance Fee"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-accent-500/50" 
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -1228,7 +1478,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                       value={invoiceForm.amount} 
                       onChange={e => setInvoiceForm({...invoiceForm, amount: e.target.value})}
                       placeholder="₹7,200"
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-accent-500/50" 
                     />
                   </div>
                   <DatePickerField 
@@ -1244,7 +1494,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                       value={invoiceForm.transactionId} 
                       onChange={e => setInvoiceForm({...invoiceForm, transactionId: e.target.value})}
                       placeholder="TXN123..."
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500/50" 
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-accent-500/50" 
                     />
                   </div>
                   <div>
@@ -1255,7 +1505,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                           <div className="flex items-center gap-2">
                             {(() => {
                               const m = invoiceForm.paymentMethod;
-                              if (m === 'Stripe') return <CreditCard size={14} className="text-indigo-400" />;
+                              if (m === 'Stripe') return <CreditCard size={14} className="text-accent-400" />;
                               if (m === 'UPI') return <Smartphone size={14} className="text-emerald-400" />;
                               if (m === 'Bank Transfer') return <Building2 size={14} className="text-amber-400" />;
                               if (m === 'PayPal') return <Wallet size={14} className="text-sky-400" />;
@@ -1269,7 +1519,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                       <PopoverContent className="w-[200px] p-1 bg-zinc-950/95 backdrop-blur-xl border-zinc-800 shadow-2xl rounded-xl">
                         {[
                           { id: 'Bank Transfer', icon: Building2, color: 'text-amber-400' },
-                          { id: 'Stripe', icon: CreditCard, color: 'text-indigo-400' },
+                          { id: 'Stripe', icon: CreditCard, color: 'text-accent-400' },
                           { id: 'UPI', icon: Smartphone, color: 'text-emerald-400' },
                           { id: 'PayPal', icon: Wallet, color: 'text-sky-400' },
                           { id: 'Cash', icon: CreditCard, color: 'text-zinc-400' }
@@ -1278,11 +1528,11 @@ function BillingTab({ client, authHeader, onUpdate }) {
                             key={method.id}
                             type="button"
                             onClick={() => setInvoiceForm({...invoiceForm, paymentMethod: method.id})}
-                            className={`w-full flex items-center gap-3 px-3 py-2 text-xs rounded-lg transition-all ${invoiceForm.paymentMethod === method.id ? 'bg-indigo-500/10 text-white' : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'}`}
+                            className={`w-full flex items-center gap-3 px-3 py-2 text-xs rounded-lg transition-all ${invoiceForm.paymentMethod === method.id ? 'bg-accent-500/10 text-white' : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200'}`}
                           >
                             <method.icon size={14} className={method.color} />
                             <span className="font-bold">{method.id}</span>
-                            {invoiceForm.paymentMethod === method.id && <div className="ml-auto w-1 h-1 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />}
+                            {invoiceForm.paymentMethod === method.id && <div className="ml-auto w-1 h-1 rounded-full bg-accent-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />}
                           </button>
                         ))}
                       </PopoverContent>
@@ -1291,7 +1541,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">Invoice File (Optional)</label>
-                  <label className={`w-full flex items-center justify-center gap-2 border border-dashed border-zinc-800 rounded-lg px-4 py-3 text-xs cursor-pointer transition-all ${invoiceFile ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-zinc-950 text-zinc-500 hover:bg-zinc-900'}`}>
+                  <label className={`w-full flex items-center justify-center gap-2 border border-dashed border-zinc-800 rounded-lg px-4 py-3 text-xs cursor-pointer transition-all ${invoiceFile ? 'bg-accent-500/10 text-accent-400 border-accent-500/30' : 'bg-zinc-950 text-zinc-500 hover:bg-zinc-900'}`}>
                     <Upload size={14} />
                     <span className="truncate">{invoiceFile ? invoiceFile.name : 'Click to upload PDF/Image'}</span>
                     <input type="file" className="hidden" onChange={e => setInvoiceFile(e.target.files[0] || null)} />
@@ -1384,7 +1634,7 @@ function BillingTab({ client, authHeader, onUpdate }) {
                           {inv.transactionId && (
                             <div className="px-2 py-1 rounded bg-zinc-950 border border-zinc-800 flex items-center gap-2">
                               <span className="text-[9px] font-black text-zinc-600 uppercase">TXN ID</span>
-                              <span className="text-[10px] font-mono text-indigo-400 font-bold">{inv.transactionId}</span>
+                              <span className="text-[10px] font-mono text-accent-400 font-bold">{inv.transactionId}</span>
                             </div>
                           )}
                         </div>
@@ -1407,28 +1657,314 @@ function BillingTab({ client, authHeader, onUpdate }) {
   );
 }
 
-function MessagesTab({ client }) {
-  const messages = (client.adminData?.messages || []).slice().reverse();
+function MessagesTab({ client, authHeader, onUpdate }) {
+  const [newMessage, setNewMessage] = useState('');
+  const [subject, setSubject] = useState('General Update');
+  const [isSubjectOpen, setIsSubjectOpen] = useState(false);
+  const [sending, setSending] = useState(false);
+  const handleSendMessage = async (e) => {
+    if (e) e.preventDefault();
+    if (!newMessage.trim()) return;
+
+    setSending(true);
+    const msg = {
+      sender: 'System Admin',
+      senderRole: 'admin',
+      subject: subject,
+      content: newMessage,
+      date: new Date(),
+      isRead: false
+    };
+
+    const updatedMessages = [...(client.adminData?.messages || []), msg];
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { messages: updatedMessages } })
+      });
+
+      if (res.ok) {
+        onUpdate(client.email, c => ({
+          ...c,
+          adminData: { ...c.adminData, messages: updatedMessages }
+        }));
+        setNewMessage('');
+      }
+    } catch (err) {
+      console.error('Failed to send message:', err);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const [showArchived, setShowArchived] = useState(false);
+  const allMessages = (client.adminData?.messages || []);
+  const visibleMessages = allMessages.filter(m => showArchived || !m.isArchived).slice().reverse();
+  const unreadCount = allMessages.filter(m => !m.isRead && m.senderRole === 'user').length;
+
+  const handleArchiveAll = async () => {
+    const updatedMessages = allMessages.map(m => ({ ...m, isArchived: true }));
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { messages: updatedMessages } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({
+          ...c,
+          adminData: { ...c.adminData, messages: updatedMessages }
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to archive messages:', err);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    const updatedMessages = allMessages.map(m => ({ ...m, isRead: true }));
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/user/${encodeURIComponent(client.email)}`, {
+        method: 'PUT',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ adminData: { messages: updatedMessages } })
+      });
+      if (res.ok) {
+        onUpdate(client.email, c => ({
+          ...c,
+          adminData: { ...c.adminData, messages: updatedMessages }
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to mark as read:', err);
+    }
+  };
+
   return (
     <TabPanel>
-      <Section title="Admin Messages" icon={MessageSquare}>
-        {messages.length === 0 ? <p className="text-sm text-zinc-600 italic">No messages yet.</p> : (
-          <div className="flex flex-col gap-3">
-            {messages.map((msg, i) => (
-              <div key={i} className={`p-4 rounded-2xl border ${msg.isRead ? 'bg-zinc-900/50 border-zinc-800/50 opacity-70' : 'bg-indigo-500/5 border-indigo-500/20'}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-zinc-400">{msg.sender || 'System Admin'}</span>
-                  <div className="flex items-center gap-2">
-                    {!msg.isRead && <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />}
-                    <span className="text-[10px] text-zinc-600">{msg.date ? new Date(msg.date).toLocaleDateString() : ''}</span>
-                  </div>
-                </div>
-                <p className="text-sm text-zinc-300 leading-relaxed">{msg.content}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Message List */}
+        <div className="lg:col-span-2 flex flex-col gap-5">
+          <Section 
+            title="Direct Thread" 
+            icon={MessageSquare}
+            action={
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setShowArchived(!showArchived)}
+                  className={`text-[9px] font-black px-2 py-1 rounded border transition-all ${
+                    showArchived ? 'bg-zinc-800 text-zinc-300 border-zinc-700' : 'bg-transparent text-zinc-500 border-zinc-800 hover:text-zinc-400'
+                  }`}
+                >
+                  {showArchived ? 'HIDE ARCHIVED' : 'SHOW HISTORY'}
+                </button>
+                {visibleMessages.length > 0 && !showArchived && (
+                  <button 
+                    onClick={handleArchiveAll}
+                    className="text-[9px] font-black text-rose-400 hover:text-rose-300 transition-colors bg-rose-500/10 px-2 py-1 rounded border border-rose-500/20"
+                  >
+                    CLEAR THREAD
+                  </button>
+                )}
+                {unreadCount > 0 && (
+                  <button 
+                    onClick={markAllAsRead}
+                    className="text-[9px] font-black text-accent-400 hover:text-accent-300 transition-colors bg-accent-500/10 px-2 py-1 rounded border border-accent-500/20"
+                  >
+                    MARK READ
+                  </button>
+                )}
               </div>
-            ))}
-          </div>
-        )}
-      </Section>
+            }
+          >
+            {visibleMessages.length === 0 ? (
+              <div className="py-20 text-center flex flex-col items-center gap-4 opacity-20">
+                <div className="w-16 h-16 rounded-full bg-zinc-800 flex items-center justify-center">
+                  <MessageSquare size={24} />
+                </div>
+                <p className="text-xs font-bold uppercase tracking-widest">Thread is clean.</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                {visibleMessages.map((msg, i) => {
+                  const isUser = msg.senderRole === 'user';
+                  const msgDate = msg.date ? new Date(msg.date) : new Date();
+                  const showDateSeparator = i === 0 || new Date(visibleMessages[i-1].date).toDateString() !== msgDate.toDateString();
+
+                  return (
+                    <Fragment key={i}>
+                      {showDateSeparator && (
+                        <div className="flex items-center gap-4 my-2 opacity-30">
+                          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-zinc-800" />
+                          <span className="text-[9px] font-black uppercase tracking-tighter text-zinc-500">
+                            {msgDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                          </span>
+                          <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-zinc-800" />
+                        </div>
+                      )}
+                      <div 
+                        className={`group relative p-3.5 rounded-2xl border transition-all duration-300 max-w-[85%] ${
+                          isUser 
+                            ? 'bg-zinc-950/60 border-zinc-800/60 self-start' 
+                            : 'bg-accent-500/5 border-accent-500/20 self-end ml-12'
+                        } ${!msg.isRead && isUser ? 'ring-1 ring-accent-500/40 shadow-xl shadow-accent-500/5' : ''} ${msg.isArchived ? 'opacity-50 grayscale-[0.5]' : ''}`}
+                      >
+                        <div className="flex items-center justify-between gap-6 mb-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[9px] font-black uppercase tracking-widest ${isUser ? 'text-zinc-500' : 'text-accent-400/80'}`}>
+                              {isUser ? (client.displayName || 'Client') : 'System Admin'}
+                            </span>
+                          </div>
+                          <span className="text-[8px] text-zinc-600 font-bold tabular-nums">
+                            {msgDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true })}
+                          </span>
+                        </div>
+                        
+                        {msg.subject && msg.subject !== 'Update' && (
+                          <div className="mb-2">
+                            <span className="text-[9px] font-bold text-zinc-500 px-1.5 py-0.5 bg-zinc-900/80 rounded border border-zinc-800/50">
+                              {msg.subject}
+                            </span>
+                          </div>
+                        )}
+                        
+                        <p className={`text-[13px] leading-relaxed ${isUser ? 'text-zinc-400' : 'text-zinc-200'}`}>
+                          {msg.content}
+                        </p>
+
+                        {!msg.isRead && isUser && (
+                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-accent-500 rounded-full border border-zinc-950 shadow-lg shadow-accent-500/40 animate-pulse" />
+                        )}
+                      </div>
+                    </Fragment>
+                  );
+                })}
+              </div>
+            )}
+          </Section>
+        </div>
+
+        {/* Right Column: Compose */}
+        <div className="flex flex-col gap-5">
+          <Section title="Send Message" icon={Send}>
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2 block">Subject</label>
+                <div className="relative group/sel">
+                  <button
+                    type="button"
+                    onClick={() => setIsSubjectOpen(!isSubjectOpen)}
+                    className={`w-full bg-zinc-950 border rounded-xl px-10 py-2.5 text-xs text-left transition-all flex items-center justify-between ${
+                      isSubjectOpen ? 'border-accent-500/50 ring-2 ring-accent-500/10' : 'border-zinc-800'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="text-zinc-500">
+                        {subject === 'General Update' && <RefreshCw size={12} />}
+                        {subject === 'Milestone Reached' && <CheckCircle2 size={12} className="text-emerald-500" />}
+                        {subject === 'Action Required' && <AlertCircle size={12} className="text-amber-500" />}
+                        {subject === 'File Uploaded' && <Paperclip size={12} className="text-blue-500" />}
+                        {subject === 'Billing Update' && <CreditCard size={12} className="text-rose-500" />}
+                      </div>
+                      <span className="text-zinc-300">{subject}</span>
+                    </div>
+                    <ChevronDown size={12} className={`text-zinc-600 transition-transform duration-300 ${isSubjectOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isSubjectOpen && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setIsSubjectOpen(false)} />
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                          transition={{ duration: 0.15, ease: "easeOut" }}
+                          className="absolute left-0 right-0 top-full mt-2 bg-zinc-900/95 border border-zinc-800/80 rounded-xl overflow-hidden z-50 backdrop-blur-xl shadow-2xl shadow-black/40"
+                        >
+                          {[
+                            { value: "General Update", icon: RefreshCw, color: "text-zinc-400" },
+                            { value: "Milestone Reached", icon: CheckCircle2, color: "text-emerald-500" },
+                            { value: "Action Required", icon: AlertCircle, color: "text-amber-500" },
+                            { value: "File Uploaded", icon: Paperclip, color: "text-blue-500" },
+                            { value: "Billing Update", icon: CreditCard, color: "text-rose-500" }
+                          ].map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => {
+                                setSubject(opt.value);
+                                setIsSubjectOpen(false);
+                              }}
+                              className={`w-full flex items-center gap-3 px-4 py-3 text-left text-xs transition-colors hover:bg-white/[0.03] ${
+                                subject === opt.value ? 'bg-accent-500/10 text-accent-400' : 'text-zinc-400 hover:text-white'
+                              }`}
+                            >
+                              <opt.icon size={12} className={opt.color} />
+                              {opt.value}
+                            </button>
+                          ))}
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2 block">Message Body</label>
+                <div className="relative group/text">
+                  <textarea 
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message to the client..."
+                    className="w-full h-40 bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-300 placeholder:text-zinc-700 focus:outline-none focus:border-accent-500/50 transition-all resize-none custom-scrollbar relative z-10"
+                  />
+                  {/* Backdrop glow */}
+                  <div className="absolute inset-0 bg-accent-500/0 group-focus-within/text:bg-accent-500/[0.02] transition-all rounded-xl pointer-events-none" />
+                </div>
+              </div>
+
+              <button
+                onClick={handleSendMessage}
+                disabled={sending || !newMessage.trim()}
+                className="w-full py-3.5 rounded-xl bg-accent-600 hover:bg-accent-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-accent-500/20 flex items-center justify-center gap-2 group overflow-hidden relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                {sending ? 'Sending...' : (
+                  <>
+                    SEND MESSAGE
+                    <Send size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </>
+                )}
+              </button>
+            </div>
+          </Section>
+
+          <Section title="Quick Templates" icon={Sparkles}>
+            <div className="flex flex-col gap-2">
+              {[
+                { t: "Check the 'Assets' tab for your latest deliverables.", s: "File Uploaded" },
+                { t: "We've completed the current milestone. Please review.", s: "Milestone Reached" },
+                { t: "We need some additional information from your side.", s: "Action Required" }
+              ].map((tmpl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { setNewMessage(tmpl.t); setSubject(tmpl.s); }}
+                  className="w-full text-left p-3 rounded-xl bg-zinc-950/40 border border-zinc-800/40 hover:border-zinc-700 transition-all group"
+                >
+                  <p className="text-[11px] text-zinc-400 group-hover:text-zinc-300 line-clamp-2">{tmpl.t}</p>
+                </button>
+              ))}
+            </div>
+          </Section>
+        </div>
+      </div>
     </TabPanel>
   );
 }
@@ -1576,7 +2112,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
       <div className="bg-zinc-950/50 rounded-2xl border border-zinc-800/50 overflow-hidden mb-6">
         <div className="px-5 py-3 border-b border-zinc-800/60 flex items-center justify-between">
           <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"><Folder size={10} />Deliverables Hub</p>
-          <button onClick={() => setIsAddingDeliverable(!isAddingDeliverable)} className="px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-[10px] font-bold transition-colors">
+          <button onClick={() => setIsAddingDeliverable(!isAddingDeliverable)} className="px-2.5 py-1 rounded-lg bg-accent-500/10 text-accent-400 hover:bg-accent-500/20 text-[10px] font-bold transition-colors">
             {isAddingDeliverable ? 'Cancel' : '+ Add Link'}
           </button>
         </div>
@@ -1589,21 +2125,21 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-semibold text-zinc-400">Deliverable Title</label>
                   <input required value={deliverableForm.title} onChange={e => setDeliverableForm({...deliverableForm, title: e.target.value})} placeholder="e.g., Final Logo Package"
-                    className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600" />
+                    className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/50 transition-all placeholder:text-zinc-600" />
                 </div>
                 
                 <div className="grid grid-cols-[1fr,auto,1fr] gap-4 items-center">
                   <div className="space-y-1.5">
                     <label className="text-[11px] font-semibold text-zinc-400">External URL</label>
                     <input disabled={!!deliverableFile} value={deliverableForm.link} onChange={e => setDeliverableForm({...deliverableForm, link: e.target.value})} placeholder="https://drive.google.com/..."
-                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all placeholder:text-zinc-600 disabled:opacity-40 disabled:cursor-not-allowed" />
+                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/50 transition-all placeholder:text-zinc-600 disabled:opacity-40 disabled:cursor-not-allowed" />
                   </div>
                   
                   <div className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-5">OR</div>
                   
                   <div className="space-y-1.5 flex flex-col justify-end h-full">
                     <label className="text-[11px] font-semibold text-zinc-400">Upload File</label>
-                    <label className={`w-full flex items-center justify-center gap-2 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm cursor-pointer transition-all ${deliverableFile ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'}`}>
+                    <label className={`w-full flex items-center justify-center gap-2 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm cursor-pointer transition-all ${deliverableFile ? 'bg-accent-500/10 text-accent-400 border-accent-500/30' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300'}`}>
                       <Upload size={14} />
                       <span className="truncate">{deliverableFile ? deliverableFile.name : 'Select from computer'}</span>
                       <input type="file" className="hidden" onChange={e => {
@@ -1615,7 +2151,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                 </div>
 
                 <div className="pt-2">
-                  <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+                  <button disabled={savingDeliverable || (!deliverableForm.link && !deliverableFile)} type="submit" className="w-full py-2.5 bg-accent-500 hover:bg-accent-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-accent-500/20">
                     {savingDeliverable ? <Loader2 size={16} className="animate-spin" /> : <><CheckCircle2 size={16} /> Save Deliverable</>}
                   </button>
                 </div>
@@ -1644,10 +2180,10 @@ function AssetsTab({ client, authHeader, onUpdate }) {
 
               return (
               <div key={i} className="flex items-center gap-4 px-5 py-4 hover:bg-zinc-900/40 transition-colors group">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0"><Folder size={16} className="text-indigo-400" /></div>
+                <div className="w-10 h-10 rounded-xl bg-accent-500/10 border border-accent-500/20 flex items-center justify-center flex-shrink-0"><Folder size={16} className="text-accent-400" /></div>
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col">
-                    <a href={downloadLink} target="_blank" rel="noreferrer" className="text-[13px] font-semibold text-zinc-200 group-hover:text-indigo-400 transition-colors truncate">{d.title || 'Deliverable'}</a>
+                    <a href={downloadLink} target="_blank" rel="noreferrer" className="text-[13px] font-semibold text-zinc-200 group-hover:text-accent-400 transition-colors truncate">{d.title || 'Deliverable'}</a>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[10px] text-zinc-500 font-medium tracking-wide uppercase">{d.uploadDate ? new Date(d.uploadDate).toLocaleDateString() : ''}</span>
                       <span className="text-zinc-700 text-[10px]">•</span>
@@ -1656,7 +2192,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={downloadLink} target="_blank" rel="noreferrer" className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={14} /></a>
+                  <a href={downloadLink} target="_blank" rel="noreferrer" className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-accent-400 transition-colors"><ExternalLink size={14} /></a>
                   <button onClick={() => handleDeleteDeliverable(i)} className="p-2 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors">
                     <Trash2 size={14} />
                   </button>
@@ -1725,7 +2261,7 @@ function AssetsTab({ client, authHeader, onUpdate }) {
         className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed p-8 cursor-pointer group mt-6"
       >
         <input ref={fileRef} type="file" multiple className="hidden" onChange={e => doUpload(e.target.files)} />
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${dragOver ? 'bg-indigo-500/20 text-indigo-400' : 'bg-zinc-800 text-zinc-500 group-hover:bg-indigo-500/10 group-hover:text-indigo-400'}`}>
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${dragOver ? 'bg-accent-500/20 text-accent-400' : 'bg-zinc-800 text-zinc-500 group-hover:bg-accent-500/10 group-hover:text-accent-400'}`}>
           {uploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
         </div>
         <div className="text-center">
@@ -1745,11 +2281,11 @@ function AssetsTab({ client, authHeader, onUpdate }) {
                 <span className="text-xl flex-shrink-0">{getIcon(att.name)}</span>
                 <div className="flex-1 min-w-0">
                   <a href={`${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}`} target="_blank" rel="noreferrer"
-                    className="text-sm font-medium text-zinc-200 hover:text-indigo-400 transition-colors truncate block">{att.name || 'File'}</a>
+                    className="text-sm font-medium text-zinc-200 hover:text-accent-400 transition-colors truncate block">{att.name || 'File'}</a>
                   <p className="text-[10px] text-zinc-600 mt-0.5">{att.size} · {att.uploadDate ? new Date(att.uploadDate).toLocaleDateString() : ''}</p>
                 </div>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a href={att.path ? `${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"><ExternalLink size={12} /></a>
+                  <a href={att.path ? `${API_BASE_URL}/api/download?file=${encodeURIComponent(att.path)}` : '#'} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-accent-400 transition-colors"><ExternalLink size={12} /></a>
                   <button onClick={() => doDelete(att)} disabled={deleteId === att.path} className="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors disabled:opacity-40">
                     {deleteId === att.path ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
                   </button>
