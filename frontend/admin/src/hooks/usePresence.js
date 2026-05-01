@@ -5,38 +5,38 @@ import { TEAM_MEMBERS } from '../constants/users';
 
 export function usePresence(user, initialStatus = 'offline', roomId = 'global') {
     const [status, setStatus] = useState(initialStatus);
-    const [teamPresence, setTeamPresence] = useState({}); // email -> { status, updatedAt, name }
+    const [teamPresence, setTeamPresence] = useState({}); // email -> { status, isOnline, updatedAt, name }
     const [isSynced, setIsSynced] = useState(false);
     const [syncCount, setSyncCount] = useState(0);
     const [error, setError] = useState(null);
     const lastUpdateRef = useRef(0);
 
-    // Initialize teamPresence with offline status from TEAM_MEMBERS
+    // Initial state: Hydrate from TEAM_MEMBERS but mark as syncing
     useEffect(() => {
         const initial = {};
         TEAM_MEMBERS.forEach(m => {
-            initial[m.email.toLowerCase().trim()] = {
+            const email = m.email.toLowerCase().trim();
+            initial[email] = {
                 status: 'offline',
+                isOnline: false,
                 name: m.name,
-                updatedAt: new Date(0)
+                updatedAt: new Date(0),
+                isSyncing: true
             };
         });
         setTeamPresence(initial);
     }, []);
 
     const handleMessage = useCallback((data) => {
-        switch (data.type) {
+        const { type, payload } = data;
+
+        switch (type) {
             case 'socket:connected':
                 setIsSynced(true);
-                // Re-join room on reconnect
+                // Subscribe to room presence
                 socketService.send({
-                    type: 'presence:join',
+                    type: 'presence:subscribe',
                     payload: { roomId, user: { id: user.uid, email: user.email, name: user.name } }
-                });
-                // Send current status
-                socketService.send({
-                    type: 'presence:update',
-                    payload: { status, roomId }
                 });
                 break;
 
@@ -45,44 +45,70 @@ export function usePresence(user, initialStatus = 'offline', roomId = 'global') 
                 break;
 
             case 'presence:snapshot':
-                const { members } = data.payload;
+                const { members } = payload;
                 setTeamPresence(prev => {
                     const next = { ...prev };
                     members.forEach(m => {
-                        next[m.email.toLowerCase().trim()] = {
-                            status: m.status,
+                        const email = m.email.toLowerCase().trim();
+                        next[email] = {
+                            status: m.status || 'offline',
+                            isOnline: m.isOnline,
                             name: m.name,
-                            updatedAt: new Date(m.updatedAt || m.lastSeen)
+                            updatedAt: new Date(m.updatedAt),
+                            isSyncing: false
                         };
                     });
                     return next;
                 });
-                setSyncCount(members.length);
+                setSyncCount(members.filter(m => m.isOnline).length);
                 break;
 
-            case 'presence:update':
-                const member = data.payload;
+            case 'presence:status:updated':
                 setTeamPresence(prev => {
-                    const email = member.email.toLowerCase().trim();
-                    // Debounce or last-write-wins check (updatedAt)
+                    const email = payload.email.toLowerCase().trim();
                     const existing = prev[email];
-                    const newTime = new Date(member.updatedAt).getTime();
-                    if (existing && new Date(existing.updatedAt).getTime() > newTime) {
+                    
+                    // Prevent stale updates
+                    const newTime = new Date(payload.updatedAt).getTime();
+                    if (existing && !existing.isSyncing && new Date(existing.updatedAt).getTime() > newTime) {
                         return prev;
                     }
 
                     return {
                         ...prev,
                         [email]: {
-                            status: member.status,
-                            name: member.name,
-                            updatedAt: member.updatedAt
+                            ...(existing || {}),
+                            status: payload.status,
+                            updatedAt: payload.updatedAt,
+                            isSyncing: false
                         }
                     };
                 });
                 break;
+
+            case 'presence:connection:update':
+                setTeamPresence(prev => {
+                    const email = payload.email.toLowerCase().trim();
+                    const existing = prev[email];
+                    if (!existing) return prev;
+
+                    return {
+                        ...prev,
+                        [email]: {
+                            ...existing,
+                            isOnline: payload.connectionStatus === 'online'
+                        }
+                    };
+                });
+                // Update sync count based on online users
+                setTeamPresence(current => {
+                    const onlineCount = Object.values(current).filter(v => v.isOnline).length;
+                    setSyncCount(onlineCount);
+                    return current;
+                });
+                break;
         }
-    }, [user, roomId, status]);
+    }, [user, roomId]);
 
     useEffect(() => {
         if (!user) return;
@@ -90,40 +116,49 @@ export function usePresence(user, initialStatus = 'offline', roomId = 'global') 
         const unsubscribe = socketService.subscribe(handleMessage);
         socketService.connect();
 
-        // Join room immediately if already connected
-        socketService.send({
-            type: 'presence:join',
-            payload: { roomId, user: { id: user.uid, email: user.email, name: user.name } }
-        });
+        // If already connected, subscribe immediately
+        if (socketService.ws && socketService.ws.readyState === WebSocket.OPEN) {
+            socketService.send({
+                type: 'presence:subscribe',
+                payload: { roomId, user: { id: user.uid, email: user.email, name: user.name } }
+            });
+        }
 
         return () => {
             unsubscribe();
-            // We don't necessarily want to disconnect the singleton, 
-            // but we could send a leave event if we wanted to be strict.
-            // socketService.send({ type: 'presence:leave', payload: { roomId } });
         };
     }, [user, roomId, handleMessage]);
 
     const updateStatus = useCallback((newStatus) => {
         if (newStatus === status) return;
 
-        // Debounce rapid switches
         const now = Date.now();
         if (now - lastUpdateRef.current < 500) return;
         lastUpdateRef.current = now;
 
-        // Optimistic UI update
+        // Optimistic UI update for the local user
         setStatus(newStatus);
         
-        // Broadcast to server
+        // Update local teamPresence entry optimistically
+        const email = user.email.toLowerCase().trim();
+        setTeamPresence(prev => ({
+            ...prev,
+            [email]: {
+                ...(prev[email] || {}),
+                status: newStatus,
+                updatedAt: new Date(),
+                isOnline: true
+            }
+        }));
+
+        // Send to server
         socketService.send({
-            type: 'presence:update',
+            type: 'presence:status:set',
             payload: { status: newStatus, roomId }
         });
 
-        // Optional: Local storage sync
         localStorage.setItem('mkavs_staff_status', newStatus);
-    }, [status, roomId]);
+    }, [status, roomId, user]);
 
     return {
         status,

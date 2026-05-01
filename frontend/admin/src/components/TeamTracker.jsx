@@ -47,15 +47,16 @@ export default function TeamTracker({ user, teamPresence = {} }) {
              </h3>
              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 relative z-10">
                 {TEAM_MEMBERS.map(member => {
-                  const presence = teamPresence[member.email.toLowerCase().trim()];
-                  const status = presence ? presence.status : 'offline';
+                  const presence = teamPresence[member.email.toLowerCase().trim()] || {};
+                  const status = presence.status || 'offline';
+                  const isOnline = presence.isOnline || false;
                   
                   return (
                     <div key={`heat-${member.email}`} className="p-4 rounded-2xl border bg-zinc-50 dark:bg-zinc-950 border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center text-center transition-all">
                       <div className="relative mb-2">
                         <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-xl object-cover" />
                         <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-                          status !== 'offline' ? 'bg-emerald-500' : 'bg-zinc-400'
+                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
                         }`}></div>
                       </div>
                       <p className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">{member.firstName}</p>
@@ -91,8 +92,9 @@ export default function TeamTracker({ user, teamPresence = {} }) {
 
             <div className="flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar">
               {TEAM_MEMBERS.map(member => {
-                const presence = teamPresence[member.email.toLowerCase().trim()];
-                const status = presence ? presence.status : 'offline';
+                const presence = teamPresence[member.email.toLowerCase().trim()] || {};
+                const status = presence.status || 'offline';
+                const isOnline = presence.isOnline || false;
                 
                 return (
                   <div key={member.email} className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 hover:border-indigo-500/30 transition-colors group">
@@ -100,7 +102,7 @@ export default function TeamTracker({ user, teamPresence = {} }) {
                       <div className="relative">
                         <img src={member.avatar} alt={member.name} className="w-12 h-12 rounded-[1.25rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all" />
                         <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-                          status !== 'offline' ? 'bg-emerald-500' : 'bg-zinc-400'
+                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
                         }`}></div>
                       </div>
                       <div>

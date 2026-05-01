@@ -781,7 +781,11 @@ export default function App() {
               const memberName = member.name?.toLowerCase().trim() || '';
               
               const isMe = (memberEmail && memberEmail === userEmail) || (memberName && memberName === userName);
-              const displayStatus = isMe ? currentStatus : getStaffStatus(member);
+              
+              // Get data from teamPresence
+              const presence = teamPresence[memberEmail] || {};
+              const displayStatus = isMe ? currentStatus : (presence.status || 'offline');
+              const isOnline = isMe ? true : (presence.isOnline || false);
 
               return (
                 <TeamMember 
@@ -789,6 +793,7 @@ export default function App() {
                   name={member.name} 
                   role={member.role} 
                   status={displayStatus} 
+                  isOnline={isOnline}
                   avatar={member.avatar} 
                 />
               );
@@ -857,7 +862,7 @@ function SidebarItem({ icon, active, onClick, tooltip }) {
   );
 }
 
-function TeamMember({ name, role, status, avatar }) {
+function TeamMember({ name, role, status, isOnline, avatar }) {
   const config = STATUS_CONFIG[status] || STATUS_CONFIG.offline;
   
   const statusColors = {
@@ -871,7 +876,9 @@ function TeamMember({ name, role, status, avatar }) {
     focus: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20',
     break: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/20',
     deepwork: 'bg-purple-500 text-white border-purple-400 shadow-sm shadow-purple-500/20',
-    offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700'
+    offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700',
+    zen: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100/50 dark:border-purple-500/20',
+    standup: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20'
   };
 
   const badgeClass = badgeColors[status] || badgeColors.offline;
@@ -880,7 +887,7 @@ function TeamMember({ name, role, status, avatar }) {
     <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all cursor-pointer group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all duration-500" />
-        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${statusColors[config.color]} transition-all duration-500`}></div>
+        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${isOnline ? statusColors[config.color] : 'bg-zinc-400'} transition-all duration-500`}></div>
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
