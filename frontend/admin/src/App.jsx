@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Kanban, 
@@ -30,6 +30,8 @@ import {
   Folder
 } from 'lucide-react';
 import { API_BASE_URL, WS_URL } from './config';
+import { useTeamPresence } from './hooks/useTeamPresence';
+import socketService from './services/SocketService';
 // Helper to handle lazy loading errors (e.g. when a new version is deployed and old chunks are gone)
 const lazyWithRetry = (componentImport) =>
   lazy(async () => {
@@ -68,7 +70,9 @@ const STATUS_CONFIG = {
   focus: { label: 'FOCUS MODE', color: 'green', icon: <Zap size={14} /> },
   break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
   deepwork: { label: 'DEEP WORK', color: 'purple', icon: <CheckCircle size={14} /> },
-  offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> }
+  offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> },
+  zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> },
+  standup: { label: 'STANDUP', color: 'green', icon: <Users size={14} /> }
 };
 
 export default function App() {
@@ -136,14 +140,20 @@ export default function App() {
     localStorage.setItem('mkavs_special_mention', val);
   };
 
-  const [currentStatus, setCurrentStatus] = useState(() => localStorage.getItem('mkavs_staff_status') || 'offline');
-  const [statusLoading, setStatusLoading] = useState(false);
-  const [statusError, setStatusError] = useState(null);
-  const [isSynced, setIsSynced] = useState(false);
-  const [syncCount, setSyncCount] = useState(0);
-  const [ticketStats, setTicketStats] = useState({ pending: 0, approvedToday: 0, rejectedToday: 0 });
-  const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
-  const [onlineStaff, setOnlineStaff] = useState([]);
+  // Use new team presence hook
+  const { 
+    presenceMap, 
+    isSynced, 
+    updateMyStatus: handleStatusChange,
+    getMemberPresence
+  } = useTeamPresence(user);
+
+  // Derived current user status
+  const currentStatus = useMemo(() => {
+    if (!user) return 'offline';
+    return getMemberPresence(user.email).status;
+  }, [user, getMemberPresence]);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -414,15 +424,6 @@ export default function App() {
     );
   }
 
-  const fetchInitialStatus = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/staff-status`);
-      const data = await res.json();
-      if (data.staff) setOnlineStaff(data.staff);
-    } catch (e) {
-      console.warn("Failed to fetch initial staff status", e);
-    }
-  };
 
   const fetchTicketStats = async () => {
     try {
@@ -447,135 +448,30 @@ export default function App() {
 
   useEffect(() => {
     if (user?.token) {
-      fetchInitialStatus();
       fetchTicketStats();
     }
   }, [user]);
 
   useEffect(() => {
     if (!user) return;
-
-    // Heartbeat to keep status fresh for others
-    const heartbeat = setInterval(() => {
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
+    
+    // Heartbeat to keep status fresh for Kairon (Legacy compatibility)
+    const kaironHeartbeat = setInterval(() => {
+        socketService.send({
           type: 'staff_online',
           staffName: user.name,
           email: user.email,
-          status: currentStatus
-        }));
-      }
-    }, 5000);
+          status: currentStatus,
+          isChatAgent: true
+        });
+    }, 10000);
 
-    const connect = () => {
-      try {
-        const ws = new WebSocket(WS_URL);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-          setIsSynced(true);
-          ws.send(JSON.stringify({ 
-            type: 'staff_online', 
-            staffName: user.name, 
-            email: user.email,
-            status: currentStatus 
-          }));
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.type === 'staff_list') {
-              setOnlineStaff(data.staff);
-              setSyncCount(data.syncCount || 0);
-            }
-          } catch (e) {
-            console.error("WS Message Error:", e);
-          }
-        };
-
-        ws.onclose = () => {
-          setIsSynced(false);
-          console.log("WS Disconnected. Reconnecting in 1s...");
-          reconnectTimerRef.current = setTimeout(connect, 1000);
-        };
-
-        ws.onerror = (err) => console.warn("Presence WS Error:", err);
-      } catch (e) {
-        console.error("WS Connection failed:", e);
-        reconnectTimerRef.current = setTimeout(connect, 5000);
-      }
-    };
-
-    connect();
-
-    return () => {
-      clearInterval(heartbeat);
-      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
-      if (wsRef.current) {
-        wsRef.current.onclose = null;
-        wsRef.current.close();
-      }
-    };
+    return () => clearInterval(kaironHeartbeat);
   }, [user, currentStatus]);
 
-  const handleStatusChange = async (status) => {
-    if (statusLoading) return;
-    
-    const prevStatus = currentStatus;
-    setCurrentStatus(status);
-    localStorage.setItem('mkavs_staff_status', status);
-    setStatusLoading(true);
-    setStatusError(null);
+  // handleStatusChange is now provided by usePresence hook
 
-    try {
-      // Attempt HTTP update (Reliable fallback)
-      fetch(`${API_BASE_URL}/api/staff-status`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: user.name, status })
-      }).catch(e => console.warn("HTTP Status sync failed", e));
-
-      // Attempt WebSocket update (Instant)
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({
-          type: 'update_status',
-          staffName: user.name,
-          email: user.email,
-          status: status
-        }));
-      }
-      
-      // We no longer call fetchInitialStatus() here to avoid the flicker.
-      // The WebSocket 'staff_list' broadcast will update the team list naturally.
-      setTimeout(() => {
-        setStatusLoading(false);
-      }, 300);
-    } catch (e) {
-      setStatusError(e.message);
-      setCurrentStatus(prevStatus); // Rollback
-      setStatusLoading(false);
-      setTimeout(() => setStatusError(null), 3000);
-    }
-  };
-
-  const getStaffStatus = (member) => {
-    const userEmail = user.email?.toLowerCase().trim() || '';
-    const memberEmail = member.email?.toLowerCase().trim() || '';
-    const userName = user.name?.toLowerCase().trim() || user.displayName?.toLowerCase().trim() || '';
-    const memberName = member.name?.toLowerCase().trim() || '';
-    
-    // If this is ME, always return currentStatus immediately
-    if ((memberEmail && memberEmail === userEmail) || (memberName && memberName === userName)) {
-      return currentStatus;
-    }
-    
-    const s = onlineStaff.find(s => 
-      (s.email && s.email.toLowerCase().trim() === memberEmail) || 
-      (s.name && s.name.toLowerCase().trim() === memberName)
-    );
-    return s ? s.status : 'offline';
-  };
+  // getStaffStatus is replaced by getMemberPresence from hook
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
@@ -719,7 +615,7 @@ export default function App() {
                   title="Kairon Live Staff Dashboard"
                   allow="autoplay; clipboard-write"
                 ></iframe></motion.div>}
-                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker /></motion.div>}
+                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} /></motion.div>}
                 {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
                 {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
                 {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManagement user={user} /></motion.div>}
@@ -787,18 +683,6 @@ export default function App() {
         <div className="px-8 mt-2 mb-2">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Your Status</p>
-            <AnimatePresence>
-              {statusError && (
-                <motion.span 
-                  initial={{ opacity: 0, x: 5 }} 
-                  animate={{ opacity: 1, x: 0 }} 
-                  exit={{ opacity: 0 }}
-                  className="text-[10px] font-bold text-rose-500"
-                >
-                  {statusError}
-                </motion.span>
-              )}
-            </AnimatePresence>
           </div>
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex flex-wrap gap-1 mb-4">
              {Object.entries(STATUS_CONFIG).map(([key, config]) => {
@@ -813,9 +697,8 @@ export default function App() {
                return (
                  <button 
                    key={key}
-                   disabled={statusLoading}
                    onClick={() => handleStatusChange(key)}
-                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'} ${statusLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'}`}
                  >
                    <span className="flex items-center justify-center gap-1.5">
                      {config.icon}
@@ -828,7 +711,10 @@ export default function App() {
           
           <div className="grid grid-cols-2 gap-2">
             <button 
-              onClick={() => setIsZenMode(true)}
+              onClick={() => {
+                setIsZenMode(true);
+                handleStatusChange('zen');
+              }}
               className="py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
             >
               <Coffee size={14} /> Zen Mode
@@ -851,7 +737,7 @@ export default function App() {
             <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Team Status</h3>
             <div className="flex items-center gap-2">
               <button 
-                onClick={() => alert(JSON.stringify(onlineStaff, null, 2))}
+                onClick={() => alert(JSON.stringify(presenceMap, null, 2))}
                 className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
                 title="Debug Sync Data"
               >
@@ -865,20 +751,17 @@ export default function App() {
           
           <div className="space-y-2">
             {TEAM_MEMBERS.map(member => {
-              const userEmail = user?.email?.toLowerCase().trim() || '';
-              const userName = (user?.name || user?.displayName)?.toLowerCase().trim() || '';
               const memberEmail = member.email?.toLowerCase().trim() || '';
-              const memberName = member.name?.toLowerCase().trim() || '';
+              const presence = getMemberPresence(memberEmail);
               
-              const isMe = (memberEmail && memberEmail === userEmail) || (memberName && memberName === userName);
-              const displayStatus = isMe ? currentStatus : getStaffStatus(member);
-
               return (
                 <TeamMember 
                   key={member.email}
                   name={member.name} 
                   role={member.role} 
-                  status={displayStatus} 
+                  status={presence.status} 
+                  isOnline={presence.isOnline}
+                  isSyncing={presence.isSyncing}
                   avatar={member.avatar} 
                 />
               );
@@ -896,7 +779,7 @@ export default function App() {
               <div className="flex items-center gap-1.5">
                 <div className={`w-1.5 h-1.5 rounded-full ${isSynced ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 animate-pulse'}`}></div>
                 <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">
-                  {isSynced ? `Synced (${syncCount})` : 'Offline'}
+                  {isSynced ? 'Synced' : 'Offline'}
                 </span>
               </div>
             </div>
@@ -947,8 +830,10 @@ function SidebarItem({ icon, active, onClick, tooltip }) {
   );
 }
 
-function TeamMember({ name, role, status, avatar }) {
-  const config = STATUS_CONFIG[status] || STATUS_CONFIG.offline;
+function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
+  const config = isSyncing 
+    ? { label: 'SYNCING...', color: 'gray', icon: <Clock size={10} className="animate-spin" /> }
+    : (STATUS_CONFIG[status] || STATUS_CONFIG.offline);
   
   const statusColors = {
     green: 'bg-emerald-500 shadow-emerald-500/20',
@@ -961,7 +846,9 @@ function TeamMember({ name, role, status, avatar }) {
     focus: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20',
     break: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/20',
     deepwork: 'bg-purple-500 text-white border-purple-400 shadow-sm shadow-purple-500/20',
-    offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700'
+    offline: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700',
+    zen: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100/50 dark:border-purple-500/20',
+    standup: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20'
   };
 
   const badgeClass = badgeColors[status] || badgeColors.offline;
@@ -970,12 +857,14 @@ function TeamMember({ name, role, status, avatar }) {
     <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all cursor-pointer group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all duration-500" />
-        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${statusColors[config.color]} transition-all duration-500`}></div>
+        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${isOnline ? statusColors[config.color] : 'bg-zinc-400'} transition-all duration-500`}></div>
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{name}</h4>
-          <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-500`}>
+          <h4 className={`text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate ${isSyncing ? 'text-zinc-400 italic' : 'text-zinc-900 dark:text-white'}`}>
+            {name}
+          </h4>
+          <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-500 ${isSyncing ? 'opacity-50' : ''}`}>
             {config.label}
           </span>
         </div>

@@ -7,8 +7,6 @@ import {
   CheckCircle,
   Clock,
   ListTodo,
-  Pipette,
-  Copy,
   Medal,
   Trophy,
   Star
@@ -17,7 +15,6 @@ import {
 export default function Profile({ user }) {
   const [speedTestRunning, setSpeedTestRunning] = useState(false);
   const [speedResult, setSpeedResult] = useState(null);
-  const [selectedColor, setSelectedColor] = useState('#8b5cf6');
 
   const runSpeedTest = () => {
     setSpeedTestRunning(true);
@@ -186,26 +183,6 @@ export default function Profile({ user }) {
           </button>
         </div>
 
-        {/* 5. Dev Kit (Color Picker) */}
-        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors duration-300">
-           <div className="mb-6">
-             <div className="flex items-center gap-2 mb-2 text-zinc-500 dark:text-zinc-400">
-               <Pipette size={16} />
-               <p className="text-xs font-bold uppercase tracking-widest">Dev Kit</p>
-             </div>
-             <h3 className="text-xl font-bold text-zinc-900 dark:text-white">Color Picker</h3>
-           </div>
-           <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-4 rounded-[1.5rem] border border-zinc-200/50 dark:border-zinc-800/50 shadow-inner w-full flex-1">
-             <input type="color" value={selectedColor} onChange={(e) => setSelectedColor(e.target.value)} className="w-12 h-12 rounded-xl cursor-pointer border-0 p-0 bg-transparent block shrink-0" />
-             <div className="flex flex-col flex-1 min-w-0">
-               <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">HEX</p>
-               <div className="flex items-center justify-between bg-white dark:bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm">
-                 <p className="font-mono font-bold text-zinc-900 dark:text-white text-sm tracking-wider truncate">{selectedColor.toUpperCase()}</p>
-                 <button onClick={() => navigator.clipboard.writeText(selectedColor)} className="text-zinc-400 hover:text-indigo-500 transition-colors shrink-0" title="Copy to clipboard"><Copy size={14}/></button>
-               </div>
-             </div>
-           </div>
-        </div>
 
         {/* 6. The Arena (Gamification) */}
         <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col group hover:border-amber-500/30 transition-colors duration-300 relative overflow-hidden">

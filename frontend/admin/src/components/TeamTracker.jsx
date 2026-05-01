@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, CheckCircle, XCircle, ChevronDown, User, Calendar, Activity, Zap } from 'lucide-react';
+import { TEAM_MEMBERS } from '../constants/users';
+import { useTeamPresence } from '../hooks/useTeamPresence';
 
 const mockTeamData = [
   { id: 1, name: 'Krishawn Rahul', role: 'Executive Admin', avatar: 'https://i.pravatar.cc/150?u=krishawn', daily: '9.5h', weekly: '48h', monthly: '190h', status: 'online', tasks: 2 },
@@ -16,7 +18,8 @@ const mockRequests = [
   { id: 102, name: 'Michael Antony', date: 'Apr 21', total: '8h', breakdown: '5h on Backend Setup, 3h on DB Migration', avatar: 'https://i.pravatar.cc/150?u=michael' },
 ];
 
-export default function TeamTracker() {
+export default function TeamTracker({ user }) {
+  const { getMemberPresence } = useTeamPresence(user);
   const [timeFilter, setTimeFilter] = useState('weekly'); // daily, weekly, monthly
   const [requests, setRequests] = useState(mockRequests);
 
@@ -45,20 +48,24 @@ export default function TeamTracker() {
                 <Activity size={16} className="text-amber-500" /> Workload Heatmap
              </h3>
              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 relative z-10">
-                {mockTeamData.map(member => (
-                  <div key={`heat-${member.id}`} className={`p-4 rounded-2xl border flex flex-col items-center text-center transition-all ${
-                    member.tasks >= 10 
-                      ? 'bg-rose-50 border-rose-200 dark:bg-rose-500/10 dark:border-rose-500/30' 
-                      : 'bg-zinc-50 dark:bg-zinc-950 border-zinc-200/50 dark:border-zinc-800/50'
-                  }`}>
-                    <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-xl mb-2 object-cover" />
-                    <p className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">{member.name.split(' ')[0]}</p>
-                    <p className={`text-[10px] font-bold uppercase tracking-widest mt-1 ${
-                      member.tasks >= 10 ? 'text-rose-600 dark:text-rose-400' : 'text-zinc-500'
-                    }`}>{member.tasks} Tasks</p>
-                    {member.tasks >= 10 && <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>}
-                  </div>
-                ))}
+                {TEAM_MEMBERS.map(member => {
+                  const presence = getMemberPresence(member.email);
+                  const status = presence.status || 'offline';
+                  const isOnline = presence.isOnline || false;
+                  
+                  return (
+                    <div key={`heat-${member.email}`} className="p-4 rounded-2xl border bg-zinc-50 dark:bg-zinc-950 border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center text-center transition-all">
+                      <div className="relative mb-2">
+                        <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-xl object-cover" />
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
+                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
+                        }`}></div>
+                      </div>
+                      <p className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">{member.firstName}</p>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mt-1 text-zinc-500">{status}</p>
+                    </div>
+                  );
+                })}
              </div>
           </div>
 
@@ -86,31 +93,37 @@ export default function TeamTracker() {
             </div>
 
             <div className="flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar">
-              {mockTeamData.map(member => (
-                <div key={member.id} className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 hover:border-indigo-500/30 transition-colors group">
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
-                      <img src={member.avatar} alt={member.name} className="w-12 h-12 rounded-[1.25rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all" />
-                      <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-                        member.status === 'online' ? 'bg-emerald-500' : 'bg-zinc-400'
-                      }`}></div>
+              {TEAM_MEMBERS.map(member => {
+                const presence = getMemberPresence(member.email);
+                const status = presence.status || 'offline';
+                const isOnline = presence.isOnline || false;
+                
+                return (
+                  <div key={member.email} className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 hover:border-indigo-500/30 transition-colors group">
+                    <div className="flex items-center gap-4">
+                      <div className="relative">
+                        <img src={member.avatar} alt={member.name} className="w-12 h-12 rounded-[1.25rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all" />
+                        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
+                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
+                        }`}></div>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{member.name}</h4>
+                        <p className="text-xs font-medium text-zinc-500 mt-0.5">{member.role}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{member.name}</h4>
-                      <p className="text-xs font-medium text-zinc-500 mt-0.5">{member.role}</p>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-8">
-                    <div className="text-right">
-                      <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">{timeFilter} Hours</p>
-                      <p className="text-lg font-black text-indigo-600 dark:text-indigo-400 font-mono tracking-tighter">
-                        {member[timeFilter]}
-                      </p>
+                    <div className="flex items-center gap-8">
+                      <div className="text-right">
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-1">{status.toUpperCase()}</p>
+                        <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                          {presence?.updatedAt ? new Date(presence.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '---'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

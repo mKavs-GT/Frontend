@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle } from 'lucide-react';
+import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle, Pipette } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Vault() {
   const [copiedSnippet, setCopiedSnippet] = useState(null);
+  const [selectedColor, setSelectedColor] = useState('#8b5cf6');
 
   const copySnippet = (id, text) => {
     navigator.clipboard.writeText(text);
@@ -140,6 +141,49 @@ export function useScrollPosition() {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Dev Kit Section */}
+      <div className="mt-4">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-500">
+            <Pipette size={20} />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Dev Kit</h2>
+            <p className="text-sm font-medium text-zinc-500">Utility tools for rapid interface development.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors duration-300">
+            <div className="mb-6">
+              <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Color Picker</h3>
+              <p className="text-xs font-semibold text-zinc-500 mt-1">Quickly grab HEX values for your UI.</p>
+            </div>
+            <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-4 rounded-[1.5rem] border border-zinc-200/50 dark:border-zinc-800/50 shadow-inner w-full flex-1">
+              <input 
+                type="color" 
+                value={selectedColor} 
+                onChange={(e) => setSelectedColor(e.target.value)} 
+                className="w-14 h-14 rounded-xl cursor-pointer border-0 p-0 bg-transparent block shrink-0" 
+              />
+              <div className="flex flex-col flex-1 min-w-0">
+                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">HEX CODE</p>
+                <div className="flex items-center justify-between bg-white dark:bg-zinc-900 px-4 py-2.5 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm">
+                  <p className="font-mono font-bold text-zinc-900 dark:text-white text-sm tracking-wider truncate">{selectedColor.toUpperCase()}</p>
+                  <button 
+                    onClick={() => navigator.clipboard.writeText(selectedColor)} 
+                    className="text-zinc-400 hover:text-indigo-500 transition-colors shrink-0" 
+                    title="Copy to clipboard"
+                  >
+                    <Copy size={16}/>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
