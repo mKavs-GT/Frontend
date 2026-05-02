@@ -72,7 +72,12 @@ export default function Login({ onLogin }) {
       >
         <div className="flex justify-center mb-8">
           <div className="w-16 h-16 flex items-center justify-center">
-            <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
+            <img 
+              src="/LOGOI.png" 
+              alt="MKAVS" 
+              className="w-full h-full object-contain"
+              style={{ filter: 'invert(75%) sepia(100%) saturate(5000%) hue-rotate(165deg) brightness(110%) contrast(110%) drop-shadow(0 0 12px rgba(0, 243, 255, 0.5))' }}
+            />
           </div>
         </div>
 

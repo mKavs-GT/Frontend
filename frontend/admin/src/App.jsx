@@ -396,15 +396,15 @@ export default function App() {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-zinc-950 transition-colors duration-700 font-sans relative overflow-hidden text-white">
         {/* Subtle animated background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-indigo-500/10 blur-[120px] rounded-full animate-pulse pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-accent/10 blur-[120px] rounded-full animate-pulse pointer-events-none"></div>
         
         <div className="relative z-10 flex flex-col items-center max-w-lg w-full px-8">
           <div className="mb-12 flex items-center gap-4 text-zinc-400">
-            <Zap size={24} className="text-amber-400" />
-            <h2 className="text-xl font-bold tracking-widest uppercase">Deep Work Session</h2>
+            <Zap size={24} className="text-accent" />
+            <h2 className="text-xl font-bold tracking-widest uppercase text-white">Deep Work Session</h2>
           </div>
           
-          <div className="text-[8rem] font-black tracking-tighter tabular-nums leading-none mb-12 text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">
+          <div className="text-[8rem] font-black tracking-tighter tabular-nums leading-none mb-12 text-transparent bg-clip-text bg-gradient-to-b from-white to-accent/50">
             {formatZenTime(zenTime)}
           </div>
           
@@ -498,26 +498,31 @@ export default function App() {
         initial={false}
         className={`fixed lg:relative left-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-50 shadow-xl lg:shadow-sm h-full w-[80px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
-        <div className="mb-12 w-12 h-12 flex items-center justify-center transition-transform hover:scale-105">
-          <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
+        <div className="mb-12 w-12 h-12 flex items-center justify-center transition-all hover:scale-110">
+          <img 
+            src="/LOGOI.png" 
+            alt="MKAVS" 
+            className="w-full h-full object-contain"
+            style={{ filter: 'invert(75%) sepia(100%) saturate(5000%) hue-rotate(165deg) brightness(110%) contrast(110%) drop-shadow(0 0 10px rgba(0, 243, 255, 0.6))' }} 
+          />
         </div>
         
         <nav className="flex-1 flex flex-col gap-4">
           <SidebarItem icon={<Kanban size={22} />} active={activeView === 'project'} onClick={() => setActiveView('project')} tooltip="Project Manager" />
           <SidebarItem icon={<Clock size={22} />} active={activeView === 'time'} onClick={() => setActiveView('time')} tooltip="Time Tracker" />
           <SidebarItem icon={<TicketIcon size={22} />} active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} tooltip="Approval Tickets" />
-          <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
-          <SidebarItem 
-            icon={<img src={kaironIcon} alt="Kairon Live Bot" className="w-[24px] h-[24px] object-contain drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] transition-all" />} 
-            active={activeView === 'kairon'} 
-            onClick={() => setActiveView('kairon')} 
-            tooltip="Kairon Live Bot" 
-          />
+
           <SidebarItem 
             icon={<Folder size={22} />} 
             active={activeView === 'project_management'} 
             onClick={() => setActiveView('project_management')} 
             tooltip="Project Management" 
+          />
+          <SidebarItem 
+            icon={<img src={kaironIcon} alt="Kairon Live Bot" className="w-[24px] h-[24px] object-contain drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] transition-all" />} 
+            active={activeView === 'kairon'} 
+            onClick={() => setActiveView('kairon')} 
+            tooltip="Kairon Live Bot" 
           />
           <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
           <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
@@ -531,7 +536,8 @@ export default function App() {
           )}
         </nav>
 
-        <div className="mt-auto pb-8 w-full px-4">
+        <div className="mt-auto pb-8 w-full px-4 flex flex-col gap-4">
+          <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
           <SidebarItem 
             icon={<LogOut size={22} className="text-rose-500" />} 
             active={false} 
@@ -544,8 +550,8 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 relative w-full overflow-x-hidden">
         {/* Background gradient effects */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 dark:bg-indigo-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 dark:bg-purple-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/10 dark:bg-accent/5 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-purple/10 dark:bg-brand-purple/5 blur-[120px] rounded-full pointer-events-none"></div>
 
         {/* Header */}
         <header className="h-16 lg:h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
@@ -556,10 +562,17 @@ export default function App() {
             >
               <Menu size={20} />
             </button>
-            <h1 className="text-lg lg:text-xl font-bold bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent flex items-center gap-2">
-              <span className="hidden sm:inline">MKAVS Dashboard</span>
-              <span className="sm:hidden">MKAVS</span>
-            </h1>
+            <div className="flex items-center gap-3 h-8 lg:h-10 overflow-hidden">
+              <img 
+                src="/MKAVS-removebg-preview.png" 
+                alt="MKAVS" 
+                className="h-full w-auto object-contain brightness-110"
+              />
+              <span className="text-[9px] font-black bg-gradient-to-r from-accent/20 to-brand-purple/20 text-accent border border-accent/30 px-2.5 py-1 rounded-lg tracking-[0.15em] shadow-[0_0_15px_rgba(204,255,0,0.15)] uppercase flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-accent animate-pulse"></span>
+                ADMIN
+              </span>
+            </div>
           </div>
           
           <div className="flex items-center gap-2 lg:gap-4">
@@ -574,7 +587,7 @@ export default function App() {
 
             <button 
               onClick={() => setIsRightSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-indigo-500/10 text-indigo-500"
+              className="lg:hidden p-2 rounded-xl bg-accent/10 text-accent"
             >
               <Users size={20} />
             </button>
@@ -600,7 +613,7 @@ export default function App() {
 
             <Suspense fallback={
               <div className="flex items-center justify-center h-64">
-                <div className="w-8 h-8 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
+                <div className="w-8 h-8 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
               </div>
             }>
               <AnimatePresence mode="wait">
@@ -618,7 +631,7 @@ export default function App() {
                 {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} /></motion.div>}
                 {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
                 {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
-                {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManagement user={user} /></motion.div>}
+                {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="h-full overflow-hidden"><ProjectManagement user={user} /></motion.div>}
               </AnimatePresence>
             </Suspense>
           </div>
@@ -647,7 +660,7 @@ export default function App() {
           <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-6">Current Session</h3>
           
           <div className="bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-zinc-200/80 dark:border-zinc-800 shadow-sm relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-brand-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             
             <div className="flex flex-col items-center relative z-10">
               <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Current Session</p>
@@ -689,7 +702,7 @@ export default function App() {
                const isActive = currentStatus === key;
                const colors = {
                  green: isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
-                 purple: isActive ? 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
+                 purple: isActive ? 'bg-brand-purple/10 text-brand-purple border-brand-purple/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  amber: isActive ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
                  gray: isActive ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500'
                };
@@ -802,29 +815,28 @@ export default function App() {
 
 function SidebarItem({ icon, active, onClick, tooltip }) {
   return (
-    <div className="relative group flex justify-center w-full px-4">
+    <div className="relative group flex justify-center w-full px-3">
+      {active && (
+        <motion.div 
+          layoutId="active-bar"
+          className="absolute left-0 w-1 h-8 bg-accent rounded-r-full z-20 top-1/2 -translate-y-1/2"
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        />
+      )}
       <button 
         onClick={onClick}
-        className={`w-full aspect-square flex items-center justify-center rounded-2xl transition-all duration-300 relative ${
+        className={`w-full aspect-square flex items-center justify-center rounded-xl transition-all duration-300 relative ${
           active 
-            ? 'text-white' 
-            : 'text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50'
+            ? 'text-accent bg-accent/5' 
+            : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
         }`}
       >
-        {active && (
-          <motion.div 
-            layoutId="active-sidebar"
-            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-md shadow-indigo-500/20"
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          />
-        )}
         <span className="relative z-10">{icon}</span>
       </button>
       
       {/* Tooltip */}
-      <div className="absolute left-full ml-2 px-3 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-semibold rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 shadow-xl">
+      <div className="absolute left-full ml-4 px-3 py-2 bg-zinc-950 border border-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 shadow-2xl">
         {tooltip}
-        <div className="absolute top-1/2 -left-1 -translate-y-1/2 border-[6px] border-transparent border-r-zinc-900 dark:border-r-zinc-100"></div>
       </div>
     </div>
   );
