@@ -54,7 +54,7 @@ const Navbar = () => {
           <div className="space-x-6 whitespace-nowrap flex items-center">
             <a href="/" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Home</a>
             <a href="/about" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>About</a>
-            <a href="/" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Our Work</a>
+            <a href="/works/index.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Our Work</a>
             <a href="/branding" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Branding</a>
           </div>
         </div>
