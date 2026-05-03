@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 observer.unobserve(el);
             }
         });
-    }, { threshold: 0.15 });
+    }, { threshold: 0, rootMargin: "0px 10000px -100px 10000px" });
 
     ['slide-2-text', 'slide-2-card-1', 'slide-2-card-2', 'slide-2-card-3'].forEach(id => {
         const el = document.getElementById(id);
@@ -904,7 +904,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, {
-            threshold: 0.1 // Trigger sooner
+            threshold: 0, rootMargin: "0px 10000px -100px 10000px"
         });
         observer.observe(slide2BottomText);
     }
