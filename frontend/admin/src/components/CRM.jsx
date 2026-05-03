@@ -104,7 +104,7 @@ export default function CRM({ user }) {
     }
   };
 
-  const statusOptions = ['Unassigned', 'Assigned', 'Active'];
+  const statusOptions = ['Unassigned', 'Assigned', 'Active', 'Completed'];
   const nextStatus = (current) => {
     const idx = statusOptions.indexOf(current || 'Unassigned');
     return statusOptions[(idx + 1) % statusOptions.length];
@@ -125,17 +125,17 @@ export default function CRM({ user }) {
     <div className="flex flex-col gap-8 h-[calc(100vh-14rem)] min-h-[600px]">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Client Hub</h2>
-          <p className="text-sm font-medium text-zinc-500 mt-1">Manage external users and incoming business queries.</p>
+          <h2 className="text-2xl font-bold text-[#1a1a1b] tracking-tight">Client Hub</h2>
+          <p className="text-sm font-medium text-[#6a737d] mt-1">Manage external users and incoming business queries.</p>
         </div>
         
-        <div className="flex bg-white dark:bg-zinc-900 p-1.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm">
+        <div className="flex bg-white p-1.5 rounded-xl border border-[#e1e4e8] shadow-sm">
           <button
             onClick={() => setActiveTab('users')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'users' 
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm' 
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
+                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
+                : 'text-[#6a737d] hover:text-[#1a1a1b]'
             }`}
           >
             <Users size={16} /> Registered Users
@@ -144,8 +144,8 @@ export default function CRM({ user }) {
             onClick={() => setActiveTab('consultations')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'consultations' 
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm' 
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
+                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
+                : 'text-[#6a737d] hover:text-[#1a1a1b]'
             }`}
           >
             <MessageSquare size={16} /> Consultations
@@ -228,6 +228,7 @@ export default function CRM({ user }) {
                             updateUserStatus(u._id, nextStatus(statusLabel));
                           }}
                           className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider whitespace-nowrap flex-shrink-0 transition-all hover:scale-105 active:scale-95 ${
+                            statusLabel === 'Completed' ? 'bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-400 border border-sky-200/50 dark:border-sky-500/30' :
                             statusLabel === 'Active' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/30' :
                             statusLabel === 'Assigned' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-500/30' :
                             'bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700'
@@ -369,6 +370,7 @@ export default function CRM({ user }) {
                                 <button 
                                   onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
                                   className={`text-[10px] font-bold px-3 py-1.5 rounded-xl uppercase tracking-wider whitespace-nowrap transition-all duration-200 cursor-pointer flex items-center gap-2 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] ${
+                                    (selectedUser.adminData?.projectStatus || 'Unassigned') === 'Completed' ? 'bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400 border border-sky-200/60 dark:border-sky-500/40 hover:bg-sky-200 dark:hover:bg-sky-500/30' :
                                     (selectedUser.adminData?.projectStatus || 'Unassigned') === 'Active' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-500/40 hover:bg-emerald-200 dark:hover:bg-emerald-500/30' :
                                     (selectedUser.adminData?.projectStatus || 'Unassigned') === 'Assigned' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-500/40 hover:bg-indigo-200 dark:hover:bg-indigo-500/30' :
                                     'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-200/80 dark:border-zinc-700/80 hover:bg-zinc-200 dark:hover:bg-zinc-700'

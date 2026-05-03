@@ -295,7 +295,7 @@ function calculateSlideHeights() {
     // Helper to get scroll height, ensuring at least 1 viewport height
     const getScrollHeight = (el) => el ? Math.max(el.scrollHeight, viewportHeight) : viewportHeight;
 
-    const slide3BaseVirtualHeight = viewportHeight + FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+    const slide3BaseVirtualHeight = viewportHeight;
     const slide3El = document.getElementById('slide-3');
     const slide3RealHeight = slide3El ? slide3El.scrollHeight : viewportHeight;
     const slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
@@ -420,16 +420,11 @@ function updateScrollState(newGlobalY, instant = false) {
             slide2.scrollTop = localScrollY;
         }
     }
-    else if (newSlideIndex === 2) { // Slide 3 (Flip logic + Scroll Appended Content)
+    else if (newSlideIndex === 2) { // Slide 3 (Scroll Appended Content)
         handleSlide3Flip(localScrollY, instant);
 
         const slide3 = document.getElementById('slide-3');
-        const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
-        if (localScrollY > slide3AnimLimit) {
-            if (slide3) slide3.scrollTop = localScrollY - slide3AnimLimit;
-        } else {
-            if (slide3) slide3.scrollTop = 0;
-        }
+        if (slide3) slide3.scrollTop = localScrollY;
     }
     else if (newSlideIndex === 3) { // Slide 6 (Footer)
         const slide6 = document.getElementById('slide-6');
@@ -565,7 +560,7 @@ function handleSlide3Flip(localY, instant = false) {
 
     if (progress > 0.5) {
         // Flipped State (Show List, Hide Cover Text)
-        if (!zoomImageContainer.classList.contains('image-final-position')) {
+        if (zoomImageContainer && !zoomImageContainer.classList.contains('image-final-position')) {
             // SMOOTH ENTRY: Zoom In... overlap... Flip
 
             // 1. Start Zoom In Immediately
@@ -576,10 +571,11 @@ function handleSlide3Flip(localY, instant = false) {
 
             // 2. Start Flip Midway (Overlap)
             const triggerFlip = () => {
-                if (instant) zoomImageFlipper.style.transition = 'none';
-                else zoomImageFlipper.style.transition = ''; // Reset to CSS default
-
-                zoomImageFlipper.style.transform = `rotateY(180deg)`;
+                if (zoomImageFlipper) {
+                    if (instant) zoomImageFlipper.style.transition = 'none';
+                    else zoomImageFlipper.style.transition = ''; // Reset to CSS default
+                    zoomImageFlipper.style.transform = `rotateY(180deg)`;
+                }
 
                 if (loopingTextWrapper) {
                     loopingTextWrapper.style.transition = instant ? 'none' : 'opacity 1s ease-out';
@@ -635,12 +631,12 @@ function handleSlide3Flip(localY, instant = false) {
         }
     } else {
         // Unflipped State (Hide List, Show Cover Text)
-        if (zoomImageContainer.classList.contains('image-final-position')) {
+        if (zoomImageContainer && zoomImageContainer.classList.contains('image-final-position')) {
             // SMOOTH EXIT: Flip Back... overlap... Zoom Out
             // (Reversing the order for smoothness: LIFO)
 
             // 1. Start Flip Back Immediately
-            zoomImageFlipper.style.transform = `rotateY(0deg)`;
+            if (zoomImageFlipper) zoomImageFlipper.style.transform = `rotateY(0deg)`;
 
             // Clear any pending forward logic
             clearTimeout(slide3FlipTimeout);
@@ -658,7 +654,7 @@ function handleSlide3Flip(localY, instant = false) {
             }
 
             // DISABLE POINTER EVENTS IMMEDIATELY
-            zoomImageContainer.style.pointerEvents = 'none';
+            if (zoomImageContainer) zoomImageContainer.style.pointerEvents = 'none';
 
             // Reset Scale Instantly
             if (thumbnailGallery) {
@@ -688,7 +684,7 @@ function handleSlide3Flip(localY, instant = false) {
 
             // 2. Start Zoom Out Midway (Overlap)
             slide3FlipTimeout = setTimeout(() => {
-                zoomImageContainer.classList.remove('image-final-position');
+                if (zoomImageContainer) zoomImageContainer.classList.remove('image-final-position');
 
                 setTimeout(() => {
                     worksListColumn.style.transition = '';
@@ -897,21 +893,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Intersection Observer for Slide 2 Bottom Text ---
     const slide2BottomText = document.getElementById('slide-2-bottom-text');
-    const slide2Marquee = document.getElementById('slide-2-marquee');
-    if (slide2BottomText && slide2Marquee) {
-        // Observe marquee intersection to trigger text animation earlier
+    if (slide2BottomText) {
+        // Observe text intersection to trigger animation
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     slide2BottomText.classList.remove('opacity-0', '-translate-x-full');
                     slide2BottomText.classList.add('opacity-100', 'translate-x-0');
-                    observer.unobserve(slide2Marquee); // Run once
+                    observer.unobserve(slide2BottomText); // Run once
                 }
             });
         }, {
             threshold: 0.1 // Trigger sooner
         });
-        observer.observe(slide2Marquee);
+        observer.observe(slide2BottomText);
     }
 
     // --- Intersection Observer for Video (Play when seen) ---

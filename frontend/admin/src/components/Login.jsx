@@ -60,68 +60,68 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-zinc-50 dark:bg-[#09090b] relative overflow-hidden font-sans">
-      {/* Background gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-500/20 dark:bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/20 dark:bg-purple-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-
+    <div className="flex h-screen w-screen items-center justify-center bg-[#f9f9fb] relative overflow-hidden font-sans text-[#1a1a1b]">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md p-8 rounded-[2rem] bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-2xl relative z-10"
+        className="w-full max-w-sm p-10 rounded-xl bg-white border border-[#e1e4e8] shadow-sm relative z-10"
       >
-        <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 flex items-center justify-center">
-            <img src="/favicon.svg" alt="MKAVS" className="w-full h-full object-contain" />
+        <div className="flex justify-center mb-10">
+          <div className="w-12 h-12 flex items-center justify-center">
+            <img 
+              src="/LOGOI.png" 
+              alt="MKAVS" 
+              className="w-full h-full object-contain"
+              style={{ filter: 'grayscale(100%)' }}
+            />
           </div>
         </div>
 
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Welcome to MKAVS</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your UID to access the dashboard.</p>
+        <div className="text-center mb-10">
+          <h2 className="text-xl font-bold text-[#1a1a1b] mb-2 tracking-tight">Sign in to MKavs Dashboard</h2>
+          <p className="text-sm text-[#6a737d]">Authorized access only</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div>
-            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Email or Employee UID</label>
+            <label className="block text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-2">Email or UID</label>
             <input 
               type="text" 
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="e.g. agent03mrss@gmail.com or MGT-DEV-01"
-              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-sm"
+              placeholder="e.g. MGT-DEV-01"
+              className="w-full px-3 py-2 rounded-md bg-white border border-[#d1d5da] text-[#1a1a1b] focus:outline-none focus:border-[#4a154b] focus:ring-1 focus:ring-[#4a154b]/10 transition-all text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-2">Password</label>
+            <label className="block text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-2">Password</label>
             <input 
               type="password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-mono text-sm"
+              placeholder="••••••••"
+              className="w-full px-3 py-2 rounded-md bg-white border border-[#d1d5da] text-[#1a1a1b] focus:outline-none focus:border-[#4a154b] focus:ring-1 focus:ring-[#4a154b]/10 transition-all text-sm"
             />
           </div>
 
           {error && (
-            <div className="text-center space-y-1">
-              <p className="text-rose-500 text-sm font-semibold">{error}</p>
-              <p className="text-indigo-500 dark:text-indigo-400 text-sm font-medium">Hint: Password is 123 (or trial123)</p>
+            <div className="text-center">
+              <p className="text-rose-600 text-xs font-semibold">{error}</p>
             </div>
           )}
 
           <button 
             type="submit"
             disabled={isLoading}
-            className="mt-4 w-full py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all shadow-md active:scale-[0.98] disabled:opacity-70"
+            className="mt-2 w-full py-2.5 rounded-md bg-[#1a1a1b] text-white font-bold hover:bg-black transition-all shadow-sm active:scale-[0.98] disabled:opacity-70 text-sm"
           >
             {isLoading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-zinc-200/50 dark:border-zinc-800/50 text-center">
-          <p className="text-xs text-zinc-400 font-medium">Authorized Personnel Only. © MKAVS</p>
+        <div className="mt-12 pt-6 border-t border-[#e1e4e8] text-center">
+          <p className="text-[10px] text-[#6a737d] font-bold uppercase tracking-widest">© MKAVS Global Tech</p>
         </div>
       </motion.div>
     </div>

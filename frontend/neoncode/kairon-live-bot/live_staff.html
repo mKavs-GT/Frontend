@@ -14,27 +14,27 @@
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
     :root {
-      /* Background layers — matches admin panel zinc-950 */
-      --bg:         #09090b;
-      --surface:    #111116;
-      --surface-2:  #18181d;
-      --surface-3:  #1f1f27;
+      /* Background layers — matches admin panel white theme */
+      --bg:         #ffffff;
+      --surface:    #f9f9fb;
+      --surface-2:  #f3f4f6;
+      --surface-3:  #e5e7eb;
 
       /* Brand */
       --blue:       #3b6cf4;
-      --blue-dim:   rgba(59,108,244,0.12);
-      --blue-glow:  rgba(59,108,244,0.25);
+      --blue-dim:   rgba(59,108,244,0.08);
+      --blue-glow:  rgba(59,108,244,0.15);
       --purple:     #7c3aed;
-      --lime:       #ccff00;
+      --lime:       #bef264;
 
       /* Text */
-      --text-primary:   #f4f4f8;
-      --text-secondary: #8b8ba0;
-      --text-muted:     #52525f;
+      --text-primary:   #1a1a1b;
+      --text-secondary: #6a737d;
+      --text-muted:     #959da5;
 
       /* Borders */
-      --border:     rgba(255,255,255,0.07);
-      --border-accent: rgba(59,108,244,0.3);
+      --border:     #e1e4e8;
+      --border-accent: rgba(59,108,244,0.2);
 
       /* Semantic */
       --green:  #22c55e;
@@ -174,7 +174,7 @@
     .topbar-btn:hover {
       background: var(--surface-3);
       color: var(--text-primary);
-      border-color: rgba(255,255,255,0.12);
+      border-color: rgba(0,0,0,0.12);
     }
 
     .topbar-btn.active {
@@ -323,7 +323,7 @@
     }
 
     .session-item.active .unread-badge {
-      background: rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.2);
     }
 
     .inbox-empty {
@@ -488,7 +488,7 @@
       box-shadow: 0 0 0 3px var(--blue-dim);
     }
 
-    #transferTo option { background: #1f1f27; }
+    #transferTo option { background: #f9f9fb; }
 
     .action-chip {
       white-space: nowrap;
@@ -609,8 +609,8 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 1px 0 rgba(255,255,255,0.8) inset;
       backdrop-filter: blur(16px);
       animation: toast-in 0.3s cubic-bezier(0.2,0,0,1) forwards;
     }
@@ -626,7 +626,7 @@
     .toast-title { font-weight: 700; font-size: 13px; }
     .toast-msg   { font-size: 12px; opacity: 0.8; margin-top: 2px; font-weight: 400; }
     .toast-close {
-      background: none; border: none; color: rgba(255,255,255,0.5);
+      background: none; border: none; color: rgba(255,255,255,0.7);
       cursor: pointer; font-size: 15px; padding: 0; line-height: 1;
       flex-shrink: 0; transition: color 0.15s; margin-top: 1px;
     }
