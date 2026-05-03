@@ -37,7 +37,7 @@ export default function GodMode() {
         })
       });
       if (res.ok) alert('Maintenance settings applied successfully.');
-      else alert('Failed to apply settings.');
+      else alert('Failed to apply settings: ' + await res.text());
     } catch (e) {
       console.error(e);
       alert('Network error.');
