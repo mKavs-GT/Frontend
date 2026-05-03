@@ -125,17 +125,17 @@ export default function CRM({ user }) {
     <div className="flex flex-col gap-8 h-[calc(100vh-14rem)] min-h-[600px]">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Client Hub</h2>
-          <p className="text-sm font-medium text-zinc-500 mt-1">Manage external users and incoming business queries.</p>
+          <h2 className="text-2xl font-bold text-[#1a1a1b] tracking-tight">Client Hub</h2>
+          <p className="text-sm font-medium text-[#6a737d] mt-1">Manage external users and incoming business queries.</p>
         </div>
         
-        <div className="flex bg-white dark:bg-zinc-900 p-1.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-sm">
+        <div className="flex bg-white p-1.5 rounded-xl border border-[#e1e4e8] shadow-sm">
           <button
             onClick={() => setActiveTab('users')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'users' 
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm' 
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
+                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
+                : 'text-[#6a737d] hover:text-[#1a1a1b]'
             }`}
           >
             <Users size={16} /> Registered Users
@@ -144,8 +144,8 @@ export default function CRM({ user }) {
             onClick={() => setActiveTab('consultations')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'consultations' 
-                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm' 
-                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
+                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
+                : 'text-[#6a737d] hover:text-[#1a1a1b]'
             }`}
           >
             <MessageSquare size={16} /> Consultations

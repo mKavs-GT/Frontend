@@ -60,8 +60,8 @@ export default function TimeTracker({ user, onTicketSubmit, completedTodaySecond
       fetchHistory();
     };
 
-    // Auto-refresh stats every 10 seconds to show progress if timer is running
-    const interval = setInterval(fetchStats, 10000);
+    // Auto-refresh stats every 60 seconds to show progress if timer is running
+    const interval = setInterval(fetchStats, 60000);
 
     window.addEventListener('mkavs-timer-stopped', handleRefresh);
     return () => {

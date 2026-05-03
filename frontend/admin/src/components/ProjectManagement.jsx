@@ -13,12 +13,12 @@ import ReactorKnob from './ui/control-knob.jsx';
 
 
 const STATUS_COLORS = {
-  Assigned: 'bg-accent-500/15 text-accent-400 border-accent-500/30',
-  Active: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-  Progress: 'bg-brand-brand-purple-500/15 text-brand-brand-purple-400 border-brand-brand-purple-500/30',
-  'On Hold': 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-  Completed: 'bg-sky-500/15 text-sky-400 border-sky-500/30',
-  Unassigned: 'bg-zinc-800/50 text-zinc-500 border-zinc-700/50',
+  Assigned: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+  Active: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+  Progress: 'bg-purple-50 text-purple-600 border-purple-100',
+  'On Hold': 'bg-amber-50 text-amber-600 border-amber-100',
+  Completed: 'bg-sky-50 text-sky-600 border-sky-100',
+  Unassigned: 'bg-zinc-50 text-zinc-400 border-zinc-100',
 };
 
 function Avatar({ src, name, size = 'md' }) {
@@ -26,8 +26,8 @@ function Avatar({ src, name, size = 'md' }) {
   const initials = (name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const colors = ['from-accent-500 to-brand-purple-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
   const color = colors[(name || '').charCodeAt(0) % colors.length];
-  if (src) return <img src={src.startsWith('http') ? src : `${API_BASE_URL}${src}`} alt={name} className={`${sz} rounded-2xl object-cover ring-2 ring-zinc-800`} />;
-  return <div className={`${sz} rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center font-bold text-white ring-2 ring-zinc-800`}>{initials}</div>;
+  if (src) return <img src={src.startsWith('http') ? src : `${API_BASE_URL}${src}`} alt={name} className={`${sz} rounded-2xl object-cover ring-2 ring-white shadow-sm`} />;
+  return <div className={`${sz} rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center font-bold text-white ring-2 ring-white shadow-sm`}>{initials}</div>;
 }
 
 function Badge({ status }) {
@@ -36,8 +36,8 @@ function Badge({ status }) {
 
 function ProgressBar({ value = 0 }) {
   return (
-    <div className="h-1 bg-zinc-800/80 rounded-full overflow-hidden mt-2">
-      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-accent-500 via-brand-brand-purple-500 to-brand-purple-500" />
+    <div className="h-1 bg-zinc-100 rounded-full overflow-hidden mt-2">
+      <motion.div initial={{ width: 0 }} animate={{ width: `${value}%` }} transition={{ duration: 1.2, ease: 'easeOut' }} className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600" />
     </div>
   );
 }
@@ -45,11 +45,11 @@ function ProgressBar({ value = 0 }) {
 function InfoRow({ icon: Icon, label, value }) {
   if (!value) return null;
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-zinc-800/40 last:border-0">
-      <div className="w-8 h-8 rounded-xl bg-zinc-800/60 border border-zinc-700/40 flex items-center justify-center flex-shrink-0"><Icon size={13} className="text-zinc-400" /></div>
+    <div className="flex items-center gap-4 py-3 border-b border-[#e1e4e8]/60 last:border-0">
+      <div className="w-8 h-8 rounded-xl bg-[#f3f4f6] border border-[#e1e4e8] flex items-center justify-center flex-shrink-0"><Icon size={13} className="text-[#6a737d]" /></div>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">{label}</p>
-        <p className="text-sm font-medium text-zinc-200 truncate mt-0.5">{value}</p>
+        <p className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">{label}</p>
+        <p className="text-sm font-medium text-[#1a1a1b] truncate mt-0.5">{value}</p>
       </div>
     </div>
   );
@@ -106,23 +106,23 @@ export default function ProjectManagement({ user }) {
   });
 
   return (
-    <div className="flex flex-col gap-0 h-full rounded-2xl overflow-hidden border border-zinc-800/50 bg-zinc-950/60">
+    <div className="flex flex-col gap-0 h-full rounded-2xl overflow-hidden border border-[#e1e4e8] bg-white shadow-sm">
 
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/50 bg-zinc-900/40 flex-shrink-0">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[#e1e4e8] bg-[#f9f9fb] flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-500 to-brand-brand-purple-600 flex items-center justify-center shadow-lg shadow-accent-500/20 flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
             <Layers size={16} className="text-white" />
           </div>
           <div>
-            <h2 className="text-[15px] font-bold text-white leading-none">Project Management</h2>
-            <p className="text-[11px] text-zinc-500 mt-0.5">
+            <h2 className="text-[15px] font-bold text-[#1a1a1b] leading-none">Project Management</h2>
+            <p className="text-[11px] text-[#6a737d] mt-0.5">
               {loading ? 'Loading…' : `${clients.length} active client${clients.length !== 1 ? 's' : ''}`}
             </p>
           </div>
         </div>
         <button onClick={fetchAll}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-medium text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all">
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-medium text-[#6a737d] hover:text-[#1a1a1b] border border-[#e1e4e8] hover:border-[#d1d5da] bg-white transition-all">
           <RefreshCw size={12} className={loading ? 'animate-spin' : ''} /> Refresh
         </button>
       </div>
@@ -135,25 +135,25 @@ export default function ProjectManagement({ user }) {
         <div className="flex flex-1 min-h-0">
 
           {/* Left Sidebar */}
-          <div className={`group/sidebar relative flex-shrink-0 flex flex-col border-r border-zinc-800/50 bg-zinc-900/20 transition-[width] duration-300 ease-in-out overflow-hidden ${
+          <div className={`group/sidebar relative flex-shrink-0 flex flex-col border-r border-[#e1e4e8] bg-[#f9f9fb] transition-[width] duration-300 ease-in-out overflow-hidden ${
             selected ? 'w-[60px] hover:w-[280px]' : 'w-[280px]'
           }`}>
 
             {/* Search row */}
-            <div className="flex-shrink-0 border-b border-zinc-800/40" style={{ height: '52px' }}>
+            <div className="flex-shrink-0 border-b border-[#e1e4e8]/60" style={{ height: '52px' }}>
               {/* Collapsed: centered icon */}
               <div className={`absolute inset-x-0 flex items-center justify-center transition-opacity duration-200 ${selected ? 'opacity-100 group-hover/sidebar:opacity-0' : 'opacity-0 pointer-events-none'}`} style={{ height: '52px' }}>
-                <Users size={16} className="text-zinc-600" />
+                <Users size={16} className="text-[#6a737d]" />
               </div>
               {/* Expanded: full search input */}
               <div className={`px-3 py-3 transition-opacity duration-200 ${selected ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}>
                 <div className="relative">
-                  <Users size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none" />
+                  <Users size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#6a737d] pointer-events-none" />
                   <input
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     placeholder="Search clients…"
-                    className="w-full pl-8 pr-3 py-2 rounded-lg bg-zinc-900/80 border border-zinc-800/80 text-[13px] text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-zinc-700 transition-all"
+                    className="w-full pl-8 pr-3 py-2 rounded-lg bg-white border border-[#e1e4e8] text-[13px] text-[#1a1a1b] placeholder-[#959da5] focus:outline-none focus:border-indigo-300 transition-all shadow-sm"
                   />
                 </div>
               </div>
@@ -175,10 +175,10 @@ export default function ProjectManagement({ user }) {
                     <button key={client._id + '-icon'}
                       onClick={() => { setSelected(isActive ? null : client); setActiveTab('Overview'); }}
                       title={client.displayName || client.username}
-                      className={`flex items-center justify-center w-full py-1.5 rounded-xl transition-all ${isActive ? 'bg-accent-500/15' : 'hover:bg-zinc-800/50'}`}>
+                      className={`flex items-center justify-center w-full py-1.5 rounded-xl transition-all ${isActive ? 'bg-indigo-50' : 'hover:bg-white hover:shadow-sm'}`}>
                       <div className="relative">
                         <Avatar src={client.image} name={client.displayName || client.username} size="sm" />
-                        {isActive && <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-gradient-to-b from-accent-500 to-brand-brand-purple-500 rounded-full" />}
+                        {isActive && <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-indigo-500 rounded-full" />}
                       </div>
                     </button>
                   );
@@ -201,12 +201,12 @@ export default function ProjectManagement({ user }) {
                       title={client.displayName || client.username}
                       className={`w-full text-left rounded-xl border transition-all duration-200 group/row relative overflow-hidden ${
                         isActive
-                          ? 'bg-accent-500/10 border-accent-500/30 shadow-md shadow-accent-500/10'
-                          : 'bg-zinc-900/0 border-zinc-800/0 hover:bg-zinc-800/50 hover:border-zinc-700/60 hover:shadow-lg hover:shadow-black/20'
+                          ? 'bg-indigo-50 border-indigo-200 shadow-sm'
+                          : 'bg-transparent border-transparent hover:bg-white hover:border-[#e1e4e8] hover:shadow-sm'
                       }`}>
                       {/* Active indicator bar */}
                       {isActive && (
-                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-accent-500 to-brand-brand-purple-600 rounded-r-full" />
+                        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-indigo-500 rounded-r-full" />
                       )}
                       {/* Hover shimmer */}
                       {!isActive && (
@@ -237,12 +237,12 @@ export default function ProjectManagement({ user }) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-1.5 mb-0.5">
-                            <p className={`font-semibold text-[13px] truncate transition-colors ${isActive ? 'text-white' : 'text-zinc-300 group-hover/row:text-white'}`}>
+                            <p className={`font-semibold text-[13px] truncate transition-colors ${isActive ? 'text-[#1a1a1b]' : 'text-[#6a737d] group-hover/row:text-[#1a1a1b]'}`}>
                               {client.displayName || client.username || 'Unknown'}
                             </p>
                             <Badge status={status} />
                           </div>
-                          <p className={`text-[11px] truncate transition-colors ${isActive ? 'text-zinc-500' : 'text-zinc-600 group-hover/row:text-zinc-500'}`}>{client.email}</p>
+                          <p className={`text-[11px] truncate transition-colors ${isActive ? 'text-[#6a737d]' : 'text-[#959da5] group-hover/row:text-[#6a737d]'}`}>{client.email}</p>
                           {proj && (
                             <div className="flex items-center gap-2 mt-1.5">
                               <div className="flex-1 h-[3px] bg-zinc-800 rounded-full overflow-hidden">
@@ -281,7 +281,7 @@ export default function ProjectManagement({ user }) {
           </div>
 
           {/* Right Detail Panel */}
-          <div className="flex-1 flex flex-col overflow-hidden bg-zinc-950/40">
+          <div className="flex-1 flex flex-col overflow-hidden bg-white">
             <AnimatePresence mode="wait">
               {!selected ? (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -300,12 +300,12 @@ export default function ProjectManagement({ user }) {
                   <div className="flex-shrink-0 bg-zinc-900/30 border-b border-zinc-800/50">
                     {/* Dynamic progress strip */}
                     {(() => {
-                      const proj = getProject(selected);
-                      const progress = proj?.adminData?.projectProgress || 0;
-                      const color = progress >= 80 ? 'from-emerald-500 to-teal-400'
-                        : progress >= 50 ? 'from-accent-500 via-brand-brand-purple-500 to-brand-purple-500'
-                        : progress >= 20 ? 'from-amber-500 to-orange-400'
-                        : 'from-zinc-600 to-zinc-500';
+                        const proj = getProject(selected);
+                        const progress = proj?.adminData?.projectProgress || 0;
+                        const color = progress >= 80 ? 'from-emerald-500 to-emerald-400'
+                          : progress >= 50 ? 'from-indigo-500 via-purple-500 to-indigo-600'
+                          : progress >= 20 ? 'from-amber-500 to-amber-400'
+                          : 'from-zinc-400 to-zinc-300';
                       return (
                         <div className="relative h-[3px] w-full bg-zinc-800/80">
                           <motion.div
@@ -343,11 +343,11 @@ export default function ProjectManagement({ user }) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                              <h3 className="text-[16px] font-bold text-white leading-tight truncate">{selected.displayName || selected.username}</h3>
-                              <p className="text-[12px] text-zinc-500 mt-0.5 truncate">
+                              <h3 className="text-[16px] font-bold text-[#1a1a1b] leading-tight truncate">{selected.displayName || selected.username}</h3>
+                              <p className="text-[12px] text-[#6a737d] mt-0.5 truncate">
                                 {[selected.jobTitle, selected.company].filter(Boolean).join('  ·  ') || 'No job title'}
                               </p>
-                              <p className="text-[11px] text-zinc-600 mt-0.5 truncate">{selected.email}</p>
+                              <p className="text-[11px] text-[#959da5] mt-0.5 truncate">{selected.email}</p>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0 mt-0.5">
                               <Badge status={selected.adminData?.projectStatus || 'Assigned'} />
@@ -365,12 +365,12 @@ export default function ProjectManagement({ user }) {
                         {TABS.map(t => (
                           <button key={t} onClick={() => setActiveTab(t)}
                             className={`relative px-4 py-2.5 text-[12px] font-semibold transition-all ${
-                              activeTab === t ? 'text-white' : 'text-zinc-600 hover:text-zinc-400'
+                              activeTab === t ? 'text-[#1a1a1b]' : 'text-[#6a737d] hover:text-[#1a1a1b]'
                             }`}>
                             {t}
                             {activeTab === t && (
                               <motion.div layoutId="tab-underline"
-                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent-500 to-brand-brand-purple-500 rounded-full"
+                                className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-500 rounded-full"
                               />
                             )}
                           </button>
@@ -407,11 +407,11 @@ function TabPanel({ children }) {
 
 function Section({ title, icon: Icon, children }) {
   return (
-    <div className="bg-zinc-900/40 rounded-2xl p-5 border border-zinc-800/40 backdrop-blur-sm">
+    <div className="bg-[#f9f9fb] rounded-2xl p-5 border border-[#e1e4e8] shadow-sm">
       {title && (
-        <div className="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-800/50">
-          <div className="w-6 h-6 rounded-lg bg-accent-500/10 border border-accent-500/20 flex items-center justify-center"><Icon size={11} className="text-accent-400" /></div>
-          <p className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{title}</p>
+        <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#e1e4e8]">
+          <div className="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center"><Icon size={11} className="text-indigo-500" /></div>
+          <p className="text-xs font-bold text-[#1a1a1b] uppercase tracking-wider">{title}</p>
         </div>
       )}
       {children}
@@ -469,23 +469,23 @@ function TimelineDisplay({ startDate, endDate, client, authHeader, onUpdate, edi
 
   const Content = (
     <div className={`flex items-center gap-3 w-full ${editable ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}>
-      <div className="flex-1 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/60 flex items-center gap-3 relative overflow-hidden group">
-        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-          <CalendarIcon size={14} className="text-emerald-400" />
+      <div className="flex-1 p-3 rounded-xl bg-white border border-[#e1e4e8] flex items-center gap-3 relative overflow-hidden group shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+          <CalendarIcon size={14} className="text-emerald-500" />
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-0.5">Start Date</span>
-          <span className="text-xs font-medium text-zinc-200 truncate">{startDate || "Not specified"}</span>
+          <span className="text-[9px] text-[#6a737d] font-bold uppercase tracking-widest mb-0.5">Start Date</span>
+          <span className="text-xs font-medium text-[#1a1a1b] truncate">{startDate || "Not specified"}</span>
         </div>
       </div>
-      <div className="w-4 h-[1px] bg-zinc-800 flex-shrink-0" />
-      <div className="flex-1 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/60 flex items-center gap-3 relative overflow-hidden group">
-        <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center flex-shrink-0">
-          <CalendarIcon size={14} className="text-rose-400" />
+      <div className="w-4 h-[1px] bg-[#e1e4e8] flex-shrink-0" />
+      <div className="flex-1 p-3 rounded-xl bg-white border border-[#e1e4e8] flex items-center gap-3 relative overflow-hidden group shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center flex-shrink-0">
+          <CalendarIcon size={14} className="text-rose-500" />
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mb-0.5">End Date</span>
-          <span className="text-xs font-medium text-zinc-200 truncate">{endDate || "Not specified"}</span>
+          <span className="text-[9px] text-[#6a737d] font-bold uppercase tracking-widest mb-0.5">End Date</span>
+          <span className="text-xs font-medium text-[#1a1a1b] truncate">{endDate || "Not specified"}</span>
         </div>
       </div>
     </div>
@@ -573,8 +573,8 @@ function OverviewTab({ client, project, authHeader, onUpdate }) {
                   </span>
                 </div>
 
-                <div className="mb-3 p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/50 shadow-inner">
-                  <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                <div className="mb-3 p-3 rounded-xl bg-white border border-[#e1e4e8] shadow-sm">
+                  <p className="text-sm text-[#1a1a1b] leading-relaxed whitespace-pre-wrap">
                     {c.projectInfo || c.description || c.message || 'No project information provided.'}
                   </p>
                 </div>

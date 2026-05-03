@@ -27,7 +27,9 @@ import {
   Info,
   Menu,
   X,
-  Folder
+  Folder,
+  Plus,
+  TrendingUp
 } from 'lucide-react';
 import { API_BASE_URL, WS_URL } from './config';
 import { useTeamPresence } from './hooks/useTeamPresence';
@@ -62,6 +64,9 @@ const GodMode = lazyWithRetry(() => import('./components/GodMode'));
 const NotificationCenter = lazyWithRetry(() => import('./components/NotificationCenter'));
 const TicketManager = lazyWithRetry(() => import('./components/TicketManager'));
 const ProjectManagement = lazyWithRetry(() => import('./components/ProjectManagement'));
+const AnalyticsDashboard = lazyWithRetry(() => import('./components/AnalyticsDashboard'));
+const ActivityFeed = lazyWithRetry(() => import('./components/ActivityFeed'));
+const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
 const kaironIcon = '/kairon-icon.png';
@@ -74,6 +79,42 @@ const STATUS_CONFIG = {
   zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> },
   standup: { label: 'STANDUP', color: 'green', icon: <Users size={14} /> }
 };
+
+const NavItem = ({ icon, label, active, onClick, small }) => (
+  <button 
+    onClick={onClick}
+    className={`flex items-center gap-3 w-full px-3 ${small ? 'py-1.5' : 'py-2'} rounded-md text-sm font-medium transition-colors ${
+      active 
+        ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
+        : 'text-[#6a737d] hover:bg-[#f3f4f6] border border-transparent'
+    }`}
+  >
+    <span className={`${active ? 'text-[#1a1a1b]' : 'text-[#6a737d]'}`}>{icon}</span>
+    <span className="truncate">{label}</span>
+  </button>
+);
+
+const getViewTitle = (view) => {
+  const titles = {
+    analytics: 'Overview',
+    project: 'Project Manager',
+    time: 'Time Tracker',
+    tickets: 'Approval Tickets',
+    profile: 'Profile',
+    vault: 'The Vault',
+    team: 'Team Tracker',
+    crm: 'Client Hub (CRM)',
+    godmode: 'God Mode',
+    project_management: 'Project Management'
+  };
+  return titles[view] || 'Dashboard';
+};
+
+const LoadingState = () => (
+  <div className="flex items-center justify-center h-64">
+    <div className="w-8 h-8 rounded-full border-2 border-[#4a154b]/30 border-t-[#4a154b] animate-spin" />
+  </div>
+);
 
 export default function App() {
   const [user, setUser] = useState(() => {
@@ -119,15 +160,53 @@ export default function App() {
   }, []);
 
 
-  const [activeView, setActiveView] = useState(() => localStorage.getItem('mkavs_admin_active_view') || 'project');
+   const [activeView, setActiveView] = useState(() => localStorage.getItem('mkavs_admin_active_view') || 'analytics');
+   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+   const [isLiveOnChatbot, setIsLiveOnChatbot] = useState(false);
+   const [isAnyoneElseLive, setIsAnyoneElseLive] = useState(false);
+   const [otherLiveAgent, setOtherLiveAgent] = useState('');
+ 
+   useEffect(() => {
+     const checkStaffStatus = async () => {
+       try {
+         const res = await fetch(`${API_BASE_URL}/api/staff-status`);
+         if (res.ok) {
+           const data = await res.json();
+           const otherAgents = (data.staff || []).filter(s => s.isLive && s.email !== user.email);
+           if (otherAgents.length > 0) {
+             setIsAnyoneElseLive(true);
+             setOtherLiveAgent(otherAgents[0].name || otherAgents[0].email);
+           } else {
+             setIsAnyoneElseLive(false);
+           }
+         }
+       } catch (err) {
+         console.error('Failed to fetch staff status:', err);
+       }
+     };
+     checkStaffStatus();
+     const interval = setInterval(checkStaffStatus, 60000);
+     return () => clearInterval(interval);
+   }, [user?.email]);
   
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   useEffect(() => {
     localStorage.setItem('mkavs_admin_active_view', activeView);
   }, [activeView]);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('mkavs_theme');
-    return saved !== null ? JSON.parse(saved) : true;
+    // Force light mode for now as per user request
+    return false;
   });
   const [isZenMode, setIsZenMode] = useState(false);
   const [zenTime, setZenTime] = useState(25 * 60);
@@ -216,7 +295,7 @@ export default function App() {
   useEffect(() => {
     if (user) {
       fetchProjects();
-      const interval = setInterval(fetchProjects, 10000); // 10s sync
+      const interval = setInterval(fetchProjects, 60000); // 1m sync
       return () => clearInterval(interval);
     }
   }, [user]);
@@ -478,366 +557,278 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen h-[100dvh] overflow-hidden bg-zinc-50 dark:bg-[#09090b] transition-colors duration-300 font-sans relative">
+    <div className="flex h-screen h-[100dvh] overflow-hidden bg-[#f9f9fb] transition-colors duration-300 font-sans relative text-[#1a1a1b]">
       
-      {/* Left Sidebar - Mobile Drawer Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Left Sidebar */}
-      <motion.aside 
-        initial={false}
-        className={`fixed lg:relative left-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-r border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center py-8 z-50 shadow-xl lg:shadow-sm h-full w-[80px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
-      >
-        <div className="mb-12 w-12 h-12 flex items-center justify-center transition-all hover:scale-110">
-          <img 
-            src="/LOGOI.png" 
-            alt="MKAVS" 
-            className="w-full h-full object-contain"
-            style={{ filter: 'invert(75%) sepia(100%) saturate(5000%) hue-rotate(165deg) brightness(110%) contrast(110%) drop-shadow(0 0 10px rgba(0, 243, 255, 0.6))' }} 
-          />
-        </div>
-        
-        <nav className="flex-1 flex flex-col gap-4">
-          <SidebarItem icon={<Kanban size={22} />} active={activeView === 'project'} onClick={() => setActiveView('project')} tooltip="Project Manager" />
-          <SidebarItem icon={<Clock size={22} />} active={activeView === 'time'} onClick={() => setActiveView('time')} tooltip="Time Tracker" />
-          <SidebarItem icon={<TicketIcon size={22} />} active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} tooltip="Approval Tickets" />
-
-          <SidebarItem 
-            icon={<Folder size={22} />} 
-            active={activeView === 'project_management'} 
-            onClick={() => setActiveView('project_management')} 
-            tooltip="Project Management" 
-          />
-          <SidebarItem 
-            icon={<img src={kaironIcon} alt="Kairon Live Bot" className="w-[24px] h-[24px] object-contain drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] transition-all" />} 
-            active={activeView === 'kairon'} 
-            onClick={() => setActiveView('kairon')} 
-            tooltip="Kairon Live Bot" 
-          />
-          <div className="w-8 h-px bg-zinc-200/50 dark:bg-zinc-800/50 my-2 mx-auto"></div>
-          <SidebarItem icon={<Briefcase size={22} />} active={activeView === 'vault'} onClick={() => setActiveView('vault')} tooltip="The Vault" />
-          {user.isExecutive && (
-            <>
-              <SidebarItem icon={<Users size={22} />} active={activeView === 'team'} onClick={() => setActiveView('team')} tooltip="Team Tracker" />
-              <SidebarItem icon={<Database size={22} />} active={activeView === 'crm'} onClick={() => setActiveView('crm')} tooltip="Client Hub (CRM)" />
-              <div className="w-8 h-px bg-rose-200/50 dark:bg-rose-900/50 my-2 mx-auto"></div>
-              <SidebarItem icon={<Shield size={22} className="text-rose-600 dark:text-rose-500" />} active={activeView === 'godmode'} onClick={() => setActiveView('godmode')} tooltip="God Mode" />
-            </>
-          )}
-        </nav>
-
-        <div className="mt-auto pb-8 w-full px-4 flex flex-col gap-4">
-          <SidebarItem icon={<User size={22} />} active={activeView === 'profile'} onClick={() => setActiveView('profile')} tooltip="Profile" />
-          <SidebarItem 
-            icon={<LogOut size={22} className="text-rose-500" />} 
-            active={false} 
-            onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
-            tooltip="Logout" 
-          />
-        </div>
-      </motion.aside>
-
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 relative w-full overflow-x-hidden">
-        {/* Background gradient effects */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/10 dark:bg-accent/5 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-purple/10 dark:bg-brand-purple/5 blur-[120px] rounded-full pointer-events-none"></div>
-
-        {/* Header */}
-        <header className="h-16 lg:h-20 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 lg:px-8 z-30 sticky top-0">
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-            >
-              <Menu size={20} />
-            </button>
-            <div className="flex items-center gap-3 h-8 lg:h-10 overflow-hidden">
-              <img 
-                src="/MKAVS-removebg-preview.png" 
-                alt="MKAVS" 
-                className="h-full w-auto object-contain brightness-110"
-              />
-              <span className="text-[9px] font-black bg-gradient-to-r from-accent/20 to-brand-purple/20 text-accent border border-accent/30 px-2.5 py-1 rounded-lg tracking-[0.15em] shadow-[0_0_15px_rgba(204,255,0,0.15)] uppercase flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent animate-pulse"></span>
-                ADMIN
-              </span>
+      {/* Main Sidebar */}
+      <aside className={`fixed lg:relative left-0 flex-shrink-0 bg-white border-r border-[#e1e4e8] flex flex-col z-50 h-full w-[240px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        {/* Workspace Switcher */}
+        <div className="p-4 border-b border-[#e1e4e8]">
+          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f3f4f6] cursor-pointer transition-colors border border-transparent hover:border-[#e1e4e8]">
+            <img src="/LOGOI.png" className="w-8 h-8 rounded-md object-contain" alt="" />
+            <div className="flex-1 min-w-0">
+              <img src="/MKAVS.png" className="h-4 object-contain invert" alt="MKAVS" />
+              <p className="text-[10px] text-[#6a737d] font-medium uppercase tracking-tight">Enterprise</p>
             </div>
           </div>
-          
-          <div className="flex items-center gap-2 lg:gap-4">
-            <NotificationCenter user={user} />
-            
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+        </div>
 
-            <button 
-              onClick={() => setIsRightSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-accent/10 text-accent"
-            >
-              <Users size={20} />
-            </button>
-
-            <div className="flex items-center gap-3 ml-1 lg:ml-2">
-              <div className="text-right hidden md:block">
-                <p className="text-sm font-bold text-zinc-900 dark:text-white leading-none">{user.name}</p>
-                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">{user.role}</p>
-              </div>
-              <img 
-                src={user.avatar} 
-                alt={user.name} 
-                className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm"
-              />
+        <nav className="flex-1 overflow-y-auto p-2 space-y-6 scrollbar-hide">
+          {/* Dashboard Section */}
+          <div>
+            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Dashboard</p>
+            <div className="space-y-0.5">
+              <NavItem icon={<TrendingUp size={18} />} label="Overview" active={activeView === 'analytics'} onClick={() => setActiveView('analytics')} />
+              <NavItem icon={<Kanban size={18} />} label="Project Manager" active={activeView === 'project'} onClick={() => setActiveView('project')} />
+              <NavItem icon={<Folder size={18} />} label="Project Management" active={activeView === 'project_management'} onClick={() => setActiveView('project_management')} />
+              <NavItem icon={<TicketIcon size={18} />} label="Approval Tickets" active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} />
             </div>
+          </div>
+
+          {/* Monitor Section */}
+          <div>
+            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Monitor</p>
+            <div className="space-y-0.5">
+              <NavItem icon={<Clock size={18} />} label="Time Tracker" active={activeView === 'time'} onClick={() => setActiveView('time')} />
+              <NavItem icon={<Users size={18} />} label="Team Tracker" active={activeView === 'team'} onClick={() => setActiveView('team')} />
+              <NavItem icon={<LogOut size={18} />} label="Logs" active={activeView === 'logs'} onClick={() => setActiveView('logs')} />
+            </div>
+          </div>
+
+          {/* Manage Section */}
+          <div>
+            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Manage</p>
+            <div className="space-y-0.5">
+              <NavItem icon={<Database size={18} />} label="Client Hub (CRM)" active={activeView === 'crm'} onClick={() => setActiveView('crm')} />
+              <NavItem icon={<Briefcase size={18} />} label="The Vault" active={activeView === 'vault'} onClick={() => setActiveView('vault')} />
+              <NavItem icon={<img src={kaironIcon} alt="" className="w-4 h-4" />} label="Kairon Live Bot" active={activeView === 'kairon'} onClick={() => setActiveView('kairon')} />
+              {user.isExecutive && (
+                <NavItem icon={<Shield size={18} className="text-rose-600" />} label="God Mode" active={activeView === 'godmode'} onClick={() => setActiveView('godmode')} />
+              )}
+            </div>
+          </div>
+        </nav>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-[#e1e4e8] space-y-1">
+          <NavItem icon={<Info size={16} />} label="Changelog" onClick={() => {}} small />
+          <div className="pt-2">
+             <button 
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full p-2 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+             >
+               <LogOut size={18} />
+               <span>Logout</span>
+             </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-w-0 bg-white relative">
+        {/* Top Header */}
+        <header className="h-[52px] bg-white border-b border-[#e1e4e8] flex items-center justify-between px-4 sticky top-0 z-40">
+          <div className="flex items-center gap-4 flex-1">
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-1.5 hover:bg-gray-100 rounded-md">
+              <Menu size={20} />
+            </button>
+            <div className="flex items-center gap-2 text-sm font-medium text-[#1a1a1b]">
+              <span className="text-[#1a1a1b] font-black uppercase tracking-tighter">MKAVS-GT</span>
+              <span className="text-[#d1d5da] mx-1">/</span>
+              <span>{getViewTitle(activeView)}</span>
+            </div>
+            
+            {/* Search Bar */}
+            <div 
+              onClick={() => setIsCommandPaletteOpen(true)}
+              className="hidden md:flex items-center max-w-sm w-full ml-8 relative cursor-pointer group"
+            >
+              <Search size={14} className="absolute left-3 text-[#6a737d] group-hover:text-[#1a1a1b] transition-colors" />
+              <div className="w-full bg-[#f3f4f6] border border-transparent group-hover:border-[#e1e4e8] group-hover:bg-white rounded-md py-1.5 pl-9 pr-3 text-sm transition-all text-[#6a737d]">
+                Search...
+              </div>
+              <div className="absolute right-2 flex items-center gap-1">
+                <span className="text-[10px] font-bold text-[#6a737d] bg-white border border-[#e1e4e8] px-1 rounded">Cmd</span>
+                <span className="text-[10px] font-bold text-[#6a737d] bg-white border border-[#e1e4e8] px-1 rounded">K</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+             {/* Timer Quick Access */}
+             <div className="hidden sm:flex items-center gap-3 px-3 py-1 bg-[#f3f4f6] border border-[#e1e4e8] rounded-md">
+                <div className={`w-2 h-2 rounded-full ${timerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`}></div>
+                <span className="text-xs font-mono font-bold">{formatDuration(currentSessionSeconds || completedTodaySeconds)}</span>
+                <button onClick={handleTimerToggle} className="p-1 hover:bg-white rounded transition-colors">
+                  {timerRunning ? <Square size={12} fill="currentColor" /> : <Play size={12} fill="currentColor" />}
+                </button>
+             </div>
+
+             <NotificationCenter user={user} />
+            <button onClick={() => setActiveView('profile')} className="w-8 h-8 rounded-full border border-[#e1e4e8] overflow-hidden hover:opacity-80 transition-opacity">
+              <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+            </button>
           </div>
         </header>
 
-        {/* Dynamic Content */}
-        <div className="flex-1 overflow-y-auto p-6 lg:p-8 relative z-0">
-          <div className="max-w-7xl mx-auto w-full">
-
-
-            <Suspense fallback={
-              <div className="flex items-center justify-center h-64">
-                <div className="w-8 h-8 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
+        {/* View Header (Render Style) */}
+        <div className="px-8 py-10 border-b border-[#e1e4e8]">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-1">
+              <h1 className="text-3xl font-black tracking-tight">{getViewTitle(activeView)}</h1>
+              <div className="flex gap-2">
+                <span className="px-2 py-0.5 bg-[#f3f4f6] border border-[#e1e4e8] rounded text-[10px] font-bold uppercase">Enterprise</span>
               </div>
-            }>
+            </div>
+
+            <div className="flex items-center gap-4">
+               {isAnyoneElseLive && (
+                 <div className="flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1b] border border-[#333] rounded-lg">
+                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                   <span className="text-[10px] font-bold text-white uppercase tracking-tight">{otherLiveAgent} is live on chatbot</span>
+                 </div>
+               )}
+               <button 
+                 onClick={() => setIsLiveOnChatbot(!isLiveOnChatbot)}
+                 className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
+                   isLiveOnChatbot 
+                     ? 'bg-rose-500 text-white hover:bg-rose-600' 
+                     : 'bg-[#1a1a1b] text-white hover:bg-black'
+                 }`}
+               >
+                 <Zap size={14} />
+                 {isLiveOnChatbot ? 'End Chatbot Session' : 'Go live on Chatbot'}
+               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="flex-1 overflow-y-auto p-8 bg-white scrollbar-hide">
+          <div className="max-w-6xl mx-auto">
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin"></div></div>}>
               <AnimatePresence mode="wait">
-                {activeView === 'project' && <motion.div key="project" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><ProjectManager user={user} projects={projects} onRefresh={fetchProjects} /></motion.div>}
-                {activeView === 'time' && <motion.div key="time" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TimeTracker user={user} onTicketSubmit={fetchTicketStats} completedTodaySeconds={completedTodaySeconds} currentSessionSeconds={currentSessionSeconds} completedMonthSeconds={completedMonthSeconds} /></motion.div>}
-                {activeView === 'tickets' && <motion.div key="tickets" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TicketManager user={user} onReview={fetchTicketStats} /></motion.div>}
-                {activeView === 'profile' && <motion.div key="profile" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Profile user={user} /></motion.div>}
-                {activeView === 'vault' && <motion.div key="vault" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><Vault /></motion.div>}
-                {activeView === 'kairon' && <motion.div key="kairon" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="w-full h-[800px]"><iframe 
-                  src="/neoncode/kairon-live-bot/live_staff.html"
-                  className="w-full h-full border-0 rounded-[2rem] shadow-sm"
-                  title="Kairon Live Staff Dashboard"
-                  allow="autoplay; clipboard-write"
-                ></iframe></motion.div>}
-                {activeView === 'team' && user.isExecutive && <motion.div key="team" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><TeamTracker user={user} /></motion.div>}
-                {activeView === 'crm' && user.isExecutive && <motion.div key="crm" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><CRM user={user} /></motion.div>}
-                {activeView === 'godmode' && user.isExecutive && <motion.div key="godmode" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}><GodMode /></motion.div>}
-                {activeView === 'project_management' && <motion.div key="project_management" initial={{opacity:0, y:10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} className="h-full overflow-hidden"><ProjectManagement user={user} /></motion.div>}
+                {activeView === 'analytics' && (
+                  <motion.div 
+                    key="analytics" 
+                    initial={{ opacity: 0, y: 10 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    exit={{ opacity: 0, y: -10 }}
+                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                  >
+                    <div className="lg:col-span-2">
+                      <AnalyticsDashboard />
+                    </div>
+                    <div className="lg:col-span-1">
+                      <ActivityFeed />
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeView === 'project' && (
+                  <motion.div key="project" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <ProjectManager user={user} projects={projects} onRefresh={fetchProjects} />
+                  </motion.div>
+                )}
+
+                {activeView === 'time' && (
+                  <motion.div key="time" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <TimeTracker user={user} onTicketSubmit={fetchTicketStats} completedTodaySeconds={completedTodaySeconds} currentSessionSeconds={currentSessionSeconds} completedMonthSeconds={completedMonthSeconds} />
+                  </motion.div>
+                )}
+
+                {activeView === 'tickets' && (
+                  <motion.div key="tickets" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <TicketManager user={user} onReview={fetchTicketStats} />
+                  </motion.div>
+                )}
+
+                {activeView === 'profile' && (
+                  <motion.div key="profile" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <Profile user={user} />
+                  </motion.div>
+                )}
+
+                {activeView === 'vault' && (
+                  <motion.div key="vault" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <Vault />
+                  </motion.div>
+                )}
+
+                {activeView === 'kairon' && (
+                  <motion.div key="kairon" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="w-full h-[800px]">
+                    <iframe 
+                      src="/neoncode/kairon-live-bot/live_staff.html"
+                      className="w-full h-full border-0 rounded-2xl border border-[#e1e4e8] shadow-sm"
+                      title="Kairon Live Staff Dashboard"
+                      allow="autoplay; clipboard-write"
+                    ></iframe>
+                  </motion.div>
+                )}
+
+                {activeView === 'team' && (
+                  <motion.div key="team" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <TeamTracker user={user} />
+                  </motion.div>
+                )}
+
+                {activeView === 'crm' && user.isExecutive && (
+                  <motion.div key="crm" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <CRM user={user} />
+                  </motion.div>
+                )}
+
+                {activeView === 'godmode' && user.isExecutive && (
+                  <motion.div key="godmode" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <GodMode />
+                  </motion.div>
+                )}
+
+                {activeView === 'project_management' && (
+                  <motion.div key="project_management" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="h-full overflow-hidden">
+                    <ProjectManagement user={user} />
+                  </motion.div>
+                )}
+
+                {activeView === 'logs' && (
+                  <motion.div key="logs" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <LogsView />
+                  </motion.div>
+                )}
               </AnimatePresence>
             </Suspense>
           </div>
         </div>
       </main>
 
-      {/* Right Sidebar - Mobile Drawer Overlay */}
+      {/* Global Command Palette */}
       <AnimatePresence>
-        {isRightSidebarOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsRightSidebarOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+        {isCommandPaletteOpen && (
+          <CommandPalette 
+            isOpen={isCommandPaletteOpen} 
+            onClose={() => setIsCommandPaletteOpen(false)}
+            onAction={(actionId) => {
+              if (['project', 'tickets', 'time', 'crm', 'vault', 'analytics'].includes(actionId)) {
+                setActiveView(actionId);
+              } else if (actionId === 'logout') {
+                handleLogout();
+              } else if (actionId === 'toggle_timer') {
+                handleTimerToggle();
+              }
+            }}
           />
         )}
       </AnimatePresence>
 
-      {/* Right Persistent Sidebar */}
-      <motion.aside 
-        initial={false}
-        className={`fixed lg:relative right-0 flex-shrink-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-200/50 dark:border-zinc-800/50 flex flex-col z-50 lg:z-20 h-full overflow-y-auto shadow-2xl lg:shadow-sm w-[300px] lg:w-[320px] transition-transform duration-300 ${isRightSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}
-      >
-        <div className="p-8 pb-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
-          <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-6">Current Session</h3>
-          
-          <div className="bg-white dark:bg-zinc-900 rounded-[2rem] p-6 border border-zinc-200/80 dark:border-zinc-800 shadow-sm relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-brand-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-            
-            <div className="flex flex-col items-center relative z-10">
-              <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Current Session</p>
-              <p className="text-4xl font-black text-zinc-900 dark:text-white mb-6 tracking-tighter font-mono">
-                {formatDuration(currentSessionSeconds)}
-              </p>
-              
-              <div className="w-full h-px bg-zinc-100 dark:bg-zinc-800/50 mb-6" />
-
-              <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1">Total Today</p>
-              <p className="text-xl font-bold text-zinc-500 dark:text-zinc-400 mb-8 tracking-tight font-mono">
-                {formatDuration(completedTodaySeconds + currentSessionSeconds)}
-              </p>
-              
-              <button 
-                onClick={handleTimerToggle}
-                className={`w-full py-4 rounded-2xl flex items-center justify-center gap-2.5 font-semibold text-base transition-all duration-300 shadow-lg ${
-                  timerRunning 
-                    ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20 hover:shadow-rose-500/40 translate-y-0 hover:-translate-y-0.5' 
-                    : 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-zinc-900/10 dark:shadow-white/10 translate-y-0 hover:-translate-y-0.5'
-                }`}
-              >
-                {timerRunning ? (
-                  <><Square size={18} fill="currentColor" /> Pause Timer</>
-                ) : (
-                  <><Play size={18} fill="currentColor" /> Start Timer</>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="px-8 mt-2 mb-2">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Your Status</p>
-          </div>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-1.5 flex flex-wrap gap-1 mb-4">
-             {Object.entries(STATUS_CONFIG).map(([key, config]) => {
-               const isActive = currentStatus === key;
-               const colors = {
-                 green: isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
-                 purple: isActive ? 'bg-brand-purple/10 text-brand-purple border-brand-purple/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
-                 amber: isActive ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500',
-                 gray: isActive ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-500'
-               };
-               
-               return (
-                 <button 
-                   key={key}
-                   onClick={() => handleStatusChange(key)}
-                   className={`flex-1 min-w-[80px] py-2 rounded-lg text-[10px] font-bold transition-all border ${colors[config.color]} ${isActive ? 'shadow-sm' : 'border-transparent'}`}
-                 >
-                   <span className="flex items-center justify-center gap-1.5">
-                     {config.icon}
-                     {config.label}
-                   </span>
-                 </button>
-               );
-             })}
-          </div>
-          
-          <div className="grid grid-cols-2 gap-2">
-            <button 
-              onClick={() => {
-                setIsZenMode(true);
-                handleStatusChange('zen');
-              }}
-              className="py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
-            >
-              <Coffee size={14} /> Zen Mode
-            </button>
-            <button 
-              onClick={generateStandup}
-              className={`py-3 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2 border ${
-                standupCopied 
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400' 
-                  : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
-              }`}
-            >
-              {standupCopied ? <><CheckCircle size={14} /> Copied</> : <><Copy size={14} /> Standup</>}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 p-8 pt-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Team Status</h3>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => alert(JSON.stringify(presenceMap, null, 2))}
-                className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
-                title="Debug Sync Data"
-              >
-                <Info size={14} />
-              </button>
-              <button className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-                <MoreVertical size={16} />
-              </button>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            {TEAM_MEMBERS.map(member => {
-              const memberEmail = member.email?.toLowerCase().trim() || '';
-              const presence = getMemberPresence(memberEmail);
-              
-              return (
-                <TeamMember 
-                  key={member.email}
-                  name={member.name} 
-                  role={member.role} 
-                  status={presence.status} 
-                  isOnline={presence.isOnline}
-                  isSyncing={presence.isSyncing}
-                  avatar={member.avatar} 
-                />
-              );
-            })}
-          </div>
-        </div>
-
-         {/* Identity Check (Debug) */}
-         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 opacity-40 hover:opacity-100 transition-opacity">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-[8px] font-mono text-zinc-500">
-                <Shield size={10} />
-                <span>ID: {user?.email || '???'}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className={`w-1.5 h-1.5 rounded-full ${isSynced ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-red-500 animate-pulse'}`}></div>
-                <span className="text-[7px] font-black uppercase tracking-tighter text-zinc-400">
-                  {isSynced ? 'Synced' : 'Offline'}
-                </span>
-              </div>
-            </div>
-        </div>
-      </motion.aside>
-
       {/* Close buttons for mobile sidebars */}
-      {(isMobileMenuOpen || isRightSidebarOpen) && (
+      {isMobileMenuOpen && (
         <button 
-          onClick={() => { setIsMobileMenuOpen(false); setIsRightSidebarOpen(false); }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden flex items-center gap-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-[#1a1a1b] text-white px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden flex items-center gap-2"
         >
           <X size={16} /> Close Menu
         </button>
       )}
 
-    </div>
-  );
-}
-
-function SidebarItem({ icon, active, onClick, tooltip }) {
-  return (
-    <div className="relative group flex justify-center w-full px-3">
-      {active && (
-        <motion.div 
-          layoutId="active-bar"
-          className="absolute left-0 w-1 h-8 bg-accent rounded-r-full z-20 top-1/2 -translate-y-1/2"
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        />
-      )}
-      <button 
-        onClick={onClick}
-        className={`w-full aspect-square flex items-center justify-center rounded-xl transition-all duration-300 relative ${
-          active 
-            ? 'text-accent bg-accent/5' 
-            : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
-        }`}
-      >
-        <span className="relative z-10">{icon}</span>
-      </button>
-      
-      {/* Tooltip */}
-      <div className="absolute left-full ml-4 px-3 py-2 bg-zinc-950 border border-white/5 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 shadow-2xl">
-        {tooltip}
-      </div>
     </div>
   );
 }
@@ -881,6 +872,39 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
           </span>
         </div>
         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 mt-0.5">{role}</p>
+      </div>
+    </div>
+  );
+}
+
+function LogsView() {
+  const logs = [
+    { id: 1, type: 'info', msg: 'System integrity check completed.', time: '2 mins ago' },
+    { id: 2, type: 'auth', msg: 'Admin login detected: Krishawn Rahul', time: '15 mins ago' },
+    { id: 3, type: 'db', msg: 'Database sync: 14 projects updated.', time: '1 hour ago' },
+    { id: 4, type: 'bot', msg: 'Kairon Live Bot: Session initiated.', time: '2 hours ago' },
+    { id: 5, type: 'error', msg: 'Failed to fetch external API: /v1/metrics', time: '3 hours ago' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-black tracking-tight">System Logs</h3>
+        <button className="text-[10px] font-bold text-rose-600 uppercase tracking-widest hover:underline">Clear Logs</button>
+      </div>
+      <div className="space-y-2">
+        {logs.map(log => (
+          <div key={log.id} className="flex items-center justify-between p-4 bg-[#f9f9fb] border border-[#e1e4e8] rounded-xl group hover:border-[#1a1a1b] transition-all">
+            <div className="flex items-center gap-4">
+              <div className={`w-2 h-2 rounded-full ${log.type === 'error' ? 'bg-rose-500' : log.type === 'auth' ? 'bg-[#4a154b]' : 'bg-emerald-500'}`}></div>
+              <div>
+                <p className="text-sm font-bold">{log.msg}</p>
+                <p className="text-[10px] font-bold text-[#6a737d] uppercase tracking-tight">{log.type}</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-bold text-[#6a737d]">{log.time}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
