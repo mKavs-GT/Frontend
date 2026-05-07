@@ -29,7 +29,8 @@ import {
   X,
   Folder,
   Plus,
-  TrendingUp
+  TrendingUp,
+  ChevronDown
 } from 'lucide-react';
 import { API_BASE_URL, WS_URL } from './config';
 import { useTeamPresence } from './hooks/useTeamPresence';
@@ -76,8 +77,7 @@ const STATUS_CONFIG = {
   break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
   deepwork: { label: 'DEEP WORK', color: 'purple', icon: <CheckCircle size={14} /> },
   offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> },
-  zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> },
-  standup: { label: 'STANDUP', color: 'green', icon: <Users size={14} /> }
+  zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> }
 };
 
 const NavItem = ({ icon, label, active, onClick, small }) => (
@@ -237,6 +237,8 @@ export default function App() {
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectsLoading, setProjectsLoading] = useState(true);
+  const [ticketStats, setTicketStats] = useState(null);
+  const [ticketStatsLoading, setTicketStatsLoading] = useState(true);
   const [isValidating, setIsValidating] = useState(false);
   const wsRef = useRef(null);
   const reconnectTimerRef = useRef(null);
@@ -718,8 +720,16 @@ export default function App() {
                     <div className="lg:col-span-2">
                       <AnalyticsDashboard />
                     </div>
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 space-y-6">
                       <ActivityFeed />
+                      <YourStatus 
+                        currentStatus={currentStatus} 
+                        handleStatusChange={handleStatusChange} 
+                      />
+                      <TeamStatus 
+                        user={user} 
+                        getMemberPresence={getMemberPresence} 
+                      />
                     </div>
                   </motion.div>
                 )}
@@ -833,7 +843,7 @@ export default function App() {
   );
 }
 
-function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
+function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
   const config = isSyncing 
     ? { label: 'SYNCING...', color: 'gray', icon: <Clock size={10} className="animate-spin" /> }
     : (STATUS_CONFIG[status] || STATUS_CONFIG.offline);
@@ -857,7 +867,7 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
   const badgeClass = badgeColors[status] || badgeColors.offline;
 
   return (
-    <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all cursor-pointer group shadow-sm hover:shadow-md">
+    <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all duration-500" />
         <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${isOnline ? statusColors[config.color] : 'bg-zinc-400'} transition-all duration-500`}></div>
@@ -865,13 +875,73 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
           <h4 className={`text-sm font-semibold group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate ${isSyncing ? 'text-zinc-400 italic' : 'text-zinc-900 dark:text-white'}`}>
-            {name}
+            {name} {isMe && <span className="ml-1 text-[8px] text-blue-900 font-black uppercase tracking-widest">(You)</span>}
           </h4>
           <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${badgeClass} transition-all duration-500 ${isSyncing ? 'opacity-50' : ''}`}>
             {config.label}
           </span>
         </div>
         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 mt-0.5">{role}</p>
+      </div>
+    </div>
+  );
+}
+
+function YourStatus({ currentStatus, handleStatusChange }) {
+  return (
+    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm p-4">
+      <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-3">Your Status</h3>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.keys(STATUS_CONFIG).map(key => {
+          const config = STATUS_CONFIG[key];
+          const isActive = currentStatus === key;
+          
+          return (
+            <button
+              key={key}
+              onClick={() => handleStatusChange(key)}
+              className={`flex items-center gap-2.5 p-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all border ${
+                isActive 
+                  ? 'bg-[#1a1a1b] text-white border-[#1a1a1b] shadow-sm' 
+                  : 'bg-[#f3f4f6] text-[#6a737d] border-transparent hover:border-[#e1e4e8] hover:bg-white'
+              }`}
+            >
+              <span className={isActive ? 'text-white' : 'text-[#6a737d]'}>{config.icon}</span>
+              <span className="truncate">{config.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function TeamStatus({ user, getMemberPresence }) {
+  return (
+    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm">
+      <div className="px-4 py-3 bg-[#f9f9fb] border-b border-[#e1e4e8] flex items-center justify-between">
+        <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Team Status</h3>
+        <div className="flex items-center gap-2">
+           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+           <span className="text-[10px] font-bold text-[#6a737d] uppercase">Live</span>
+        </div>
+      </div>
+      <div className="divide-y divide-[#e1e4e8] p-1">
+        {TEAM_MEMBERS.map(member => {
+          const presence = getMemberPresence(member.email);
+          const isMe = member.email === user.email;
+          
+          return (
+            <TeamMember 
+              key={member.email}
+              {...member} 
+              status={presence.status} 
+              isOnline={presence.isOnline}
+              isSyncing={presence.isSyncing}
+              isMe={isMe}
+            />
+          );
+        })}
       </div>
     </div>
   );
