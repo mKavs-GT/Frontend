@@ -748,7 +748,7 @@ export default function App() {
 
                 {activeView === 'project' && (
                   <motion.div key="project" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                    <ProjectManager user={user} projects={projects} onRefresh={fetchProjects} />
+                    <ProjectManager user={user} projects={projects} onRefresh={fetchProjects} setProjects={setProjects} />
                   </motion.div>
                 )}
 

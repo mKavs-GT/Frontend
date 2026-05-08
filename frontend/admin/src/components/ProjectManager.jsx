@@ -30,7 +30,7 @@ const COLUMN_TITLES = {
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 
-export default function ProjectManager({ user, projects = [], onRefresh }) {
+const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
   const [expandedProjects, setExpandedProjects] = useState(new Set());
   const [activeSprintMap, setActiveSprintMap] = useState({});
   
@@ -200,6 +200,37 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   };
 
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
+    // 1. Snapshot old state for rollback
+    const oldProjects = [...projects];
+    
+    // 2. Perform Optimistic Update
+    const newProjects = projects.map(p => {
+      if (p._id !== projectId) return p;
+      
+      const newSprints = p.sprints.map(s => {
+        if (s._id !== sprintId) return s;
+        
+        // Clone columns
+        const newCols = { ...s.columns };
+        const taskIndex = newCols[fromCol].findIndex(t => t.id === taskId);
+        if (taskIndex === -1) return s;
+        
+        const [task] = newCols[fromCol].splice(taskIndex, 1);
+        newCols[toCol].push(task);
+        
+        // Recalculate progress optimistically
+        const total = Object.values(newCols).reduce((acc, col) => acc + (Array.isArray(col) ? col.length : 0), 0);
+        const live = newCols.live.length;
+        const newProgress = total === 0 ? 0 : Math.round((live / total) * 100);
+        
+        return { ...s, columns: newCols, progress: newProgress };
+      });
+      
+      return { ...p, sprints: newSprints };
+    });
+    
+    setProjects(newProjects);
+
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
         method: 'PUT',
@@ -209,9 +240,17 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
         },
         body: JSON.stringify({ transition: { taskId, fromCol, toCol } })
       });
-      if (res.ok) onRefresh();
+      if (!res.ok) {
+        setProjects(oldProjects);
+        const err = await res.json();
+        alert('Failed to move task: ' + (err.error || 'Unknown error'));
+      } else {
+        // Sync with real DB state quietly
+        await onRefresh();
+      }
     } catch (err) {
       console.error('Move task failed:', err);
+      setProjects(oldProjects);
     }
   };
 
@@ -360,7 +399,9 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                                       {sortTasks(sprint.columns[key] || []).map(task => (
                                         <motion.div 
                                           key={task.id}
+                                          layout
                                           layoutId={task.id}
+                                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                           className="bg-white p-4 rounded-lg border border-[#e1e4e8] shadow-sm hover:shadow-md transition-all group cursor-grab active:cursor-grabbing"
                                         >
                                            <div className={`w-8 h-1 rounded-full mb-3 ${task.priority === 'high' ? 'bg-rose-500' : task.priority === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'}`} />
@@ -513,6 +554,8 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
     </div>
   );
 }
+
+export default ProjectManager;
 
 function Modal({ children, onClose, title }) {
   return (
