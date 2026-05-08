@@ -66,7 +66,7 @@ const NotificationCenter = lazyWithRetry(() => import('./components/Notification
 const TicketManager = lazyWithRetry(() => import('./components/TicketManager'));
 const ProjectManagement = lazyWithRetry(() => import('./components/ProjectManagement'));
 const AnalyticsDashboard = lazyWithRetry(() => import('./components/AnalyticsDashboard'));
-const ActivityFeed = lazyWithRetry(() => import('./components/ActivityFeed'));
+const Changelog = lazyWithRetry(() => import('./components/Changelog'));
 const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
@@ -105,7 +105,8 @@ const getViewTitle = (view) => {
     team: 'Team Tracker',
     crm: 'Client Hub (CRM)',
     godmode: 'God Mode',
-    project_management: 'Project Management'
+    project_management: 'Project Management',
+    changelog: 'Changelog'
   };
   return titles[view] || 'Dashboard';
 };
@@ -612,7 +613,7 @@ export default function App() {
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-[#e1e4e8] space-y-1">
-          <NavItem icon={<Info size={16} />} label="Changelog" onClick={() => {}} small />
+          <NavItem icon={<Info size={16} />} label="Changelog" active={activeView === 'changelog'} onClick={() => setActiveView('changelog')} small />
           <div className="pt-2">
              <button 
               onClick={handleLogout}
@@ -721,7 +722,7 @@ export default function App() {
                       <AnalyticsDashboard />
                     </div>
                     <div className="lg:col-span-1 space-y-6">
-                      <ActivityFeed />
+
                       <YourStatus 
                         currentStatus={currentStatus} 
                         handleStatusChange={handleStatusChange} 
@@ -799,6 +800,11 @@ export default function App() {
                   </motion.div>
                 )}
 
+                {activeView === 'changelog' && (
+                  <motion.div key="changelog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <Changelog />
+                  </motion.div>
+                )}
                 {activeView === 'logs' && (
                   <motion.div key="logs" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                     <LogsView />
