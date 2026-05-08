@@ -278,7 +278,12 @@ export default function App() {
   const fetchProjects = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin-projects`, {
-        headers: user?.token ? { 'Authorization': `Bearer ${user.token}` } : {}
+        headers: {
+          ...(user?.token ? { 'Authorization': `Bearer ${user.token}` } : {}),
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        },
+        cache: 'no-store'
       });
       if (res.ok) {
         const data = await res.json();

@@ -41,7 +41,7 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   const [selectedColumn, setSelectedColumn] = useState(null);
 
   const [projectFormData, setProjectFormData] = useState({ name: '', description: '' });
-  const [sprintFormData, setSprintFormData] = useState({ dueDate: '' });
+  const [sprintFormData, setSprintFormData] = useState({ name: '', dueDate: '' });
   const [taskFormData, setTaskFormData] = useState({ content: '', priority: 'medium', assignees: [] });
 
   useEffect(() => {
@@ -74,12 +74,42 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
         body: JSON.stringify(projectFormData)
       });
       if (res.ok) {
-        onRefresh();
+        await onRefresh();
         setIsProjectModalOpen(false);
         setProjectFormData({ name: '', description: '' });
+      } else {
+        const err = await res.json();
+        alert('Failed to create project: ' + (err.error || 'Unknown error'));
       }
     } catch (err) {
       console.error('Create project failed:', err);
+      alert('Failed to connect to server.');
+    }
+  };
+
+  const handleAddSprint = async (e) => {
+    e.preventDefault();
+    if (!selectedProjectId) return;
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${selectedProjectId}/sprints`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(sprintFormData) 
+      });
+      if (res.ok) {
+        await onRefresh();
+        setIsSprintModalOpen(false);
+        setSprintFormData({ name: '', dueDate: '' });
+      } else {
+        const err = await res.json();
+        alert('Failed to add sprint: ' + (err.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Add sprint failed:', err);
+      alert('Failed to connect to server.');
     }
   };
 
@@ -274,13 +304,16 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
 
         {isSprintModalOpen && (
           <Modal onClose={() => setIsSprintModalOpen(false)} title="Add Sprint">
-            {/* Same minimalist form style */}
-            <form className="space-y-6">
+            <form onSubmit={handleAddSprint} className="space-y-6">
                <div className="space-y-2">
-                 <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Sprint Name</label>
-                 <input type="text" placeholder="e.g. Q2 Milestone" className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none" />
+                 <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Sprint Name (Optional)</label>
+                 <input type="text" value={sprintFormData.name} onChange={e => setSprintFormData({...sprintFormData, name: e.target.value})} placeholder="e.g. Q2 Milestone" className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none focus:border-[#1a1a1b] transition-all" />
                </div>
-               <button className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg">Confirm</button>
+               <div className="space-y-2">
+                 <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Due Date</label>
+                 <input type="date" required value={sprintFormData.dueDate} onChange={e => setSprintFormData({...sprintFormData, dueDate: e.target.value})} className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none focus:border-[#1a1a1b] transition-all" />
+               </div>
+               <button type="submit" className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg hover:bg-black transition-all">Confirm</button>
             </form>
           </Modal>
         )}
