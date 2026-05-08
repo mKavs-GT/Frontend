@@ -176,7 +176,12 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
         body: JSON.stringify({ 
           newTask: {
             ...taskFormData,
-            id: 'task_' + Date.now()
+            id: 'task_' + Date.now(),
+            assignees: taskFormData.assignees.map(a => ({
+              userId: a.uid || a.email,
+              name: a.name,
+              avatar: a.avatar
+            }))
           },
           column: selectedColumn
         })
