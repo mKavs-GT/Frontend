@@ -13,7 +13,9 @@ import {
   Users,
   AlertCircle,
   MoreVertical,
-  Activity
+  Activity,
+  Trash2,
+  Edit3
 } from 'lucide-react';
 import { TEAM_MEMBERS } from '../constants/users';
 import { API_BASE_URL } from '../config';
@@ -35,12 +37,16 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isSprintModalOpen, setIsSprintModalOpen] = useState(false);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
+  
+  const [openProjectMenu, setOpenProjectMenu] = useState(null);
   
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [selectedSprintId, setSelectedSprintId] = useState(null);
   const [selectedColumn, setSelectedColumn] = useState(null);
 
   const [projectFormData, setProjectFormData] = useState({ name: '', description: '' });
+  const [renameFormData, setRenameFormData] = useState({ name: '' });
   const [sprintFormData, setSprintFormData] = useState({ name: '', dueDate: '' });
   const [taskFormData, setTaskFormData] = useState({ content: '', priority: 'medium', assignees: [] });
 
@@ -113,6 +119,81 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
     }
   };
 
+  const handleDeleteProject = async (projectId) => {
+    if (!window.confirm('Are you sure you want to delete this project? This will remove all associated sprints and tasks.')) return;
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${projectId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${user.token}` }
+      });
+      if (res.ok) {
+        await onRefresh();
+        setOpenProjectMenu(null);
+      } else {
+        const err = await res.json();
+        alert('Failed to delete: ' + (err.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Delete project failed:', err);
+    }
+  };
+
+  const handleRenameProject = async (e) => {
+    e.preventDefault();
+    if (!selectedProjectId) return;
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${selectedProjectId}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(renameFormData)
+      });
+      if (res.ok) {
+        await onRefresh();
+        setIsRenameModalOpen(false);
+        setRenameFormData({ name: '' });
+      } else {
+        const err = await res.json();
+        alert('Failed to rename: ' + (err.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Rename project failed:', err);
+    }
+  };
+
+  const handleAddTask = async (e) => {
+    e.preventDefault();
+    if (!selectedProjectId || !selectedSprintId || !selectedColumn) return;
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin-projects/${selectedProjectId}/sprints/${selectedSprintId}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify({ 
+          newTask: {
+            ...taskFormData,
+            id: 'task_' + Date.now()
+          },
+          column: selectedColumn
+        })
+      });
+      if (res.ok) {
+        await onRefresh();
+        setIsTaskModalOpen(false);
+        setTaskFormData({ content: '', priority: 'medium', assignees: [] });
+      } else {
+        const err = await res.json();
+        alert('Failed to add task: ' + (err.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Add task failed:', err);
+    }
+  };
+
   const moveTask = async (projectId, sprintId, taskId, fromCol, toCol) => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin-projects/${projectId}/sprints/${sprintId}`, {
@@ -176,9 +257,48 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
                     Add Sprint
                   </button>
                 )}
-                <button className="p-2 text-[#6a737d] hover:bg-[#f3f4f6] rounded-lg transition-colors">
-                  <MoreVertical size={18} />
-                </button>
+                <div className="relative">
+                  <button 
+                    onClick={() => setOpenProjectMenu(openProjectMenu === project._id ? null : project._id)}
+                    className={`p-2 rounded-lg transition-colors ${openProjectMenu === project._id ? 'bg-[#1a1a1b] text-white' : 'text-[#6a737d] hover:bg-[#f3f4f6]'}`}
+                  >
+                    <MoreVertical size={18} />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {openProjectMenu === project._id && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={() => setOpenProjectMenu(null)} />
+                        <motion.div 
+                          initial={{ opacity: 0, scale: 0.95, y: -10 }} 
+                          animate={{ opacity: 1, scale: 1, y: 0 }} 
+                          exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                          className="absolute right-0 mt-2 w-48 bg-white border border-[#e1e4e8] rounded-xl shadow-xl z-20 py-1.5 overflow-hidden"
+                        >
+                          <button 
+                            onClick={() => {
+                              setSelectedProjectId(project._id);
+                              setRenameFormData({ name: project.name });
+                              setIsRenameModalOpen(true);
+                              setOpenProjectMenu(null);
+                            }}
+                            className="w-full px-4 py-2 text-left text-xs font-bold text-[#1a1a1b] hover:bg-[#f3f4f6] flex items-center gap-2.5 transition-colors"
+                          >
+                            <Edit3 size={14} className="text-[#6a737d]" />
+                            Rename Project
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteProject(project._id)}
+                            className="w-full px-4 py-2 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors border-t border-[#f3f4f6]"
+                          >
+                            <Trash2 size={14} />
+                            Delete Project
+                          </button>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
@@ -302,6 +422,25 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
           </Modal>
         )}
 
+        {isRenameModalOpen && (
+          <Modal onClose={() => setIsRenameModalOpen(false)} title="Rename Project">
+            <form onSubmit={handleRenameProject} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">New Project Name</label>
+                <input 
+                  type="text" 
+                  required 
+                  autoFocus 
+                  value={renameFormData.name} 
+                  onChange={e => setRenameFormData({ ...renameFormData, name: e.target.value })} 
+                  className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none focus:border-[#1a1a1b] transition-all" 
+                />
+              </div>
+              <button type="submit" className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg hover:bg-black transition-all">Save Changes</button>
+            </form>
+          </Modal>
+        )}
+
         {isSprintModalOpen && (
           <Modal onClose={() => setIsSprintModalOpen(false)} title="Add Sprint">
             <form onSubmit={handleAddSprint} className="space-y-6">
@@ -320,13 +459,48 @@ export default function ProjectManager({ user, projects = [], onRefresh }) {
 
         {isTaskModalOpen && (
           <Modal onClose={() => setIsTaskModalOpen(false)} title="New Task">
-            {/* Same minimalist form style */}
-            <form className="space-y-6">
+            <form onSubmit={handleAddTask} className="space-y-6">
                <div className="space-y-2">
-                 <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Content</label>
-                 <textarea rows={3} className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none" />
+                 <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Task Description</label>
+                 <textarea 
+                   rows={3} 
+                   required
+                   value={taskFormData.content}
+                   onChange={e => setTaskFormData({...taskFormData, content: e.target.value})}
+                   placeholder="What needs to be done?"
+                   className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none focus:border-[#1a1a1b] transition-all" 
+                 />
                </div>
-               <button className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg">Add to Board</button>
+
+               <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Priority</label>
+                    <select 
+                      value={taskFormData.priority}
+                      onChange={e => setTaskFormData({...taskFormData, priority: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Assignee</label>
+                    <select 
+                      onChange={e => {
+                        const member = TEAM_MEMBERS.find(m => m.name === e.target.value);
+                        if (member) setTaskFormData({...taskFormData, assignees: [member]});
+                      }}
+                      className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none"
+                    >
+                      <option value="">Select Member</option>
+                      {TEAM_MEMBERS.map(m => <option key={m.name} value={m.name}>{m.name}</option>)}
+                    </select>
+                  </div>
+               </div>
+
+               <button type="submit" className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg hover:bg-black transition-all">Add to Board</button>
             </form>
           </Modal>
         )}
