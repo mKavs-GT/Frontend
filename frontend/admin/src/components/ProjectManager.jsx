@@ -241,9 +241,12 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
         body: JSON.stringify({ transition: { taskId, fromCol, toCol } })
       });
       if (!res.ok) {
+        // Rollback immediately
         setProjects(oldProjects);
         const err = await res.json();
         alert('Failed to move task: ' + (err.error || 'Unknown error'));
+        // Force a full sync to be absolutely sure
+        await onRefresh();
       } else {
         // Sync with real DB state quietly
         await onRefresh();
