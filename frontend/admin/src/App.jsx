@@ -169,40 +169,23 @@ export default function App() {
    
    const handleChatbotToggle = () => {
      const newState = !isLiveOnChatbot;
+     const iframe = document.getElementById('kairon-iframe');
+     if (iframe && iframe.contentWindow) {
+         iframe.contentWindow.postMessage({ type: newState ? 'KAIRON_GO_ONLINE' : 'KAIRON_GO_OFFLINE' }, '*');
+     }
      setIsLiveOnChatbot(newState);
      localStorage.setItem('mkavs_kairon_live', newState);
-     
-     if (user) {
-         socketService.send({
-             type: 'staff_online',
-             staffName: user.name,
-             email: user.email,
-             status: currentStatus || 'online',
-             isChatAgent: newState
-         });
-     }
    };
-   const [isAnyoneElseLive, setIsAnyoneElseLive] = useState(false);
-   const [otherLiveAgent, setOtherLiveAgent] = useState('');
- 
-   useEffect(() => {
-     const handleSocketMsg = (data) => {
-       if (data.type === 'staff_list') {
-         // staff is an array of { name, status, isChatAgent, activeCount }
-         const otherAgents = (data.staff || []).filter(s => s.isChatAgent && s.name !== user?.name);
-         if (otherAgents.length > 0) {
-           setIsAnyoneElseLive(true);
-           setOtherLiveAgent(otherAgents[0].name);
-         } else {
-           setIsAnyoneElseLive(false);
-         }
-       }
-     };
-     
-     const unsubscribe = socketService.subscribe(handleSocketMsg);
-     return () => unsubscribe();
-   }, [user?.name]);
   
+  useEffect(() => {
+    const handleMessage = (e) => {
+      if (e.data?.type === 'KAIRON_IS_ONLINE') setIsLiveOnChatbot(true);
+      if (e.data?.type === 'KAIRON_IS_OFFLINE') setIsLiveOnChatbot(false);
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -549,19 +532,6 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
-    
-    // Heartbeat to keep status fresh for Kairon (Legacy compatibility)
-    const kaironHeartbeat = setInterval(() => {
-        socketService.send({
-          type: 'staff_online',
-          staffName: user.name,
-          email: user.email,
-          status: currentStatus,
-          isChatAgent: isLiveOnChatbot
-        });
-    }, 10000);
-
-    return () => clearInterval(kaironHeartbeat);
   }, [user, currentStatus]);
 
   // handleStatusChange is now provided by usePresence hook
@@ -706,12 +676,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-4">
-               {isAnyoneElseLive && (
-                 <div className="flex items-center gap-2 px-3 py-1.5 bg-[#1a1a1b] border border-[#333] rounded-lg">
-                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                   <span className="text-[10px] font-bold text-white uppercase tracking-tight">{otherLiveAgent} is live on chatbot</span>
-                 </div>
-               )}
                <button 
                  onClick={handleChatbotToggle}
                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
@@ -807,16 +771,15 @@ export default function App() {
                   </motion.div>
                 )}
 
-                {activeView === 'kairon' && (
-                  <motion.div key="kairon" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="w-full h-[800px]">
-                    <iframe 
-                      src="/neoncode/kairon-live-bot/live_staff.html"
-                      className="w-full h-full border-0 rounded-2xl border border-border-main shadow-sm"
-                      title="Kairon Live Staff Dashboard"
-                      allow="autoplay; clipboard-write"
-                    ></iframe>
-                  </motion.div>
-                )}
+                <div className={activeView === 'kairon' ? "w-full h-[800px]" : "hidden"}>
+                  <iframe 
+                    id="kairon-iframe"
+                    src="/neoncode/kairon-live-bot/live_staff.html"
+                    className="w-full h-full border-0 rounded-2xl border border-border-main shadow-sm"
+                    title="Kairon Live Staff Dashboard"
+                    allow="autoplay; clipboard-write"
+                  ></iframe>
+                </div>
 
                 {activeView === 'team' && (
                   <motion.div key="team" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>

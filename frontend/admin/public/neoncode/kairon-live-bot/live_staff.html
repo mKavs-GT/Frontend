@@ -1369,10 +1369,14 @@
        Triggers WebSocket connection + the Go Online toast.
        The toast itself is fired inside ws.onopen so it only shows
        after the server connection is confirmed, not on click. */
-    document.getElementById('goOnline').addEventListener('click', () => startWs());
+    document.getElementById('goOnline').addEventListener('click', () => {
+        window.parent.postMessage({ type: 'KAIRON_IS_ONLINE' }, '*');
+        startWs();
+    });
 
     /* ── Go Offline button ──────────────────────────────────────── */
     document.getElementById('goOffline').addEventListener('click', () => {
+      window.parent.postMessage({ type: 'KAIRON_IS_OFFLINE' }, '*');
       if (ws) {
         try { ws.send(JSON.stringify({ type: 'staff_offline', staffName: myName })); } catch(e) {}
         ws.close(); ws = null;
@@ -1434,6 +1438,22 @@
 
     // Init
     loadStaff();
+
+    // Listen for commands from parent React App
+    window.addEventListener('message', (event) => {
+        if (event.data?.type === 'KAIRON_GO_ONLINE') {
+            document.getElementById('goOnline').click();
+        } else if (event.data?.type === 'KAIRON_GO_OFFLINE') {
+            document.getElementById('goOffline').click();
+        }
+    });
+
+    // Auto-connect on load if localStorage says we are live
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('mkavs_kairon_live') === 'true') {
+            document.getElementById('goOnline').click();
+        }
+    });
   </script>
 </body>
 </html>
