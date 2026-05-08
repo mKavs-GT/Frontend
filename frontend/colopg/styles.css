@@ -204,7 +204,7 @@ body {
 .filter-btn.active,
 .tab.active {
     background: #C6FF00;
-    color: #0012FF;
+    color: #000000;
     border-color: #C6FF00;
     box-shadow: 0 0 30px rgba(198, 255, 0, 0.4);
 }
@@ -330,8 +330,7 @@ body {
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.1rem;
-    color: var(--accent-yellow);
-    /* Green color names */
+    color: #FFFFFF;
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
@@ -683,7 +682,7 @@ body {
 
 .tab.active {
     background: var(--accent-yellow);
-    color: var(--text-dark);
+    color: #000000;
     font-weight: 700;
     box-shadow: 0 0 15px var(--accent-glow);
 }
@@ -811,7 +810,7 @@ body {
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.1rem;
-    color: var(--text-main);
+    color: #FFFFFF;
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
