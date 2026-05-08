@@ -85,11 +85,11 @@ const NavItem = ({ icon, label, active, onClick, small }) => (
     onClick={onClick}
     className={`flex items-center gap-3 w-full px-3 ${small ? 'py-1.5' : 'py-2'} rounded-md text-sm font-medium transition-colors ${
       active 
-        ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
-        : 'text-[#6a737d] hover:bg-[#f3f4f6] border border-transparent'
+        ? 'bg-bg-muted text-text-main border border-border-main shadow-sm' 
+        : 'text-text-muted hover:bg-bg-muted border border-transparent'
     }`}
   >
-    <span className={`${active ? 'text-[#1a1a1b]' : 'text-[#6a737d]'}`}>{icon}</span>
+    <span className={`${active ? 'text-text-main' : 'text-text-muted'}`}>{icon}</span>
     <span className="truncate">{label}</span>
   </button>
 );
@@ -163,32 +163,45 @@ export default function App() {
 
    const [activeView, setActiveView] = useState(() => localStorage.getItem('mkavs_admin_active_view') || 'analytics');
    const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
-   const [isLiveOnChatbot, setIsLiveOnChatbot] = useState(false);
+   const [isLiveOnChatbot, setIsLiveOnChatbot] = useState(() => {
+     return localStorage.getItem('mkavs_kairon_live') === 'true';
+   });
+   
+   const handleChatbotToggle = () => {
+     const newState = !isLiveOnChatbot;
+     setIsLiveOnChatbot(newState);
+     localStorage.setItem('mkavs_kairon_live', newState);
+     
+     if (user) {
+         socketService.send({
+             type: 'staff_online',
+             staffName: user.name,
+             email: user.email,
+             status: currentStatus || 'online',
+             isChatAgent: newState
+         });
+     }
+   };
    const [isAnyoneElseLive, setIsAnyoneElseLive] = useState(false);
    const [otherLiveAgent, setOtherLiveAgent] = useState('');
  
    useEffect(() => {
-     const checkStaffStatus = async () => {
-       try {
-         const res = await fetch(`${API_BASE_URL}/api/staff-status`);
-         if (res.ok) {
-           const data = await res.json();
-           const otherAgents = (data.staff || []).filter(s => s.isLive && s.email !== user.email);
-           if (otherAgents.length > 0) {
-             setIsAnyoneElseLive(true);
-             setOtherLiveAgent(otherAgents[0].name || otherAgents[0].email);
-           } else {
-             setIsAnyoneElseLive(false);
-           }
+     const handleSocketMsg = (data) => {
+       if (data.type === 'staff_list') {
+         // staff is an array of { name, status, isChatAgent, activeCount }
+         const otherAgents = (data.staff || []).filter(s => s.isChatAgent && s.name !== user?.name);
+         if (otherAgents.length > 0) {
+           setIsAnyoneElseLive(true);
+           setOtherLiveAgent(otherAgents[0].name);
+         } else {
+           setIsAnyoneElseLive(false);
          }
-       } catch (err) {
-         console.error('Failed to fetch staff status:', err);
        }
      };
-     checkStaffStatus();
-     const interval = setInterval(checkStaffStatus, 60000);
-     return () => clearInterval(interval);
-   }, [user?.email]);
+     
+     const unsubscribe = socketService.subscribe(handleSocketMsg);
+     return () => unsubscribe();
+   }, [user?.name]);
   
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -206,8 +219,8 @@ export default function App() {
   }, [activeView]);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Force light mode for now as per user request
-    return false;
+    const saved = localStorage.getItem('mkavs_theme');
+    return saved === 'true' || saved === null;
   });
   const [isZenMode, setIsZenMode] = useState(false);
   const [zenTime, setZenTime] = useState(25 * 60);
@@ -497,7 +510,7 @@ export default function App() {
           
           <button 
             onClick={() => setIsZenMode(false)}
-            className="px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold transition-all backdrop-blur-md border border-white/10"
+            className="px-8 py-4 rounded-full bg-bg-surface/10 hover:bg-bg-surface/20 text-white font-bold transition-all backdrop-blur-md border border-white/10"
           >
             Exit Zen Mode
           </button>
@@ -544,7 +557,7 @@ export default function App() {
           staffName: user.name,
           email: user.email,
           status: currentStatus,
-          isChatAgent: true
+          isChatAgent: isLiveOnChatbot
         });
     }, 10000);
 
@@ -560,17 +573,17 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen h-[100dvh] overflow-hidden bg-[#f9f9fb] transition-colors duration-300 font-sans relative text-[#1a1a1b]">
+    <div className="flex h-screen h-[100dvh] overflow-hidden bg-bg-root transition-colors duration-300 font-sans relative text-text-main">
       
       {/* Main Sidebar */}
-      <aside className={`fixed lg:relative left-0 flex-shrink-0 bg-white border-r border-[#e1e4e8] flex flex-col z-50 h-full w-[240px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <aside className={`fixed lg:relative left-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-50 h-full w-[240px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         {/* Workspace Switcher */}
-        <div className="p-4 border-b border-[#e1e4e8]">
-          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#f3f4f6] cursor-pointer transition-colors border border-transparent hover:border-[#e1e4e8]">
+        <div className="p-4 border-b border-border-main">
+          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-bg-muted cursor-pointer transition-colors border border-transparent hover:border-border-main">
             <img src="/LOGOI.png" className="w-8 h-8 rounded-md object-contain" alt="" />
             <div className="flex-1 min-w-0">
               <img src="/MKAVS.png" className="h-4 object-contain invert" alt="MKAVS" />
-              <p className="text-[10px] text-[#6a737d] font-medium uppercase tracking-tight">Enterprise</p>
+              <p className="text-[10px] text-text-muted font-medium uppercase tracking-tight">Enterprise</p>
             </div>
           </div>
         </div>
@@ -578,7 +591,7 @@ export default function App() {
         <nav className="flex-1 overflow-y-auto p-2 space-y-6 scrollbar-hide">
           {/* Dashboard Section */}
           <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Dashboard</p>
+            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Dashboard</p>
             <div className="space-y-0.5">
               <NavItem icon={<TrendingUp size={18} />} label="Overview" active={activeView === 'analytics'} onClick={() => setActiveView('analytics')} />
               <NavItem icon={<Kanban size={18} />} label="Project Manager" active={activeView === 'project'} onClick={() => setActiveView('project')} />
@@ -589,7 +602,7 @@ export default function App() {
 
           {/* Monitor Section */}
           <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Monitor</p>
+            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Monitor</p>
             <div className="space-y-0.5">
               <NavItem icon={<Clock size={18} />} label="Time Tracker" active={activeView === 'time'} onClick={() => setActiveView('time')} />
               <NavItem icon={<Users size={18} />} label="Team Tracker" active={activeView === 'team'} onClick={() => setActiveView('team')} />
@@ -599,11 +612,21 @@ export default function App() {
 
           {/* Manage Section */}
           <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-[#6a737d] uppercase tracking-wider">Manage</p>
+            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Manage</p>
             <div className="space-y-0.5">
               <NavItem icon={<Database size={18} />} label="Client Hub (CRM)" active={activeView === 'crm'} onClick={() => setActiveView('crm')} />
               <NavItem icon={<Briefcase size={18} />} label="The Vault" active={activeView === 'vault'} onClick={() => setActiveView('vault')} />
-              <NavItem icon={<img src={kaironIcon} alt="" className="w-4 h-4" />} label="Kairon Live Bot" active={activeView === 'kairon'} onClick={() => setActiveView('kairon')} />
+              <NavItem 
+                icon={
+                  <div className="relative">
+                    <img src={kaironIcon} alt="" className="w-4 h-4" />
+                    {isLiveOnChatbot && <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-[#1a1a1b]"></div>}
+                  </div>
+                } 
+                label="Kairon Live Bot" 
+                active={activeView === 'kairon'} 
+                onClick={() => setActiveView('kairon')} 
+              />
               {user.isExecutive && (
                 <NavItem icon={<Shield size={18} className="text-rose-600" />} label="God Mode" active={activeView === 'godmode'} onClick={() => setActiveView('godmode')} />
               )}
@@ -612,7 +635,7 @@ export default function App() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-[#e1e4e8] space-y-1">
+        <div className="p-4 border-t border-border-main space-y-1">
           <NavItem icon={<Info size={16} />} label="Changelog" active={activeView === 'changelog'} onClick={() => setActiveView('changelog')} small />
           <div className="pt-2">
              <button 
@@ -627,15 +650,15 @@ export default function App() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 bg-white relative">
+      <main className="flex-1 flex flex-col min-w-0 bg-bg-surface relative">
         {/* Top Header */}
-        <header className="h-[52px] bg-white border-b border-[#e1e4e8] flex items-center justify-between px-4 sticky top-0 z-40">
+        <header className="h-[52px] bg-bg-surface border-b border-border-main flex items-center justify-between px-4 sticky top-0 z-40">
           <div className="flex items-center gap-4 flex-1">
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-1.5 hover:bg-gray-100 rounded-md">
               <Menu size={20} />
             </button>
-            <div className="flex items-center gap-2 text-sm font-medium text-[#1a1a1b]">
-              <span className="text-[#1a1a1b] font-black uppercase tracking-tighter">MKAVS-GT</span>
+            <div className="flex items-center gap-2 text-sm font-medium text-text-main">
+              <span className="text-text-main font-black uppercase tracking-tighter">MKAVS-GT</span>
               <span className="text-[#d1d5da] mx-1">/</span>
               <span>{getViewTitle(activeView)}</span>
             </div>
@@ -645,41 +668,40 @@ export default function App() {
               onClick={() => setIsCommandPaletteOpen(true)}
               className="hidden md:flex items-center max-w-sm w-full ml-8 relative cursor-pointer group"
             >
-              <Search size={14} className="absolute left-3 text-[#6a737d] group-hover:text-[#1a1a1b] transition-colors" />
-              <div className="w-full bg-[#f3f4f6] border border-transparent group-hover:border-[#e1e4e8] group-hover:bg-white rounded-md py-1.5 pl-9 pr-3 text-sm transition-all text-[#6a737d]">
+              <Search size={14} className="absolute left-3 text-text-muted group-hover:text-text-main transition-colors" />
+              <div className="w-full bg-bg-muted border border-transparent group-hover:border-border-main group-hover:bg-bg-surface rounded-md py-1.5 pl-9 pr-3 text-sm transition-all text-text-muted">
                 Search...
               </div>
               <div className="absolute right-2 flex items-center gap-1">
-                <span className="text-[10px] font-bold text-[#6a737d] bg-white border border-[#e1e4e8] px-1 rounded">Cmd</span>
-                <span className="text-[10px] font-bold text-[#6a737d] bg-white border border-[#e1e4e8] px-1 rounded">K</span>
+                <span className="text-[10px] font-bold text-text-muted bg-bg-surface border border-border-main px-1 rounded">Cmd</span>
+                <span className="text-[10px] font-bold text-text-muted bg-bg-surface border border-border-main px-1 rounded">K</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-             {/* Timer Quick Access */}
-             <div className="hidden sm:flex items-center gap-3 px-3 py-1 bg-[#f3f4f6] border border-[#e1e4e8] rounded-md">
-                <div className={`w-2 h-2 rounded-full ${timerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`}></div>
-                <span className="text-xs font-mono font-bold">{formatDuration(currentSessionSeconds || completedTodaySeconds)}</span>
-                <button onClick={handleTimerToggle} className="p-1 hover:bg-white rounded transition-colors">
-                  {timerRunning ? <Square size={12} fill="currentColor" /> : <Play size={12} fill="currentColor" />}
-                </button>
-             </div>
-
+             {/* Timer moved to right column */}
+             <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="w-8 h-8 flex items-center justify-center rounded-full border border-border-main hover:bg-bg-muted transition-colors text-text-muted hover:text-text-main"
+                title="Toggle Theme"
+             >
+                {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+             </button>
              <NotificationCenter user={user} />
-            <button onClick={() => setActiveView('profile')} className="w-8 h-8 rounded-full border border-[#e1e4e8] overflow-hidden hover:opacity-80 transition-opacity">
+            <button onClick={() => setActiveView('profile')} className="w-8 h-8 rounded-full border border-border-main overflow-hidden hover:opacity-80 transition-opacity">
               <img src={user.avatar} alt="" className="w-full h-full object-cover" />
             </button>
           </div>
         </header>
 
         {/* View Header (Render Style) */}
-        <div className="px-8 py-10 border-b border-[#e1e4e8]">
+        <div className="px-8 py-10 border-b border-border-main">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-1">
               <h1 className="text-3xl font-black tracking-tight">{getViewTitle(activeView)}</h1>
               <div className="flex gap-2">
-                <span className="px-2 py-0.5 bg-[#f3f4f6] border border-[#e1e4e8] rounded text-[10px] font-bold uppercase">Enterprise</span>
+                <span className="px-2 py-0.5 bg-bg-muted border border-border-main rounded text-[10px] font-bold uppercase">Enterprise</span>
               </div>
             </div>
 
@@ -691,7 +713,7 @@ export default function App() {
                  </div>
                )}
                <button 
-                 onClick={() => setIsLiveOnChatbot(!isLiveOnChatbot)}
+                 onClick={handleChatbotToggle}
                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
                    isLiveOnChatbot 
                      ? 'bg-rose-500 text-white hover:bg-rose-600' 
@@ -706,7 +728,7 @@ export default function App() {
         </div>
 
         {/* Content Section */}
-        <div className="flex-1 overflow-y-auto p-8 bg-white scrollbar-hide">
+        <div className="flex-1 overflow-y-auto p-8 bg-bg-surface scrollbar-hide">
           <div className="max-w-6xl mx-auto">
             <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin"></div></div>}>
               <AnimatePresence mode="wait">
@@ -722,7 +744,27 @@ export default function App() {
                       <AnalyticsDashboard />
                     </div>
                     <div className="lg:col-span-1 space-y-6">
+                      {/* Timer Block */}
+                      <div className="bg-bg-surface border border-border-main rounded-xl overflow-hidden shadow-sm p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-2.5 h-2.5 rounded-full ${timerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`}></div>
+                          <div>
+                            <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Session Timer</h3>
+                            <div className="text-xl font-mono font-black tracking-tight text-text-main leading-none">
+                              {formatDuration(currentSessionSeconds || completedTodaySeconds)}
+                            </div>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={handleTimerToggle} 
+                          className={`p-3 rounded-lg transition-colors flex items-center justify-center ${timerRunning ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-[#1a1a1b] text-white hover:bg-black'}`}
+                        >
+                          {timerRunning ? <Square size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
+                        </button>
+                      </div>
 
+                      {/* Profile Summary Card */}
+                      <ProfileSummaryCard user={user} currentStatus={currentStatus} />
                       <YourStatus 
                         currentStatus={currentStatus} 
                         handleStatusChange={handleStatusChange} 
@@ -769,7 +811,7 @@ export default function App() {
                   <motion.div key="kairon" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="w-full h-[800px]">
                     <iframe 
                       src="/neoncode/kairon-live-bot/live_staff.html"
-                      className="w-full h-full border-0 rounded-2xl border border-[#e1e4e8] shadow-sm"
+                      className="w-full h-full border-0 rounded-2xl border border-border-main shadow-sm"
                       title="Kairon Live Staff Dashboard"
                       allow="autoplay; clipboard-write"
                     ></iframe>
@@ -849,6 +891,47 @@ export default function App() {
   );
 }
 
+function ProfileSummaryCard({ user, currentStatus }) {
+  const isOnline = currentStatus !== 'offline';
+  
+  // Try to find the UID from the TEAM_MEMBERS if possible, else fallback
+  const teamMember = TEAM_MEMBERS.find(m => m.email === user?.email);
+  const uid = teamMember?.uid || user?.uid || (user?.isExecutive ? 'MGT-EXE-01' : 'MGT-DEV-01');
+  
+  return (
+    <div className="bg-bg-surface border border-border-main rounded-xl shadow-sm p-5">
+      <div className="flex items-center gap-5">
+        <div className="flex-shrink-0">
+          <img 
+            src={user?.avatar || '/default-avatar.png'} 
+            alt={user?.name} 
+            className="w-[72px] h-[72px] rounded-[1.25rem] object-cover shadow-sm border border-bg-muted"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-[22px] font-black text-text-main truncate leading-none mb-3 tracking-tight">
+            {user?.name || 'Loading...'}
+          </h2>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="px-2.5 py-1 bg-bg-muted text-text-muted rounded-md text-[11px] font-medium tracking-tight">
+              @{user?.email?.split('@')[0] || 'username'}
+            </span>
+            <div className="w-1 h-1 rounded-full bg-[#d1d5da]"></div>
+            <span className="px-2.5 py-1 bg-indigo-50 text-indigo-600 rounded-md text-[11px] font-bold tracking-wider font-mono">
+              {uid}
+            </span>
+            <div className="w-1 h-1 rounded-full bg-[#d1d5da]"></div>
+            <span className={`px-2.5 py-1 rounded-md text-[11px] font-medium flex items-center gap-1.5 ${isOnline ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'}`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-500' : 'bg-gray-400'}`}></div>
+              {isOnline ? 'Online' : 'Offline'}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
   const config = isSyncing 
     ? { label: 'SYNCING...', color: 'gray', icon: <Clock size={10} className="animate-spin" /> }
@@ -873,7 +956,7 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
   const badgeClass = badgeColors[status] || badgeColors.offline;
 
   return (
-    <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all group shadow-sm hover:shadow-md">
+    <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-bg-surface dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all duration-500" />
         <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${isOnline ? statusColors[config.color] : 'bg-zinc-400'} transition-all duration-500`}></div>
@@ -895,8 +978,8 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
 
 function YourStatus({ currentStatus, handleStatusChange }) {
   return (
-    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm p-4">
-      <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-3">Your Status</h3>
+    <div className="bg-bg-surface border border-border-main rounded-xl overflow-hidden shadow-sm p-4">
+      <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-3">Your Status</h3>
       <div className="grid grid-cols-2 gap-2">
         {Object.keys(STATUS_CONFIG).map(key => {
           const config = STATUS_CONFIG[key];
@@ -909,10 +992,10 @@ function YourStatus({ currentStatus, handleStatusChange }) {
               className={`flex items-center gap-2.5 p-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all border ${
                 isActive 
                   ? 'bg-[#1a1a1b] text-white border-[#1a1a1b] shadow-sm' 
-                  : 'bg-[#f3f4f6] text-[#6a737d] border-transparent hover:border-[#e1e4e8] hover:bg-white'
+                  : 'bg-bg-muted text-text-muted border-transparent hover:border-border-main hover:bg-bg-surface'
               }`}
             >
-              <span className={isActive ? 'text-white' : 'text-[#6a737d]'}>{config.icon}</span>
+              <span className={isActive ? 'text-white' : 'text-text-muted'}>{config.icon}</span>
               <span className="truncate">{config.label}</span>
             </button>
           );
@@ -924,12 +1007,12 @@ function YourStatus({ currentStatus, handleStatusChange }) {
 
 function TeamStatus({ user, getMemberPresence }) {
   return (
-    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm">
-      <div className="px-4 py-3 bg-[#f9f9fb] border-b border-[#e1e4e8] flex items-center justify-between">
-        <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Team Status</h3>
+    <div className="bg-bg-surface border border-border-main rounded-xl overflow-hidden shadow-sm">
+      <div className="px-4 py-3 bg-bg-root border-b border-border-main flex items-center justify-between">
+        <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Team Status</h3>
         <div className="flex items-center gap-2">
            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-           <span className="text-[10px] font-bold text-[#6a737d] uppercase">Live</span>
+           <span className="text-[10px] font-bold text-text-muted uppercase">Live</span>
         </div>
       </div>
       <div className="divide-y divide-[#e1e4e8] p-1">
@@ -970,15 +1053,15 @@ function LogsView() {
       </div>
       <div className="space-y-2">
         {logs.map(log => (
-          <div key={log.id} className="flex items-center justify-between p-4 bg-[#f9f9fb] border border-[#e1e4e8] rounded-xl group hover:border-[#1a1a1b] transition-all">
+          <div key={log.id} className="flex items-center justify-between p-4 bg-bg-root border border-border-main rounded-xl group hover:border-[#1a1a1b] transition-all">
             <div className="flex items-center gap-4">
               <div className={`w-2 h-2 rounded-full ${log.type === 'error' ? 'bg-rose-500' : log.type === 'auth' ? 'bg-[#4a154b]' : 'bg-emerald-500'}`}></div>
               <div>
                 <p className="text-sm font-bold">{log.msg}</p>
-                <p className="text-[10px] font-bold text-[#6a737d] uppercase tracking-tight">{log.type}</p>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-tight">{log.type}</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold text-[#6a737d]">{log.time}</span>
+            <span className="text-[10px] font-bold text-text-muted">{log.time}</span>
           </div>
         ))}
       </div>
