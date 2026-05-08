@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, Plus, User, MessageSquare, Zap } from 'lucide-react';
 
-export default function ActivityFeed() {
+export default function RecentActivityPanel() {
   const activities = [
     { id: 1, type: 'approval', user: 'Mr.K', target: 'Project X Milestone', time: '12 mins ago', icon: <CheckCircle size={14} className="text-emerald-500" /> },
     { id: 2, type: 'create', user: 'Mrs.S', target: 'Client CRM Ticket', time: '45 mins ago', icon: <Plus size={14} className="text-[#4a154b]" /> },
