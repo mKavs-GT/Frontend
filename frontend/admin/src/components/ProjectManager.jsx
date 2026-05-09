@@ -294,7 +294,7 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
                   <div className="flex items-center gap-3 text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mt-0.5">
                     <span className="flex items-center gap-1"><Activity size={12} /> {project.sprints.length} Sprints</span>
                     <span className="w-1 h-1 rounded-full bg-[#d1d5da]"></span>
-                    <span>Live Progress: {project.sprints[0]?.progress || 0}%</span>
+                    <span>Total Progress: {project.overallProgress || 0}%</span>
                   </div>
                 </div>
               </div>
@@ -487,18 +487,19 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between ml-1">
-                  <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Overall Progress</label>
-                  <span className="text-[10px] font-bold text-[#1a1a1b] bg-[#f3f4f6] px-2 py-0.5 rounded border border-[#e1e4e8]">{renameFormData.overallProgress}%</span>
+                  <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Overall Progress (Auto-Calculated)</label>
+                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">{renameFormData.overallProgress}%</span>
                 </div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="100" 
-                  step="5"
-                  value={renameFormData.overallProgress} 
-                  onChange={e => setRenameFormData({ ...renameFormData, overallProgress: Number(e.target.value) })} 
-                  className="w-full accent-[#1a1a1b]" 
-                />
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    step="1"
+                    disabled
+                    value={renameFormData.overallProgress} 
+                    className="w-full accent-indigo-500 opacity-60 cursor-not-allowed" 
+                  />
+                  <p className="text-[9px] text-[#6a737d] italic mt-1">This value is automatically calculated from task completion across all sprints.</p>
               </div>
               <button type="submit" className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg hover:bg-black transition-all">Save Changes</button>
             </form>
