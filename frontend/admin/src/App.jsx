@@ -77,8 +77,8 @@ const STATUS_CONFIG = {
   break: { label: 'BREAK', color: 'amber', icon: <Coffee size={14} /> },
   deepwork: { label: 'DEEP WORK', color: 'purple', icon: <CheckCircle size={14} /> },
   offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> },
-  zen: { label: 'ZEN MODE', color: 'purple', icon: <Coffee size={14} /> }
 };
+
 
 const NavItem = ({ icon, label, active, onClick, small }) => (
   <button 
@@ -97,7 +97,7 @@ const NavItem = ({ icon, label, active, onClick, small }) => (
 const getViewTitle = (view) => {
   const titles = {
     analytics: 'Overview',
-    project: 'Project Manager',
+    project: 'Sprint Plan',
     time: 'Time Tracker',
     tickets: 'Approval Tickets',
     profile: 'Profile',
@@ -105,7 +105,7 @@ const getViewTitle = (view) => {
     team: 'Team Tracker',
     crm: 'Client Hub (CRM)',
     godmode: 'God Mode',
-    project_management: 'Project Management',
+
     changelog: 'Changelog'
   };
   return titles[view] || 'Dashboard';
@@ -569,8 +569,8 @@ export default function App() {
             <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Dashboard</p>
             <div className="space-y-0.5">
               <NavItem icon={<TrendingUp size={18} />} label="Overview" active={activeView === 'analytics'} onClick={() => setActiveView('analytics')} />
-              <NavItem icon={<Kanban size={18} />} label="Project Manager" active={activeView === 'project'} onClick={() => setActiveView('project')} />
-              <NavItem icon={<Folder size={18} />} label="Project Management" active={activeView === 'project_management'} onClick={() => setActiveView('project_management')} />
+              <NavItem icon={<Kanban size={18} />} label="Sprint Plan" active={activeView === 'project'} onClick={() => setActiveView('project')} />
+
               <NavItem icon={<TicketIcon size={18} />} label="Approval Tickets" active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} />
             </div>
           </div>
@@ -680,19 +680,21 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
-               <button 
-                 onClick={handleChatbotToggle}
-                 className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
-                   isLiveOnChatbot 
-                     ? 'bg-rose-500 text-white hover:bg-rose-600' 
-                     : 'bg-[#1a1a1b] text-white hover:bg-black'
-                 }`}
-               >
-                 <Zap size={14} />
-                 {isLiveOnChatbot ? 'End Chatbot Session' : 'Go live on Chatbot'}
-               </button>
-            </div>
+             {activeView === 'kairon' && (
+               <div className="flex items-center gap-4">
+                  <button 
+                    onClick={handleChatbotToggle}
+                    className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
+                      isLiveOnChatbot 
+                        ? 'bg-rose-500 text-white hover:bg-rose-600' 
+                        : 'bg-[#1a1a1b] text-white hover:bg-black'
+                    }`}
+                  >
+                    <Zap size={14} />
+                    {isLiveOnChatbot ? 'End Chatbot Session' : 'Go live on Chatbot'}
+                  </button>
+               </div>
+             )}
           </div>
         </div>
 
@@ -737,6 +739,7 @@ export default function App() {
                       <YourStatus 
                         currentStatus={currentStatus} 
                         handleStatusChange={handleStatusChange} 
+                        setIsZenMode={setIsZenMode}
                       />
                       <TeamStatus 
                         user={user} 
@@ -944,11 +947,11 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
   );
 }
 
-function YourStatus({ currentStatus, handleStatusChange }) {
+function YourStatus({ currentStatus, handleStatusChange, setIsZenMode }) {
   return (
     <div className="bg-bg-surface border border-border-main rounded-xl overflow-hidden shadow-sm p-4">
       <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-3">Your Status</h3>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 mb-3">
         {Object.keys(STATUS_CONFIG).map(key => {
           const config = STATUS_CONFIG[key];
           const isActive = currentStatus === key;
@@ -969,6 +972,19 @@ function YourStatus({ currentStatus, handleStatusChange }) {
           );
         })}
       </div>
+      
+      <button
+        onClick={() => {
+          setIsZenMode(true);
+          handleStatusChange('deepwork');
+        }}
+        className="w-full flex items-center justify-center gap-3 p-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] transition-all group"
+      >
+        <div className="p-1 bg-white/20 rounded-md group-hover:rotate-12 transition-transform">
+          <Coffee size={14} />
+        </div>
+        <span>Start Zen Mode</span>
+      </button>
     </div>
   );
 }

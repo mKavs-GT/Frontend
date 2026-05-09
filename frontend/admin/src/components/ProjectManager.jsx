@@ -262,7 +262,7 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
       {/* Header Area */}
       <div className="flex items-end justify-between">
         <div>
-          <h2 className="text-2xl font-black tracking-tight">Project Hub</h2>
+          <h2 className="text-2xl font-black tracking-tight">Sprint Plan</h2>
           <p className="text-xs font-bold text-[#6a737d] uppercase tracking-widest mt-1">Manage active sprints and team roadmap</p>
         </div>
         {user?.isExecutive && (
