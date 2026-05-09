@@ -6,13 +6,12 @@
       "destination": "https://mkavs-backend.onrender.com/api/:path*"
     },
     {
-      "source": "/neoncode/:path*",
-      "destination": "/neoncode/:path*"
+      "source": "/uploads/:path*",
+      "destination": "https://mkavs-backend.onrender.com/uploads/:path*"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+      "source": "/neoncode/:path*",
+      "destination": "/neoncode/:path*"
   ],
   "headers": [
     {

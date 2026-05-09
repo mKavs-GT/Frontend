@@ -539,13 +539,27 @@ function OverviewTab({ client, project, authHeader, onUpdate }) {
       {(ad.deliverables?.length > 0) && (
         <Section title="Deliverables" icon={Paperclip}>
           <div className="flex flex-col gap-2">
-            {ad.deliverables.map((d, i) => (
-              <a key={i} href={d.link} target="_blank" rel="noreferrer"
+            {ad.deliverables.map((d, i) => {
+              let downloadLink = d.link;
+              if (d.link?.includes('/uploads/')) {
+                const path = d.link.includes('://') ? new URL(d.link).pathname : d.link;
+                downloadLink = `${API_BASE_URL}/api/download?file=${encodeURIComponent(path)}`;
+              } else if (d.link && !d.link.includes('://') && !d.link.startsWith('/') && !d.link.startsWith('#')) {
+                if (d.link.endsWith('.pdf') || d.link.endsWith('.png') || d.link.startsWith('client-')) {
+                   downloadLink = `/uploads/${d.link}`;
+                } else {
+                   downloadLink = `https://${d.link}`;
+                }
+              }
+
+              return (
+              <a key={i} href={downloadLink} target="_blank" rel="noreferrer"
                 className="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-accent-500/40 transition-all group">
                 <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">{d.title}</span>
                 <ExternalLink size={13} className="text-zinc-600 group-hover:text-accent-400 transition-colors" />
               </a>
-            ))}
+              );
+            })}
           </div>
         </Section>
       )}
