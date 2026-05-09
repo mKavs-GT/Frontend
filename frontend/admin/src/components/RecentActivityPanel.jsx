@@ -1,48 +1,144 @@
-import { motion } from 'framer-motion';
-import { CheckCircle, Clock, Plus, User, MessageSquare, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  CheckCircle, Clock, Plus, User, MessageSquare, Zap, 
+  LogIn, LogOut, ArrowRight, Activity, Globe, Wifi, WifiOff 
+} from 'lucide-react';
+import { API_BASE_URL, authHeader } from '../config';
+
+const ACTION_CONFIG = {
+  LOGIN: { label: 'logged in', icon: <LogIn size={14} className="text-emerald-500" />, bgColor: 'bg-emerald-50' },
+  LOGOUT: { label: 'logged out', icon: <LogOut size={14} className="text-rose-500" />, bgColor: 'bg-rose-50' },
+  TIMER_START: { label: 'started timer', icon: <Zap size={14} className="text-amber-500" />, bgColor: 'bg-amber-50' },
+  TIMER_STOP: { label: 'stopped timer', icon: <Zap size={14} className="text-[#6a737d]" />, bgColor: 'bg-[#f3f4f6]' },
+  STATUS_CHANGE: { label: 'updated status', icon: <Activity size={14} className="text-indigo-500" />, bgColor: 'bg-indigo-50' },
+  TASK_MOVE: { label: 'moved task', icon: <ArrowRight size={14} className="text-blue-500" />, bgColor: 'bg-blue-50' },
+  TASK_CREATE: { label: 'created project', icon: <Plus size={14} className="text-[#4a154b]" />, bgColor: 'bg-[#f3f4f6]' },
+  CHATBOT_ONLINE: { label: 'went live on chatbot', icon: <Wifi size={14} className="text-emerald-500" />, bgColor: 'bg-emerald-50' },
+  CHATBOT_OFFLINE: { label: 'went offline on chatbot', icon: <WifiOff size={14} className="text-[#6a737d]" />, bgColor: 'bg-[#f3f4f6]' },
+};
 
 export default function RecentActivityPanel() {
-  const activities = [
-    { id: 1, type: 'approval', user: 'Mr.K', target: 'Project X Milestone', time: '12 mins ago', icon: <CheckCircle size={14} className="text-emerald-500" /> },
-    { id: 2, type: 'create', user: 'Mrs.S', target: 'Client CRM Ticket', time: '45 mins ago', icon: <Plus size={14} className="text-[#4a154b]" /> },
-    { id: 3, type: 'comment', user: 'Mr.M', target: 'Vault Security Update', time: '2 hours ago', icon: <MessageSquare size={14} className="text-[#6a737d]" /> },
-    { id: 4, type: 'timer', user: 'Mr.V', target: 'Deep Work Session', time: '3 hours ago', icon: <Zap size={14} className="text-amber-500" /> },
-    { id: 5, type: 'join', user: 'Agent 07', target: 'Marketing Team', time: '5 hours ago', icon: <User size={14} className="text-blue-500" /> },
-  ];
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLogs();
+    const interval = setInterval(fetchLogs, 10000); // Polling every 10s
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchLogs = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/audit-logs`, {
+        headers: authHeader()
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLogs(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch logs:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatTime = (dateStr) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+    
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return date.toLocaleDateString();
+  };
 
   return (
-    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden">
+    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm">
       <div className="px-4 py-3 bg-[#f9f9fb] border-b border-[#e1e4e8] flex items-center justify-between">
-        <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Recent Activity</h3>
-        <button className="text-[10px] font-bold text-[#4a154b] hover:underline uppercase">View All</button>
+        <div className="flex items-center gap-2">
+          <Globe size={14} className="text-[#4a154b]" />
+          <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Audit Log / Activity</h3>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span className="text-[9px] font-bold text-[#6a737d] uppercase tracking-tighter">Live Updates</span>
+        </div>
       </div>
-      <div className="divide-y divide-[#e1e4e8]">
-        {activities.map((activity, i) => (
-          <motion.div
-            key={activity.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="px-4 py-4 hover:bg-[#f9f9fb] transition-colors cursor-pointer group"
-          >
-            <div className="flex gap-4">
-              <div className="mt-1 flex-shrink-0">
-                <div className="p-1.5 bg-[#f3f4f6] rounded-md group-hover:bg-white transition-colors border border-transparent group-hover:border-[#e1e4e8]">
-                  {activity.icon}
-                </div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-[#1a1a1b] leading-tight">
-                  <span className="font-bold">{activity.user}</span> {activity.type === 'approval' ? 'approved' : activity.type === 'create' ? 'created' : activity.type === 'comment' ? 'commented on' : activity.type === 'timer' ? 'started' : 'joined'} <span className="font-medium text-[#6a737d]">{activity.target}</span>
-                </p>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Clock size={10} className="text-[#6a737d]" />
-                  <span className="text-[10px] font-medium text-[#6a737d]">{activity.time}</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+      
+      <div className="divide-y divide-[#e1e4e8] max-h-[600px] overflow-y-auto custom-scrollbar">
+        {loading && logs.length === 0 ? (
+          <div className="p-8 text-center text-sm text-[#6a737d]">Loading activities...</div>
+        ) : logs.length === 0 ? (
+          <div className="p-8 text-center text-sm text-[#6a737d]">No activities recorded yet.</div>
+        ) : (
+          <AnimatePresence mode='popLayout'>
+            {logs.map((log, i) => {
+              const config = ACTION_CONFIG[log.action] || { label: log.action.toLowerCase(), icon: <Activity size={14} />, bgColor: 'bg-gray-50' };
+              return (
+                <motion.div
+                  key={log._id}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="px-4 py-4 hover:bg-[#f9f9fb] transition-colors group relative"
+                >
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 relative">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4a154b] to-[#1a1a1b] flex items-center justify-center text-white text-xs font-bold border-2 border-white shadow-sm overflow-hidden">
+                        {log.user.avatar ? (
+                          <img src={log.user.avatar} alt={log.user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          log.user.name?.[0] || '?'
+                        )}
+                      </div>
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center ${config.bgColor}`}>
+                        {config.icon}
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm text-[#1a1a1b] leading-tight">
+                          <span className="font-bold hover:text-indigo-600 cursor-pointer">{log.user.name || log.user.email}</span>
+                          <span className="text-[#6a737d] mx-1.5 font-medium">{config.label}</span>
+                          {log.details?.target && (
+                            <span className="font-bold text-[#1a1a1b] bg-[#f3f4f6] px-1.5 py-0.5 rounded text-[11px] border border-[#e1e4e8]">{log.details.target}</span>
+                          )}
+                        </p>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Clock size={10} className="text-[#6a737d]" />
+                          <span className="text-[10px] font-bold text-[#6a737d]">{formatTime(log.timestamp)}</span>
+                        </div>
+                      </div>
+                      
+                      {log.details && (log.details.from || log.details.to || log.details.info) && (
+                        <div className="mt-2 flex items-center gap-2">
+                          <div className="w-1 h-full min-h-[12px] bg-[#e1e4e8] rounded-full"></div>
+                          <div className="text-[11px] text-[#6a737d] flex items-center gap-1.5 flex-wrap">
+                            {log.details.from && (
+                              <span className="line-through opacity-60 italic">{log.details.from}</span>
+                            )}
+                            {log.details.from && log.details.to && <ArrowRight size={10} />}
+                            {log.details.to && (
+                              <span className="font-bold text-indigo-600 bg-indigo-50 px-1 rounded">{log.details.to}</span>
+                            )}
+                            {log.details.info && (
+                              <span className="italic">"{log.details.info}"</span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        )}
       </div>
     </div>
   );
