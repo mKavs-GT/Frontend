@@ -46,7 +46,7 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
   const [selectedColumn, setSelectedColumn] = useState(null);
 
   const [projectFormData, setProjectFormData] = useState({ name: '', description: '' });
-  const [renameFormData, setRenameFormData] = useState({ name: '' });
+  const [renameFormData, setRenameFormData] = useState({ name: '', overallProgress: 0 });
   const [sprintFormData, setSprintFormData] = useState({ name: '', dueDate: '' });
   const [taskFormData, setTaskFormData] = useState({ content: '', priority: 'medium', assignees: [] });
 
@@ -325,14 +325,14 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
                           <button 
                             onClick={() => {
                               setSelectedProjectId(project._id);
-                              setRenameFormData({ name: project.name });
+                              setRenameFormData({ name: project.name, overallProgress: project.overallProgress || 0 });
                               setIsRenameModalOpen(true);
                               setOpenProjectMenu(null);
                             }}
                             className="w-full px-4 py-2 text-left text-xs font-bold text-[#1a1a1b] hover:bg-[#f3f4f6] flex items-center gap-2.5 transition-colors"
                           >
                             <Edit3 size={14} className="text-[#6a737d]" />
-                            Rename Project
+                            Edit Project
                           </button>
                           <button 
                             onClick={() => handleDeleteProject(project._id)}
@@ -472,10 +472,10 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
         )}
 
         {isRenameModalOpen && (
-          <Modal onClose={() => setIsRenameModalOpen(false)} title="Rename Project">
+          <Modal onClose={() => setIsRenameModalOpen(false)} title="Edit Project">
             <form onSubmit={handleRenameProject} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">New Project Name</label>
+                <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest ml-1">Project Name</label>
                 <input 
                   type="text" 
                   required 
@@ -483,6 +483,21 @@ const ProjectManager = ({ user, projects = [], onRefresh, setProjects }) => {
                   value={renameFormData.name} 
                   onChange={e => setRenameFormData({ ...renameFormData, name: e.target.value })} 
                   className="w-full px-4 py-3 rounded-lg bg-[#f9f9fb] border border-[#e1e4e8] text-sm font-bold focus:outline-none focus:border-[#1a1a1b] transition-all" 
+                />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between ml-1">
+                  <label className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Overall Progress</label>
+                  <span className="text-[10px] font-bold text-[#1a1a1b] bg-[#f3f4f6] px-2 py-0.5 rounded border border-[#e1e4e8]">{renameFormData.overallProgress}%</span>
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  step="5"
+                  value={renameFormData.overallProgress} 
+                  onChange={e => setRenameFormData({ ...renameFormData, overallProgress: Number(e.target.value) })} 
+                  className="w-full accent-[#1a1a1b]" 
                 />
               </div>
               <button type="submit" className="w-full py-3 bg-[#1a1a1b] text-white rounded-lg font-bold text-sm shadow-lg hover:bg-black transition-all">Save Changes</button>

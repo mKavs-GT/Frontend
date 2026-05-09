@@ -1,10 +1,31 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, Clock, Zap, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
 
-export default function AnalyticsDashboard() {
+export default function AnalyticsDashboard({ projects = [] }) {
+  const activeProjects = projects || [];
+  const totalProjects = activeProjects.length;
+  
+  const averageProgress = totalProjects > 0 
+    ? Math.round(activeProjects.reduce((acc, p) => acc + (p.overallProgress || 0), 0) / totalProjects)
+    : 0;
+
+  const getBucketColor = (progress) => {
+    if (progress <= 25) return 'bg-rose-500';
+    if (progress <= 50) return 'bg-amber-500';
+    if (progress <= 75) return 'bg-blue-500';
+    return 'bg-emerald-500';
+  };
+
+  const buckets = {
+    atRisk: activeProjects.filter(p => (p.overallProgress || 0) <= 25).length,
+    early: activeProjects.filter(p => (p.overallProgress || 0) > 25 && (p.overallProgress || 0) <= 50).length,
+    onTrack: activeProjects.filter(p => (p.overallProgress || 0) > 50 && (p.overallProgress || 0) <= 75).length,
+    almostDone: activeProjects.filter(p => (p.overallProgress || 0) > 75).length
+  };
+
   const stats = [
     { label: 'Revenue', value: '$42,500', trend: '+12.5%', isUp: true, icon: <DollarSign size={20} className="text-[#1a1a1b]" /> },
-    { label: 'Active Projects', value: '18', trend: '+2', isUp: true, icon: <Activity size={20} className="text-[#1a1a1b]" /> },
+    { label: 'Active Projects', value: totalProjects.toString(), trend: '-', isUp: true, icon: <Activity size={20} className="text-[#1a1a1b]" /> },
     { label: 'Avg. Response Time', value: '1.2h', trend: '-15%', isUp: true, icon: <Zap size={20} className="text-[#1a1a1b]" /> },
     { label: 'Team Capacity', value: '88%', trend: '-2%', isUp: false, icon: <Users size={20} className="text-[#1a1a1b]" /> },
   ];
@@ -75,29 +96,63 @@ export default function AnalyticsDashboard() {
         {/* Side Progress Cards */}
         <div className="space-y-6">
            <div className="p-6 bg-white border border-[#e1e4e8] rounded-xl">
-             <h3 className="text-sm font-black tracking-tight mb-4">Project Status</h3>
-             <div className="space-y-4">
-               {[
-                 { label: 'MKavs Website', val: 75, color: 'bg-emerald-500' },
-                 { label: 'Admin Dashboard', val: 92, color: 'bg-[#4a154b]' },
-                 { label: 'Kairon Core', val: 45, color: 'bg-amber-500' },
-                 { label: 'Client CRM', val: 15, color: 'bg-[#1a1a1b]' },
-               ].map(p => (
-                 <div key={p.label} className="space-y-1.5">
-                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight">
-                      <span>{p.label}</span>
-                      <span>{p.val}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-[#f3f4f6] rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${p.val}%` }}
-                        className={`h-full ${p.color}`}
-                      />
-                    </div>
-                 </div>
-               ))}
+             <div className="flex items-center justify-between mb-4">
+               <h3 className="text-sm font-black tracking-tight">Project Status</h3>
+               <span className="text-[10px] font-bold bg-[#f3f4f6] px-2 py-0.5 rounded border border-[#e1e4e8]">{averageProgress}% Avg</span>
              </div>
+             
+             {totalProjects === 0 ? (
+               <div className="text-center py-6 text-[10px] font-bold text-[#6a737d] uppercase tracking-widest border border-dashed border-[#e1e4e8] rounded-lg">
+                 No active projects yet
+               </div>
+             ) : (
+               <div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide pr-1">
+                 {activeProjects.map(p => {
+                   const val = p.overallProgress || 0;
+                   const color = getBucketColor(val);
+                   return (
+                     <div key={p._id} className="space-y-1.5">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight">
+                          <span className="truncate max-w-[140px]" title={p.name}>{p.name}</span>
+                          <span>{val}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-[#f3f4f6] rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${val}%` }}
+                            className={`h-full ${color}`}
+                          />
+                        </div>
+                     </div>
+                   );
+                 })}
+               </div>
+             )}
+             
+             {totalProjects > 0 && (
+               <div className="mt-6 pt-4 border-t border-[#e1e4e8] grid grid-cols-4 gap-2">
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-rose-500">{buckets.atRisk}</div>
+                   <div className="text-[8px] font-bold text-[#6a737d] uppercase mt-1">Risk</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-black text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">0-25%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-amber-500">{buckets.early}</div>
+                   <div className="text-[8px] font-bold text-[#6a737d] uppercase mt-1">Early</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-black text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">26-50%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-blue-500">{buckets.onTrack}</div>
+                   <div className="text-[8px] font-bold text-[#6a737d] uppercase mt-1">Track</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-black text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">51-75%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-emerald-500">{buckets.almostDone}</div>
+                   <div className="text-[8px] font-bold text-[#6a737d] uppercase mt-1">Done</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-black text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">76-100%</div>
+                 </div>
+               </div>
+             )}
            </div>
 
            <div className="p-6 bg-[#f3f4f6] text-[#6a737d] rounded-xl border border-[#e1e4e8] border-dashed flex flex-col items-center justify-center text-center">
