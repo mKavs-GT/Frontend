@@ -661,12 +661,6 @@ export default function App() {
 
           <div className="flex items-center gap-2">
              {/* Timer moved to right column */}
-             {isLiveOnChatbot && (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full animate-pulse mr-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></div>
-                  <span className="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">Live</span>
-                </div>
-             )}
              <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
                 className="w-8 h-8 flex items-center justify-center rounded-full border border-border-main hover:bg-bg-muted transition-colors text-text-muted hover:text-text-main"
@@ -695,18 +689,14 @@ export default function App() {
                <div className="flex items-center gap-4">
                   <button 
                     onClick={handleChatbotToggle}
-                    className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-black transition-all shadow-xl hover:scale-[1.02] active:scale-[0.98] group ${
+                    className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
                       isLiveOnChatbot 
-                        ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-rose-500/20' 
-                        : 'bg-zinc-900 dark:bg-black border border-accent/20 hover:border-accent/60 text-white shadow-accent/5 hover:shadow-accent/20'
+                        ? 'bg-rose-500 text-white hover:bg-rose-600' 
+                        : 'bg-[#1a1a1b] text-white hover:opacity-90'
                     }`}
                   >
-                    <div className={`${isLiveOnChatbot ? 'animate-pulse' : 'group-hover:scale-110 transition-transform'}`}>
-                      <Zap size={14} fill={isLiveOnChatbot ? "white" : "#ccff00"} className={isLiveOnChatbot ? "" : "text-accent drop-shadow-[0_0_8px_rgba(204,255,0,0.8)]"} />
-                    </div>
-                    <span className={isLiveOnChatbot ? "" : "bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent group-hover:to-white transition-all"}>
-                      {isLiveOnChatbot ? 'End Chatbot Session' : 'Go live on Chatbot'}
-                    </span>
+                    <Zap size={14} />
+                    {isLiveOnChatbot ? 'End Chatbot Session' : 'Go live on Chatbot'}
                   </button>
                </div>
              )}
