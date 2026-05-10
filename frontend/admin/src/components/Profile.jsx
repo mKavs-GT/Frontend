@@ -13,17 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function Profile({ user }) {
-  const [speedTestRunning, setSpeedTestRunning] = useState(false);
-  const [speedResult, setSpeedResult] = useState(null);
 
-  const runSpeedTest = () => {
-    setSpeedTestRunning(true);
-    setSpeedResult(null);
-    setTimeout(() => {
-      setSpeedTestRunning(false);
-      setSpeedResult(128.4);
-    }, 2000);
-  };
 
   return (
     <div className="flex flex-col gap-8 h-full">
@@ -104,84 +94,35 @@ export default function Profile({ user }) {
           </div>
           <div className="flex justify-between items-center px-2 lg:px-4 flex-1">
             {/* Chrome */}
-            <div className="flex flex-col items-center gap-4 group/item">
+            <div className="flex flex-col items-center gap-2 group/item">
                <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <Chrome size={32} />
+                 <Chrome size={28} />
                </div>
-               <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
-                 <CheckCircle size={14} /> OK
+               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
+                 <CheckCircle size={14} />
                </div>
             </div>
             {/* Safari */}
-            <div className="flex flex-col items-center gap-4 group/item">
+            <div className="flex flex-col items-center gap-2 group/item">
                <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
                </div>
-               <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
-                 <CheckCircle size={14} /> OK
+               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
+                 <CheckCircle size={14} />
                </div>
             </div>
             {/* Firefox */}
-            <div className="flex flex-col items-center gap-4 group/item">
+            <div className="flex flex-col items-center gap-2 group/item">
                <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5c-1 1.5-2.5 3-2.5 5.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2.5-1.5-4-2.5-5.5"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>
+                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5c-1 1.5-2.5 3-2.5 5.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2.5-1.5-4-2.5-5.5"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>
                </div>
-               <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
-                 <CheckCircle size={14} /> OK
+               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
+                 <CheckCircle size={14} />
                </div>
             </div>
           </div>
         </div>
 
-        {/* 4. Internet Speed Test */}
-        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors duration-300">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-              <Wifi size={16} /> Network Speed
-            </p>
-            <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-500">
-              <div className={`w-2 h-2 rounded-full ${speedTestRunning ? 'bg-indigo-500 animate-ping' : 'bg-indigo-500'}`}></div>
-            </div>
-          </div>
-          
-          <div className="flex flex-col items-center justify-center flex-1 py-4 relative">
-             {speedTestRunning ? (
-               <div className="flex flex-col items-center">
-                 <motion.div 
-                   animate={{ rotate: 360 }}
-                   transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                   className="w-16 h-16 border-[4px] border-zinc-100 dark:border-zinc-800 border-t-indigo-500 rounded-full mb-4"
-                 />
-                 <p className="text-sm font-semibold text-zinc-500 uppercase tracking-widest animate-pulse">Testing...</p>
-               </div>
-             ) : (
-               <div className="text-center">
-                 {speedResult ? (
-                   <>
-                     <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex items-end justify-center gap-2">
-                       <p className="text-6xl font-black text-zinc-900 dark:text-white tracking-tighter leading-none">{speedResult}</p>
-                       <p className="text-lg font-bold text-zinc-400 uppercase tracking-widest mb-1">Mbps</p>
-                     </motion.div>
-                     <p className="text-xs font-semibold text-emerald-500 mt-3 bg-emerald-50 dark:bg-emerald-500/10 inline-flex px-3 py-1 rounded-lg">Connection is stable</p>
-                   </>
-                 ) : (
-                   <div className="flex flex-col items-center text-zinc-400 dark:text-zinc-600">
-                     <Wifi size={48} className="mb-4 opacity-50" />
-                     <p className="text-sm font-semibold uppercase tracking-widest">Ready to test</p>
-                   </div>
-                 )}
-               </div>
-             )}
-          </div>
-          
-          <button 
-            onClick={runSpeedTest}
-            disabled={speedTestRunning}
-            className="w-full py-4 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg mt-4 active:scale-[0.98]"
-          >
-            {speedTestRunning ? 'Testing Connection...' : 'Run Speed Test'}
-          </button>
-        </div>
 
 
         {/* 6. The Arena (Gamification) */}

@@ -1,10 +1,21 @@
 import { motion } from 'framer-motion';
-import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle, Pipette, ExternalLink } from 'lucide-react';
+import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle, Pipette, ExternalLink, Wifi } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Vault() {
   const [copiedSnippet, setCopiedSnippet] = useState(null);
   const [selectedColor, setSelectedColor] = useState('#4a154b');
+  const [speedTestRunning, setSpeedTestRunning] = useState(false);
+  const [speedResult, setSpeedResult] = useState(null);
+
+  const runSpeedTest = () => {
+    setSpeedTestRunning(true);
+    setSpeedResult(null);
+    setTimeout(() => {
+      setSpeedTestRunning(false);
+      setSpeedResult(128.4);
+    }, 2000);
+  };
 
   const copySnippet = (id, text) => {
     navigator.clipboard.writeText(text);
@@ -108,29 +119,80 @@ export default function Vault() {
             <Pipette size={20} />
           </div>
           <div>
-            <h2 className="text-xl font-black tracking-tight">Design Tokens</h2>
-            <p className="text-xs font-bold text-[#6a737d] uppercase tracking-widest mt-0.5">Quick access to the design system</p>
+            <h2 className="text-xl font-black tracking-tight">Tools</h2>
+            <p className="text-xs font-bold text-[#6a737d] uppercase tracking-widest mt-0.5">Dashboard Utilities</p>
           </div>
         </div>
 
-        <div className="bg-white border border-[#e1e4e8] rounded-xl p-8 shadow-sm flex items-center gap-8 max-w-xl">
-          <input 
-            type="color" 
-            value={selectedColor} 
-            onChange={(e) => setSelectedColor(e.target.value)} 
-            className="w-16 h-16 rounded-xl cursor-pointer border-4 border-[#f3f4f6] p-0 bg-transparent block shrink-0" 
-          />
-          <div className="flex-1">
-            <p className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-1">Theme Primary</p>
-            <div className="flex items-center justify-between bg-[#f9f9fb] px-4 py-2 rounded-lg border border-[#e1e4e8]">
-              <p className="font-mono font-bold text-sm">{selectedColor.toUpperCase()}</p>
-              <button 
-                onClick={() => navigator.clipboard.writeText(selectedColor)} 
-                className="text-[#6a737d] hover:text-[#1a1a1b]"
-              >
-                <Copy size={14}/>
-              </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white border border-[#e1e4e8] rounded-xl p-8 shadow-sm flex items-center gap-8">
+            <input 
+              type="color" 
+              value={selectedColor} 
+              onChange={(e) => setSelectedColor(e.target.value)} 
+              className="w-16 h-16 rounded-xl cursor-pointer border-4 border-[#f3f4f6] p-0 bg-transparent block shrink-0" 
+            />
+            <div className="flex-1">
+              <p className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest mb-1">Theme Primary</p>
+              <div className="flex items-center justify-between bg-[#f9f9fb] px-4 py-2 rounded-lg border border-[#e1e4e8]">
+                <p className="font-mono font-bold text-sm">{selectedColor.toUpperCase()}</p>
+                <button 
+                  onClick={() => navigator.clipboard.writeText(selectedColor)} 
+                  className="text-[#6a737d] hover:text-[#1a1a1b]"
+                >
+                  <Copy size={14}/>
+                </button>
+              </div>
             </div>
+          </div>
+
+          <div className="bg-white border border-[#e1e4e8] rounded-xl p-8 shadow-sm flex flex-col justify-between group hover:border-indigo-500/30 transition-colors duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+                <Wifi size={16} /> Network Speed
+              </p>
+              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500">
+                <div className={`w-2 h-2 rounded-full ${speedTestRunning ? 'bg-indigo-500 animate-ping' : 'bg-indigo-500'}`}></div>
+              </div>
+            </div>
+            
+            <div className="flex flex-col items-center justify-center flex-1 py-4 relative">
+              {speedTestRunning ? (
+                <div className="flex flex-col items-center">
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="w-16 h-16 border-[4px] border-zinc-100 border-t-indigo-500 rounded-full mb-4"
+                  />
+                  <p className="text-sm font-semibold text-zinc-500 uppercase tracking-widest animate-pulse">Testing...</p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  {speedResult ? (
+                    <>
+                      <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex items-end justify-center gap-2">
+                        <p className="text-5xl font-black text-zinc-900 tracking-tighter leading-none">{speedResult}</p>
+                        <p className="text-lg font-bold text-zinc-400 uppercase tracking-widest mb-1">Mbps</p>
+                      </motion.div>
+                      <p className="text-xs font-semibold text-emerald-500 mt-3 bg-emerald-50 inline-flex px-3 py-1 rounded-lg">Connection is stable</p>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center text-zinc-400">
+                      <Wifi size={40} className="mb-2 opacity-50" />
+                      <p className="text-sm font-semibold uppercase tracking-widest">Ready to test</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            <button 
+              onClick={runSpeedTest}
+              disabled={speedTestRunning}
+              className="w-full py-3 rounded-xl bg-zinc-900 text-white font-bold hover:bg-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md mt-4 active:scale-[0.98] text-xs uppercase tracking-widest"
+            >
+              Run Speed Test
+            </button>
           </div>
         </div>
       </section>
