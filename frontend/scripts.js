@@ -89,7 +89,7 @@ let isImageFlipping = false;
 
 // --- ELEMENTS ---
 let allSlides;
-let slide2, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton;
+let slide2, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton, statsBox;
 let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery, slide3BgGrid;
 let worksListItems;
 let zoomMainImage;
@@ -788,12 +788,14 @@ document.addEventListener('DOMContentLoaded', () => {
     allSlides = Array.from(document.querySelectorAll('.slide'));
     slide2 = document.getElementById('slide-2');
     starImages = document.querySelectorAll('.star');
-    slide1Image = document.getElementById('slide-1-image');
-    slide1OverlayImage = document.getElementById('slide-1-overlay-image');
+    const herobg = document.getElementById('herobg');
+    const herofg = document.getElementById('herofg');
+    const mkavsLogo = document.getElementById('mkavs-logo');
     mainToolbar = document.getElementById('main-toolbar');
     poppingLogo = document.getElementById('popping-logo');
     textLeft = document.getElementById('text-left');
     getStartedButton = document.getElementById('get-started-button');
+    statsBox = document.getElementById('stats-box');
     const metricNumbers = document.querySelectorAll('.metric-number');
 
     zoomImageContainer = document.getElementById('zoom-image-container');
@@ -867,29 +869,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (el.id === 'slide-2-text') {
                     el.classList.remove('opacity-0', '-translate-x-full');
                     el.classList.add('opacity-100', 'translate-x-0');
-                } else if (el.id === 'slide-2-card-1') {
-                    el.classList.remove('opacity-0', 'scale-0');
-                    el.classList.add('opacity-100', 'scale-100');
-                } else if (el.id === 'slide-2-card-2') {
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0', 'scale-0');
-                        el.classList.add('opacity-100', 'scale-100');
-                    }, 200);
-                } else if (el.id === 'slide-2-card-3') {
-                    setTimeout(() => {
-                        el.classList.remove('opacity-0', 'scale-0');
-                        el.classList.add('opacity-100', 'scale-100');
-                    }, 400);
+
+                    // Trigger the 3 cards immediately with a slight stagger
+                    ['slide-2-card-1', 'slide-2-card-2', 'slide-2-card-3'].forEach((id, idx) => {
+                        const card = document.getElementById(id);
+                        if (card) {
+                            setTimeout(() => {
+                                card.classList.remove('opacity-0', 'scale-0');
+                                card.classList.add('opacity-100', 'scale-100');
+                            }, idx * 150);
+                        }
+                    });
+                    observer.unobserve(el);
                 }
-                observer.unobserve(el);
             }
         });
-    }, { threshold: 0, rootMargin: "0px 10000px -100px 10000px" });
+    }, { threshold: 0, rootMargin: "0px 10000px 0px 10000px" });
 
-    ['slide-2-text', 'slide-2-card-1', 'slide-2-card-2', 'slide-2-card-3'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) slide2Observer.observe(el);
-    });
+    const s2TextEl = document.getElementById('slide-2-text');
+    if (s2TextEl) slide2Observer.observe(s2TextEl);
 
     // --- Intersection Observer for Slide 2 Bottom Text ---
     const slide2BottomText = document.getElementById('slide-2-bottom-text');
@@ -1124,16 +1122,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Hero Image Slide Up
         const triggerHero = () => {
-            if (slide1Image) {
-                if (instant) slide1Image.style.transition = 'none';
-                slide1Image.classList.remove('opacity-0', 'scale-50');
-                slide1Image.classList.add('scale-100', 'opacity-100');
-                if (instant) setTimeout(() => slide1Image.style.transition = '', 50);
+            if (herobg) {
+                if (instant) herobg.style.transition = 'none';
+                herobg.classList.remove('opacity-0', 'scale-50');
+                herobg.classList.add('scale-80', 'opacity-80');
+                if (instant) setTimeout(() => herobg.style.transition = '', 50);
             }
-            if (slide1OverlayImage) {
-                if (instant) slide1OverlayImage.style.transition = 'none';
-                slide1OverlayImage.classList.remove('opacity-0', 'translate-y-full');
-                if (instant) setTimeout(() => slide1OverlayImage.style.transition = '', 50);
+            if (herofg) {
+                if (instant) herofg.style.transition = 'none';
+                herofg.classList.remove('opacity-0', 'translate-y-full');
+                herofg.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                if (instant) setTimeout(() => herofg.style.transition = '', 50);
+            }
+            if (mkavsLogo) {
+                if (instant) mkavsLogo.style.transition = 'none';
+                mkavsLogo.classList.remove('opacity-0', '-translate-x-full');
+                mkavsLogo.classList.add('scale-100', 'opacity-90', 'translate-x-10', 'translate-y-0');
+                if (instant) setTimeout(() => mkavsLogo.style.transition = '', 50);
             }
         };
 
@@ -1173,6 +1178,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (instant) setTimeout(() => getStartedButton.style.transition = '', 50);
             }
 
+            // Stats Box Slide In
+            if (statsBox) {
+                if (instant) statsBox.style.transition = 'none';
+                statsBox.classList.remove('translate-y-full', 'opacity-0');
+                statsBox.classList.add('translate-y-0', 'opacity-100');
+                if (instant) setTimeout(() => statsBox.style.transition = '', 50);
+            }
+
             // Metrics
             const mText = document.querySelectorAll('.metric-number');
             mText.forEach(numElement => {
@@ -1181,6 +1194,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (instant) numElement.textContent = t.toLocaleString() + s;
                 else countUp(numElement, t, s);
             });
+
+            // Headline Pop Effect
+            const dynamicTextElement = document.getElementById('hero-dynamic-text');
+            if (dynamicTextElement) {
+                const phrases = ["Web Development", "Digital Branding", "Full-Stack Apps", "UX/UI Design"];
+                let phraseIndex = 0;
+                dynamicTextElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                dynamicTextElement.style.display = 'inline-block';
+
+                const popNext = () => {
+                    // Pop Out
+                    dynamicTextElement.style.opacity = '0';
+                    dynamicTextElement.style.transform = 'scale(0.9) translateY(10px)';
+
+                    setTimeout(() => {
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                        dynamicTextElement.textContent = phrases[phraseIndex];
+
+                        // Pop In
+                        dynamicTextElement.style.opacity = '1';
+                        dynamicTextElement.style.transform = 'scale(1) translateY(0)';
+                    }, 500);
+
+                    setTimeout(popNext, 3500);
+                };
+                // Initial start after a delay
+                setTimeout(popNext, 3000);
+            }
         };
 
         if (instant) triggerRest();
@@ -1374,9 +1415,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Mousemove/Star Repulsion ---
+    // --- Mousemove Interactions ---
     window.addEventListener('mousemove', (e) => {
-        if (currentSlideIndex === 0) updateImageStars(e.clientX, e.clientY);
+        if (currentSlideIndex === 0) {
+            // Star Repulsion
+            updateImageStars(e.clientX, e.clientY);
+
+            // Mockup 3D Parallax (herofg)
+            if (herofg) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.06;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.06;
+                // Maintain full scale (1.0) while applying parallax
+                herofg.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1)`;
+            }
+        }
     });
 
     // --- Slide 3 Works List Logic ---
@@ -1480,4 +1532,87 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
     });
-});
+
+    // --- INTERACTIVE HERO DOTS (Canvas) ---
+    const dotsCanvas = document.getElementById('hero-dots-canvas');
+    if (dotsCanvas) {
+        const dCtx = dotsCanvas.getContext('2d');
+        let dots = [];
+        const dSpacing = 40;
+        let dMouseX = -1000;
+        let dMouseY = -1000;
+
+        const initHeroDots = () => {
+            dotsCanvas.width = window.innerWidth;
+            dotsCanvas.height = window.innerHeight;
+            dots = [];
+            for (let x = dSpacing / 2; x < dotsCanvas.width; x += dSpacing) {
+                for (let y = dSpacing / 2; y < dotsCanvas.height; y += dSpacing) {
+                    dots.push({
+                        x: x,
+                        y: y,
+                        baseX: x,
+                        baseY: y,
+                        vx: 0,
+                        vy: 0
+                    });
+                }
+            }
+        };
+
+        window.addEventListener('resize', initHeroDots);
+        initHeroDots();
+
+        window.addEventListener('mousemove', (e) => {
+            if (currentSlideIndex === 0) {
+                dMouseX = e.clientX;
+                dMouseY = e.clientY;
+            } else {
+                dMouseX = -1000;
+                dMouseY = -1000;
+            }
+        });
+
+        const animateHeroDots = () => {
+            dCtx.clearRect(0, 0, dotsCanvas.width, dotsCanvas.height);
+            const time = Date.now() * 0.002;
+
+            for (let i = 0; i < dots.length; i++) {
+                const dot = dots[i];
+                const dx = dMouseX - dot.x;
+                const dy = dMouseY - dot.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const maxDist = 120;
+
+                // Repulsion
+                if (dist < maxDist) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (maxDist - dist) / maxDist;
+                    dot.vx -= Math.cos(angle) * force * 1.5;
+                    dot.vy -= Math.sin(angle) * force * 1.5;
+                }
+
+                // Spring back to base
+                dot.vx += (dot.baseX - dot.x) * 0.08;
+                dot.vy += (dot.baseY - dot.y) * 0.08;
+
+                // Friction
+                dot.vx *= 0.9;
+                dot.vy *= 0.9;
+
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+
+                // Wave effect (Subtle vertical floating)
+                const wave = Math.sin(time + dot.baseX * 0.01) * 2;
+
+                dCtx.beginPath();
+                dCtx.arc(dot.x, dot.y + wave, 1.2, 0, Math.PI * 2);
+                dCtx.fillStyle = 'rgba(75, 75, 75, 0.25)';
+                dCtx.fill();
+            }
+            requestAnimationFrame(animateHeroDots);
+        };
+        animateHeroDots();
+    }
+});

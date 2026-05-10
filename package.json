@@ -5,11 +5,11 @@
   "main": "scripts.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js",
+    "start": "node ../Backend/server.js",
     "build": "npm run build --prefix frontend/admin",
     "postinstall": "npm install --prefix frontend/admin",
-    "dev": "node backend/scripts/open-admin.js --with-server",
-    "admin": "node backend/scripts/open-admin.js"
+    "dev": "node ../Backend/scripts/open-admin.js --with-server",
+    "admin": "node ../Backend/scripts/open-admin.js"
   },
   "keywords": [],
   "author": "",

@@ -41,14 +41,10 @@
         const isReload = navType === 'reload';
         const isWorksHash = window.location.hash === '#our-works' || window.location.hash === '#slide-3';
 
-        // Aggressive preloader skip for reloads, existing sessions, or direct works links
-        if (sessionStorage.getItem('preloaderShown') || isReload || isWorksHash) {
+        // Skip preloader ONLY if linking directly to the works section
+        if (isWorksHash) {
             document.documentElement.classList.add('skip-preloader-transition');
-            if (isWorksHash) {
-                document.documentElement.classList.add('jumping-to-works');
-            }
-            // Ensure preloaderShown is set for future reloads if it was just isReload
-            sessionStorage.setItem('preloaderShown', 'true');
+            document.documentElement.classList.add('jumping-to-works');
         }
     </script>
     <style>
@@ -59,6 +55,22 @@
 
         .jumping-to-works #slide-1 {
             opacity: 0 !important;
+        }
+
+        @keyframes heroFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .hero-float {
+            animation: heroFloat 5s ease-in-out infinite;
         }
     </style>
 </head>
@@ -162,14 +174,28 @@
 
         <!-- SLIDE 1: HERO -->
         <div class="slide-wrapper-corner">
-            <div id="slide-1"
-                class="slide bg-gradient-to-br from-[#0c19ad] to-[#0C1AC1] z-10 slide-transition concave-inner-slide">
+            <div id="slide-1" class="slide bg-[#FDFDFD] z-10 slide-transition concave-inner-slide">
+
+                <!-- Interactive Background Dots Canvas -->
+                <canvas id="hero-dots-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
+
+                <!-- Hero Images -->
+                <div id="hero-images-container"
+                    class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 translate-y-9">
+                    <img id="mkavs-logo" src="images/MKAVS.png" alt="MKAVS"
+                        class="absolute left-[9%] top-[44%] -translate-y-1/2 w-72 md:w-[28rem] h-auto z-20 opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                    <img id="herobg" src="images/herobg.png" alt="Hero Background"
+                        class="absolute w-full h-full object-cover opacity-0 scale-50 transition-all duration-1000 ease-out">
+                    <img id="herofg" src="images/herofg.png" alt="Hero Foreground"
+                        class="relative z-10 w-auto h-auto max-w-[85%] max-h-[80%] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] opacity-0 translate-y-full transition-all duration-1000 ease-out">
+                </div>
 
 
                 <div id="popping-logo"
                     class="absolute top-0 left-1/2 transform -translate-x-1/2 z-[60] opacity-0 transition-all duration-700 ease-out scale-0">
                     <a href="branding/branding.html">
-                        <img src="images/LOGOI.png" alt="Company Logo" class="repulse-target h-20 md:h-24 w-auto brightness-0"
+                        <img src="images/LOGOI.png" alt="Company Logo"
+                            class="repulse-target h-20 md:h-24 w-auto brightness-0"
                             onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/000000?text=LOGO';">
                     </a>
                 </div>
@@ -180,19 +206,88 @@
 
 
 
-                <div
-                    class="absolute bottom-12 right-0 left-0 flex justify-center md:justify-end max-w-7xl mx-auto px-4 pointer-events-none z-50">
-                    <div class="flex flex-col items-center space-y-3 pointer-events-auto">
-                        <a href="./docs/Brochure.pdf" target="_blank"
-                            class="bg-white text-[#0C1AC1] hover:bg-[#c7f908] hover:text-[#0C1AC1] font-bold py-1.5 px-4 rounded-full shadow-2xl border border-[#0C1AC1] button-transition text-xs inline-block text-center mb-2">
-                            VIEW BROCHURE
-                        </a>
+                <!-- Top Left Content -->
+                <div id="text-left"
+                    class="absolute top-[15%] left-[10%] z-50 opacity-0 -translate-x-full transition-all duration-1000 ease-out">
+                    <h1 class="text-4xl md:text-6xl font-black leading-[0.9] uppercase tracking-tighter">
+                        <span class="text-[#1a1a1a]">Custom</span><br>
+                        <span id="hero-dynamic-text" class="text-[#0C1AC1]">Web Development</span>
+                    </h1>
+                    <p class="text-lg md:text-xl font-bold text-[#4B4B4B] mt-4 uppercase tracking-wider">
+                        WE BUILD YOUR DIGITAL SUPERHERO
+                    </p>
+                    <a href="./docs/Brochure.pdf" target="_blank"
+                        class="mt-4 inline-flex items-center gap-4 bg-[#0C1AC1] text-white font-black py-1 pl-10 pr-1.5 rounded-full text-xs md:text-sm hover:bg-[#0a1599] transition-all uppercase tracking-widest group shadow-xl">
+                        <span>View Brochure</span>
+                        <div
+                            class="bg-white rounded-full w-8 h-8 flex items-center justify-center text-[#0C1AC1] transform group-hover:translate-x-1 transition-transform">
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </a>
+                </div>
 
-                        <a href="./loginpg/login.html" id="get-started-button"
-                            class="pulsate bg-[#c7f908] text-[#0C1AC1] hover:bg-white hover:text-[#c7f908] hover:border-[#0C1AC1] font-bold py-3 px-8 rounded-full shadow-2xl border-2 border-[#0C1AC1] button-transition transform translate-x-full opacity-0 transition-all duration-500 ease-out text-lg inline-block text-center"
-                            rel="noopener noreferrer">
-                            GET STARTED
-                        </a>
+                <!-- Top Right Content -->
+                <div class="absolute top-[23%] right-[9%] z-50">
+                    <a href="./loginpg/login.html" id="get-started-button"
+                        class="bg-[#0C1AC1] text-white font-black py-1.5 pl-14 pr-1.5 rounded-full text-lg md:text-xl uppercase hover:bg-[#0a1599] transition-all opacity-0 translate-x-full duration-1000 ease-out inline-flex items-center gap-6 group shadow-xl">
+                        <span>Get Started</span>
+                        <div
+                            class="bg-white rounded-full w-10 h-10 flex items-center justify-center text-[#0C1AC1] transform group-hover:translate-x-1 transition-transform">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Bottom Left Stats Box -->
+                <div id="stats-box"
+                    class="absolute bottom-[4%] left-[9.5%] z-50 bg-[#FDFDFD]/90 backdrop-blur-xl p-5 rounded-[2.5rem] border-[3px] border-[#4B4B4B] shadow-[0_15px_40px_rgba(0,0,0,0.1)] opacity-0 translate-y-full transition-all duration-1000 ease-out w-[13rem] pointer-events-auto">
+                    <div class="space-y-5">
+                        <!-- Metric 1 -->
+                        <div class="flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-xl font-black text-black metric-number leading-none" data-target="40"
+                                    data-plus="+">0+</span>
+                                <span class="text-[8px] uppercase font-black text-gray-500 tracking-tight mt-1">Happy
+                                    Clients</span>
+                            </div>
+                            <div class="h-9 w-14 bg-gray-100 rounded-lg flex items-end justify-center gap-0.5 p-2">
+                                <div class="w-1 h-[30%] bg-gray-300 rounded-full"></div>
+                                <div class="w-1 h-[50%] bg-gray-400 rounded-full"></div>
+                                <div class="w-1 h-[75%] bg-gray-600 rounded-full"></div>
+                                <div class="w-1 h-full bg-black rounded-full"></div>
+                            </div>
+                        </div>
+                        <!-- Metric 2 -->
+                        <div class="flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-xl font-black text-black metric-number leading-none" data-target="98"
+                                    data-plus="%">0%</span>
+                                <span class="text-[8px] uppercase font-black text-gray-500 tracking-tight mt-1">Success
+                                    Score</span>
+                            </div>
+                            <div class="h-9 w-14 bg-gray-100 rounded-lg flex items-center justify-center p-2">
+                                <svg viewBox="0 0 100 40" class="w-full h-full text-black stroke-current fill-none"
+                                    style="stroke-width: 8px; stroke-linecap: round; stroke-linejoin: round;">
+                                    <path d="M10,30 Q25,30 40,15 T70,15 T90,10" />
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Metric 3 -->
+                        <div class="flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-xl font-black text-black metric-number leading-none"
+                                    data-target="1500" data-plus="">0</span>
+                                <span
+                                    class="text-[8px] uppercase font-black text-gray-500 tracking-tight mt-1">Development
+                                    Hours</span>
+                            </div>
+                            <div class="h-9 w-14 bg-gray-100 rounded-lg flex items-center justify-center p-2">
+                                <svg viewBox="0 0 100 40" class="w-full h-full text-black stroke-current fill-none"
+                                    style="stroke-width: 8px; stroke-linecap: round; stroke-linejoin: round;">
+                                    <path d="M10,30 L30,35 L50,15 L70,20 L90,5" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1145,7 +1240,8 @@
                                         class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
                                         [Website design]</div>
                                     <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "Honestly, the MKAVS guys nailed our branding. I was a bit skeptical at first, but the final website looks insane. Really happy with the whole process."
+                                        "Honestly, the MKAVS guys nailed our branding. I was a bit skeptical at first,
+                                        but the final website looks insane. Really happy with the whole process."
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-3 mt-4">
@@ -1167,7 +1263,8 @@
                                         class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
                                         [Web App Dev]</div>
                                     <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "They completely flipped our online presence. It wasn't just about making it look pretty—they actually understood what we wanted to build and got it done."
+                                        "They completely flipped our online presence. It wasn't just about making it
+                                        look pretty—they actually understood what we wanted to build and got it done."
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-3 mt-4">
@@ -1189,7 +1286,9 @@
                                         class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
                                         [E-Commerce]</div>
                                     <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "Super talented team. They didn't just give us a standard template; the site feels so alive and dynamic now. Our sales have genuinely picked up since the launch."
+                                        "Super talented team. They didn't just give us a standard template; the site
+                                        feels so alive and dynamic now. Our sales have genuinely picked up since the
+                                        launch."
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-3 mt-4">
@@ -1211,7 +1310,9 @@
                                         class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
                                         [UI/UX Design]</div>
                                     <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "What I loved most was their communication. They kept us in the loop the entire time and the final product is top notch. Definitely coming back for our next project."
+                                        "What I loved most was their communication. They kept us in the loop the entire
+                                        time and the final product is top notch. Definitely coming back for our next
+                                        project."
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-3 mt-4">
@@ -1233,7 +1334,8 @@
                                         class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
                                         [SEO Optimization]</div>
                                     <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "We were struggling to get noticed on Google, and in a few months, these guys got us to the first page. No BS, just real results and great support."
+                                        "We were struggling to get noticed on Google, and in a few months, these guys
+                                        got us to the first page. No BS, just real results and great support."
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-3 mt-4">
@@ -1398,25 +1500,23 @@
         <button id="kairon-faq-toggle" style="display:none"></button>
 
         <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                if (!window.showTypingIndicator) {
-                    window.showTypingIndicator = () => {
-                        const msgs = document.getElementById('kairon-messages');
-                        const indicator = document.createElement('div');
-                        indicator.id = 'typing-indicator';
-                        indicator.className = 'typing-indicator';
-                        indicator.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-                        msgs.appendChild(indicator);
-                        msgs.scrollTop = msgs.scrollHeight;
-                    };
-                }
-                if (!window.hideTypingIndicator) {
-                    window.hideTypingIndicator = () => {
-                        const indicator = document.getElementById('typing-indicator');
-                        if (indicator) indicator.remove();
-                    };
-                }
-            });
+            if (!window.showTypingIndicator) {
+                window.showTypingIndicator = () => {
+                    const msgs = document.getElementById('kairon-messages');
+                    const indicator = document.createElement('div');
+                    indicator.id = 'typing-indicator';
+                    indicator.className = 'typing-indicator';
+                    indicator.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+                    msgs.appendChild(indicator);
+                    msgs.scrollTop = msgs.scrollHeight;
+                };
+            }
+            if (!window.hideTypingIndicator) {
+                window.hideTypingIndicator = () => {
+                    const indicator = document.getElementById('typing-indicator');
+                    if (indicator) indicator.remove();
+                };
+            }
         </script>
         <script src="./neoncode/kairon-live-bot/script.fixed.js" defer></script>
 
