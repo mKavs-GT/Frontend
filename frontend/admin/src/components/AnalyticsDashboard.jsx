@@ -155,11 +155,6 @@ export default function AnalyticsDashboard({ projects = [] }) {
              )}
            </div>
 
-           <div className="p-6 bg-[#f3f4f6] text-[#6a737d] rounded-xl border border-[#e1e4e8] border-dashed flex flex-col items-center justify-center text-center">
-              <Zap className="w-8 h-8 mb-2 opacity-20" />
-              <h3 className="text-sm font-black tracking-tight">Enterprise Active</h3>
-              <p className="text-[10px] uppercase tracking-widest mt-1">Full access granted</p>
-           </div>
         </div>
       </div>
     </div>
