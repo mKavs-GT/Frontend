@@ -170,6 +170,8 @@ export default function App() {
      const iframe = document.getElementById('kairon-iframe');
      if (iframe && iframe.contentWindow) {
          iframe.contentWindow.postMessage({ type: newState ? 'KAIRON_GO_ONLINE' : 'KAIRON_GO_OFFLINE' }, '*');
+         // Also ensure theme is synced when going live
+         iframe.contentWindow.postMessage({ type: 'SET_THEME', isDark: isDarkMode }, '*');
      }
      setIsLiveOnChatbot(newState);
      localStorage.setItem('mkavs_kairon_live', newState);
@@ -316,6 +318,12 @@ export default function App() {
     
     // Add global transition class to body for smooth switching
     document.body.classList.add('transition-colors', 'duration-500');
+
+    // Sync theme with Kairon iframe
+    const iframe = document.getElementById('kairon-iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'SET_THEME', isDark: isDarkMode }, '*');
+    }
   }, [isDarkMode]);
 
   // Notifications sync
@@ -677,14 +685,14 @@ export default function App() {
               </div>
             </div>
 
-             {activeView === 'kairon' && (
+              {activeView === 'kairon' && (
                <div className="flex items-center gap-4">
                   <button 
                     onClick={handleChatbotToggle}
                     className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm ${
                       isLiveOnChatbot 
                         ? 'bg-rose-500 text-white hover:bg-rose-600' 
-                        : 'bg-[#1a1a1b] text-white hover:bg-black'
+                        : 'bg-[#1a1a1b] text-white hover:opacity-90'
                     }`}
                   >
                     <Zap size={14} />

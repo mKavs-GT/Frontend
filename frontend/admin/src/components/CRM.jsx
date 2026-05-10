@@ -129,13 +129,13 @@ export default function CRM({ user }) {
           <p className="text-sm font-medium text-[#6a737d] mt-1">Manage external users and incoming business queries.</p>
         </div>
         
-        <div className="flex bg-white p-1.5 rounded-xl border border-[#e1e4e8] shadow-sm">
+        <div className="flex bg-bg-surface p-1.5 rounded-xl border border-border-main shadow-sm transition-colors">
           <button
             onClick={() => setActiveTab('users')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'users' 
-                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
-                : 'text-[#6a737d] hover:text-[#1a1a1b]'
+                ? 'bg-bg-muted text-text-main border border-border-main shadow-sm' 
+                : 'text-text-muted hover:text-text-main'
             }`}
           >
             <Users size={16} /> Registered Users
@@ -144,8 +144,8 @@ export default function CRM({ user }) {
             onClick={() => setActiveTab('consultations')}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
               activeTab === 'consultations' 
-                ? 'bg-[#f3f4f6] text-[#1a1a1b] border border-[#e1e4e8] shadow-sm' 
-                : 'text-[#6a737d] hover:text-[#1a1a1b]'
+                ? 'bg-bg-muted text-text-main border border-border-main shadow-sm' 
+                : 'text-text-muted hover:text-text-main'
             }`}
           >
             <MessageSquare size={16} /> Consultations

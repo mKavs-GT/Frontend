@@ -1458,6 +1458,12 @@
             document.getElementById('goOnline').click();
         } else if (event.data?.type === 'KAIRON_GO_OFFLINE') {
             document.getElementById('goOffline').click();
+        } else if (event.data?.type === 'SET_THEME') {
+            if (event.data.isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         }
     });
 
