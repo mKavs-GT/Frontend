@@ -65,7 +65,7 @@ const NotificationCenter = lazyWithRetry(() => import('./components/Notification
 const TicketManager = lazyWithRetry(() => import('./components/TicketManager'));
 const ProjectManagement = lazyWithRetry(() => import('./components/ProjectManagement'));
 const AnalyticsDashboard = lazyWithRetry(() => import('./components/AnalyticsDashboard'));
-const Changelog = lazyWithRetry(() => import('./components/Changelog'));
+const Logs = lazyWithRetry(() => import('./components/Logs'));
 const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
@@ -104,7 +104,7 @@ const getViewTitle = (view) => {
     crm: 'Client Hub (CRM)',
     godmode: 'God Mode',
 
-    changelog: 'Changelog'
+    logs: 'Logs'
   };
   return titles[view] || 'Dashboard';
 };
@@ -579,7 +579,7 @@ export default function App() {
             <div className="space-y-0.5">
               <NavItem icon={<Clock size={18} />} label="Time Tracker" active={activeView === 'time'} onClick={() => setActiveView('time')} />
               <NavItem icon={<Users size={18} />} label="Team Tracker" active={activeView === 'team'} onClick={() => setActiveView('team')} />
-              <NavItem icon={<LogOut size={18} />} label="Logs" active={activeView === 'logs'} onClick={() => setActiveView('logs')} />
+              <NavItem icon={<Info size={18} />} label="Logs" active={activeView === 'logs'} onClick={() => setActiveView('logs')} />
             </div>
           </div>
 
@@ -609,7 +609,6 @@ export default function App() {
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-border-main space-y-1">
-          <NavItem icon={<Info size={16} />} label="Changelog" active={activeView === 'changelog'} onClick={() => setActiveView('changelog')} small />
           <div className="pt-2">
              <button 
               onClick={handleLogout}
@@ -788,6 +787,12 @@ export default function App() {
                   </motion.div>
                 )}
 
+                {activeView === 'logs' && (
+                  <motion.div key="logs" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                    <Logs />
+                  </motion.div>
+                )}
+
                 {activeView === 'crm' && user.isExecutive && (
                   <motion.div key="crm" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                     <CRM user={user} />
@@ -806,16 +811,6 @@ export default function App() {
                   </motion.div>
                 )}
 
-                {activeView === 'changelog' && (
-                  <motion.div key="changelog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                    <Changelog />
-                  </motion.div>
-                )}
-                {activeView === 'logs' && (
-                  <motion.div key="logs" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                    <LogsView />
-                  </motion.div>
-                )}
               </AnimatePresence>
             </Suspense>
           </div>
