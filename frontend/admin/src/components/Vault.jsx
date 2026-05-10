@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle, Pipette, ExternalLink, Wifi } from 'lucide-react';
+import { Download, Layers as Figma, FileImage, Type, Box, Code, Copy, CheckCircle, Pipette, ExternalLink, Wifi, Globe as Chrome, Activity } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Vault() {
@@ -124,7 +124,7 @@ export default function Vault() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white border border-[#e1e4e8] rounded-xl p-8 shadow-sm flex items-center gap-8">
             <input 
               type="color" 
@@ -193,6 +193,46 @@ export default function Vault() {
             >
               Run Speed Test
             </button>
+          </div>
+
+          <div className="bg-white border border-[#e1e4e8] rounded-xl p-8 shadow-sm flex flex-col group hover:border-indigo-500/30 transition-colors duration-300">
+            <div className="flex items-center justify-between mb-8">
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+                <Activity size={16} /> Browser Status
+              </p>
+              <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
+                <CheckCircle size={16} />
+              </div>
+            </div>
+            <div className="flex justify-between items-center px-2 flex-1">
+              {/* Chrome */}
+              <div className="flex flex-col items-center gap-2 group/item">
+                 <div className="w-14 h-14 rounded-2xl bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-zinc-700 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
+                   <Chrome size={24} />
+                 </div>
+                 <div className="w-14 h-5 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50">
+                   <CheckCircle size={12} />
+                 </div>
+              </div>
+              {/* Safari */}
+              <div className="flex flex-col items-center gap-2 group/item">
+                 <div className="w-14 h-14 rounded-2xl bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-zinc-700 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
+                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                 </div>
+                 <div className="w-14 h-5 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50">
+                   <CheckCircle size={12} />
+                 </div>
+              </div>
+              {/* Firefox */}
+              <div className="flex flex-col items-center gap-2 group/item">
+                 <div className="w-14 h-14 rounded-2xl bg-zinc-50 border border-zinc-200/50 flex items-center justify-center text-zinc-700 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
+                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5c-1 1.5-2.5 3-2.5 5.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2.5-1.5-4-2.5-5.5"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>
+                 </div>
+                 <div className="w-14 h-5 flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50">
+                   <CheckCircle size={12} />
+                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

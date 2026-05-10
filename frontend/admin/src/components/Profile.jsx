@@ -82,46 +82,6 @@ export default function Profile({ user }) {
           </div>
         </div>
 
-        {/* 3. Browser Compatibility Test */}
-        <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col group hover:border-indigo-500/30 transition-colors duration-300">
-          <div className="flex items-center justify-between mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-              <Activity size={16} /> Browser Status
-            </p>
-            <div className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-              <CheckCircle size={16} />
-            </div>
-          </div>
-          <div className="flex justify-between items-center px-2 lg:px-4 flex-1">
-            {/* Chrome */}
-            <div className="flex flex-col items-center gap-2 group/item">
-               <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <Chrome size={28} />
-               </div>
-               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
-                 <CheckCircle size={14} />
-               </div>
-            </div>
-            {/* Safari */}
-            <div className="flex flex-col items-center gap-2 group/item">
-               <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
-               </div>
-               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
-                 <CheckCircle size={14} />
-               </div>
-            </div>
-            {/* Firefox */}
-            <div className="flex flex-col items-center gap-2 group/item">
-               <div className="w-16 h-16 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-300 shadow-sm group-hover/item:border-indigo-500/30 transition-colors">
-                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5c-1 1.5-2.5 3-2.5 5.5 0 3.3 2.7 6 6 6s6-2.7 6-6c0-2.5-1.5-4-2.5-5.5"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>
-               </div>
-               <div className="w-16 h-6 flex items-center justify-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-bold shadow-sm border border-emerald-100/50 dark:border-emerald-500/20">
-                 <CheckCircle size={14} />
-               </div>
-            </div>
-          </div>
-        </div>
 
 
 
