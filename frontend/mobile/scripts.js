@@ -1189,92 +1189,20 @@ document.addEventListener('DOMContentLoaded', () => {
         else setTimeout(triggerRest, 1000);
     };
 
-    // --- PRELOADER (Triggers Animation) ---
-    const initPreloader = () => {
-        const preloader = document.getElementById('preloader');
-        const progressFill = document.getElementById('loader-progress');
-        const progressText = document.getElementById('loader-text');
-        const mascotVideo = document.getElementById('mascot-preloader-video');
-
-        const navEntries = performance.getEntriesByType('navigation');
-        const navType = navEntries.length > 0 ? navEntries[0].type : '';
-        const isReload = navType === 'reload';
-        const isBackForward = navType === 'back_forward';
-        const hash = window.location.hash;
-        const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
-
-        if (sessionStorage.getItem('preloaderShown') || isReload || isBackForward || isJumpingToWorks) {
-            if (isJumpingToWorks) {
-                sessionStorage.setItem('preloaderShown', 'true');
-                calculateSlideHeights();
-                const boundaries = getSlideBoundaries();
-                if (boundaries.length > 2) {
-                    globalScrollY = boundaries[2] + FLIP_SCROLL_HEIGHT + 10;
-                }
-            }
-            if (preloader) {
-                preloader.style.display = 'none';
-                preloader.remove();
-            }
-            activateInitialSlide(isJumpingToWorks);
-            updateScrollState(globalScrollY, isJumpingToWorks);
-            return;
+    // --- INITIALIZATION ---
+    const hash = window.location.hash;
+    const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
+    
+    if (isJumpingToWorks) {
+        calculateSlideHeights();
+        const boundaries = getSlideBoundaries();
+        if (boundaries.length > 2) {
+            globalScrollY = boundaries[2] + FLIP_SCROLL_HEIGHT + 10;
         }
-
-        if (!preloader || !progressFill || !progressText) {
-            activateInitialSlide();
-            return;
-        }
-
-        // --- Progressive Loading Logic ---
-        let startTime = null;
-        const MIN_DURATION = 3000;
-        let animationStarted = false;
-
-        const startLoadingAnimation = () => {
-             if (animationStarted) return;
-             animationStarted = true;
-             requestAnimationFrame(updateLoader);
-        };
-
-        if (mascotVideo) {
-            if (mascotVideo.readyState >= 3) {
-                startLoadingAnimation();
-            } else {
-                mascotVideo.addEventListener('canplaythrough', startLoadingAnimation, { once: true });
-                setTimeout(startLoadingAnimation, 3000); // 3s fallback
-            }
-        } else {
-            startLoadingAnimation();
-        }
-
-        function updateLoader(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const elapsed = timestamp - startTime;
-            
-            let progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
-            
-            if (progress > 98 && document.readyState !== 'complete') {
-                progress = 98;
-            }
-
-            progressFill.style.width = `${progress}%`;
-            progressText.innerText = `${Math.floor(progress)}%`;
-
-            if (progress < 100) {
-                requestAnimationFrame(updateLoader);
-            } else {
-                sessionStorage.setItem('preloaderShown', 'true');
-                setTimeout(() => {
-                    preloader.classList.add('opacity-0', 'pointer-events-none');
-                    activateInitialSlide();
-                    setTimeout(() => preloader.remove(), 500);
-                }, 500);
-            }
-        }
-    };
-
-    initPreloader();
+    }
+    
+    activateInitialSlide(isJumpingToWorks);
+    updateScrollState(globalScrollY, isJumpingToWorks);
 
     // --- Hash Navigation Support (Revised) ---
     const handleHashNavigation = () => {

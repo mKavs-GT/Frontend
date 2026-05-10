@@ -1228,114 +1228,32 @@ document.addEventListener('DOMContentLoaded', () => {
         else setTimeout(triggerRest, 1000); // 500 + 500
     };
 
-    // --- PRELOADER (Triggers Animation) ---
-    const initPreloader = () => {
-        const preloader = document.getElementById('preloader');
-        const progressFill = document.getElementById('loader-progress');
-        const progressText = document.getElementById('loader-text');
-        const mascotVideo = document.getElementById('mascot-preloader-video');
-
-        const navEntries = performance.getEntriesByType('navigation');
-        const navType = navEntries.length > 0 ? navEntries[0].type : '';
-        const isReload = navType === 'reload';
-        const isBackForward = navType === 'back_forward';
-        const hash = window.location.hash;
-        const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
-
-        // Check if preloader should be skipped (Session, Reload, Back/Forward, or Works Jump)
-        if (sessionStorage.getItem('preloaderShown') || isReload || isBackForward || isJumpingToWorks) {
-            if (isJumpingToWorks) {
-                sessionStorage.setItem('preloaderShown', 'true');
-                calculateSlideHeights();
-                const boundaries = getSlideBoundaries();
-                if (boundaries.length > 2) {
-                    const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
-                    globalScrollY = boundaries[2] + slide3AnimLimit + 10;
-                    targetScrollY = globalScrollY;
-                }
-            }
-
-            if (preloader) {
-                preloader.style.display = 'none';
-                preloader.remove(); // Remove immediately to prevent any flash
-            }
-
-            const savedScroll = sessionStorage.getItem('mKavs_saved_scroll');
-            if (savedScroll && parseFloat(savedScroll) > 10 && !isJumpingToWorks) {
-                globalScrollY = parseFloat(savedScroll);
-                targetScrollY = parseFloat(savedScroll);
-                setTimeout(() => {
-                    activateInitialSlide(true);
-                    updateScrollState(globalScrollY, true);
-                }, 50);
-            } else {
-                activateInitialSlide(isJumpingToWorks);
-                updateScrollState(globalScrollY, isJumpingToWorks);
-            }
-            return;
+    // --- INITIALIZATION ---
+    const hash = window.location.hash;
+    const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
+    
+    if (isJumpingToWorks) {
+        calculateSlideHeights();
+        const boundaries = getSlideBoundaries();
+        if (boundaries.length > 2) {
+            const slide3AnimLimit = FLIP_SCROLL_HEIGHT + SLIDE_3_PARALLAX_BUFFER + SLIDE_3_COLLAPSE_BUFFER + SLIDE_3_DROP_BUFFER;
+            globalScrollY = boundaries[2] + slide3AnimLimit + 10;
+            targetScrollY = globalScrollY;
         }
+    }
 
-        if (!preloader || !progressFill || !progressText) {
-            activateInitialSlide();
-            return;
-        }
-
-        // --- Progressive Loading Logic ---
-        let startTime = null;
-        const MIN_DURATION = 3000; // Minimum 3 seconds
-        let animationStarted = false;
-
-        const startLoadingAnimation = () => {
-            if (animationStarted) return;
-            animationStarted = true;
-            requestAnimationFrame(updateLoader);
-        };
-
-        // Ensure video is playing/ready before we start the visual progress bar
-        if (mascotVideo) {
-            if (mascotVideo.readyState >= 3) {
-                // Video already buffered enough
-                startLoadingAnimation();
-            } else {
-                // Wait for video to be ready to play
-                mascotVideo.addEventListener('canplaythrough', startLoadingAnimation, { once: true });
-                // Robust Fallback (Start after 3s anyway if video is slow)
-                setTimeout(startLoadingAnimation, 3000);
-            }
-        } else {
-            startLoadingAnimation();
-        }
-
-        function updateLoader(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const elapsed = timestamp - startTime;
-
-            // Progress is a factor of time (min 3s) and window loading state
-            // If document is not loaded, we can slow down after 90%
-            let progress = Math.min((elapsed / MIN_DURATION) * 100, 100);
-
-            // "More if needed" logic: hold at 98% if page isn't fully ready
-            if (progress > 98 && document.readyState !== 'complete') {
-                progress = 98;
-            }
-
-            progressFill.style.width = `${progress}%`;
-            progressText.innerText = `${Math.floor(progress)}%`;
-
-            if (progress < 100) {
-                requestAnimationFrame(updateLoader);
-            } else {
-                // Loading Finished
-                sessionStorage.setItem('preloaderShown', 'true');
-                setTimeout(() => {
-                    preloader.classList.add('opacity-0', 'pointer-events-none');
-                    activateInitialSlide();
-                    setTimeout(() => preloader.remove(), 500);
-                }, 500);
-            }
-        }
-    };
-    initPreloader();
+    const savedScroll = sessionStorage.getItem('mKavs_saved_scroll');
+    if (savedScroll && parseFloat(savedScroll) > 10 && !isJumpingToWorks) {
+        globalScrollY = parseFloat(savedScroll);
+        targetScrollY = parseFloat(savedScroll);
+        setTimeout(() => {
+            activateInitialSlide(true);
+            updateScrollState(globalScrollY, true);
+        }, 50);
+    } else {
+        activateInitialSlide(isJumpingToWorks);
+        updateScrollState(globalScrollY, isJumpingToWorks);
+    }
 
     // --- Hash Navigation Support (Revised) ---
     const handleHashNavigation = () => {

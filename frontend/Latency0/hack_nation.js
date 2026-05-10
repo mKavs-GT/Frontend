@@ -156,20 +156,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// --- Preloader Removal ---
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
 
-    if (sessionStorage.getItem('preloaderShown')) {
-        if (preloader) {
-            preloader.style.display = 'none';
-        }
-        document.body.classList.remove('loading');
-    } else {
-        setTimeout(() => {
-            if (preloader) preloader.classList.add('loaded');
-            document.body.classList.remove('loading');
-            sessionStorage.setItem('preloaderShown', 'true');
-        }, 2500);
-    }
-});

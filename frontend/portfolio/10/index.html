@@ -196,81 +196,7 @@
             }
         }
 
-        /* Preloader Styles */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            display: grid;
-            place-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
 
-        #preloader.fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .cards-loader {
-            display: grid;
-            grid-template-areas: "cards";
-            list-style: none;
-            padding: 0;
-        }
-
-        .card-loader {
-            grid-area: cards;
-            display: flex;
-            width: 18vmin;
-            aspect-ratio: 2.5/3.5;
-            border-radius: 2vmin;
-            border: 0.1vmin solid hsl(0 0% 0% / 0.15);
-            background-color: #f8f8f8;
-            background-image: url("baby.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-            will-change: transform;
-        }
-
-        .loader-info {
-            position: absolute;
-            bottom: 12vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 250px;
-        }
-
-        .loader-text {
-            font-family: "Cinzel", serif;
-            font-size: 1.2rem;
-            color: #000;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .loader-progress-wrap {
-            width: 100%;
-            height: 4px;
-            background: #eee;
-            border-radius: 2px;
-            overflow: hidden;
-            border: 1px solid #000;
-        }
-
-        .loader-progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #000;
-        }
 
         body {
             background: black;
@@ -839,29 +765,7 @@
 </head>
 
 <body>
-    <!-- Preloader UI -->
-    <div id="preloader">
-        <ul class="cards-loader">
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-            <li class="card-loader"></li>
-        </ul>
-        <div class="loader-info">
-            <div class="loader-text">Loading</div>
-            <div class="loader-progress-wrap">
-                <div class="loader-progress-bar" id="loaderProgressBar"></div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="frame-container">
         <img id="frame" src="fg.png" alt="">
@@ -1006,100 +910,7 @@
         gsap.registerPlugin(ScrollTrigger);
 
         window.onload = () => {
-            // Initialize preloader animation
-            const initPreloaderAnimation = () => {
-                let cards = document.querySelectorAll(".card-loader");
-                let cardsMidIndex = Math.floor(cards.length / 2);
-                let yOffset = 60;
-                let scaleOffset = 0.02;
-                let duration = 0.8;
-                let scaleDuration = duration / 3;
-                let tl = gsap.timeline({ repeat: -1, yoyoEase: true });
 
-                function driftIn() {
-                    return gsap.timeline().from(".cards-loader", {
-                        yPercent: -yOffset / 3,
-                        duration,
-                        ease: "power2.inOut",
-                        yoyoEase: true
-                    });
-                }
-
-                function driftOut() {
-                    return gsap.timeline().to(".cards-loader", {
-                        yPercent: yOffset / 3,
-                        duration,
-                        ease: "power2.inOut",
-                        yoyoEase: true
-                    });
-                }
-
-                function scaleCards() {
-                    return gsap.timeline()
-                        .to(".card-loader", {
-                            scale: (i) => {
-                                if (i <= cardsMidIndex) {
-                                    return 1 - i * scaleOffset;
-                                } else {
-                                    return 1 - (cards.length - 1 - i) * scaleOffset;
-                                }
-                            },
-                            delay: duration / 3,
-                            duration: scaleDuration,
-                            ease: "expo.inOut",
-                            yoyoEase: true
-                        })
-                        .to(".card-loader", { scale: 1, duration: scaleDuration });
-                }
-
-                function shuffleCards() {
-                    return gsap.timeline()
-                        .set(".card-loader", { y: (i) => -i * 0.5 })
-                        .fromTo(".card-loader",
-                            { rotate: 45, yPercent: -yOffset },
-                            {
-                                duration,
-                                rotate: 65,
-                                yPercent: yOffset,
-                                stagger: duration * 0.03,
-                                ease: "expo.inOut",
-                                yoyoEase: true
-                            }
-                        );
-                }
-
-                tl.add(driftIn())
-                    .add(shuffleCards(), "<")
-                    .add(scaleCards(), "<")
-                    .add(driftOut(), "<55%");
-            };
-
-            // Control Loading State & Progress Bar
-            const preloader = document.getElementById('preloader');
-            const progressBar = document.getElementById('loaderProgressBar');
-            
-            if (sessionStorage.getItem('preloaderShown')) {
-                if (preloader) {
-                    preloader.style.display = 'none';
-                }
-            } else {
-                initPreloaderAnimation();
-
-                // Animate progress bar
-                gsap.to(progressBar, {
-                    width: "100%",
-                    duration: 3,
-                    ease: "none"
-                });
-
-                setTimeout(() => {
-                    preloader.classList.add('fade-out');
-                    sessionStorage.setItem('preloaderShown', 'true');
-                    setTimeout(() => {
-                       preloader.style.display = 'none'; 
-                    }, 500);
-                }, 3000);
-            }
 
             const radios = document.querySelectorAll('input[name="slider"]');
             radios.forEach(radio => {

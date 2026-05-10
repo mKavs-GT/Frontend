@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Mark preloader as shown for the session as soon as any subpage is visited
-    if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
-        sessionStorage.setItem('preloaderShown', 'true');
-    }
+    // Preloader tracking removed.
     let lastScrollY = window.scrollY;
     // Attempt to find the main toolbar by ID first, then by class if not found
     const toolbar = document.getElementById('main-toolbar') || document.querySelector('.main-toolbar');

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,43 +31,18 @@
         const isReload = navType === 'reload';
         const isWorksHash = window.location.hash === '#our-works' || window.location.hash === '#slide-3';
 
-        // Aggressive preloader skip for reloads, existing sessions, or direct works links
-        if (sessionStorage.getItem('preloaderShown') || isReload || isWorksHash) {
-            document.documentElement.classList.add('skip-preloader-transition');
-            if (isWorksHash) {
-                document.documentElement.classList.add('jumping-to-works');
-            }
-            sessionStorage.setItem('preloaderShown', 'true');
+        if (isWorksHash) {
+            document.documentElement.classList.add('jumping-to-works');
         }
     </script>
     <style>
-        .skip-preloader-transition #preloader { display: none !important; transition: none !important; }
+
         .jumping-to-works #slide-1 { opacity: 0 !important; }
     </style>
 </head>
 
 <body class="h-full w-full">
-    <!-- PRELOADER START -->
-    <div id="preloader"
-        class="fixed inset-0 z-[9999] bg-[#171717] flex justify-center items-center transition-opacity duration-500">
-        <div class="relative flex flex-col items-center justify-center h-full w-full">
-            <!-- Video Container -->
-            <div class="relative">
-                <video id="mascot-preloader-video" autoplay muted loop playsinline class="w-32 md:w-48 h-auto object-contain">
-                    <source src="../images/mascot.mp4" type="video/mp4">
-                </video>
-                <!-- Progress Bar Overlapping Base -->
-                <div
-                    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 h-4 bg-gray-800/50 backdrop-blur-sm rounded-full overflow-hidden border border-white/10">
-                    <div id="loader-progress"
-                        class="h-full bg-[#685EB9] w-0 rounded-full transition-all duration-75 ease-out"></div>
-                </div>
-            </div>
-            <!-- Percentage Text -->
-            <div id="loader-text" class="mt-4 text-[#685EB9] font-black font-sans text-lg tracking-widest">0%</div>
-        </div>
-    </div>
-    <!-- PRELOADER END -->
+
 
 
 
