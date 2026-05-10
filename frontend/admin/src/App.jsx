@@ -56,7 +56,6 @@ const lazyWithRetry = (componentImport) =>
 // Lazy-load all view components
 const ProjectManager = lazyWithRetry(() => import('./components/ProjectManager'));
 const TimeTracker = lazyWithRetry(() => import('./components/TimeTracker'));
-const Profile = lazyWithRetry(() => import('./components/Profile'));
 const Vault = lazyWithRetry(() => import('./components/Vault'));
 const Login = lazyWithRetry(() => import('./components/Login'));
 const TeamTracker = lazyWithRetry(() => import('./components/TeamTracker'));
@@ -100,7 +99,6 @@ const getViewTitle = (view) => {
     project: 'Sprint Plan',
     time: 'Time Tracker',
     tickets: 'Approval Tickets',
-    profile: 'Profile',
     vault: 'The Vault',
     team: 'Team Tracker',
     crm: 'Client Hub (CRM)',
@@ -664,9 +662,9 @@ export default function App() {
                 {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
              </button>
              <NotificationCenter user={user} />
-            <button onClick={() => setActiveView('profile')} className="w-8 h-8 rounded-full border border-border-main overflow-hidden hover:opacity-80 transition-opacity">
-              <img src={user.avatar} alt="" className="w-full h-full object-cover" />
-            </button>
+             <div className="w-8 h-8 rounded-full border border-border-main overflow-hidden shadow-sm">
+               <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+             </div>
           </div>
         </header>
 
@@ -767,11 +765,6 @@ export default function App() {
                   </motion.div>
                 )}
 
-                {activeView === 'profile' && (
-                  <motion.div key="profile" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                    <Profile user={user} />
-                  </motion.div>
-                )}
 
                 {activeView === 'vault' && (
                   <motion.div key="vault" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
