@@ -49,8 +49,18 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
+    /* Dark Mode variables — matches admin panel dark theme */
+    html.dark {
+      --bg:         #18181b;
+      --surface:    #09090b;
+      --surface-2:  #27272a;
+      --surface-3:  #3f3f46;
+      --text-primary:   #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted:     #71717a;
+      --border:     #27272a;
+      --border-accent: rgba(59,108,244,0.4);
+    }
       height: 100%;
       background: var(--bg);
       font-family: 'Outfit', system-ui, -apple-system, sans-serif;
@@ -181,11 +191,16 @@
       background: var(--blue);
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 2px 12px var(--blue-glow);
+      box-shadow: 0 4px 14px var(--blue-glow);
+      transform: translateY(-1px);
     }
 
-    .topbar-btn.active:hover {
-      background: #4a78f5;
+    .topbar-btn.go-online-glow {
+      background: #bef264;
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 0 15px rgba(190, 242, 100, 0.4);
+      font-weight: 800;
     }
 
     /* ━━━━━━━━ LAYOUT ━━━━━━━━ */

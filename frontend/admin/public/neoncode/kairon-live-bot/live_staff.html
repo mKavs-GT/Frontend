@@ -194,7 +194,16 @@
       background: var(--blue);
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 2px 12px var(--blue-glow);
+      box-shadow: 0 4px 14px var(--blue-glow);
+      transform: translateY(-1px);
+    }
+
+    .topbar-btn.go-online-glow {
+      background: #bef264;
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 0 15px rgba(190, 242, 100, 0.4);
+      font-weight: 800;
     }
 
     .topbar-btn.active:hover {
@@ -823,7 +832,7 @@
       </div>
     </div>
     <div class="topbar-actions">
-      <button id="goOnline" class="topbar-btn">Go Online</button>
+      <button id="goOnline" class="topbar-btn go-online-glow">Go Online</button>
       <button id="goOffline" class="topbar-btn">Go Offline</button>
     </div>
   </header>
@@ -1134,12 +1143,14 @@
         label.textContent = '● Online as ' + myName;
         label.style.opacity = '1';
         goOn.classList.add('active');
+        goOn.classList.remove('go-online-glow');
         goOff.classList.remove('active');
       } else {
         dot.className = 'status-dot';
         label.textContent = '● Offline';
         label.style.opacity = '0.7';
         goOn.classList.remove('active');
+        goOn.classList.add('go-online-glow');
         goOff.classList.add('active');
       }
     }
@@ -1458,6 +1469,12 @@
             document.getElementById('goOnline').click();
         } else if (event.data?.type === 'KAIRON_GO_OFFLINE') {
             document.getElementById('goOffline').click();
+        } else if (event.data?.type === 'SET_THEME') {
+            if (event.data.isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         }
     });
 
