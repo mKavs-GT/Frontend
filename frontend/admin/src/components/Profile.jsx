@@ -30,7 +30,7 @@ export default function Profile({ user }) {
       {/* Profile Header */}
       <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
-        <img src={user?.avatar || "https://i.pravatar.cc/150?u=alex"} alt={user?.firstName || "Alex"} className="w-24 h-24 rounded-[1.5rem] object-cover shadow-xl border-2 border-white dark:border-zinc-800 z-10" />
+        <img src={user?.avatar || "/team/mrk.jpg"} alt={user?.firstName || "User"} className="w-24 h-24 rounded-[1.5rem] object-cover shadow-xl border-2 border-white dark:border-zinc-800 z-10" />
         <div className="z-10">
           <h2 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">{user?.name || "Alex Sterling"}</h2>
           <div className="flex flex-wrap items-center gap-3 mt-3">

@@ -5,17 +5,17 @@ import { TEAM_MEMBERS } from '../constants/users';
 import { useTeamPresence } from '../hooks/useTeamPresence';
 
 const mockTeamData = [
-  { id: 1, name: 'Krishawn Rahul', role: 'Executive Admin', avatar: 'https://i.pravatar.cc/150?u=krishawn', daily: '9.5h', weekly: '48h', monthly: '190h', status: 'online', tasks: 2 },
-  { id: 2, name: 'Sitesh', role: 'Business Head', avatar: 'https://i.pravatar.cc/150?u=sitesh', daily: '7.5h', weekly: '35h', monthly: '150h', status: 'online', tasks: 4 },
-  { id: 3, name: 'Vinith Vijaya', role: 'Executive', avatar: 'https://i.pravatar.cc/150?u=vinith', daily: '8.1h', weekly: '40h', monthly: '160h', status: 'offline', tasks: 1 },
-  { id: 4, name: 'Sofia Stalance', role: 'Developer', avatar: 'https://i.pravatar.cc/150?u=sofia', daily: '6.5h', weekly: '32h', monthly: '140h', status: 'online', tasks: 3 },
-  { id: 5, name: 'Michael Antony', role: 'Developer', avatar: 'https://i.pravatar.cc/150?u=michael', daily: '8.0h', weekly: '40h', monthly: '160h', status: 'online', tasks: 12 },
-  { id: 6, name: 'Mohammed Abuzar', role: 'Designer', avatar: 'https://i.pravatar.cc/150?u=mohammed', daily: '4.2h', weekly: '28h', monthly: '120h', status: 'offline', tasks: 5 },
+  { id: 1, name: 'Krishawn Rahul', role: 'Executive Admin', avatar: '/team/mrk.jpg', daily: '9.5h', weekly: '48h', monthly: '190h', status: 'online', tasks: 2 },
+  { id: 2, name: 'Sitesh', role: 'Business Head', avatar: '/team/mrz.jpeg', daily: '7.5h', weekly: '35h', monthly: '150h', status: 'online', tasks: 4 },
+  { id: 3, name: 'Vinith Vijaya', role: 'Executive', avatar: '/team/mrv.jpg', daily: '8.1h', weekly: '40h', monthly: '160h', status: 'offline', tasks: 1 },
+  { id: 4, name: 'Sofia Stalance', role: 'Developer', avatar: '/team/mrss.jpg', daily: '6.5h', weekly: '32h', monthly: '140h', status: 'online', tasks: 3 },
+  { id: 5, name: 'Michael Antony', role: 'Developer', avatar: '/team/mrm.jpeg', daily: '8.0h', weekly: '40h', monthly: '160h', status: 'online', tasks: 12 },
+  { id: 6, name: 'Mohammed Abuzar', role: 'Designer', avatar: '/team/mra.jpeg', daily: '4.2h', weekly: '28h', monthly: '120h', status: 'offline', tasks: 5 },
 ];
 
 const mockRequests = [
-  { id: 101, name: 'Sofia Stalance', date: 'Apr 22', total: '6h', breakdown: '4h on Dashboard UI, 2h on API Auth', avatar: 'https://i.pravatar.cc/150?u=sofia' },
-  { id: 102, name: 'Michael Antony', date: 'Apr 21', total: '8h', breakdown: '5h on Backend Setup, 3h on DB Migration', avatar: 'https://i.pravatar.cc/150?u=michael' },
+  { id: 101, name: 'Sofia Stalance', date: 'Apr 22', total: '6h', breakdown: '4h on Dashboard UI, 2h on API Auth', avatar: '/team/mrss.jpg' },
+  { id: 102, name: 'Michael Antony', date: 'Apr 21', total: '8h', breakdown: '5h on Backend Setup, 3h on DB Migration', avatar: '/team/mrm.jpeg' },
 ];
 
 export default function TeamTracker({ user }) {
