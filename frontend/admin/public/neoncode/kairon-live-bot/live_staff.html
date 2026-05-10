@@ -48,6 +48,19 @@
       --transition: 0.18s cubic-bezier(0.4,0,0.2,1);
     }
 
+    /* Dark Mode variables — matches admin panel dark theme */
+    html.dark {
+      --bg:         #18181b;
+      --surface:    #09090b;
+      --surface-2:  #27272a;
+      --surface-3:  #3f3f46;
+      --text-primary:   #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted:     #71717a;
+      --border:     #27272a;
+      --border-accent: rgba(59,108,244,0.4);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
@@ -1454,6 +1467,38 @@
             document.getElementById('goOnline').click();
         }
     });
+  </script>
+  <script>
+    // Theme synchronization with parent
+    function syncTheme() {
+      try {
+        const isDark = window.parent.document.documentElement.classList.contains('dark');
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {
+        // Fallback for cross-origin or if parent not accessible
+        console.warn('Theme sync failed:', e);
+      }
+    }
+
+    // Initial sync
+    syncTheme();
+
+    // Watch for parent theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          syncTheme();
+        }
+      });
+    });
+
+    try {
+      observer.observe(window.parent.document.documentElement, { attributes: true });
+    } catch (e) {}
   </script>
 </body>
 </html>

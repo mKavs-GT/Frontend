@@ -10,12 +10,12 @@ const ACTION_CONFIG = {
   LOGIN: { label: 'logged in', icon: <LogIn size={14} className="text-emerald-500" />, bgColor: 'bg-emerald-50' },
   LOGOUT: { label: 'logged out', icon: <LogOut size={14} className="text-rose-500" />, bgColor: 'bg-rose-50' },
   TIMER_START: { label: 'started timer', icon: <Zap size={14} className="text-amber-500" />, bgColor: 'bg-amber-50' },
-  TIMER_STOP: { label: 'stopped timer', icon: <Zap size={14} className="text-[#6a737d]" />, bgColor: 'bg-[#f3f4f6]' },
-  STATUS_CHANGE: { label: 'updated status', icon: <Activity size={14} className="text-indigo-500" />, bgColor: 'bg-indigo-50' },
-  TASK_MOVE: { label: 'moved task', icon: <ArrowRight size={14} className="text-blue-500" />, bgColor: 'bg-blue-50' },
-  TASK_CREATE: { label: 'created project', icon: <Plus size={14} className="text-[#4a154b]" />, bgColor: 'bg-[#f3f4f6]' },
-  CHATBOT_ONLINE: { label: 'went live on chatbot', icon: <Wifi size={14} className="text-emerald-500" />, bgColor: 'bg-emerald-50' },
-  CHATBOT_OFFLINE: { label: 'went offline on chatbot', icon: <WifiOff size={14} className="text-[#6a737d]" />, bgColor: 'bg-[#f3f4f6]' },
+  TIMER_STOP: { label: 'stopped timer', icon: <Zap size={14} className="text-text-muted" />, bgColor: 'bg-bg-muted' },
+  STATUS_CHANGE: { label: 'updated status', icon: <Activity size={14} className="text-indigo-500" />, bgColor: 'bg-indigo-50 dark:bg-indigo-500/10' },
+  TASK_MOVE: { label: 'moved task', icon: <ArrowRight size={14} className="text-blue-500" />, bgColor: 'bg-blue-50 dark:bg-blue-500/10' },
+  TASK_CREATE: { label: 'created project', icon: <Plus size={14} className="text-brand-purple" />, bgColor: 'bg-bg-muted' },
+  CHATBOT_ONLINE: { label: 'went live on chatbot', icon: <Wifi size={14} className="text-emerald-500" />, bgColor: 'bg-emerald-50 dark:bg-emerald-500/10' },
+  CHATBOT_OFFLINE: { label: 'went offline on chatbot', icon: <WifiOff size={14} className="text-text-muted" />, bgColor: 'bg-bg-muted' },
 };
 
 export default function RecentActivityPanel() {
@@ -56,19 +56,19 @@ export default function RecentActivityPanel() {
   };
 
   return (
-    <div className="bg-white border border-[#e1e4e8] rounded-xl overflow-hidden shadow-sm">
-      <div className="px-4 py-3 bg-[#f9f9fb] border-b border-[#e1e4e8] flex items-center justify-between">
+    <div className="bg-bg-surface border border-border-main rounded-xl overflow-hidden shadow-sm transition-colors">
+      <div className="px-4 py-3 bg-bg-root border-b border-border-main flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Globe size={14} className="text-[#4a154b]" />
-          <h3 className="text-[10px] font-bold text-[#6a737d] uppercase tracking-widest">Audit Log / Activity</h3>
+          <Globe size={14} className="text-brand-purple dark:text-purple-400" />
+          <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Audit Log / Activity</h3>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span className="text-[9px] font-bold text-[#6a737d] uppercase tracking-tighter">Live Updates</span>
+          <span className="text-[9px] font-bold text-text-muted uppercase tracking-tighter">Live Updates</span>
         </div>
       </div>
       
-      <div className="divide-y divide-[#e1e4e8] max-h-[600px] overflow-y-auto custom-scrollbar">
+      <div className="divide-y divide-border-main max-h-[600px] overflow-y-auto custom-scrollbar">
         {loading && logs.length === 0 ? (
           <div className="p-8 text-center text-sm text-[#6a737d]">Loading activities...</div>
         ) : logs.length === 0 ? (
@@ -84,50 +84,50 @@ export default function RecentActivityPanel() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="px-4 py-4 hover:bg-[#f9f9fb] transition-colors group relative"
+                  className="px-4 py-4 hover:bg-bg-root transition-colors group relative"
                 >
                   <div className="flex gap-4">
                     <div className="flex-shrink-0 relative">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4a154b] to-[#1a1a1b] flex items-center justify-center text-white text-xs font-bold border-2 border-white shadow-sm overflow-hidden">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-purple to-zinc-900 flex items-center justify-center text-white text-xs font-bold border-2 border-bg-surface shadow-sm overflow-hidden">
                         {log.user.avatar ? (
                           <img src={log.user.avatar} alt={log.user.name} className="w-full h-full object-cover" />
                         ) : (
                           log.user.name?.[0] || '?'
                         )}
                       </div>
-                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center ${config.bgColor}`}>
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-bg-surface flex items-center justify-center ${config.bgColor}`}>
                         {config.icon}
                       </div>
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-sm text-[#1a1a1b] leading-tight">
-                          <span className="font-bold hover:text-indigo-600 cursor-pointer">{log.user.name || log.user.email}</span>
-                          <span className="text-[#6a737d] mx-1.5 font-medium">{config.label}</span>
+                        <p className="text-sm text-text-main leading-tight">
+                          <span className="font-bold hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer">{log.user.name || log.user.email}</span>
+                          <span className="text-text-muted mx-1.5 font-medium">{config.label}</span>
                           {log.details?.target && (
-                            <span className="font-bold text-[#1a1a1b] bg-[#f3f4f6] px-1.5 py-0.5 rounded text-[11px] border border-[#e1e4e8]">{log.details.target}</span>
+                            <span className="font-bold text-text-main bg-bg-muted px-1.5 py-0.5 rounded text-[11px] border border-border-main">{log.details.target}</span>
                           )}
                         </p>
                         <div className="flex items-center gap-1 flex-shrink-0">
-                          <Clock size={10} className="text-[#6a737d]" />
-                          <span className="text-[10px] font-bold text-[#6a737d]">{formatTime(log.timestamp)}</span>
+                          <Clock size={10} className="text-text-muted" />
+                          <span className="text-[10px] font-bold text-text-muted">{formatTime(log.timestamp)}</span>
                         </div>
                       </div>
                       
                       {log.details && (log.details.from || log.details.to || log.details.info) && (
                         <div className="mt-2 flex items-center gap-2">
-                          <div className="w-1 h-full min-h-[12px] bg-[#e1e4e8] rounded-full"></div>
-                          <div className="text-[11px] text-[#6a737d] flex items-center gap-1.5 flex-wrap">
+                          <div className="w-1 h-full min-h-[12px] bg-border-main rounded-full"></div>
+                          <div className="text-[11px] text-text-muted flex items-center gap-1.5 flex-wrap">
                             {log.details.from && (
                               <span className="line-through opacity-60 italic">{log.details.from}</span>
                             )}
                             {log.details.from && log.details.to && <ArrowRight size={10} />}
                             {log.details.to && (
-                              <span className="font-bold text-indigo-600 bg-indigo-50 px-1 rounded">{log.details.to}</span>
+                              <span className="font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-1 rounded">{log.details.to}</span>
                             )}
                             {log.details.info && (
-                              <span className="italic">"{log.details.info}"</span>
+                              <span className="italic opacity-80">"{log.details.info}"</span>
                             )}
                           </div>
                         </div>
