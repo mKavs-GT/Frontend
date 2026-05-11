@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, Clock, Zap, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
 
@@ -31,35 +32,35 @@ export default function AnalyticsDashboard({ projects = [] }) {
   ];
 
   return (
-    <div className="space-y-8 pb-10 transition-colors">
+    <div className="space-y-6 sm:space-y-8 pb-10 transition-colors">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-6 bg-bg-surface border border-border-main rounded-xl hover:shadow-lg transition-all group"
+            className="p-4 sm:p-6 bg-bg-surface border border-border-main rounded-xl hover:shadow-lg transition-all group"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-bg-muted rounded-lg group-hover:bg-text-main group-hover:text-bg-surface transition-colors">
-                {stat.icon}
+            <div className="flex items-center justify-between mb-2 sm:mb-4">
+              <div className="p-1.5 sm:p-2 bg-bg-muted rounded-lg group-hover:bg-text-main group-hover:text-bg-surface transition-colors">
+                {React.cloneElement(stat.icon, { size: 18 })}
               </div>
-              <div className={`flex items-center gap-1 text-xs font-bold ${stat.isUp ? 'text-emerald-500' : 'text-rose-500'}`}>
+              <div className={`flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-bold ${stat.isUp ? 'text-emerald-500' : 'text-rose-500'}`}>
                 {stat.trend}
-                {stat.isUp ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                {stat.isUp ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
               </div>
             </div>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{stat.label}</p>
-            <h3 className="text-2xl font-black tracking-tight mt-1 text-text-main">{stat.value}</h3>
+            <p className="text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">{stat.label}</p>
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight mt-0.5 sm:mt-1 text-text-main">{stat.value}</h3>
           </motion.div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Chart Card */}
-        <div className="lg:col-span-2 p-8 bg-bg-surface border border-border-main rounded-xl transition-all">
+        <div className="lg:col-span-2 p-5 sm:p-8 bg-bg-surface border border-border-main rounded-xl transition-all">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-lg font-black tracking-tight text-text-main">Productivity Index</h3>
