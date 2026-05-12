@@ -78,6 +78,7 @@ export default function Sidebar({
   handleLogout,
   isOpen, // Mobile drawer state
   setIsOpen,
+  isCollapsed, // Desktop/Tablet collapsed state
   setIsCollapsed
 }) {
   const [isHovered, setIsHovered] = useState(false);
