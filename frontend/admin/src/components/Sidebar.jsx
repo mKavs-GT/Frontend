@@ -82,11 +82,20 @@ export default function Sidebar({
   setIsCollapsed
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  
+  // State for pinned (layout) width vs visual (hover) width
   const visualCollapsed = isCollapsed && !isHovered;
-  const sidebarWidth = visualCollapsed ? '64px' : '240px';
+  
+  const layoutWidth = isCollapsed ? '64px' : '240px';
+  const visualWidth = visualCollapsed ? '64px' : '240px';
 
   return (
     <>
+      {/* Layout Placeholder: This keeps the dashboard content stable */}
+      <div 
+        className="hidden md:block flex-shrink-0 transition-all duration-300" 
+        style={{ width: layoutWidth }} 
+      />
       {/* Mobile Backdrop */}
       <AnimatePresence>
         {isOpen && (
@@ -104,13 +113,13 @@ export default function Sidebar({
       <motion.aside
         initial={false}
         animate={{ 
-          width: sidebarWidth,
+          width: visualWidth,
           x: isOpen ? 0 : (window.innerWidth < 768 ? '-100%' : 0)
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         transition={{ type: 'spring', damping: 20, stiffness: 150 }}
-        className={`fixed md:sticky top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden transition-shadow duration-300 ${
+        className={`fixed top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden transition-shadow duration-300 ${
           isHovered && isCollapsed ? 'shadow-2xl ring-1 ring-black/5' : ''
         }`}
       >
