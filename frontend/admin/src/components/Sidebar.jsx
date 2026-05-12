@@ -78,12 +78,11 @@ export default function Sidebar({
   handleLogout,
   isOpen, // Mobile drawer state
   setIsOpen,
-  isCollapsed, // Desktop/Tablet collapsed state
   setIsCollapsed
 }) {
-  
-  // Responsive sidebar width
-  const sidebarWidth = isCollapsed ? '64px' : '240px';
+  const [isHovered, setIsHovered] = useState(false);
+  const visualCollapsed = isCollapsed && !isHovered;
+  const sidebarWidth = visualCollapsed ? '64px' : '240px';
 
   return (
     <>
@@ -107,14 +106,22 @@ export default function Sidebar({
           width: sidebarWidth,
           x: isOpen ? 0 : (window.innerWidth < 1024 ? '-100%' : 0)
         }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className={`fixed lg:sticky top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        transition={{ type: 'spring', damping: 20, stiffness: 150 }}
+        className={`fixed lg:sticky top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden transition-shadow duration-300 ${
+          isHovered && isCollapsed ? 'shadow-2xl ring-1 ring-black/5' : ''
+        }`}
       >
         {/* Workspace Switcher / Logo */}
-        <div className="p-4 border-b border-border-main flex items-center justify-between min-h-[64px]">
-          <div className={`flex items-center gap-3 transition-all duration-300 ${isCollapsed ? 'justify-center w-full' : ''}`}>
-            <img src="/LOGOI.png" className="w-8 h-8 rounded-md object-contain" alt="" />
-            {!isCollapsed && (
+        <div className="p-4 border-b border-border-main flex items-center justify-between min-h-[64px] relative group/header">
+          <div className={`flex items-center transition-all duration-300 ${visualCollapsed ? 'justify-center w-full' : 'gap-3'}`}>
+            <img 
+              src="/LOGOI.png" 
+              className={`${visualCollapsed ? 'w-10 h-10' : 'w-8 h-8'} rounded-md object-contain transition-all`} 
+              alt="Logo" 
+            />
+            {!visualCollapsed && (
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -130,9 +137,9 @@ export default function Sidebar({
           {!isOpen && (
             <button 
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden lg:flex p-1 rounded-md hover:bg-bg-muted text-text-muted hover:text-text-main transition-colors border border-transparent hover:border-border-main"
+              className={`hidden lg:flex p-1 rounded-md hover:bg-bg-muted text-text-muted hover:text-text-main transition-all border border-transparent hover:border-border-main ${visualCollapsed ? 'absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover/header:opacity-100' : ''}`}
             >
-              {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+              {isCollapsed ? <ChevronRight size={12} /> : <ChevronLeft size={16} />}
             </button>
           )}
 
@@ -147,70 +154,69 @@ export default function Sidebar({
           )}
         </div>
 
-        {/* Navigation Content */}
-        <nav className="flex-1 overflow-y-auto p-3 space-y-8 no-scrollbar">
-          <NavSection title="Dashboard" collapsed={isCollapsed}>
+        <nav className="flex-1 overflow-y-auto p-3 space-y-8 no-scrollbar scroll-smooth">
+          <NavSection title="Dashboard" collapsed={visualCollapsed}>
             <NavItem 
               icon={<TrendingUp size={20} />} 
               label="Overview" 
               active={activeView === 'analytics'} 
               onClick={() => { setActiveView('analytics'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={<Kanban size={20} />} 
               label="Sprint Plan" 
               active={activeView === 'project'} 
               onClick={() => { setActiveView('project'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={<TicketIcon size={20} />} 
               label="Approval Tickets" 
               active={activeView === 'tickets'} 
               onClick={() => { setActiveView('tickets'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
           </NavSection>
 
-          <NavSection title="Monitor" collapsed={isCollapsed}>
+          <NavSection title="Monitor" collapsed={visualCollapsed}>
             <NavItem 
               icon={<Clock size={20} />} 
               label="Time Tracker" 
               active={activeView === 'time'} 
               onClick={() => { setActiveView('time'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={<Users size={20} />} 
               label="Team Tracker" 
               active={activeView === 'team'} 
               onClick={() => { setActiveView('team'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={<Info size={20} />} 
               label="Logs" 
               active={activeView === 'logs'} 
               onClick={() => { setActiveView('logs'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
           </NavSection>
 
-          <NavSection title="Manage" collapsed={isCollapsed}>
+          <NavSection title="Manage" collapsed={visualCollapsed}>
             <NavItem 
               icon={<Database size={20} />} 
               label="Client Hub (CRM)" 
               active={activeView === 'crm'} 
               onClick={() => { setActiveView('crm'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={<Briefcase size={20} />} 
               label="The Vault" 
               active={activeView === 'vault'} 
               onClick={() => { setActiveView('vault'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             <NavItem 
               icon={
@@ -224,7 +230,7 @@ export default function Sidebar({
               label="Kairon Live Bot" 
               active={activeView === 'kairon'} 
               onClick={() => { setActiveView('kairon'); setIsOpen(false); }} 
-              collapsed={isCollapsed}
+              collapsed={visualCollapsed}
             />
             {user?.isExecutive && (
               <NavItem 
@@ -232,7 +238,7 @@ export default function Sidebar({
                 label="God Mode" 
                 active={activeView === 'godmode'} 
                 onClick={() => { setActiveView('godmode'); setIsOpen(false); }} 
-                collapsed={isCollapsed}
+                collapsed={visualCollapsed}
               />
             )}
           </NavSection>
@@ -244,7 +250,7 @@ export default function Sidebar({
             icon={<LogOut size={20} className="text-rose-600" />} 
             label="Logout" 
             onClick={handleLogout} 
-            collapsed={isCollapsed}
+            collapsed={visualCollapsed}
           />
         </div>
       </motion.aside>

@@ -221,7 +221,7 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     const saved = localStorage.getItem('mkavs_sidebar_collapsed');
-    return saved === 'true';
+    return saved === 'true' || saved === null;
   });
 
   useEffect(() => {
