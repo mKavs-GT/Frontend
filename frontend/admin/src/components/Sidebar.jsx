@@ -105,12 +105,12 @@ export default function Sidebar({
         initial={false}
         animate={{ 
           width: sidebarWidth,
-          x: isOpen ? 0 : (window.innerWidth < 1024 ? '-100%' : 0)
+          x: isOpen ? 0 : (window.innerWidth < 768 ? '-100%' : 0)
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         transition={{ type: 'spring', damping: 20, stiffness: 150 }}
-        className={`fixed lg:sticky top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden transition-shadow duration-300 ${
+        className={`fixed md:sticky top-0 left-0 bottom-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-[70] h-screen h-[100dvh] overflow-hidden transition-shadow duration-300 ${
           isHovered && isCollapsed ? 'shadow-2xl ring-1 ring-black/5' : ''
         }`}
       >
