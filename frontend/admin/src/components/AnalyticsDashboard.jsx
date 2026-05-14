@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, Clock, Zap, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
-export default function AnalyticsDashboard({ projects = [] }) {
+const MOCK_FALLBACK_TREND = [40, 65, 45, 90, 75, 55, 80, 95, 60, 40, 70, 85, 90, 100].map((h, i) => ({
+  score: h,
+  date: new Date(Date.now() - (13 - i) * 24 * 60 * 60 * 1000).toISOString(),
+  breakdown: { execution: h * 0.5, efficiency: h * 0.3, presence: h * 0.2 }
+}));
+
+export default function AnalyticsDashboard({ projects = [], user }) {
   const activeProjects = projects || [];
   const totalProjects = activeProjects.length;
+
+  const [trendData, setTrendData] = useState([]);
+  const [days, setDays] = useState(14);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTrend = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/productivity/team/trend?days=${days}`, {
+          headers: { 'Authorization': `Bearer ${user?.token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setTrendData(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch productivity trend", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.token) fetchTrend();
+  }, [user, days]);
+
+  const displayTrend = trendData.length > 0 ? trendData : MOCK_FALLBACK_TREND;
   
   const averageProgress = totalProjects > 0 
     ? Math.round(activeProjects.reduce((acc, p) => acc + (p.overallProgress || 0), 0) / totalProjects)
@@ -67,30 +100,53 @@ export default function AnalyticsDashboard({ projects = [] }) {
               <p className="text-xs text-text-muted">Performance over the last 30 days</p>
             </div>
             <div className="flex gap-2">
-              <button className="px-3 py-1 bg-bg-muted text-text-main text-[10px] font-bold rounded hover:bg-border-main transition-colors border border-border-main">7D</button>
-              <button className="px-3 py-1 bg-text-main text-bg-surface text-[10px] font-bold rounded shadow-sm border border-text-main">30D</button>
+              <button 
+                onClick={() => setDays(7)}
+                className={`px-3 py-1 text-[10px] font-bold rounded transition-colors border ${days === 7 ? 'bg-text-main text-bg-surface border-text-main' : 'bg-bg-muted text-text-main border-border-main hover:bg-border-main'}`}
+              >7D</button>
+              <button 
+                onClick={() => setDays(30)}
+                className={`px-3 py-1 text-[10px] font-bold rounded transition-colors border ${days === 30 ? 'bg-text-main text-bg-surface border-text-main' : 'bg-bg-muted text-text-main border-border-main hover:bg-border-main'}`}
+              >30D</button>
             </div>
           </div>
           
           <div className="h-[240px] w-full bg-bg-root rounded-lg border border-border-main/50 flex items-end p-4 gap-2">
-            {[40, 65, 45, 90, 75, 55, 80, 95, 60, 40, 70, 85, 90, 100].map((h, i) => (
+            {displayTrend.map((day, i) => (
               <motion.div
                 key={i}
                 initial={{ height: 0 }}
-                animate={{ height: `${h}%` }}
+                animate={{ height: `${day.score}%` }}
                 transition={{ delay: i * 0.05, type: 'spring', stiffness: 100 }}
-                className="flex-1 bg-text-main rounded-t-sm opacity-20 hover:opacity-100 transition-opacity relative group"
+                className={`flex-1 ${trendData.length > 0 ? 'bg-emerald-500' : 'bg-text-main'} rounded-t-sm opacity-20 hover:opacity-100 transition-opacity relative group`}
               >
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-text-main text-bg-surface text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  {h}% Eff.
+                {/* Advanced Tooltip */}
+                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-bg-surface border border-border-main shadow-xl p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 pointer-events-none">
+                  <p className="text-[10px] font-bold text-text-muted uppercase mb-2">{new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
+                  <div className="text-xl font-black text-text-main mb-3">{Math.round(day.score)}%</div>
+                  
+                  <div className="space-y-1.5 w-32">
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Execution</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.execution || 0)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Efficiency</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.efficiency || 0)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Presence</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.presence || 0)}%</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
           <div className="flex justify-between mt-4 text-[10px] font-bold text-text-muted uppercase tracking-widest px-2">
-             <span>Apr 01</span>
-             <span>Apr 15</span>
-             <span>Apr 30</span>
+             <span>{new Date(displayTrend[0]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+             <span>{new Date(displayTrend[Math.floor(displayTrend.length / 2)]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+             <span>{new Date(displayTrend[displayTrend.length - 1]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
           </div>
         </div>
 

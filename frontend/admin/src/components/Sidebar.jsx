@@ -14,8 +14,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
-  X
+  X,
+  Download
 } from 'lucide-react';
+import { usePWA } from '../hooks/usePWA';
 
 const kaironIcon = '/kairon-icon.png';
 
@@ -82,6 +84,7 @@ export default function Sidebar({
   setIsCollapsed
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { isInstallable, isInstalled, installApp } = usePWA();
   
   // State for pinned (layout) width vs visual (hover) width
   const visualCollapsed = isCollapsed && !isHovered;
@@ -245,7 +248,15 @@ export default function Sidebar({
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-3 border-t border-border-main">
+          <div className="p-3 border-t border-border-main space-y-2">
+            {isInstallable && !isInstalled && (
+              <NavItem 
+                icon={<Download size={20} className="text-accent" />} 
+                label="Install App" 
+                onClick={installApp} 
+                collapsed={visualCollapsed}
+              />
+            )}
             <NavItem 
               icon={<LogOut size={20} className="text-rose-600" />} 
               label="Logout" 
@@ -286,7 +297,15 @@ export default function Sidebar({
                 {navContent(false)}
               </nav>
 
-              <div className="p-4 border-t border-border-main">
+              <div className="p-4 border-t border-border-main space-y-2">
+                {isInstallable && !isInstalled && (
+                  <NavItem 
+                    icon={<Download size={20} className="text-accent" />} 
+                    label="Install App" 
+                    onClick={installApp} 
+                    collapsed={false}
+                  />
+                )}
                 <NavItem 
                   icon={<LogOut size={20} className="text-rose-600" />} 
                   label="Logout" 

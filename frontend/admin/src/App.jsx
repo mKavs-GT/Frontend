@@ -632,7 +632,7 @@ export default function App() {
                     className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8"
                   >
                     <div className="lg:col-span-2">
-                      <AnalyticsDashboard projects={projects} />
+                      <AnalyticsDashboard projects={projects} user={user} />
                     </div>
                     <div className="lg:col-span-1 space-y-6">
                       {/* Timer Block */}
