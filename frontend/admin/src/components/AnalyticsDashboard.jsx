@@ -86,7 +86,7 @@ export default function AnalyticsDashboard({ projects = [], user }) {
               </div>
             </div>
             <p className="text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">{stat.label}</p>
-            <h3 className="text-xl sm:text-2xl font-black tracking-tight mt-0.5 sm:mt-1 text-text-main">{stat.value}</h3>
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-0.5 sm:mt-1 text-text-main">{stat.value}</h2>
           </motion.div>
         ))}
       </div>
@@ -96,7 +96,7 @@ export default function AnalyticsDashboard({ projects = [], user }) {
         <div className="lg:col-span-2 p-5 sm:p-8 bg-bg-surface border border-border-main rounded-xl transition-all">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="text-lg font-black tracking-tight text-text-main">Productivity Index</h3>
+              <h2 className="text-lg font-black tracking-tight text-text-main">Productivity Index</h2>
               <p className="text-xs text-text-muted">Performance over the last 30 days</p>
             </div>
             <div className="flex gap-2">
@@ -154,7 +154,7 @@ export default function AnalyticsDashboard({ projects = [], user }) {
         <div className="space-y-6">
            <div className="p-6 bg-bg-surface border border-border-main rounded-xl transition-all">
              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-black tracking-tight text-text-main">Project Status</h3>
+                <h2 className="text-sm font-black tracking-tight text-text-main">Project Status</h2>
                 <span className="text-[10px] font-bold bg-bg-muted px-2 py-0.5 rounded border border-border-main text-text-main">{averageProgress}% Avg</span>
              </div>
              

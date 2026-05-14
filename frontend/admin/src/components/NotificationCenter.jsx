@@ -43,6 +43,7 @@ export default function NotificationCenter({ user }) {
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle Notifications"
         className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all relative"
       >
         <Bell size={20} />
@@ -65,7 +66,7 @@ export default function NotificationCenter({ user }) {
             >
               <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
                 <h4 className="font-black text-zinc-900 dark:text-white uppercase tracking-tighter text-xs">Notifications</h4>
-                <button onClick={() => setIsOpen(false)} className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white"><X size={14}/></button>
+                <button onClick={() => setIsOpen(false)} aria-label="Close Notifications" className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white"><X size={14}/></button>
               </div>
 
               <div className="max-h-80 overflow-y-auto p-2 flex flex-col gap-1">

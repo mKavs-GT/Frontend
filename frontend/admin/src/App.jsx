@@ -640,7 +640,7 @@ export default function App() {
                         <div className="flex items-center gap-3">
                           <div className={`w-2.5 h-2.5 rounded-full ${timerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`}></div>
                           <div>
-                            <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Session Timer</h3>
+                            <h2 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Session Timer</h2>
                             <div className="text-xl font-mono font-black tracking-tight text-text-main leading-none">
                               {formatDuration(currentSessionSeconds || completedTodaySeconds)}
                             </div>
@@ -648,6 +648,7 @@ export default function App() {
                         </div>
                         <button 
                           onClick={handleTimerToggle} 
+                          aria-label={timerRunning ? "Stop Timer" : "Start Timer"}
                           className={`p-3 rounded-lg transition-colors flex items-center justify-center ${timerRunning ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-[#1a1a1b] text-white hover:bg-black'}`}
                         >
                           {timerRunning ? <Square size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}

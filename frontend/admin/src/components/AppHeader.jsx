@@ -17,6 +17,7 @@ export default function AppHeader({
         {/* Mobile Menu Toggle */}
         <button 
           onClick={() => setIsMobileMenuOpen(true)} 
+          aria-label="Open Mobile Menu"
           className="lg:hidden p-2 hover:bg-bg-muted rounded-lg text-text-muted transition-colors"
         >
           <Menu size={20} />
@@ -49,6 +50,7 @@ export default function AppHeader({
          {/* Theme Toggle */}
          <button
             onClick={() => setIsDarkMode(!isDarkMode)}
+            aria-label="Toggle Theme"
             className="w-9 h-9 flex items-center justify-center rounded-lg border border-border-main hover:bg-bg-muted transition-colors text-text-muted hover:text-text-main"
             title="Toggle Theme"
          >
