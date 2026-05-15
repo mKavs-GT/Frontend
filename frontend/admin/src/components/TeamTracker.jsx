@@ -4,6 +4,21 @@ import { Clock, CheckCircle, XCircle, ChevronDown, User, Calendar, Activity, Zap
 import { TEAM_MEMBERS } from '../constants/users';
 import { useTeamPresence } from '../hooks/useTeamPresence';
 
+const STATUS_CONFIG = {
+  focus: { color: 'green' },
+  break: { color: 'amber' },
+  deepwork: { color: 'purple' },
+  offline: { color: 'gray' },
+  zen: { color: 'purple' }
+};
+
+const statusColors = {
+  green: 'bg-emerald-500',
+  purple: 'bg-purple-500',
+  amber: 'bg-amber-500',
+  gray: 'bg-zinc-400'
+};
+
 const mockTeamData = [
   { id: 1, name: 'Krishawn Rahul', role: 'Executive Admin', avatar: '/team/mrk.jpg', daily: '9.5h', weekly: '48h', monthly: '190h', status: 'online', tasks: 2 },
   { id: 2, name: 'Sitesh', role: 'Business Head', avatar: '/team/mrz.jpeg', daily: '7.5h', weekly: '35h', monthly: '150h', status: 'online', tasks: 4 },
@@ -53,13 +68,13 @@ export default function TeamTracker({ user }) {
                   const status = presence.status || 'offline';
                   const isOnline = presence.isOnline || false;
                   
+                  const statusColorClass = statusColors[STATUS_CONFIG[status]?.color || 'gray'];
+                  
                   return (
                     <div key={`heat-${member.email}`} className="p-4 rounded-2xl border bg-zinc-50 dark:bg-zinc-950 border-zinc-200/50 dark:border-zinc-800/50 flex flex-col items-center text-center transition-all">
                       <div className="relative mb-2">
                         <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-xl object-cover" />
-                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
-                        }`}></div>
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${statusColorClass}`}></div>
                       </div>
                       <p className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">{member.firstName}</p>
                       <p className="text-[10px] font-bold uppercase tracking-widest mt-1 text-zinc-500">{status}</p>
@@ -98,14 +113,14 @@ export default function TeamTracker({ user }) {
                 const status = presence.status || 'offline';
                 const isOnline = presence.isOnline || false;
                 
+                const statusColorClass = statusColors[STATUS_CONFIG[status]?.color || 'gray'];
+                
                 return (
                   <div key={member.email} className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800/50 hover:border-indigo-500/30 transition-colors group">
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img src={member.avatar} alt={member.name} className="w-12 h-12 rounded-[1.25rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all" />
-                        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${
-                          isOnline ? 'bg-emerald-500' : 'bg-zinc-400'
-                        }`}></div>
+                        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 ${statusColorClass}`}></div>
                       </div>
                       <div>
                         <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{member.name}</h4>

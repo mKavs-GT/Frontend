@@ -69,6 +69,8 @@ const Logs = lazyWithRetry(() => import('./components/Logs'));
 const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette'));
 import { TEAM_MEMBERS } from './constants/users';
 import { calculateDailyGoal } from './utils/taskMetrics';
+import Sidebar from './components/Sidebar';
+import AppHeader from './components/AppHeader';
 const kaironIcon = '/kairon-icon.png';
 
 const STATUS_CONFIG = {
@@ -78,20 +80,6 @@ const STATUS_CONFIG = {
   offline: { label: 'OFFLINE', color: 'gray', icon: <Moon size={14} /> },
 };
 
-
-const NavItem = ({ icon, label, active, onClick, small }) => (
-  <button 
-    onClick={onClick}
-    className={`flex items-center gap-3 w-full px-3 ${small ? 'py-1.5' : 'py-2'} rounded-md text-sm font-medium transition-colors ${
-      active 
-        ? 'bg-bg-muted text-text-main border border-border-main shadow-sm' 
-        : 'text-text-muted hover:bg-bg-muted border border-transparent'
-    }`}
-  >
-    <span className={`${active ? 'text-text-main' : 'text-text-muted'}`}>{icon}</span>
-    <span className="truncate">{label}</span>
-  </button>
-);
 
 const getViewTitle = (view) => {
   const titles = {
@@ -231,6 +219,25 @@ export default function App() {
   }, [user, getMemberPresence]);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    const saved = localStorage.getItem('mkavs_sidebar_collapsed');
+    return saved === 'true' || saved === null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('mkavs_sidebar_collapsed', isSidebarCollapsed);
+  }, [isSidebarCollapsed]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.classList.add('lock-scroll');
+    } else {
+      document.body.classList.remove('lock-scroll');
+    }
+    return () => document.body.classList.remove('lock-scroll');
+  }, [isMobileMenuOpen]);
+
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [projectsLoading, setProjectsLoading] = useState(true);
@@ -556,130 +563,38 @@ export default function App() {
   return (
     <div className="flex h-screen h-[100dvh] overflow-hidden bg-bg-root transition-colors duration-300 font-sans relative text-text-main">
       
-      {/* Main Sidebar */}
-      <aside className={`fixed lg:relative left-0 flex-shrink-0 bg-bg-surface border-r border-border-main flex flex-col z-50 h-full w-[240px] transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-        {/* Workspace Switcher */}
-        <div className="p-4 border-b border-border-main">
-          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-bg-muted cursor-pointer transition-colors border border-transparent hover:border-border-main">
-            <img src="/LOGOI.png" className="w-8 h-8 rounded-md object-contain" alt="" />
-            <div className="flex-1 min-w-0">
-              <img src="/MKAVS.png" className="h-4 object-contain invert" alt="MKAVS" />
-              <p className="text-[10px] text-text-muted font-medium uppercase tracking-tight">Enterprise</p>
-            </div>
-          </div>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto p-2 space-y-6 scrollbar-hide">
-          {/* Dashboard Section */}
-          <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Dashboard</p>
-            <div className="space-y-0.5">
-              <NavItem icon={<TrendingUp size={18} />} label="Overview" active={activeView === 'analytics'} onClick={() => setActiveView('analytics')} />
-              <NavItem icon={<Kanban size={18} />} label="Sprint Plan" active={activeView === 'project'} onClick={() => setActiveView('project')} />
-
-              <NavItem icon={<TicketIcon size={18} />} label="Approval Tickets" active={activeView === 'tickets'} onClick={() => setActiveView('tickets')} />
-            </div>
-          </div>
-
-          {/* Monitor Section */}
-          <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Monitor</p>
-            <div className="space-y-0.5">
-              <NavItem icon={<Clock size={18} />} label="Time Tracker" active={activeView === 'time'} onClick={() => setActiveView('time')} />
-              <NavItem icon={<Users size={18} />} label="Team Tracker" active={activeView === 'team'} onClick={() => setActiveView('team')} />
-              <NavItem icon={<Info size={18} />} label="Logs" active={activeView === 'logs'} onClick={() => setActiveView('logs')} />
-            </div>
-          </div>
-
-          {/* Manage Section */}
-          <div>
-            <p className="px-3 mb-2 text-[10px] font-bold text-text-muted uppercase tracking-wider">Manage</p>
-            <div className="space-y-0.5">
-              <NavItem icon={<Database size={18} />} label="Client Hub (CRM)" active={activeView === 'crm'} onClick={() => setActiveView('crm')} />
-              <NavItem icon={<Briefcase size={18} />} label="The Vault" active={activeView === 'vault'} onClick={() => setActiveView('vault')} />
-              <NavItem 
-                icon={
-                  <div className="relative">
-                    <img src={kaironIcon} alt="" className="w-4 h-4" />
-                    {isLiveOnChatbot && <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-[#1a1a1b]"></div>}
-                  </div>
-                } 
-                label="Kairon Live Bot" 
-                active={activeView === 'kairon'} 
-                onClick={() => setActiveView('kairon')} 
-              />
-              {user.isExecutive && (
-                <NavItem icon={<Shield size={18} className="text-rose-600" />} label="God Mode" active={activeView === 'godmode'} onClick={() => setActiveView('godmode')} />
-              )}
-            </div>
-          </div>
-        </nav>
-
-        {/* Sidebar Footer */}
-        <div className="p-4 border-t border-border-main space-y-1">
-          <div className="pt-2">
-             <button 
-              onClick={handleLogout}
-              className="flex items-center gap-3 w-full p-2 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-             >
-               <LogOut size={18} />
-               <span>Logout</span>
-             </button>
-          </div>
-        </div>
-      </aside>
+      {/* Dynamic Sidebar */}
+      <Sidebar 
+        user={user}
+        activeView={activeView}
+        setActiveView={setActiveView}
+        isDarkMode={isDarkMode}
+        isLiveOnChatbot={isLiveOnChatbot}
+        handleLogout={handleLogout}
+        isOpen={isMobileMenuOpen}
+        setIsOpen={setIsMobileMenuOpen}
+        isCollapsed={isSidebarCollapsed}
+        setIsCollapsed={setIsSidebarCollapsed}
+      />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 bg-bg-surface relative">
+      <main className="flex-1 flex flex-col min-w-0 bg-bg-surface relative overflow-hidden">
         {/* Top Header */}
-        <header className="h-[52px] bg-bg-surface border-b border-border-main flex items-center justify-between px-4 sticky top-0 z-40">
-          <div className="flex items-center gap-4 flex-1">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-1.5 hover:bg-gray-100 rounded-md">
-              <Menu size={20} />
-            </button>
-            <div className="flex items-center gap-2 text-sm font-medium text-text-main">
-              <span className="text-text-main font-black uppercase tracking-tighter">MKAVS-GT</span>
-              <span className="text-[#d1d5da] mx-1">/</span>
-              <span>{getViewTitle(activeView)}</span>
-            </div>
-            
-            {/* Search Bar */}
-            <div 
-              onClick={() => setIsCommandPaletteOpen(true)}
-              className="hidden md:flex items-center max-w-sm w-full ml-8 relative cursor-pointer group"
-            >
-              <Search size={14} className="absolute left-3 text-text-muted group-hover:text-text-main transition-colors" />
-              <div className="w-full bg-bg-muted border border-transparent group-hover:border-border-main group-hover:bg-bg-surface rounded-md py-1.5 pl-9 pr-3 text-sm transition-all text-text-muted">
-                Search...
-              </div>
-              <div className="absolute right-2 flex items-center gap-1">
-                <span className="text-[10px] font-bold text-text-muted bg-bg-surface border border-border-main px-1 rounded">Cmd</span>
-                <span className="text-[10px] font-bold text-text-muted bg-bg-surface border border-border-main px-1 rounded">K</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-             {/* Timer moved to right column */}
-             <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="w-8 h-8 flex items-center justify-center rounded-full border border-border-main hover:bg-bg-muted transition-colors text-text-muted hover:text-text-main"
-                title="Toggle Theme"
-             >
-                {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
-             </button>
-             <NotificationCenter user={user} />
-             <div className="w-8 h-8 rounded-full border border-border-main overflow-hidden shadow-sm">
-               <img src={user.avatar} alt="" className="w-full h-full object-cover" />
-             </div>
-          </div>
-        </header>
+        <AppHeader 
+          user={user}
+          activeView={activeView}
+          getViewTitle={getViewTitle}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          setIsCommandPaletteOpen={setIsCommandPaletteOpen}
+        />
 
         {/* View Header (Render Style) */}
-        <div className="px-8 py-10 border-b border-border-main">
+        <div className="px-4 sm:px-8 py-6 sm:py-10 border-b border-border-main">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-1">
-              <h1 className="text-3xl font-black tracking-tight">{getViewTitle(activeView)}</h1>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{getViewTitle(activeView)}</h1>
               <div className="flex gap-2">
                 <span className="px-2 py-0.5 bg-bg-muted border border-border-main rounded text-[10px] font-bold uppercase">Enterprise</span>
               </div>
@@ -704,7 +619,7 @@ export default function App() {
         </div>
 
         {/* Content Section */}
-        <div className="flex-1 overflow-y-auto p-8 bg-bg-surface scrollbar-hide">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-bg-surface scrollbar-hide">
           <div className="max-w-6xl mx-auto">
             <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-8 h-8 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin"></div></div>}>
               <AnimatePresence mode="wait">
@@ -714,10 +629,10 @@ export default function App() {
                     initial={{ opacity: 0, y: 10 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     exit={{ opacity: 0, y: -10 }}
-                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                    className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8"
                   >
                     <div className="lg:col-span-2">
-                      <AnalyticsDashboard projects={projects} />
+                      <AnalyticsDashboard projects={projects} user={user} />
                     </div>
                     <div className="lg:col-span-1 space-y-6">
                       {/* Timer Block */}
@@ -725,7 +640,7 @@ export default function App() {
                         <div className="flex items-center gap-3">
                           <div className={`w-2.5 h-2.5 rounded-full ${timerRunning ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`}></div>
                           <div>
-                            <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Session Timer</h3>
+                            <h2 className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Session Timer</h2>
                             <div className="text-xl font-mono font-black tracking-tight text-text-main leading-none">
                               {formatDuration(currentSessionSeconds || completedTodaySeconds)}
                             </div>
@@ -733,6 +648,7 @@ export default function App() {
                         </div>
                         <button 
                           onClick={handleTimerToggle} 
+                          aria-label={timerRunning ? "Stop Timer" : "Start Timer"}
                           className={`p-3 rounded-lg transition-colors flex items-center justify-center ${timerRunning ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-[#1a1a1b] text-white hover:bg-black'}`}
                         >
                           {timerRunning ? <Square size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
@@ -844,16 +760,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Close buttons for mobile sidebars */}
-      {isMobileMenuOpen && (
-        <button 
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] bg-[#1a1a1b] text-white px-6 py-3 rounded-full shadow-2xl font-bold text-xs lg:hidden flex items-center gap-2"
-        >
-          <X size={16} /> Close Menu
-        </button>
-      )}
-
     </div>
   );
 }
@@ -926,7 +832,7 @@ function TeamMember({ name, role, status, isOnline, isSyncing, avatar, isMe }) {
     <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-bg-surface dark:hover:bg-zinc-900 border border-transparent hover:border-zinc-200/50 dark:hover:border-zinc-800/50 transition-all group shadow-sm hover:shadow-md">
       <div className="relative">
         <img src={avatar} alt={name} className="w-11 h-11 rounded-[1rem] object-cover ring-2 ring-transparent group-hover:ring-indigo-500/30 transition-all duration-500" />
-        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${isOnline ? statusColors[config.color] : 'bg-zinc-400'} transition-all duration-500`}></div>
+        <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-zinc-50 dark:border-zinc-950 shadow-lg ${statusColors[config.color]} transition-all duration-500`}></div>
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">

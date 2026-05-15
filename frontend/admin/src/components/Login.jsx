@@ -53,7 +53,14 @@ export default function Login({ onLogin }) {
 
       onLogin(mappedUser);
     } catch (err) {
-      setError(err.message || 'Connection to server failed');
+      console.error("Login Error:", err);
+      if (typeof err.message === 'object') {
+        setError(JSON.stringify(err.message));
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError('Connection to server failed');
+      }
     } finally {
       setIsLoading(false);
     }
