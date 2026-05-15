@@ -89,8 +89,8 @@ let isImageFlipping = false;
 
 // --- ELEMENTS ---
 let allSlides;
-let slide2, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton, statsBox;
-let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery, slide3BgGrid;
+let slide2, slide1Image, slide1OverlayImage, mainToolbar, poppingLogo, textLeft, getStartedButton, statsBox, heroDecorativeShapes;
+let zoomImageFlipper, loopingTextWrapper, worksListColumn, zoomImageContainer, thumbnailGallery, slide3BgGrid, heroVisualLock;
 let worksListItems;
 let zoomMainImage;
 let thumbnailImages;
@@ -318,8 +318,40 @@ function triggerSlide2Animations() {
 // Removed slide 4 animations
 
 function updateScrollState(newGlobalY, instant = false) {
+    // 1. Clamp Scroll
+    globalScrollY = Math.max(0, Math.min(newGlobalY, totalVirtualHeight - window.innerHeight));
+
+    // 2. Determine Current Slide
+    let accumulatedHeight = 0;
+    let newSlideIndex = 0;
+    let localScrollY = 0;
+
+    for (let i = 0; i < slideHeights.length; i++) {
+        const height = slideHeights[i];
+        if (globalScrollY < accumulatedHeight + height) {
+            newSlideIndex = i;
+            localScrollY = globalScrollY - accumulatedHeight;
+            break;
+        }
+        accumulatedHeight += height;
+    }
+
     // 0. Sticky Toolbar Logic
     if (mainToolbar) {
+        if (newSlideIndex === 0) {
+            mainToolbar.style.mixBlendMode = 'normal';
+            mainToolbar.style.opacity = '1';
+            mainToolbar.querySelectorAll('a, button, i').forEach(el => {
+                el.style.color = '#000000';
+            });
+        } else {
+            mainToolbar.style.mixBlendMode = 'difference';
+            mainToolbar.style.opacity = ''; // Reverts to CSS default (0.5 or hover 1)
+            mainToolbar.querySelectorAll('a, button, i').forEach(el => {
+                el.style.color = 'white';
+            });
+        }
+
         // Threshold to avoid jitter
         if (Math.abs(newGlobalY - globalScrollY) > 5) {
             // Logic:
@@ -337,24 +369,6 @@ function updateScrollState(newGlobalY, instant = false) {
                 mainToolbar.style.transform = 'translateY(0)';
             }
         }
-    }
-
-    // 1. Clamp Scroll
-    globalScrollY = Math.max(0, Math.min(newGlobalY, totalVirtualHeight - window.innerHeight));
-
-    // 2. Determine Current Slide
-    let accumulatedHeight = 0;
-    let newSlideIndex = 0;
-    let localScrollY = 0;
-
-    for (let i = 0; i < slideHeights.length; i++) {
-        const height = slideHeights[i];
-        if (globalScrollY < accumulatedHeight + height) {
-            newSlideIndex = i;
-            localScrollY = globalScrollY - accumulatedHeight;
-            break;
-        }
-        accumulatedHeight += height;
     }
     // Edge case: End of scroll
     if (globalScrollY >= totalVirtualHeight - window.innerHeight) {
@@ -795,7 +809,9 @@ document.addEventListener('DOMContentLoaded', () => {
     poppingLogo = document.getElementById('popping-logo');
     textLeft = document.getElementById('text-left');
     getStartedButton = document.getElementById('get-started-button');
+    heroVisualLock = document.getElementById('hero-visual-lock');
     statsBox = document.getElementById('stats-box');
+    heroDecorativeShapes = document.getElementById('hero-decorative-shapes');
     const metricNumbers = document.querySelectorAll('.metric-number');
 
     zoomImageContainer = document.getElementById('zoom-image-container');
@@ -1140,6 +1156,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 mkavsLogo.classList.add('scale-100', 'opacity-90', 'translate-x-10', 'translate-y-0');
                 if (instant) setTimeout(() => mkavsLogo.style.transition = '', 50);
             }
+            if (heroVisualLock) {
+                if (instant) heroVisualLock.style.transition = 'none';
+                heroVisualLock.classList.remove('opacity-0', 'scale-50');
+                heroVisualLock.classList.add('opacity-100', 'scale-100');
+                if (instant) setTimeout(() => heroVisualLock.style.transition = '', 50);
+            }
         };
 
         if (instant) triggerHero();
@@ -1179,12 +1201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Stats Box Slide In
-            if (statsBox) {
-                if (instant) statsBox.style.transition = 'none';
-                statsBox.classList.remove('translate-y-full', 'opacity-0');
-                statsBox.classList.add('translate-y-0', 'opacity-100');
-                if (instant) setTimeout(() => statsBox.style.transition = '', 50);
-            }
+            // Stats Box is now part of heroVisualLock
 
             // Metrics
             const mText = document.querySelectorAll('.metric-number');
@@ -1198,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Headline Pop Effect
             const dynamicTextElement = document.getElementById('hero-dynamic-text');
             if (dynamicTextElement) {
-                const phrases = ["Web Development", "Digital Branding", "Full-Stack Apps", "UX/UI Design"];
+                const phrases = ["Web Development", "Digital Branding", "Web Design", "UI UX Design"];
                 let phraseIndex = 0;
                 dynamicTextElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                 dynamicTextElement.style.display = 'inline-block';
@@ -1231,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- INITIALIZATION ---
     const hash = window.location.hash;
     const isJumpingToWorks = hash === '#slide-3' || hash === '#our-works';
-    
+
     if (isJumpingToWorks) {
         calculateSlideHeights();
         const boundaries = getSlideBoundaries();
@@ -1533,4 +1550,4 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         animateHeroDots();
     }
-});
+});
