@@ -1153,7 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mkavsLogo) {
                 if (instant) mkavsLogo.style.transition = 'none';
                 mkavsLogo.classList.remove('opacity-0', '-translate-x-full');
-                mkavsLogo.classList.add('scale-100', 'opacity-90', 'translate-x-10', 'translate-y-0');
+                mkavsLogo.classList.add('scale-100', 'opacity-90', 'translate-x-10');
                 if (instant) setTimeout(() => mkavsLogo.style.transition = '', 50);
             }
             if (heroVisualLock) {
