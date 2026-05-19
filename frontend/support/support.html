@@ -48,17 +48,21 @@
         .faq-accordion.active .faq-icon {
             transform: rotate(180deg);
         }
+
         .faq-accordion.active .faq-content {
             grid-template-rows: 1fr;
         }
+
         .faq-accordion.active {
             border-color: #c7f908;
         }
+
         .faq-content {
             display: grid;
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .faq-inner {
             overflow: hidden;
             min-height: 0;
@@ -74,7 +78,8 @@
 <body class="w-full min-h-screen text-white">
 
     <!-- TOOLBAR (Copied from index, styled for dark mode) -->
-    <nav id="main-toolbar" class="fixed top-0 left-0 right-0 p-2 md:p-4 w-full bg-[#0E0E0E]/95 backdrop-blur-md z-[100] transition-transform duration-300">
+    <nav id="main-toolbar"
+        class="fixed top-0 left-0 right-0 p-2 md:p-4 w-full bg-[#0E0E0E]/95 backdrop-blur-md z-[100] transition-transform duration-300">
         <div class="flex justify-between items-center max-w-7xl mx-auto">
             <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
                 <div class="space-x-6 whitespace-nowrap flex items-center">
@@ -104,7 +109,7 @@
                     <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
                         class="text-white hover:text-[#c7f908] transition-colors"><i
                             class="fa-brands fa-instagram"></i></a>
-                    <a href="https://discord.gg/KhnQfB6MrH" target="_blank"
+                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
                         class="text-white hover:text-[#c7f908] transition-colors"><i
                             class="fa-brands fa-discord"></i></a>
                     <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
@@ -183,45 +188,57 @@
                     <h2 class="text-2xl font-black mb-2 text-white">Quick FAQs</h2>
 
                     <!-- FAQ 1 -->
-                    <div class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
-                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none" onclick="this.parentElement.classList.toggle('active')">
+                    <div
+                        class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
+                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none"
+                            onclick="this.parentElement.classList.toggle('active')">
                             What are your support hours?
                             <i class="fa-solid fa-chevron-down faq-icon transition-transform duration-400"></i>
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
-                                    Our team is active from 9AM to 6PM EST on weekdays. Kairon bot is available 24/7 for automated assistance.
+                                <div
+                                    class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
+                                    Our team is active from 9AM to 6PM EST on weekdays. Kairon bot is available 24/7 for
+                                    automated assistance.
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- FAQ 2 -->
-                    <div class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
-                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none" onclick="this.parentElement.classList.toggle('active')">
+                    <div
+                        class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
+                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none"
+                            onclick="this.parentElement.classList.toggle('active')">
                             How do I track my project?
                             <i class="fa-solid fa-chevron-down faq-icon transition-transform duration-400"></i>
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
-                                    Log into your dashboard and navigate to your profile. You'll see real-time status sliders and links to your files.
+                                <div
+                                    class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
+                                    Log into your dashboard and navigate to your profile. You'll see real-time status
+                                    sliders and links to your files.
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- FAQ 3 -->
-                    <div class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
-                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none" onclick="this.parentElement.classList.toggle('active')">
+                    <div
+                        class="faq-accordion bg-[#1a1a1a] rounded-3xl overflow-hidden shadow-lg border border-[#333] transition-all duration-300">
+                        <div class="p-6 cursor-pointer font-bold text-lg text-white flex justify-between items-center select-none"
+                            onclick="this.parentElement.classList.toggle('active')">
                             Urgent technical issue?
                             <i class="fa-solid fa-chevron-down faq-icon transition-transform duration-400"></i>
                         </div>
                         <div class="faq-content">
                             <div class="faq-inner">
-                                <div class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
-                                    If your site is down or facing critical errors, please mark URGENT in your Discord ticket or Email subject line.
+                                <div
+                                    class="px-6 pb-6 text-sm text-gray-400 font-medium break-words whitespace-normal text-left">
+                                    If your site is down or facing critical errors, please mark URGENT in your Discord
+                                    ticket or Email subject line.
                                 </div>
                             </div>
                         </div>
@@ -234,7 +251,7 @@
             <div class="md:col-span-5 flex flex-col gap-4">
                 <h2 class="text-2xl font-black mb-4 text-white">Official Channels</h2>
 
-                <a href="https://discord.gg/KhnQfB6MrH" target="_blank"
+                <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
                     class="pill-contact flex items-center justify-between bg-[#1a1a1a] p-4 rounded-full border border-[#333] text-white font-medium hover:border-[#5865F2]">
                     <span class="flex items-center gap-3"><i class="fa-solid fa-magnifying-glass text-[#c7f908]"></i>
                         MKAVS Discord Server</span>
@@ -347,4 +364,3 @@
 </body>
 
 </html>
-

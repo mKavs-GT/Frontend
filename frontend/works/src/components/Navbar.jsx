@@ -9,7 +9,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Detect if we are over the dark section (BrandCTA)
       const brandCTA = document.getElementById('projects-exact');
       if (brandCTA) {
@@ -42,11 +42,10 @@ const Navbar = () => {
   const borderColorClass = isDarkSection ? 'border-white/20' : 'border-black/20';
 
   return (
-    <nav 
+    <nav
       id="main-toolbar"
-      className={`fixed top-0 left-0 right-0 w-full z-[70] transition-all duration-500 ease-in-out px-4 py-4 md:px-10 md:py-6 bg-transparent ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
+      className={`fixed top-0 left-0 right-0 w-full z-[70] transition-all duration-500 ease-in-out px-4 py-4 md:px-10 md:py-6 bg-transparent ${isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto">
@@ -58,12 +57,12 @@ const Navbar = () => {
             <a href="/branding" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Branding</a>
           </div>
         </div>
-        
+
         {/* Mobile Menu Button */}
         <button className={`md:hidden ${textColorClass} p-2`}>
           <Menu size={28} />
         </button>
-        
+
         <div className="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
           <div className="space-x-6 whitespace-nowrap flex items-center">
             <a href="/pricing" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Pricing</a>
@@ -71,16 +70,16 @@ const Navbar = () => {
             <a href="/support" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Support</a>
             <a href="/login" className={`login-btn text-lg ${textColorClass} ${hoverColorClass} transition-colors font-bold uppercase tracking-widest border ${borderColorClass} px-6 py-2 rounded-full transition-all`}>Login</a>
           </div>
-          
+
           <div className="flex space-x-4 text-xl">
             <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" rel="noreferrer"
-               className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Instagram size={20} /></a>
-            <a href="https://discord.gg/KhnQfB6MrH" target="_blank" rel="noreferrer"
-               className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Discord size={20} /></a>
+              className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Instagram size={20} /></a>
+            <a href="https://discord.gg/HENvXDQQZJ" target="_blank" rel="noreferrer"
+              className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Discord size={20} /></a>
             <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" rel="noreferrer"
-               className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Linkedin size={20} /></a>
+              className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Linkedin size={20} /></a>
             <a href="/profile" className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}>
-               <User size={20} />
+              <User size={20} />
             </a>
           </div>
         </div>
