@@ -1,0 +1,205 @@
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    overflow: hidden;
+    font-family: var(--font-display);
+    transition: opacity 0.8s ease-out;
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.loading-title {
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--text-white);
+    position: relative;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+}
+
+/* Glitch Effect */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--neon-magenta);
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--neon-cyan);
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+/* Loading Bar */
+.loading-bar-container {
+    width: 300px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.loading-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-purple), var(--neon-magenta), var(--neon-cyan));
+    background-size: 200% 100%;
+    animation: loading-shimmer 4s infinite linear, fill-bar 3.5s ease-out forwards;
+    border-radius: 999px;
+}
+
+.loading-text {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--neon-green);
+    min-height: 1.5em;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+    animation: text-enter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.8) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Keyframes */
+@keyframes glitch-anim {
+    0% {
+        clip: rect(11px, 9999px, 86px, 0);
+    }
+
+    20% {
+        clip: rect(98px, 9999px, 11px, 0);
+    }
+
+    40% {
+        clip: rect(41px, 9999px, 83px, 0);
+    }
+
+    60% {
+        clip: rect(2px, 9999px, 20px, 0);
+    }
+
+    80% {
+        clip: rect(62px, 9999px, 4px, 0);
+    }
+
+    100% {
+        clip: rect(35px, 9999px, 69px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(60px, 9999px, 90px, 0);
+    }
+
+    20% {
+        clip: rect(2px, 9999px, 1px, 0);
+    }
+
+    40% {
+        clip: rect(32px, 9999px, 8px, 0);
+    }
+
+    60% {
+        clip: rect(74px, 9999px, 57px, 0);
+    }
+
+    80% {
+        clip: rect(10px, 9999px, 25px, 0);
+    }
+
+    100% {
+        clip: rect(55px, 9999px, 31px, 0);
+    }
+}
+
+@keyframes loading-shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+@keyframes fill-bar {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes text-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .loading-title {
+        font-size: 3rem;
+    }
+
+    .loading-bar-container {
+        width: 200px;
+    }
+}

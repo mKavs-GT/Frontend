@@ -1,4 +1,4 @@
-﻿{
+{
   "cleanUrls": true,
   "redirects": [
     {
@@ -8,6 +8,14 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/mobile",
+      "destination": "/Mobile/frontend/index.html"
+    },
+    {
+      "source": "/mobile/:path*",
+      "destination": "/Mobile/frontend/:path*"
+    },
     {
       "source": "/admin/:path*",
       "destination": "/frontend/admin/dist/:path*"
@@ -46,7 +54,7 @@
     },
     {
       "source": "/brandpg/:path*",
-      "destination": "/mobile/brandpg/:path*"
+      "destination": "/Mobile/frontend/brandpg/:path*"
     },
     {
       "source": "/about/:path*",

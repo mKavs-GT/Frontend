@@ -32,10 +32,6 @@
     <link rel="prefetch" href="./portfolio/7/index.html" target="_blank" rel="noopener noreferrer">
 
     <script>
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            window.location.href = "./mobile/index.html";
-        }
-
         const navEntries = performance.getEntriesByType('navigation');
         const navType = navEntries.length > 0 ? navEntries[0].type : '';
         const isReload = navType === 'reload';
@@ -110,7 +106,7 @@
                             rel="noopener noreferrer">Branding</a>
                     </div>
                 </div>
-                <button class="md:hidden text-lg ml-auto pointer-events-auto">&#x2261;</button>
+                <button class="md:hidden text-2xl ml-auto pointer-events-auto text-white p-2" aria-label="Menu">&#x2261;</button>
                 <div
                     class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
                     <div class="space-x-6 whitespace-nowrap flex items-center">
@@ -167,9 +163,14 @@
                 <div id="hero-visual-lock"
                     class="absolute inset-0 z-[5] pointer-events-none opacity-0 scale-50 transition-all duration-1000 ease-out">
 
+<<<<<<< Updated upstream
                     <!-- Decorative Shapes (Grouped and centered at 63% top) -->
                     <div id="hero-decorative-shapes"
                         class="absolute top-[63%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-[80rem] h-[32rem]">
+=======
+                    <!-- Decorative Shapes (Optimized for mobile) -->
+                    <div id="hero-decorative-shapes" class="absolute top-[63%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full max-w-[100vw] h-[32rem]">
+>>>>>>> Stashed changes
                         <div class="relative w-full h-full flex items-center justify-center">
                             <!-- Pink Rectangle -->
                             <div

@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Determine WebSocket URL based on environment
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        let wsUrl = isLocal ? 'ws://127.0.0.1:3000/customer' : 'wss://api.mkavs.com/customer';
+        let wsUrl = isLocal ? 'ws://127.0.0.1:3001/customer' : 'wss://api.mkavs.com/customer';
         
         // If config is available, we can use it to derive the base URL dynamically
         if (typeof MKAVS_CONFIG !== 'undefined' && MKAVS_CONFIG.API_BASE_URL) {

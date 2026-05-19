@@ -1,0 +1,219 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { TrendingUp, Users, Clock, Zap, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react';
+import { API_BASE_URL } from '../config';
+
+const MOCK_FALLBACK_TREND = [40, 65, 45, 90, 75, 55, 80, 95, 60, 40, 70, 85, 90, 100].map((h, i) => ({
+  score: h,
+  date: new Date(Date.now() - (13 - i) * 24 * 60 * 60 * 1000).toISOString(),
+  breakdown: { execution: h * 0.5, efficiency: h * 0.3, presence: h * 0.2 }
+}));
+
+export default function AnalyticsDashboard({ projects = [], user }) {
+  const activeProjects = projects || [];
+  const totalProjects = activeProjects.length;
+
+  const [trendData, setTrendData] = useState([]);
+  const [days, setDays] = useState(14);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTrend = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/productivity/team/trend?days=${days}`, {
+          headers: { 'Authorization': `Bearer ${user?.token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setTrendData(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch productivity trend", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.token) fetchTrend();
+  }, [user, days]);
+
+  const displayTrend = trendData.length > 0 ? trendData : MOCK_FALLBACK_TREND;
+  
+  const averageProgress = totalProjects > 0 
+    ? Math.round(activeProjects.reduce((acc, p) => acc + (p.overallProgress || 0), 0) / totalProjects)
+    : 0;
+
+  const getBucketColor = (progress) => {
+    if (progress <= 25) return 'bg-rose-500';
+    if (progress <= 50) return 'bg-amber-500';
+    if (progress <= 75) return 'bg-blue-500';
+    return 'bg-emerald-500';
+  };
+
+  const buckets = {
+    atRisk: activeProjects.filter(p => (p.overallProgress || 0) <= 25).length,
+    early: activeProjects.filter(p => (p.overallProgress || 0) > 25 && (p.overallProgress || 0) <= 50).length,
+    onTrack: activeProjects.filter(p => (p.overallProgress || 0) > 50 && (p.overallProgress || 0) <= 75).length,
+    almostDone: activeProjects.filter(p => (p.overallProgress || 0) > 75).length
+  };
+
+  const stats = [
+    { label: 'Revenue', value: '$42,500', trend: '+12.5%', isUp: true, icon: <DollarSign size={20} className="text-text-main" /> },
+    { label: 'Active Projects', value: totalProjects.toString(), trend: '-', isUp: true, icon: <Activity size={20} className="text-text-main" /> },
+    { label: 'Avg. Response Time', value: '1.2h', trend: '-15%', isUp: true, icon: <Zap size={20} className="text-text-main" /> },
+    { label: 'Team Capacity', value: '88%', trend: '-2%', isUp: false, icon: <Users size={20} className="text-text-main" /> },
+  ];
+
+  return (
+    <div className="space-y-6 sm:space-y-8 pb-10 transition-colors">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        {stats.map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="p-4 sm:p-6 bg-bg-surface border border-border-main rounded-xl hover:shadow-lg transition-all group"
+          >
+            <div className="flex items-center justify-between mb-2 sm:mb-4">
+              <div className="p-1.5 sm:p-2 bg-bg-muted rounded-lg group-hover:bg-text-main group-hover:text-bg-surface transition-colors">
+                {React.cloneElement(stat.icon, { size: 18 })}
+              </div>
+              <div className={`flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs font-bold ${stat.isUp ? 'text-emerald-500' : 'text-rose-500'}`}>
+                {stat.trend}
+                {stat.isUp ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
+              </div>
+            </div>
+            <p className="text-[9px] sm:text-[10px] font-bold text-text-muted uppercase tracking-widest">{stat.label}</p>
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-0.5 sm:mt-1 text-text-main">{stat.value}</h2>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Chart Card */}
+        <div className="lg:col-span-2 p-5 sm:p-8 bg-bg-surface border border-border-main rounded-xl transition-all">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-lg font-black tracking-tight text-text-main">Productivity Index</h2>
+              <p className="text-xs text-text-muted">Performance over the last 30 days</p>
+            </div>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setDays(7)}
+                className={`px-3 py-1 text-[10px] font-bold rounded transition-colors border ${days === 7 ? 'bg-text-main text-bg-surface border-text-main' : 'bg-bg-muted text-text-main border-border-main hover:bg-border-main'}`}
+              >7D</button>
+              <button 
+                onClick={() => setDays(30)}
+                className={`px-3 py-1 text-[10px] font-bold rounded transition-colors border ${days === 30 ? 'bg-text-main text-bg-surface border-text-main' : 'bg-bg-muted text-text-main border-border-main hover:bg-border-main'}`}
+              >30D</button>
+            </div>
+          </div>
+          
+          <div className="h-[240px] w-full bg-bg-root rounded-lg border border-border-main/50 flex items-end p-4 gap-2">
+            {displayTrend.map((day, i) => (
+              <motion.div
+                key={i}
+                initial={{ height: 0 }}
+                animate={{ height: `${day.score}%` }}
+                transition={{ delay: i * 0.05, type: 'spring', stiffness: 100 }}
+                className={`flex-1 ${trendData.length > 0 ? 'bg-emerald-500' : 'bg-text-main'} rounded-t-sm opacity-20 hover:opacity-100 transition-opacity relative group`}
+              >
+                {/* Advanced Tooltip */}
+                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-bg-surface border border-border-main shadow-xl p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 pointer-events-none">
+                  <p className="text-[10px] font-bold text-text-muted uppercase mb-2">{new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
+                  <div className="text-xl font-black text-text-main mb-3">{Math.round(day.score)}%</div>
+                  
+                  <div className="space-y-1.5 w-32">
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Execution</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.execution || 0)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Efficiency</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.efficiency || 0)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center text-[9px] font-bold">
+                      <span className="text-text-muted uppercase">Presence</span>
+                      <span className="text-text-main">{Math.round(day.breakdown?.presence || 0)}%</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="flex justify-between mt-4 text-[10px] font-bold text-text-muted uppercase tracking-widest px-2">
+             <span>{new Date(displayTrend[0]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+             <span>{new Date(displayTrend[Math.floor(displayTrend.length / 2)]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+             <span>{new Date(displayTrend[displayTrend.length - 1]?.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+          </div>
+        </div>
+
+        {/* Side Progress Cards */}
+        <div className="space-y-6">
+           <div className="p-6 bg-bg-surface border border-border-main rounded-xl transition-all">
+             <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-black tracking-tight text-text-main">Project Status</h2>
+                <span className="text-[10px] font-bold bg-bg-muted px-2 py-0.5 rounded border border-border-main text-text-main">{averageProgress}% Avg</span>
+             </div>
+             
+             {totalProjects === 0 ? (
+               <div className="text-center py-6 text-[10px] font-bold text-text-muted uppercase tracking-widest border border-dashed border-border-main rounded-lg">
+                 No active projects yet
+               </div>
+             ) : (
+               <div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide pr-1">
+                 {activeProjects.map(p => {
+                   const val = p.overallProgress || 0;
+                   const color = getBucketColor(val);
+                   return (
+                     <div key={p._id} className="space-y-1.5">
+                        <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight text-text-main">
+                          <span className="truncate max-w-[140px]" title={p.name}>{p.name}</span>
+                          <span>{val}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-bg-muted rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${val}%` }}
+                            className={`h-full ${color}`}
+                          />
+                        </div>
+                     </div>
+                   );
+                 })}
+               </div>
+             )}
+             
+             {totalProjects > 0 && (
+               <div className="mt-6 pt-4 border-t border-border-main grid grid-cols-4 gap-2">
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-rose-500">{buckets.atRisk}</div>
+                   <div className="text-[8px] font-bold text-text-muted uppercase mt-1">Risk</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-text-main text-bg-surface text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">0-25%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-amber-500">{buckets.early}</div>
+                   <div className="text-[8px] font-bold text-text-muted uppercase mt-1">Early</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-text-main text-bg-surface text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">26-50%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-blue-500">{buckets.onTrack}</div>
+                   <div className="text-[8px] font-bold text-text-muted uppercase mt-1">Track</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-text-main text-bg-surface text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">51-75%</div>
+                 </div>
+                 <div className="text-center group relative cursor-help">
+                   <div className="text-sm font-black text-emerald-500">{buckets.almostDone}</div>
+                   <div className="text-[8px] font-bold text-text-muted uppercase mt-1">Done</div>
+                   <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-text-main text-bg-surface text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">76-100%</div>
+                 </div>
+               </div>
+             )}
+           </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
