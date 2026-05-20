@@ -1240,7 +1240,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const phrases = ["Web Development", "Digital Branding", "Web Design", "UI UX Design"];
                 let phraseIndex = 0;
                 dynamicTextElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                dynamicTextElement.style.display = 'inline-block';
+                
+                const updateDynamicTextDisplay = () => {
+                    if (window.innerWidth <= 768) {
+                        dynamicTextElement.style.display = 'block';
+                    } else {
+                        dynamicTextElement.style.display = 'inline-block';
+                    }
+                };
+                updateDynamicTextDisplay();
+                window.addEventListener('resize', updateDynamicTextDisplay);
 
                 const popNext = () => {
                     // Pop Out
@@ -1249,7 +1258,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     setTimeout(() => {
                         phraseIndex = (phraseIndex + 1) % phrases.length;
-                        dynamicTextElement.textContent = phrases[phraseIndex];
+                        const phrase = phrases[phraseIndex];
+                        if (window.innerWidth <= 768) {
+                            let formattedPhrase = phrase;
+                            if (phrase === "UI UX Design") {
+                                formattedPhrase = "UI UX<br>Design";
+                            } else {
+                                formattedPhrase = phrase.replace(" ", "<br>");
+                            }
+                            dynamicTextElement.innerHTML = formattedPhrase;
+                            dynamicTextElement.style.display = 'block';
+                        } else {
+                            dynamicTextElement.textContent = phrase;
+                            dynamicTextElement.style.display = 'inline-block';
+                        }
 
                         // Pop In
                         dynamicTextElement.style.opacity = '1';
@@ -1574,5 +1596,39 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(animateHeroDots);
         };
         animateHeroDots();
+    }
+
+    // --- MOBILE SIDE MENU TOGGLE LOGIC ---
+    const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    if (mobileMenuTrigger && mobileMenuOverlay && mobileMenuPanel) {
+        const openMobileMenu = () => {
+            mobileMenuPanel.classList.remove('-translate-x-full');
+            mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
+        };
+
+        const closeMobileMenu = () => {
+            mobileMenuPanel.classList.add('-translate-x-full');
+            mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+            mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        mobileMenuTrigger.addEventListener('click', openMobileMenu);
+        
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+        
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+        // Close menu when clicking on any link inside the side panel
+        const menuLinks = mobileMenuPanel.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
     }
 });

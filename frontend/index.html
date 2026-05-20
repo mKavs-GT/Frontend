@@ -106,7 +106,7 @@
                             rel="noopener noreferrer">Branding</a>
                     </div>
                 </div>
-                <button class="md:hidden text-2xl ml-auto pointer-events-auto text-white p-2" aria-label="Menu">&#x2261;</button>
+                <button id="mobile-menu-trigger" class="md:hidden text-3xl mr-auto pointer-events-auto text-white p-2 hover:text-[#c7f908] transition-colors" aria-label="Menu">&#x2261;</button>
                 <div
                     class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
                     <div class="space-x-6 whitespace-nowrap flex items-center">
@@ -137,6 +137,8 @@
                             aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
                     </div>
                 </div>
+                <!-- Mobile Profile Icon -->
+                <a href="loginpg/login.html" class="md:hidden text-base ml-auto pointer-events-auto text-white p-2 hover:text-[#c7f908] transition-colors" aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
             </div>
         </nav>
 
@@ -157,15 +159,18 @@
                         class="relative z-[100] w-auto h-auto max-w-[85%] max-h-[80%] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] opacity-0 translate-y-full transition-all duration-1000 ease-out">
                 </div>
 
+                <!-- Mobile Hero Image -->
+                <img id="mobile-hero" src="images/hero.png" alt="Hero Mobile" class="md:hidden absolute top-[60%] right-0 transform translate-x-[10%] w-[70vw] max-w-sm h-auto object-contain z-[2] pointer-events-none">
+
 
                 <!-- Decorative Shapes in the center -->
                 <!-- Locked Hero Visuals (Shapes + Stats) -->
                 <div id="hero-visual-lock"
                     class="absolute inset-0 z-[5] pointer-events-none opacity-0 scale-50 transition-all duration-1000 ease-out">
 
-                    <!-- Decorative Shapes (Grouped and centered, optimized for mobile, pushed higher on desktop) -->
+                    <!-- Decorative Shapes (Grouped and centered, hidden on mobile, pushed higher on desktop) -->
                     <div id="hero-decorative-shapes"
-                        class="absolute top-[63%] md:top-[59%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-full max-w-[100vw] md:w-[80rem] h-[32rem]">
+                        class="hidden md:flex absolute top-[63%] md:top-[59%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 items-center justify-center w-full max-w-[100vw] md:w-[80rem] h-[32rem]">
                         <div class="relative w-full h-full flex items-center justify-center">
                             <!-- Pink Rectangle -->
                             <div
@@ -277,28 +282,39 @@
 
 
 
-                <!-- Top Left Content -->
                 <div id="text-left"
                     class="absolute top-[12%] left-[10%] z-50 opacity-0 -translate-x-full transition-all duration-1000 ease-out">
                     <h1 class="text-4xl md:text-6xl font-black leading-[1.2] uppercase tracking-normal">
                         <span class="text-[#1a1a1a]">Custom</span><br>
-                        <span id="hero-dynamic-text" class="text-[#0C1AC1]">Web Development</span>
+                        <span id="hero-dynamic-text" class="text-[#0C1AC1] block md:inline-block">Web<br class="md:hidden"> Development</span>
                     </h1>
-                    <p class="text-lg md:text-xl font-bold text-[#4B4B4B] mt-4 uppercase tracking-wider">
+                    <p class="text-lg md:text-xl font-bold text-[#4B4B4B] mt-1 md:mt-4 uppercase tracking-wider">
                         WE BUILD YOUR DIGITAL SUPERHERO
                     </p>
-                    <a href="./docs/Brochure.pdf" target="_blank"
-                        class="mt-4 inline-flex items-center gap-4 bg-[#0C1AC1] text-white font-black py-1 pl-10 pr-1.5 rounded-full text-xs md:text-sm hover:bg-[#0a1599] transition-all uppercase tracking-widest group shadow-xl">
-                        <span>View Brochure</span>
-                        <div
-                            class="bg-white rounded-full w-8 h-8 flex items-center justify-center text-[#0C1AC1] transform group-hover:translate-x-1 transition-transform">
-                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                        </div>
-                    </a>
+                    <div class="flex flex-row items-center gap-3 mt-3 md:mt-6">
+                        <!-- View Brochure Button -->
+                        <a href="./docs/Brochure.pdf" target="_blank"
+                            class="inline-flex items-center gap-2 md:gap-4 bg-[#0C1AC1] text-white font-black py-2 px-5 md:py-1 md:pl-10 md:pr-1.5 rounded-full text-[10px] md:text-sm hover:bg-[#0a1599] transition-all uppercase tracking-widest group shadow-xl">
+                            <span>View Brochure</span>
+                            <div
+                                class="bg-white rounded-full w-5 h-5 md:w-8 md:h-8 flex items-center justify-center text-[#0C1AC1] transform group-hover:translate-x-1 transition-transform">
+                                <i class="fa-solid fa-chevron-right text-[8px] md:text-[10px]"></i>
+                            </div>
+                        </a>
+                        <!-- Get Started Button (Mobile Only) -->
+                        <a href="./loginpg/login.html"
+                            class="md:hidden inline-flex items-center gap-2 bg-[#c7f908] text-black font-black py-2 px-5 rounded-full text-[10px] uppercase hover:bg-[#a3cc06] transition-all group shadow-xl border-2 border-black">
+                            <span>Get Started</span>
+                            <div
+                                class="bg-black rounded-full w-5 h-5 flex items-center justify-center text-[#c7f908] transform group-hover:translate-x-1 transition-transform">
+                                <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Top Right Content -->
-                <div class="absolute top-[18%] right-[9%] z-50">
+                <div class="hidden md:block absolute top-[18%] right-[9%] z-50">
                     <a href="./loginpg/login.html" id="get-started-button"
                         class="bg-[#0C1AC1] text-white font-black py-1.5 pl-14 pr-1.5 rounded-full text-lg md:text-xl uppercase hover:bg-[#0a1599] transition-all opacity-0 translate-x-full duration-1000 ease-out inline-flex items-center gap-6 group shadow-xl">
                         <span>Get Started</span>
@@ -309,6 +325,8 @@
                     </a>
                 </div>
 
+                <!-- Mobile-only semi-oval at the bottom -->
+                <div class="md:hidden absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] h-[44vh] bg-[#464646] rounded-t-[50%] z-0"></div>
             </div>
         </div>
         <!-- SLIDE 2: WHAT WE DO -->
@@ -1515,8 +1533,40 @@
             </div>
         </div>
         <div id="kairon-live" class="kairon-live-panel" style="display:none"></div>
-        <button id="kairon-header-back-bot" style="display:none"></button>
         <button id="kairon-faq-toggle" style="display:none"></button>
+
+        <!-- Mobile Side Menu Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+        <!-- Mobile Side Menu Panel -->
+        <div id="mobile-menu-panel" class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+            <!-- Close Button -->
+            <div class="flex justify-between items-center mb-8">
+                <!-- Logo Image -->
+                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+                <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2" aria-label="Close Menu">&times;</button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
+                <a href="index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+                <a href="about/about.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+                <a href="works/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+                <a href="branding/branding.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+                <a href="pricingpage/pricing.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+                <a href="consult/consult.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="support/support.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+                <a href="loginpg/login.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+            </div>
+
+            <!-- Social Icons at bottom -->
+            <div class="flex space-x-6 text-2xl pt-6 border-t border-white/10 mt-auto justify-center">
+                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://discord.gg/HENvXDQQZJ" class="text-white hover:text-[#c7f908]" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="/loginpg/login.html" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer" aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
+            </div>
+        </div>
 
         <script>
             if (!window.showTypingIndicator) {

@@ -983,24 +983,115 @@ html {
     }
 
     #main-toolbar {
-        padding-top: 1rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0 !important;
+        min-height: 4rem !important;
     }
 
     .slide-wrapper-corner {
         padding: 0 !important;
     }
 
-    /* Fix for decorative shapes overlap */
-    #hero-decorative-shapes {
-        transform: scale(0.6) translate(-83%, -83%) !important;
+    /* Hide decorative shapes and stats box completely on mobile */
+    #hero-decorative-shapes, #hero-visual-lock, #stats-box {
+        display: none !important;
     }
 
-    /* Larger touch targets for buttons */
+    #popping-logo {
+        top: 0.75rem !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    #popping-logo img {
+        height: 3.25rem !important;
+        width: auto !important;
+        margin: 0 !important;
+    }
+
+    /* Stack logo and foreground hero illustration vertically on mobile */
+    #hero-images-container {
+        position: absolute !important;
+        top: 48% !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
+
+    #mkavs-logo {
+        position: absolute !important;
+        left: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: 100vw !important;
+        max-width: none !important;
+        object-fit: cover !important;
+        z-index: 5 !important;
+        display: block !important;
+        opacity: 0.15 !important;
+    }
+    #herofg {
+        display: none !important;
+    }
+
+    
+    /* Ensure subtitle is on a single line on mobile */
+    #text-left p {
+        white-space: nowrap !important;
+        font-size: 11px !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    /* Smaller View Brochure & Get Started buttons below the text subtitle on mobile */
+    #text-left a {
+        font-size: 10px !important;
+        padding: 0.5rem 1.25rem !important;
+        min-height: auto !important;
+        line-height: normal !important;
+    }
+    
+    #text-left a div {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    /* Larger touch targets for other buttons */
     .login-btn, .auth-consult-btn, .get-started-button {
         padding: 0.75rem 1.5rem !important;
         min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Mobile Kairon Chatbot Overrides */
+    #kairon-button {
+        width: 45px !important;
+        height: 45px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+
+    #kairon-panel {
+        width: 75vw !important;
+        height: 75vh !important;
+        top: auto !important;
+        left: auto !important;
+        bottom: 70px !important; /* Positioned right above the icon */
+        right: 15px !important;
+        border-radius: 12px !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
     }
 }
