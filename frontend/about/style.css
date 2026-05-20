@@ -294,7 +294,7 @@ p {
 .header-bottom-images {
     display: flex;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 1.125rem;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -303,59 +303,68 @@ p {
     width: 100%;
     padding-left: 0;
     padding-right: 0;
-    transform: scale(1.5);
+    transform: none;
     transform-origin: bottom center;
-    transition: transform 0.3s ease, gap 0.3s ease;
+    transition: gap 0.3s ease;
 }
 
 @media (max-width: 1400px) {
     .header-bottom-images {
-        transform: scale(1.35);
-        gap: 0.6rem;
+        gap: 0.81rem;
+    }
+    .header-img {
+        width: 202.5px !important;
+        height: 202.5px !important;
     }
 }
 
 @media (max-width: 1200px) {
     .header-bottom-images {
-        transform: scale(1.15);
-        gap: 0.5rem;
+        gap: 0.575rem;
+    }
+    .header-img {
+        width: 172.5px !important;
+        height: 172.5px !important;
     }
 }
 
 @media (max-width: 992px) {
     .header-bottom-images {
-        transform: scale(0.95);
-        gap: 0.4rem;
+        gap: 0.38rem;
+    }
+    .header-img {
+        width: 142.5px !important;
+        height: 142.5px !important;
     }
 }
 
 @media (max-width: 768px) {
     .header-bottom-images {
         flex-wrap: nowrap !important;
-        transform: scale(0.75) translateY(20%) !important;
-        gap: 0.3rem;
+        transform: translateY(20%) !important;
+        gap: 0.225rem;
     }
     .header-img {
-        width: 110px !important;
-        height: 110px !important;
+        width: 82.5px !important;
+        height: 82.5px !important;
     }
 }
 
 @media (max-width: 480px) {
     .header-bottom-images {
-        transform: scale(0.6) translateY(40%) !important;
-        gap: 0.2rem;
+        transform: translateY(40%) !important;
+        gap: 0.12rem;
     }
     .header-img {
-        width: 90px !important;
-        height: 90px !important;
+        width: 54px !important;
+        height: 54px !important;
     }
 }
 
 
 .header-img {
-    width: 150px;
-    height: 150px;
+    width: 225px;
+    height: 225px;
     border-bottom: none;
     object-fit: cover;
     transform: translateY(100%);
