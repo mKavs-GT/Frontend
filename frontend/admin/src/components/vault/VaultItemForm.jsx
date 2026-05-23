@@ -13,6 +13,7 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
   
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
   };
 
   const handleFileUpload = async (e) => {
+    setErrorMsg('');
     const filesToUpload = Array.from(e.target.files);
     if (filesToUpload.length === 0) return;
     
@@ -54,7 +56,7 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
         files: [...prev.files, ...uploadedFiles]
       }));
     } catch (err) {
-      alert('Upload failed');
+      setErrorMsg('File upload failed. Please try again.');
     } finally {
       setUploading(false);
       // Reset input
@@ -72,8 +74,9 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
     if (formData.files.length === 0) {
-      alert('Please upload at least one file.');
+      setErrorMsg('Please upload at least one file.');
       return;
     }
     
@@ -93,7 +96,7 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
       }
       onSuccess();
     } catch (error) {
-      alert(error.message);
+      setErrorMsg(error.message || 'Failed to save item.');
     } finally {
       setLoading(false);
     }
@@ -107,6 +110,13 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
           <X size={20} />
         </button>
       </div>
+
+      {errorMsg && (
+        <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-sm font-bold flex items-center justify-between">
+          <span>{errorMsg}</span>
+          <button onClick={() => setErrorMsg('')} className="p-1 hover:bg-rose-100 rounded-md transition-colors"><X size={16} /></button>
+        </div>
+      )}
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

@@ -14,6 +14,8 @@ export default function VaultCategoryForm({ category, onSuccess, onCancel }) {
   });
   const [loading, setLoading] = useState(false);
 
+  const [errorMsg, setErrorMsg] = useState('');
+
   useEffect(() => {
     if (category) {
       setFormData({
@@ -39,6 +41,7 @@ export default function VaultCategoryForm({ category, onSuccess, onCancel }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg('');
     try {
       if (category) {
         await vaultService.updateCategory(category._id, formData);
@@ -47,7 +50,7 @@ export default function VaultCategoryForm({ category, onSuccess, onCancel }) {
       }
       onSuccess();
     } catch (error) {
-      alert(error.message);
+      setErrorMsg(error.message || 'Failed to save category.');
     } finally {
       setLoading(false);
     }
@@ -61,6 +64,14 @@ export default function VaultCategoryForm({ category, onSuccess, onCancel }) {
           <X size={20} />
         </button>
       </div>
+
+      {errorMsg && (
+        <div className="mb-4 p-4 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-sm font-bold flex items-center justify-between">
+          <span>{errorMsg}</span>
+          <button onClick={() => setErrorMsg('')} className="p-1 hover:bg-rose-100 rounded-md transition-colors"><X size={16} /></button>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
