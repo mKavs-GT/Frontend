@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, ExternalLink, Code, CheckCircle, Copy, Key } from 'lucide-react';
+import { Download, ExternalLink, Code, CheckCircle, Copy, Key, File as FileIcon, Folder } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 
 export default function VaultItemCard({ item, onOpenModal }) {
@@ -23,32 +23,41 @@ export default function VaultItemCard({ item, onOpenModal }) {
   };
 
   if (item.itemType === 'file') {
+    const fileCount = item.files && item.files.length > 0 ? item.files.length : (item.fileData?.fileUrl ? 1 : 0);
+    
     return (
-      <div onClick={handleClick} className="bg-bg-surface border border-border-main rounded-xl p-6 shadow-sm hover:shadow-md transition-all group cursor-pointer">
-         <div className="h-32 bg-bg-root rounded-lg mb-4 border border-border-main flex items-center justify-center relative overflow-hidden">
+      <div onClick={handleClick} className="bg-bg-surface border border-border-main rounded-xl p-6 shadow-sm hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+         <div className="h-32 bg-bg-root rounded-lg mb-4 border border-border-main flex items-center justify-center relative overflow-hidden text-indigo-500/50">
            {item.thumbnail ? (
-             <div className="text-2xl font-black tracking-tighter">{item.thumbnail}</div>
+             <div className="text-2xl font-black tracking-tighter text-text-main">{item.thumbnail}</div>
            ) : (
-             <div className="text-text-muted">No Preview</div>
+             <Folder size={40} strokeWidth={1.5} />
            )}
-           <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+             <div className="bg-bg-surface px-3 py-1.5 rounded-lg shadow font-bold text-xs flex items-center gap-2">
+                <FileIcon size={14} /> View {fileCount > 1 ? 'Files' : 'File'}
+             </div>
+           </div>
          </div>
          <div className="flex items-center justify-between">
            <div>
              <h3 className="text-sm font-black tracking-tight text-text-main">{item.title}</h3>
-             <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-1">{item.subtitle || item.fileData?.extension}</p>
+             <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-1">
+               {fileCount} {fileCount === 1 ? 'File Attached' : 'Files Attached'}
+             </p>
            </div>
-           <button 
-             onClick={(e) => {
-               e.stopPropagation();
-               if(item.fileData?.fileUrl) {
-                 window.open(`${API_BASE_URL}${item.fileData.fileUrl}`, '_blank');
-               }
-             }}
-             className="p-2.5 rounded-lg bg-bg-muted text-text-main hover:bg-text-main hover:text-bg-surface transition-all"
-           >
-             <Download size={16} />
-           </button>
+           {fileCount === 1 && (item.files?.[0]?.fileUrl || item.fileData?.fileUrl) && (
+             <button 
+               onClick={(e) => {
+                 e.stopPropagation();
+                 const url = item.files?.[0]?.fileUrl || item.fileData?.fileUrl;
+                 window.open(`${API_BASE_URL}${url}`, '_blank');
+               }}
+               className="p-2.5 rounded-lg bg-bg-muted text-text-main hover:bg-text-main hover:text-bg-surface transition-all"
+             >
+               <Download size={16} />
+             </button>
+           )}
          </div>
       </div>
     );

@@ -135,14 +135,49 @@ export default function VaultItemModal({ item, onClose }) {
                       {dataToUse.content && (
                          <div className="text-text-main whitespace-pre-wrap">{dataToUse.content}</div>
                       )}
-                      {dataToUse.itemType === 'file' && dataToUse.fileData && (
-                         <div className="p-4 bg-bg-root border border-border-main rounded-xl mt-4">
-                           <p className="font-bold text-sm mb-2">File Details</p>
-                           <ul className="text-xs text-text-muted space-y-1">
-                             <li>Name: {dataToUse.fileData.fileName}</li>
-                             <li>Size: {(dataToUse.fileData.fileSize / 1024).toFixed(2)} KB</li>
-                             <li>Type: {dataToUse.fileData.mimeType}</li>
-                           </ul>
+                     {dataToUse.itemType === 'file' && (
+                         <div className="space-y-3 mt-4">
+                           {dataToUse.files?.length > 0 ? (
+                             dataToUse.files.map((f, i) => (
+                               <div key={i} className="flex items-center justify-between p-4 bg-bg-root border border-border-main rounded-xl">
+                                 <div>
+                                   <p className="font-bold text-sm mb-1">{f.fileName}</p>
+                                   <ul className="text-xs text-text-muted flex gap-3">
+                                     <li>Size: {(f.fileSize / 1024).toFixed(2)} KB</li>
+                                     <li>Type: {f.mimeType}</li>
+                                   </ul>
+                                 </div>
+                                 <a 
+                                   href={`${API_BASE_URL}${f.fileUrl}`} 
+                                   download 
+                                   target="_blank" 
+                                   rel="noreferrer"
+                                   className="p-2 bg-text-main text-bg-surface rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all"
+                                 >
+                                   <Download size={16} />
+                                 </a>
+                               </div>
+                             ))
+                           ) : dataToUse.fileData && dataToUse.fileData.fileUrl ? (
+                             <div className="flex items-center justify-between p-4 bg-bg-root border border-border-main rounded-xl">
+                               <div>
+                                 <p className="font-bold text-sm mb-1">{dataToUse.fileData.fileName}</p>
+                                 <ul className="text-xs text-text-muted flex gap-3">
+                                   <li>Size: {(dataToUse.fileData.fileSize / 1024).toFixed(2)} KB</li>
+                                   <li>Type: {dataToUse.fileData.mimeType}</li>
+                                 </ul>
+                               </div>
+                               <a 
+                                 href={`${API_BASE_URL}${dataToUse.fileData.fileUrl}`} 
+                                 download 
+                                 target="_blank" 
+                                 rel="noreferrer"
+                                 className="p-2 bg-text-main text-bg-surface rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all"
+                               >
+                                 <Download size={16} />
+                               </a>
+                             </div>
+                           ) : null}
                          </div>
                       )}
                     </div>
@@ -156,18 +191,6 @@ export default function VaultItemModal({ item, onClose }) {
              <button onClick={onClose} className="px-4 py-2 text-sm font-bold text-text-muted hover:text-text-main transition-colors">
                Close
              </button>
-             {dataToUse.itemType === 'file' && dataToUse.fileData?.fileUrl && (
-               <a 
-                 href={`${API_BASE_URL}${dataToUse.fileData.fileUrl}`} 
-                 download 
-                 target="_blank" 
-                 rel="noreferrer"
-                 className="flex items-center gap-2 px-4 py-2 bg-text-main text-bg-surface text-sm font-bold rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all"
-               >
-                 <Download size={16} />
-                 Download
-               </a>
-             )}
              {dataToUse.itemType === 'tool' && dataToUse.toolData?.url && (
                <a 
                  href={dataToUse.toolData.url} 
