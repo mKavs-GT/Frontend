@@ -147,15 +147,25 @@ export default function VaultItemModal({ item, onClose }) {
                                      <li>Type: {f.mimeType}</li>
                                    </ul>
                                  </div>
-                                 <a 
-                                   href={`${API_BASE_URL}${f.fileUrl}`} 
-                                   download 
-                                   target="_blank" 
-                                   rel="noreferrer"
-                                   className="p-2 bg-text-main text-bg-surface rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all"
-                                 >
-                                   <Download size={16} />
-                                 </a>
+                                 <div className="flex gap-2">
+                                   <a 
+                                     href={`${API_BASE_URL}${f.fileUrl}`} 
+                                     target="_blank" 
+                                     rel="noreferrer"
+                                     className="px-3 py-2 bg-bg-surface border border-border-main text-text-main text-xs font-bold rounded-lg hover:border-text-main transition-all flex items-center gap-2"
+                                   >
+                                     <ExternalLink size={14} /> View
+                                   </a>
+                                   <a 
+                                     href={`${API_BASE_URL}${f.fileUrl}`} 
+                                     download 
+                                     target="_blank" 
+                                     rel="noreferrer"
+                                     className="px-3 py-2 bg-text-main text-bg-surface text-xs font-bold rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all flex items-center gap-2"
+                                   >
+                                     <Download size={14} /> Download
+                                   </a>
+                                 </div>
                                </div>
                              ))
                            ) : dataToUse.fileData && dataToUse.fileData.fileUrl ? (
@@ -167,15 +177,25 @@ export default function VaultItemModal({ item, onClose }) {
                                    <li>Type: {dataToUse.fileData.mimeType}</li>
                                  </ul>
                                </div>
-                               <a 
-                                 href={`${API_BASE_URL}${dataToUse.fileData.fileUrl}`} 
-                                 download 
-                                 target="_blank" 
-                                 rel="noreferrer"
-                                 className="p-2 bg-text-main text-bg-surface rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all"
-                               >
-                                 <Download size={16} />
-                               </a>
+                               <div className="flex gap-2">
+                                 <a 
+                                   href={`${API_BASE_URL}${dataToUse.fileData.fileUrl}`} 
+                                   target="_blank" 
+                                   rel="noreferrer"
+                                   className="px-3 py-2 bg-bg-surface border border-border-main text-text-main text-xs font-bold rounded-lg hover:border-text-main transition-all flex items-center gap-2"
+                                 >
+                                   <ExternalLink size={14} /> View
+                                 </a>
+                                 <a 
+                                   href={`${API_BASE_URL}${dataToUse.fileData.fileUrl}`} 
+                                   download 
+                                   target="_blank" 
+                                   rel="noreferrer"
+                                   className="px-3 py-2 bg-text-main text-bg-surface text-xs font-bold rounded-lg hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all flex items-center gap-2"
+                                 >
+                                   <Download size={14} /> Download
+                                 </a>
+                               </div>
                              </div>
                            ) : null}
                          </div>
