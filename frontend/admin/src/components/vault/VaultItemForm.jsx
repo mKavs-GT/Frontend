@@ -132,6 +132,7 @@ export default function VaultItemForm({ item, categoryId, onSuccess, onCancel })
             <input 
               type="file" 
               multiple 
+              accept="*/*"
               className="hidden" 
               ref={fileInputRef} 
               onChange={handleFileUpload} 

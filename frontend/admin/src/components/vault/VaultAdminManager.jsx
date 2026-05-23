@@ -18,6 +18,8 @@ export default function VaultAdminManager({ onBack }) {
   const [showItemForm, setShowItemForm] = useState(false);
   const [editItem, setEditItem] = useState(null);
 
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', message: '', onConfirm: null });
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -55,18 +57,30 @@ export default function VaultAdminManager({ onBack }) {
 
   const handleDeleteCategory = async (id, e) => {
     e.stopPropagation();
-    if(window.confirm('Delete category and all its items?')) {
-       await vaultService.deleteCategory(id);
-       if(selectedCategory?._id === id) setSelectedCategory(null);
-       fetchCategories();
-    }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Category',
+      message: 'Are you sure you want to delete this category and all its items?',
+      onConfirm: async () => {
+         await vaultService.deleteCategory(id);
+         if(selectedCategory?._id === id) setSelectedCategory(null);
+         fetchCategories();
+         setConfirmDialog({ isOpen: false });
+      }
+    });
   };
 
   const handleDeleteItem = async (id) => {
-    if(window.confirm('Delete item?')) {
-       await vaultService.deleteItem(id);
-       fetchItems(selectedCategory._id);
-    }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Item',
+      message: 'Are you sure you want to delete this item?',
+      onConfirm: async () => {
+         await vaultService.deleteItem(id);
+         fetchItems(selectedCategory._id);
+         setConfirmDialog({ isOpen: false });
+      }
+    });
   };
 
   return (
@@ -184,6 +198,30 @@ export default function VaultAdminManager({ onBack }) {
         </div>
 
       </div>
+
+      {/* Custom Confirm Modal */}
+      {confirmDialog.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style={{ zIndex: 9999 }}>
+          <div className="bg-bg-surface w-full max-w-sm rounded-2xl shadow-2xl border border-border-main p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-bold mb-2 text-text-main">{confirmDialog.title}</h3>
+            <p className="text-sm text-text-muted mb-6">{confirmDialog.message}</p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setConfirmDialog({ isOpen: false })} 
+                className="px-4 py-2 text-sm font-bold text-text-muted hover:text-text-main transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmDialog.onConfirm} 
+                className="px-4 py-2 bg-rose-500 text-white text-sm font-bold rounded-lg hover:bg-rose-600 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
