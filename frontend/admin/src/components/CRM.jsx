@@ -117,7 +117,10 @@ export default function CRM({ user }) {
       name: c.name || u.displayName || u.username || 'Unknown',
       email: c.email || u.email,
       phone: c.phone || u.phone || 'N/A',
-      image: u.image || null
+      image: u.image || null,
+      date: c.timestamp || c.date || null,
+      service: c.plan || c.service || 'General Inquiry',
+      message: c.projectInfo || c.message || 'No additional details provided.',
     }))
   ).sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
