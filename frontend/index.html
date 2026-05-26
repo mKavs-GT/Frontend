@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MKAVS Global Tech - Your Web Development Agency</title>
+    <script src="preloader.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="config.js"></script>
 
@@ -144,10 +145,10 @@
 
         <!-- SLIDE 1: HERO -->
         <div class="slide-wrapper-corner">
-            <div id="slide-1" class="slide bg-[#FDFDFD] z-10 slide-transition concave-inner-slide">
+            <div id="slide-1" class="slide bg-[#FDFDFD] z-10 slide-transition concave-inner-slide overflow-y-auto pointer-events-auto">
 
                 <!-- Interactive Background Dots Canvas -->
-                <canvas id="hero-dots-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
+                <canvas id="hero-dots-canvas" class="sticky top-0 w-full h-[100vh] z-0 pointer-events-none"></canvas>
 
                 <!-- Hero Images -->
                 <div id="hero-images-container"
@@ -327,8 +328,414 @@
 
                 <!-- Mobile-only semi-oval at the bottom -->
                 <div class="md:hidden absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] h-[44vh] bg-[#464646] rounded-t-[50%] z-0"></div>
+
+                <!-- Light Grey Section under the hero -->
+                <div class="w-full bg-transparent pointer-events-auto z-40 relative">
+                    <div class="community-section">
+                        <style>
+                            /* Scoped CSS for the Community Section */
+                            .community-section {
+                                --bg-color: #FDFDFD;
+                                --text-main: #2b2d42;
+                                --text-muted: #8d99ae;
+                                --clay-light: #ffffff;
+                                --clay-dark: #d1d1d1;
+                                background-color: transparent;
+                                color: var(--text-main);
+                                width: 100%;
+                                min-height: 250vh;
+                                position: relative;
+                            }
+
+                            .community-section * {
+                                box-sizing: border-box;
+                            }
+
+                            .community-section .sticky-wrapper {
+                                position: sticky;
+                                top: 0;
+                                height: 100vh;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                overflow: hidden;
+                            }
+
+                            .community-section .header {
+                                text-align: center;
+                                margin-bottom: 2vh;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 10px;
+                            }
+
+                            .community-section .subtitle {
+                                font-size: 0.75rem;
+                                font-weight: 700;
+                                letter-spacing: 3px;
+                                text-transform: uppercase;
+                                color: var(--text-muted);
+                                text-shadow: 1px 1px 1px var(--clay-light), -1px -1px 1px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .community-section .title {
+                                font-size: 4.5rem;
+                                font-weight: 800;
+                                letter-spacing: -0.03em;
+                                color: var(--text-main);
+                                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1), -2px -2px 4px var(--clay-light);
+                            }
+
+                            .community-section .carousel-section {
+                                width: 100%;
+                                height: 70vh;
+                                display: flex;
+                                align-items: center;
+                                overflow: hidden;
+                                perspective: 1500px;
+                            }
+
+                            .community-section .carousel-container {
+                                width: 100%;
+                                transform-style: preserve-3d;
+                            }
+
+                            .community-section .carousel-track {
+                                display: flex;
+                                gap: 40px;
+                                padding: 0 50vw;
+                                align-items: center;
+                                transform-style: preserve-3d;
+                                will-change: transform;
+                            }
+
+                            .community-section .carousel-item {
+                                flex-shrink: 0;
+                                width: 540px;
+                                height: 440px;
+                                padding: 0;
+                                border-radius: 24px;
+                                background: var(--bg-color);
+                                box-shadow: 16px 16px 32px var(--clay-dark),
+                                    -16px -16px 32px var(--clay-light),
+                                    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+                                    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+                                border: none;
+                                transform-style: preserve-3d;
+                                will-change: transform;
+                                overflow: hidden;
+                            }
+
+                            .community-section .image-wrapper {
+                                position: relative;
+                                width: 100%;
+                                height: 240px;
+                                border-radius: 24px 24px 0 0;
+                                overflow: hidden;
+                                background: rgba(0, 0, 0, 0.05);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .community-section .carousel-item img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                                filter: contrast(0.95) brightness(0.95);
+                            }
+
+                            .community-section .carousel-item img.blurry-image {
+                                filter: blur(8px) brightness(0.5);
+                                object-fit: cover;
+                            }
+
+                            .community-section .view-all-overlay {
+                                position: absolute;
+                                inset: 0;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: rgba(0, 0, 0, 0.25);
+                                transition: background 0.3s ease;
+                            }
+
+                            .community-section .carousel-item:hover .view-all-overlay {
+                                background: rgba(0, 0, 0, 0.15);
+                            }
+
+                            .community-section .overlay-text {
+                                color: #c7f908;
+                                font-size: 1.6rem;
+                                font-weight: 900;
+                                text-transform: uppercase;
+                                letter-spacing: 2px;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                                text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+                                transition: gap 0.3s ease;
+                            }
+
+                            .community-section .carousel-item:hover .overlay-text {
+                                gap: 18px;
+                            }
+
+                            .community-section .carousel-text {
+                                margin-top: 20px;
+                                text-align: left;
+                                padding: 0 24px 24px 24px;
+                            }
+
+                            .community-section .carousel-heading {
+                                font-size: 1.2rem;
+                                font-weight: 800;
+                                margin: 0;
+                                color: var(--text-main);
+                                letter-spacing: -0.01em;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                            }
+
+                            .community-section .carousel-subheading {
+                                font-size: 0.85rem;
+                                color: var(--text-muted);
+                                margin: 6px 0 0 0;
+                                font-weight: 600;
+                                letter-spacing: 0.5px;
+                                line-height: 1.4;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 2;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                            }
+
+                            .community-section .form-section {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                padding: 10vh 20px;
+                            }
+
+                            .community-section .form-wrapper {
+                                display: flex;
+                                align-items: center;
+                                background: var(--bg-color);
+                                padding: 10px;
+                                border-radius: 20px;
+                                box-shadow: 10px 10px 20px var(--clay-dark),
+                                    -10px -10px 20px var(--clay-light);
+                                margin-bottom: 20px;
+                            }
+
+                            .community-section .clay-input {
+                                border: none;
+                                background: var(--bg-color);
+                                padding: 18px 25px;
+                                font-size: 1rem;
+                                width: 300px;
+                                border-radius: 12px;
+                                outline: none;
+                                box-shadow: inset 6px 6px 12px var(--clay-dark),
+                                    inset -6px -6px 12px var(--clay-light);
+                                color: var(--text-main);
+                                transition: all 0.3s ease;
+                            }
+
+                            .community-section .clay-input::placeholder {
+                                color: var(--text-muted);
+                            }
+
+                            .community-section .clay-input:focus {
+                                box-shadow: inset 8px 8px 16px var(--clay-dark),
+                                    inset -8px -8px 16px var(--clay-light);
+                            }
+
+                            .community-section .clay-btn {
+                                border: none;
+                                background: var(--accent);
+                                color: white;
+                                padding: 18px 35px;
+                                margin-left: 10px;
+                                border-radius: 12px;
+                                font-size: 0.9rem;
+                                font-weight: 700;
+                                letter-spacing: 1px;
+                                cursor: pointer;
+                                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2),
+                                    -4px -4px 10px rgba(255, 255, 255, 0.1),
+                                    inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                                    inset -2px -2px 4px rgba(0, 0, 0, 0.4);
+                                transition: transform 0.1s, box-shadow 0.1s;
+                            }
+
+                            .community-section .clay-btn:active {
+                                transform: scale(0.97);
+                                box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.5),
+                                    inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+                            }
+
+                            .community-section .disclaimer {
+                                font-size: 0.75rem;
+                                color: var(--text-muted);
+                                opacity: 0.7;
+                            }
+
+                            @media (max-width: 768px) {
+                                .community-section .title {
+                                    font-size: 3rem;
+                                }
+
+                                .community-section .carousel-item {
+                                    width: 350px;
+                                    height: 330px;
+                                    padding: 0;
+                                    border: none;
+                                }
+
+                                .community-section .image-wrapper {
+                                    height: 180px;
+                                    border-radius: 24px 24px 0 0;
+                                }
+
+                                .community-section .overlay-text {
+                                    font-size: 1.2rem;
+                                }
+
+                                .community-section .carousel-text {
+                                    margin-top: 15px;
+                                    padding: 0 16px 16px 16px;
+                                }
+
+                                .community-section .carousel-heading {
+                                    font-size: 1rem;
+                                }
+
+                                .community-section .carousel-subheading {
+                                    font-size: 0.75rem;
+                                    margin-top: 4px;
+                                }
+
+                                .community-section .form-wrapper {
+                                    flex-direction: column;
+                                    gap: 15px;
+                                    padding: 20px;
+                                }
+
+                                .community-section .clay-btn {
+                                    margin-left: 0;
+                                    width: 100%;
+                                }
+
+                                .community-section .clay-input {
+                                    width: 100%;
+                                }
+                            }
+                        </style>
+
+                        <div class="sticky-wrapper">
+                            <header class="header">
+                                <p class="subtitle">NEW AT MKAVS</p>
+                                <h1 class="title">Highlights</h1>
+                            </header>
+                            <section class="carousel-section">
+                                <div class="carousel-container">
+                                    <div class="carousel-track">
+                                        <!-- Card 1 -->
+                                        <div class="carousel-item">
+                                            <div class="image-wrapper">
+                                                <img src="images/1.png" alt="First multi-project deal with Prof. DP Sudhaghar">
+                                            </div>
+                                            <div class="carousel-text">
+                                                <h3 class="carousel-heading">First multi-project deal with Prof. DP Sudhaghar</h3>
+                                                <p class="carousel-subheading">A sincere thank you to DP Sudhagar Sir for this opportunity and for placing your trust in mKavs.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Card 2 -->
+                                        <div class="carousel-item">
+                                            <div class="image-wrapper">
+                                                <img src="images/2.png" alt="Collaboration with Gan Eden Biotic">
+                                            </div>
+                                            <div class="carousel-text">
+                                                <h3 class="carousel-heading">Collaboration with Gan Eden Biotic</h3>
+                                                <p class="carousel-subheading">A heartfelt thank you to Sebin Cyriac, Founder and Jitha Ajay, Co founder of Gan Eden Biotic.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Card 3 -->
+                                        <div class="carousel-item">
+                                            <div class="image-wrapper">
+                                                <img src="images/3.png" alt="Contract signed with Swasth Ashraya">
+                                            </div>
+                                            <div class="carousel-text">
+                                                <h3 class="carousel-heading">Contract signed with Swasth Ashraya</h3>
+                                                <p class="carousel-subheading">Proud to be working on the development of organic micro-greens with Swasth Ashraya's efforts.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Card 4 -->
+                                        <div class="carousel-item">
+                                            <div class="image-wrapper">
+                                                <img src="images/4.png" alt="Brand Identity for ByDPS.com">
+                                            </div>
+                                            <div class="carousel-text">
+                                                <h3 class="carousel-heading">Brand Identity for ByDPS.com</h3>
+                                                <p class="carousel-subheading">Initiation of the build to deployment of 5 projects under Prof. DP Sudhaghar</p>
+                                            </div>
+                                        </div>
+                                        <!-- Card 5 (View All) -->
+                                        <div class="carousel-item view-all-card cursor-pointer" onclick="window.location.hash='#our-works'">
+                                            <div class="image-wrapper">
+                                                <img src="images/1.png" alt="View All" class="blurry-image">
+                                                <div class="view-all-overlay">
+                                                    <span class="overlay-text">View All <i class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-text">
+                                                <h3 class="carousel-heading">View All <i class="fa-solid fa-arrow-right text-xs"></i></h3>
+                                                <p class="carousel-subheading">Explore all of our projects and collaborations.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        gsap.registerPlugin(ScrollTrigger);
+                        const track = document.querySelector(".community-section .carousel-track");
+                        const items = gsap.utils.toArray(".community-section .carousel-item");
+
+                        gsap.from(".community-section .header > *", {
+                            y: 40, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power4.out"
+                        });
+
+
+                        gsap.ticker.add(() => {
+                            const centerX = window.innerWidth / 2;
+                            items.forEach((item) => {
+                                const bounds = item.getBoundingClientRect();
+                                const itemCenter = bounds.left + bounds.width / 2;
+                                const distFromCenter = itemCenter - centerX;
+                                const maxRotation = 35;
+                                const rotationY = (distFromCenter / centerX) * maxRotation;
+                                const z = Math.abs(distFromCenter / centerX) * -120;
+                                const scale = 1 - Math.abs(distFromCenter / window.innerWidth) * 0.15;
+                                gsap.set(item, { rotationY: rotationY, z: z, scale: scale });
+                            });
+                        });
+                    });
+                </script>
             </div>
         </div>
+
         <!-- SLIDE 2: WHAT WE DO -->
         <div id="slide-2"
             class="slide bg-[#1F1F1F] z-20 translate-y-full slide-transition overflow-y-auto rounded-t-[40px] md:rounded-t-[80px]">

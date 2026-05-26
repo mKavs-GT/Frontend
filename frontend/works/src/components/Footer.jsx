@@ -21,7 +21,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="pricing-dj-video">
-            <video src="/images/mascot.mp4" autoPlay loop muted playsInline></video>
+            <video src="./images/mascot.mp4" autoPlay loop muted playsInline></video>
           </div>
         </div>
       </div>

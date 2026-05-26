@@ -14,10 +14,10 @@ const Header = () => {
         <motion.div
           initial={{ clipPath: 'inset(0 100% 0 0)' }}
           animate={{ clipPath: 'inset(0 0% 0 0)' }}
-          transition={{ 
-            duration: animationDuration * 0.8, 
+          transition={{
+            duration: animationDuration * 0.8,
             delay: animationDelay + 0.2, // Starts shortly after mascot enters the frame
-            ease: "linear" 
+            ease: "linear"
           }}
         >
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-gray-900 leading-none uppercase">
@@ -34,9 +34,9 @@ const Header = () => {
       <motion.div
         initial={{ x: mascotStartPosition, opacity: 1 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 25, 
+        transition={{
+          type: "spring",
+          stiffness: 25,
           damping: 20,
           duration: animationDuration,
           delay: animationDelay
@@ -44,7 +44,7 @@ const Header = () => {
         className="hidden lg:block absolute bottom-0 right-0 pointer-events-none translate-x-12 translate-y-2 z-10"
       >
         <img
-          src="/images/mrv.png"
+          src="./mrv.png"
           alt="MRV Mascot"
           className="w-auto h-[400px] object-contain animate-pulse-subtle"
           style={{

@@ -51,10 +51,10 @@ const Navbar = () => {
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         <div className="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
           <div className="space-x-6 whitespace-nowrap flex items-center">
-            <a href="/" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Home</a>
-            <a href="/about" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>About</a>
-            <a href="/works/index.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Our Work</a>
-            <a href="/branding" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Branding</a>
+            <a href="../index.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Home</a>
+            <a href="../about/about.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>About</a>
+            <a href="index.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Our Work</a>
+            <a href="../branding/branding.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Branding</a>
           </div>
         </div>
 
@@ -65,10 +65,10 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
           <div className="space-x-6 whitespace-nowrap flex items-center">
-            <a href="/pricing" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Pricing</a>
-            <a href="/consult" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Book Us</a>
-            <a href="/support" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Support</a>
-            <a href="/login" className={`login-btn text-lg ${textColorClass} ${hoverColorClass} transition-colors font-bold uppercase tracking-widest border ${borderColorClass} px-6 py-2 rounded-full transition-all`}>Login</a>
+            <a href="../pricingpage/pricing.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Pricing</a>
+            <a href="../consult/consult.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Book Us</a>
+            <a href="../support/support.html" className={`text-lg ${textColorClass} ${hoverColorClass} transition-colors`}>Support</a>
+            <a href="../loginpg/login.html" className={`login-btn text-lg ${textColorClass} ${hoverColorClass} transition-colors font-bold uppercase tracking-widest border ${borderColorClass} px-6 py-2 rounded-full transition-all`}>Login</a>
           </div>
 
           <div className="flex space-x-4 text-xl">
@@ -78,7 +78,7 @@ const Navbar = () => {
               className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Discord size={20} /></a>
             <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" rel="noreferrer"
               className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}><Linkedin size={20} /></a>
-            <a href="/profile" className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}>
+            <a href="../profile/profile.html" className={`${textColorClass} ${hoverColorClass} transition-transform hover:scale-110`}>
               <User size={20} />
             </a>
           </div>

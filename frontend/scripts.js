@@ -301,7 +301,7 @@ function calculateSlideHeights() {
     const slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
 
     slideHeights = [
-        viewportHeight, // Slide 1
+        getScrollHeight(document.getElementById('slide-1')), // Slide 1
         getScrollHeight(slide2), // Slide 2
         slide3TotalHeight, // Slide 3 (Animation + Scrolling)
         getScrollHeight(document.getElementById('slide-6')) // Slide 6
@@ -429,7 +429,32 @@ function updateScrollState(newGlobalY, instant = false) {
     }
 
     // 4. Handle Internal Logic per Slide
-    if (newSlideIndex === 1) { // Slide 2
+    if (newSlideIndex === 0) { // Slide 1
+        const slide1 = document.getElementById('slide-1');
+        if (slide1) {
+            slide1.scrollTop = localScrollY;
+            
+            // Translate the new community section carousel horizontally
+            const track = slide1.querySelector('.carousel-track');
+            const section = slide1.querySelector('.community-section');
+            if (track && section) {
+                // The scrollable area starts after the 100vh hero
+                const sectionTop = window.innerHeight; 
+                const sectionHeight = section.offsetHeight;
+                const scrollableDistance = sectionHeight - window.innerHeight;
+                
+                // Only animate if we've scrolled into the community section
+                if (localScrollY >= sectionTop) {
+                    const progress = Math.max(0, Math.min((localScrollY - sectionTop) / scrollableDistance, 1));
+                    const maxScrollX = track.scrollWidth - window.innerWidth;
+                    track.style.transform = `translateX(${-progress * maxScrollX}px)`;
+                } else {
+                    track.style.transform = `translateX(0px)`;
+                }
+            }
+        }
+    }
+    else if (newSlideIndex === 1) { // Slide 2
         if (slide2) {
             slide2.scrollTop = localScrollY;
         }
@@ -960,10 +985,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Check if current slide is "Long/Scrollable"
         // We consider it scrollable if it is significantly larger than viewport
-        // OR if it is Slide 2 (Index 1) explicitly requested by user.
+        // OR if it is Slide 1 (Index 0), Slide 2 (Index 1) explicitly requested by user.
         // Slide 3 (Index 2) is now continuous scroll for parallax.
 
-        const isContentScrollable = (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3);
+        const isContentScrollable = (currentIndex === 0) || (currentIndex === 1) || (currentIndex === 2) || (currentIndex === 3);
 
         if (isContentScrollable) {
             // Normal Scroll behavior

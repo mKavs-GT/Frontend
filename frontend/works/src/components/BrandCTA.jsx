@@ -275,7 +275,7 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Portfolio Websites</h3>
                 <p>High-impact designs that showcase your creative projects with intention.</p>
-                <img src="/images/portfolio.jpg" alt="Portfolio Websites" />
+                <img src="./images/portfolio.jpg" alt="Portfolio Websites" />
               </div>
               <div className="card-link-exact">
                 View More
@@ -291,7 +291,7 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">E Commerce Websites</h3>
                 <p>Scalable digital stores integrated with online booking systems to drive business growth.</p>
-                <img src="/images/ecommerce.jpg" alt="E Commerce Websites" />
+                <img src="./images/ecommerce.jpg" alt="E Commerce Websites" />
               </div>
               <div className="card-link-exact">
                 View More
@@ -307,7 +307,7 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Company Websites</h3>
                 <p>Professional full-stack web solutions that establish a strong brand identity and digital presence.</p>
-                <img src="/images/company.jpg" alt="Company Websites" />
+                <img src="./images/company.jpg" alt="Company Websites" />
               </div>
               <div className="card-link-exact">
                 View More
@@ -323,7 +323,7 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Portals & Dashboards</h3>
                 <p>Custom-built technical architectures designed to manage complex data and streamline user interactions.</p>
-                <img src="/images/dashboard.jpg" alt="Portals & Dashboards" />
+                <img src="./images/dashboard.jpg" alt="Portals & Dashboards" />
               </div>
               <div className="card-link-exact">
                 View More
