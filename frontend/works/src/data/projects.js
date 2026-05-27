@@ -13,7 +13,7 @@ export const projects = [
     location: "Netherlands",
     year: "2025",
     tags: ["Website"],
-    image: "/images/bcf.png",
+    image: "./images/bcf.png",
     category: projectCategories.PORTFOLIO
   },
   {
@@ -22,7 +22,7 @@ export const projects = [
     location: "USA",
     year: "2024",
     tags: ["Creative"],
-    image: "/images/zapp.png",
+    image: "./images/zapp.png",
     category: projectCategories.PORTFOLIO
   },
 
@@ -33,7 +33,7 @@ export const projects = [
     location: "India",
     year: "2024",
     tags: ["Shopify", "3D"],
-    image: "/images/zapp.png",
+    image: "./images/zapp.png",
     category: projectCategories.ECOMMERCE
   },
   {
@@ -42,7 +42,7 @@ export const projects = [
     location: "India",
     year: "2025",
     tags: ["Retail"],
-    image: "/images/summr.png",
+    image: "./images/summr.png",
     category: projectCategories.ECOMMERCE
   },
 
@@ -53,7 +53,7 @@ export const projects = [
     location: "Global",
     year: "2024",
     tags: ["Corporate"],
-    image: "/images/bcf.png",
+    image: "./images/bcf.png",
     category: projectCategories.COMPANY
   },
   {
@@ -62,7 +62,7 @@ export const projects = [
     location: "Global",
     year: "2025",
     tags: ["SaaS"],
-    image: "/images/summr.png",
+    image: "./images/summr.png",
     category: projectCategories.COMPANY
   },
 
@@ -73,7 +73,7 @@ export const projects = [
     location: "Internal",
     year: "2025",
     tags: ["Dashboard", "React"],
-    image: "/images/bcf.png",
+    image: "./images/bcf.png",
     category: projectCategories.PORTAL
   },
   {
@@ -82,7 +82,7 @@ export const projects = [
     location: "Global",
     year: "2024",
     tags: ["Portal", "API"],
-    image: "/images/summr.png",
+    image: "./images/summr.png",
     category: projectCategories.PORTAL
   }
 ];
