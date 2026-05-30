@@ -791,9 +791,9 @@ async function checkAuthStatus() {
             }
 
             if (getStartedBtn) {
-                getStartedBtn.href = '/BookUs';
+                getStartedBtn.href = '/Consult';
             }
-            authConsultBtns.forEach(btn => btn.href = '/BookUs');
+            authConsultBtns.forEach(btn => btn.href = '/Consult');
             authPricingBtns.forEach(btn => btn.href = '/Pricing');
         } else {
             // User is not logged in
@@ -808,9 +808,9 @@ async function checkAuthStatus() {
             }
 
             if (getStartedBtn) {
-                getStartedBtn.href = '/Login';
+                getStartedBtn.href = '/BookUs';
             }
-            authConsultBtns.forEach(btn => btn.href = '/Login');
+            authConsultBtns.forEach(btn => btn.href = '/BookUs');
             authPricingBtns.forEach(btn => btn.href = '/Login');
         }
     } catch (error) {
