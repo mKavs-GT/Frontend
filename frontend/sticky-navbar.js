@@ -105,26 +105,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginBtns.forEach(btn => {
                     if (btn.textContent.trim().toLowerCase() === 'logout') {
                         btn.textContent = 'Login';
-                        btn.href = '/loginpg/login.html';
+                        btn.href = '/Login';
                     }
                 });
 
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {
-                        parent.href = '/loginpg/login.html';
+                        parent.href = '/Login';
                     }
                 });
 
                 // Update "Book Us" links to point to login if they require auth
                 const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
                 bookUsLinks.forEach(link => {
-                    link.href = '/loginpg/login.html';
+                    link.href = '/Login';
                 });
 
                 // Actively protect the consult page
-                if (window.location.pathname.includes('consult/consult.html')) {
-                    window.location.href = '/loginpg/login.html';
+                if (window.location.pathname.includes('/BookUs')) {
+                    window.location.href = '/Login';
                 }
             }
         } catch (error) {

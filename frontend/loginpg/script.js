@@ -112,7 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         successMsg.classList.add('visible');
 
                         setTimeout(() => {
-                            window.location.href = '/index.html';
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const redirectUrl = urlParams.get('redirect') || '/Consult';
+                            window.location.href = redirectUrl;
                         }, 1000);
                     } else {
                         const errorMessage = data.error || 'Login failed';

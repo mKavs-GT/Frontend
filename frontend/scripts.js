@@ -791,27 +791,27 @@ async function checkAuthStatus() {
             }
 
             if (getStartedBtn) {
-                getStartedBtn.href = './consult/consult.html';
+                getStartedBtn.href = '/BookUs';
             }
-            authConsultBtns.forEach(btn => btn.href = './consult/consult.html');
-            authPricingBtns.forEach(btn => btn.href = './pricingpage/pricing.html');
+            authConsultBtns.forEach(btn => btn.href = '/BookUs');
+            authPricingBtns.forEach(btn => btn.href = '/Pricing');
         } else {
             // User is not logged in
             if (loginBtn) {
                 loginBtn.textContent = 'Login';
-                loginBtn.href = './loginpg/login.html';
+                loginBtn.href = '/Login';
             }
 
             // If user icon is clicked while logged out, redirect to login
             if (userIcon) {
-                userIcon.href = './loginpg/login.html';
+                userIcon.href = '/Login';
             }
 
             if (getStartedBtn) {
-                getStartedBtn.href = './loginpg/login.html';
+                getStartedBtn.href = '/Login';
             }
-            authConsultBtns.forEach(btn => btn.href = './loginpg/login.html');
-            authPricingBtns.forEach(btn => btn.href = './loginpg/login.html');
+            authConsultBtns.forEach(btn => btn.href = '/Login');
+            authPricingBtns.forEach(btn => btn.href = '/Login');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);

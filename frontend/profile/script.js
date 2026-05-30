@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadFontFavorites();
             } else if (response.status === 401) {
                 // Not authenticated - redirect to login
-                window.location.href = '../loginpg/login.html';
+                window.location.href = '/Login';
             }
         } catch (error) {
             console.error('Error loading user profile:', error);
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="empty-consultation">
                     <i class="fa-solid fa-file-contract"></i>
                     <p>No active consultations requested.</p>
-                    <a href="../consult/consult.html" class="request-btn" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #c7f908; color: #000; border-radius: 8px; text-decoration: none; font-weight: 600;">Request Now</a>
+                    <a href="/BookUs" class="request-btn" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #c7f908; color: #000; border-radius: 8px; text-decoration: none; font-weight: 600;">Request Now</a>
                 </div>
             `;
             return;
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             upContainer.innerHTML = `
                 <div style="padding: 40px; text-align: center; color: var(--text-muted); background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.05); border-radius: 24px;">
                     <i class="fa-solid fa-calendar-day" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.2;"></i>
-                    <p style="font-size: 12px; font-weight: 500;">No upcoming meetings. <a href="/consult/consult.html" style="color: var(--accent); text-decoration: none; font-weight: 700;">Schedule one?</a></p>
+                    <p style="font-size: 12px; font-weight: 500;">No upcoming meetings. <a href="/BookUs" style="color: var(--accent); text-decoration: none; font-weight: 700;">Schedule one?</a></p>
                 </div>`;
         } else {
             upContainer.innerHTML = upcoming.map(m => `

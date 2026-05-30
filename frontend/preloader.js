@@ -59,13 +59,13 @@
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
         
         // Subpages
-        'about/about.html',
-        'works/index.html',
-        'branding/branding.html',
-        'pricingpage/pricing.html',
-        'consult/consult.html',
-        'support/support.html',
-        'loginpg/login.html',
+        '/About',
+        '/Works',
+        '/Branding',
+        '/Pricing',
+        '/BookUs',
+        '/Support',
+        '/Login',
 
         // Images
         'images/MKAVS.png',
