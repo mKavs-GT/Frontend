@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         setTimeout(() => {
                             const params = new URLSearchParams(window.location.search);
                             const explicitRedirect = params.get('redirect');
-                            let defaultRedirect = '/index.html';
+                            let defaultRedirect = '/Home';
 
                             const isBookingFlow =
                                 window.location.pathname === '/BookUs' ||
