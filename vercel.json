@@ -85,6 +85,14 @@
       "destination": "/frontend/branding/branding.html"
     },
     {
+      "source": "/branding/:path*",
+      "destination": "/frontend/branding/:path*"
+    },
+    {
+      "source": "/works/:path*",
+      "destination": "/frontend/works/:path*"
+    },
+    {
       "source": "/brandpg/:path*",
       "destination": "/Mobile/frontend/brandpg/:path*"
     },
