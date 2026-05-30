@@ -1,32 +1,116 @@
 {
   "rewrites": [
-    { "source": "/About", "destination": "/frontend/about/about.html" },
-    { "source": "/Works", "destination": "/frontend/works/index.html" },
-    { "source": "/Branding", "destination": "/frontend/branding/branding.html" },
-    { "source": "/Pricing", "destination": "/frontend/pricingpage/pricing.html" },
-    { "source": "/BookUs", "destination": "/frontend/loginpg/login.html" },
-    { "source": "/Consult", "destination": "/frontend/consult/consult.html" },
-    { "source": "/Support", "destination": "/frontend/support/support.html" },
-    { "source": "/Login", "destination": "/frontend/loginpg/login.html" },
-    { "source": "/mobile", "destination": "/Mobile/frontend/index.html" },
-    { "source": "/mobile/:path*", "destination": "/Mobile/frontend/:path*" },
-    { "source": "/admin/:path*", "destination": "/frontend/admin/dist/:path*" },
-    { "source": "/images/:path*", "destination": "/frontend/images/:path*" },
-    { "source": "/config.js", "destination": "/frontend/config.js" },
-    { "source": "/scripts.js", "destination": "/frontend/scripts.js" },
-    { "source": "/sticky-navbar.js", "destination": "/frontend/sticky-navbar.js" },
-    { "source": "/styles.css", "destination": "/frontend/styles.css" },
-    { "source": "/branding.html", "destination": "/frontend/branding/branding.html" },
-    { "source": "/branding/:path*", "destination": "/frontend/branding/:path*" },
-    { "source": "/works/:path*", "destination": "/frontend/works/:path*" },
-    { "source": "/brandpg/:path*", "destination": "/Mobile/frontend/brandpg/:path*" },
-    { "source": "/about/:path*", "destination": "/frontend/about/:path*" },
-    { "source": "/pricingpage/:path*", "destination": "/frontend/pricingpage/:path*" },
-    { "source": "/consult/:path*", "destination": "/frontend/consult/:path*" },
-    { "source": "/support/:path*", "destination": "/frontend/support/:path*" },
-    { "source": "/loginpg/:path*", "destination": "/frontend/loginpg/:path*" },
-    { "source": "/profile/:path*", "destination": "/frontend/profile/:path*" },
-    { "source": "/portfolio/:path*", "destination": "/frontend/portfolio/:path*" },
-    { "source": "/signpg/:path*", "destination": "/frontend/signpg/:path*" }
+    {
+      "source": "/About",
+      "destination": "/about/about.html"
+    },
+    {
+      "source": "/Works",
+      "destination": "/works/index.html"
+    },
+    {
+      "source": "/Branding",
+      "destination": "/branding/branding.html"
+    },
+    {
+      "source": "/Pricing",
+      "destination": "/pricingpage/pricing.html"
+    },
+    {
+      "source": "/BookUs",
+      "destination": "/loginpg/login.html"
+    },
+    {
+      "source": "/Consult",
+      "destination": "/consult/consult.html"
+    },
+    {
+      "source": "/Support",
+      "destination": "/support/support.html"
+    },
+    {
+      "source": "/Login",
+      "destination": "/loginpg/login.html"
+    },
+    {
+      "source": "/mobile",
+      "destination": "/Mobile/frontend/index.html"
+    },
+    {
+      "source": "/mobile/:path*",
+      "destination": "/Mobile/frontend/:path*"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/dist/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "/images/:path*"
+    },
+    {
+      "source": "/config.js",
+      "destination": "/config.js"
+    },
+    {
+      "source": "/scripts.js",
+      "destination": "/scripts.js"
+    },
+    {
+      "source": "/sticky-navbar.js",
+      "destination": "/sticky-navbar.js"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/styles.css"
+    },
+    {
+      "source": "/branding.html",
+      "destination": "/branding/branding.html"
+    },
+    {
+      "source": "/branding/:path*",
+      "destination": "/branding/:path*"
+    },
+    {
+      "source": "/works/:path*",
+      "destination": "/works/:path*"
+    },
+    {
+      "source": "/brandpg/:path*",
+      "destination": "/Mobile/frontend/brandpg/:path*"
+    },
+    {
+      "source": "/about/:path*",
+      "destination": "/about/:path*"
+    },
+    {
+      "source": "/pricingpage/:path*",
+      "destination": "/pricingpage/:path*"
+    },
+    {
+      "source": "/consult/:path*",
+      "destination": "/consult/:path*"
+    },
+    {
+      "source": "/support/:path*",
+      "destination": "/support/:path*"
+    },
+    {
+      "source": "/loginpg/:path*",
+      "destination": "/loginpg/:path*"
+    },
+    {
+      "source": "/profile/:path*",
+      "destination": "/profile/:path*"
+    },
+    {
+      "source": "/portfolio/:path*",
+      "destination": "/portfolio/:path*"
+    },
+    {
+      "source": "/signpg/:path*",
+      "destination": "/signpg/:path*"
+    }
   ]
 }
