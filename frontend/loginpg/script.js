@@ -112,9 +112,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         successMsg.classList.add('visible');
 
                         setTimeout(() => {
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const redirectUrl = urlParams.get('redirect') || '/Consult';
-                            window.location.href = redirectUrl;
+                            const params = new URLSearchParams(window.location.search);
+                            const explicitRedirect = params.get('redirect');
+                            let defaultRedirect = '/index.html';
+
+                            const isBookingFlow =
+                                window.location.pathname === '/BookUs' ||
+                                document.referrer.includes('/BookUs') ||
+                                explicitRedirect === '/Consult';
+
+                            if (explicitRedirect) {
+                                window.location.href = explicitRedirect;
+                            } else if (isBookingFlow) {
+                                window.location.href = '/Consult';
+                            } else {
+                                window.location.href = defaultRedirect;
+                            }
                         }, 1000);
                     } else {
                         const errorMessage = data.error || 'Login failed';

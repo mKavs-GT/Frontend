@@ -9,6 +9,38 @@
   ],
   "rewrites": [
     {
+      "source": "/About",
+      "destination": "/frontend/about/about.html"
+    },
+    {
+      "source": "/Works",
+      "destination": "/frontend/works/index.html"
+    },
+    {
+      "source": "/Branding",
+      "destination": "/frontend/branding/branding.html"
+    },
+    {
+      "source": "/Pricing",
+      "destination": "/frontend/pricingpage/pricing.html"
+    },
+    {
+      "source": "/BookUs",
+      "destination": "/frontend/loginpg/login.html"
+    },
+    {
+      "source": "/Consult",
+      "destination": "/frontend/consult/consult.html"
+    },
+    {
+      "source": "/Support",
+      "destination": "/frontend/support/support.html"
+    },
+    {
+      "source": "/Login",
+      "destination": "/frontend/loginpg/login.html"
+    },
+    {
       "source": "/mobile",
       "destination": "/Mobile/frontend/index.html"
     },
