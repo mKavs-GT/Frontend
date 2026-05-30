@@ -10,35 +10,35 @@
   "rewrites": [
     {
       "source": "/About",
-      "destination": "/frontend/about/about.html"
+      "destination": "/about/about.html"
     },
     {
       "source": "/Works",
-      "destination": "/frontend/works/index.html"
+      "destination": "/works/index.html"
     },
     {
       "source": "/Branding",
-      "destination": "/frontend/branding/branding.html"
+      "destination": "/branding/branding.html"
     },
     {
       "source": "/Pricing",
-      "destination": "/frontend/pricingpage/pricing.html"
+      "destination": "/pricingpage/pricing.html"
     },
     {
       "source": "/BookUs",
-      "destination": "/frontend/loginpg/login.html"
+      "destination": "/loginpg/login.html"
     },
     {
       "source": "/Consult",
-      "destination": "/frontend/consult/consult.html"
+      "destination": "/consult/consult.html"
     },
     {
       "source": "/Support",
-      "destination": "/frontend/support/support.html"
+      "destination": "/support/support.html"
     },
     {
       "source": "/Login",
-      "destination": "/frontend/loginpg/login.html"
+      "destination": "/loginpg/login.html"
     },
     {
       "source": "/mobile",
@@ -50,47 +50,47 @@
     },
     {
       "source": "/admin/:path*",
-      "destination": "/frontend/admin/dist/:path*"
+      "destination": "/admin/dist/:path*"
     },
     {
       "source": "/admin/:path*",
-      "destination": "/frontend/admin/dist/index.html"
+      "destination": "/admin/dist/index.html"
     },
     {
       "source": "/images/:path*",
-      "destination": "/frontend/images/:path*"
+      "destination": "/images/:path*"
     },
     {
       "source": "/config.js",
-      "destination": "/frontend/config.js"
+      "destination": "/config.js"
     },
     {
       "source": "/scripts.js",
-      "destination": "/frontend/scripts.js"
+      "destination": "/scripts.js"
     },
     {
       "source": "/sticky-navbar.js",
-      "destination": "/frontend/sticky-navbar.js"
+      "destination": "/sticky-navbar.js"
     },
     {
       "source": "/styles.css",
-      "destination": "/frontend/styles.css"
+      "destination": "/styles.css"
     },
     {
       "source": "/branding.html",
-      "destination": "/frontend/branding/branding.html"
+      "destination": "/branding/branding.html"
     },
     {
       "source": "/branding",
-      "destination": "/frontend/branding/branding.html"
+      "destination": "/branding/branding.html"
     },
     {
       "source": "/branding/:path*",
-      "destination": "/frontend/branding/:path*"
+      "destination": "/branding/:path*"
     },
     {
       "source": "/works/:path*",
-      "destination": "/frontend/works/:path*"
+      "destination": "/works/:path*"
     },
     {
       "source": "/brandpg/:path*",
@@ -98,35 +98,35 @@
     },
     {
       "source": "/about/:path*",
-      "destination": "/frontend/about/:path*"
+      "destination": "/about/:path*"
     },
     {
       "source": "/pricingpage/:path*",
-      "destination": "/frontend/pricingpage/:path*"
+      "destination": "/pricingpage/:path*"
     },
     {
       "source": "/consult/:path*",
-      "destination": "/frontend/consult/:path*"
+      "destination": "/consult/:path*"
     },
     {
       "source": "/support/:path*",
-      "destination": "/frontend/support/:path*"
+      "destination": "/support/:path*"
     },
     {
       "source": "/loginpg/:path*",
-      "destination": "/frontend/loginpg/:path*"
+      "destination": "/loginpg/:path*"
     },
     {
       "source": "/profile/:path*",
-      "destination": "/frontend/profile/:path*"
+      "destination": "/profile/:path*"
     },
     {
       "source": "/portfolio/:path*",
-      "destination": "/frontend/portfolio/:path*"
+      "destination": "/portfolio/:path*"
     },
     {
       "source": "/signpg/:path*",
-      "destination": "/frontend/signpg/:path*"
+      "destination": "/signpg/:path*"
     }
   ]
 }
