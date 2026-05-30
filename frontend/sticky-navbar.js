@@ -100,6 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 });
+
+                // User is logged in. Point "Book Us" links directly to /Consult
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes('/BookUs') || a.href.includes('consult.html')));
+                bookUsLinks.forEach(link => {
+                    link.href = '/Consult';
+                });
             } else {
                 // User is not logged in
                 loginBtns.forEach(btn => {
@@ -117,14 +123,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // Update "Book Us" links to point to login if they require auth
-                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && a.href.includes('consult.html'));
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes('/BookUs') || a.href.includes('consult.html')));
                 bookUsLinks.forEach(link => {
-                    link.href = '/Login';
+                    link.href = '/BookUs'; // Native /BookUs route points to Login anyway
                 });
 
-                // Actively protect the consult page
-                if (window.location.pathname.includes('/BookUs')) {
-                    window.location.href = '/Login';
+                // Actively protect the /Consult page (not /BookUs, which is the login page)
+                const currentPath = window.location.pathname;
+                if (currentPath.includes('/Consult') || currentPath.endsWith('consult.html')) {
+                    window.location.href = '/Login?redirect=/Consult';
                 }
             }
         } catch (error) {
