@@ -1083,6 +1083,13 @@ html {
         right: 15px !important;
     }
 
+    #kairon-button img {
+        width: 75% !important;
+        height: 75% !important;
+        object-fit: contain !important;
+        transform: none !important;
+    }
+
     #kairon-panel {
         width: 75vw !important;
         height: 75vh !important;
