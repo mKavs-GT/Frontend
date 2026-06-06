@@ -437,15 +437,14 @@ body {
 }
 
 #kairon-button img {
-    width: 65px; /* Increased base size */
-    height: 65px;
-    object-fit: cover;
-    transform: scale(1.1); /* Zoom in to crop out empty padding */
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #kairon-button:hover img {
-    transform: scale(1.325); /* Slight additional zoom on hover */
+    transform: scale(1.1); /* Slight additional zoom on hover */
 }
 
 /* Mobile Responsive */
