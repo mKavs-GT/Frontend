@@ -1101,4 +1101,17 @@ html {
         max-width: 100% !important;
         max-height: 100% !important;
     }
-}
+}
+
+/* ==================================== */
+/* 8. DESKTOP POSITIONING LOCK          */
+/* ==================================== */
+@media (min-width: 768px) {
+    #text-left {
+        top: max(85px, calc(59vh - 352px)) !important;
+    }
+    #get-started-wrapper {
+        top: max(85px, calc(59vh - 331px)) !important;
+    }
+}
+
