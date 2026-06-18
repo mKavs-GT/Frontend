@@ -1329,6 +1329,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const savedScroll = sessionStorage.getItem('mKavs_saved_scroll');
+    const isPreloaded = sessionStorage.getItem('mkavs_preloaded') === 'true';
+    const shouldBeInstant = isJumpingToWorks || isPreloaded;
+
     if (savedScroll && parseFloat(savedScroll) > 10 && !isJumpingToWorks) {
         globalScrollY = parseFloat(savedScroll);
         targetScrollY = parseFloat(savedScroll);
@@ -1337,8 +1340,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateScrollState(globalScrollY, true);
         }, 50);
     } else {
-        activateInitialSlide(isJumpingToWorks);
-        updateScrollState(globalScrollY, isJumpingToWorks);
+        activateInitialSlide(shouldBeInstant);
+        updateScrollState(globalScrollY, shouldBeInstant);
     }
 
     // --- Hash Navigation Support (Revised) ---
