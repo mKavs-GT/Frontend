@@ -35,21 +35,33 @@
                     width: 0%;
                     height: 100%;
                     background-color: #c7f908;
-                    transition: width 0.1s linear;
                 "></div>
             </div>
             <p id="mkavs-progress-text" style="
-                color: #888;
+                color: #fff;
                 font-family: sans-serif;
-                font-size: 12px;
-                margin-top: 1rem;
+                font-size: 28px;
+                font-weight: 700;
+                margin-top: 1.5rem;
                 text-transform: uppercase;
-                letter-spacing: 2px;
-            ">Loading Assets... 0%</p>
+                letter-spacing: 4px;
+                text-align: center;
+                min-width: 250px;
+            ">HELLO</p>
         </div>
     `;
 
     document.write(preloaderHTML);
+
+    const greetings = [
+        "Hello",        // English
+        "Nǐ hǎo",       // Chinese
+        "Marhaba",      // Arabic
+        "Bonjour",      // French
+        "Namaste",      // Hindi
+        "Vanakkam",     // Tamil
+        "Namaskara"     // Kannada
+    ];
 
     // List of assets to preload
     const assetsToPreload = [
@@ -81,34 +93,72 @@
     ];
 
     let loadedCount = 0;
-    let completed = false;
     const totalAssets = assetsToPreload.length;
 
-    function updateProgress() {
-        if (completed) return;
-        loadedCount++;
-        const percent = Math.round((loadedCount / totalAssets) * 100);
-        
+    let startTime = Date.now();
+    let actualProgress = 0;
+    let displayedProgress = 0;
+    let preloaderCompleted = false;
+
+    function loop() {
+        if (preloaderCompleted) return;
+
+        let now = Date.now();
+        let elapsed = now - startTime;
+
+        // Actual progress based on assets loaded
+        actualProgress = (loadedCount / totalAssets) * 100;
+
+        // If 6 seconds have passed, force actualProgress to 100
+        if (elapsed >= 6000) {
+            actualProgress = 100;
+        }
+
+        // We want the progress to take at LEAST 3 seconds to reach 100%.
+        // So the maximum allowed progress at any time 'elapsed' is (elapsed / 3000) * 100.
+        let maxAllowedProgress = Math.min((elapsed / 3000) * 100, 100);
+
+        // Target is actual progress, but cannot exceed the maximum allowed for a 3-second minimum duration
+        let targetProgress = Math.min(actualProgress, maxAllowedProgress);
+
+        // Also, we want it to never get completely stuck. We can add a slow minimum progression based on the 6 seconds max
+        let minAllowedProgress = Math.min((elapsed / 6000) * 100, 100);
+        targetProgress = Math.max(targetProgress, minAllowedProgress);
+
+        // Smoothly interpolate displayed progress towards target progress
+        // (using an easing factor, e.g., 0.08 per frame)
+        displayedProgress += (targetProgress - displayedProgress) * 0.08;
+
+        // Safety clamp
+        if (displayedProgress > 100) displayedProgress = 100;
+
+        // Calculate which greeting to show (change roughly every 250ms)
+        const greetingIndex = Math.floor(elapsed / 250) % greetings.length;
+        const currentGreeting = greetings[greetingIndex];
+
+        // Update UI
         const progressBar = document.getElementById('mkavs-progress-bar');
         const progressText = document.getElementById('mkavs-progress-text');
         
-        if (progressBar) progressBar.style.width = Math.min(percent, 100) + '%';
-        if (progressText) progressText.innerText = 'Loading Assets... ' + Math.min(percent, 100) + '%';
+        if (progressBar) progressBar.style.width = displayedProgress + '%';
+        if (progressText) progressText.innerText = currentGreeting;
 
-        if (loadedCount >= totalAssets) {
+        // Check completion condition
+        if (displayedProgress >= 99.5 && actualProgress === 100 && elapsed >= 3000) {
+            // We are effectively at 100%, and at least 3 seconds have passed
+            if (progressBar) progressBar.style.width = '100%';
+            if (progressText) progressText.innerText = currentGreeting;
             completePreloader();
+            return;
         }
+
+        requestAnimationFrame(loop);
     }
 
     function completePreloader() {
-        if (completed) return;
-        completed = true;
+        if (preloaderCompleted) return;
+        preloaderCompleted = true;
         
-        const progressBar = document.getElementById('mkavs-progress-bar');
-        const progressText = document.getElementById('mkavs-progress-text');
-        if (progressBar) progressBar.style.width = '100%';
-        if (progressText) progressText.innerText = 'Loading Assets... 100%';
-
         setTimeout(() => {
             const preloader = document.getElementById('global-mkavs-preloader');
             if (preloader) {
@@ -121,21 +171,28 @@
         }, 300);
     }
 
+    function updateProgress() {
+        loadedCount++;
+    }
+
     // Wait until document body exists before starting fetches to prioritize initial HTML parsing
     window.addEventListener('load', () => {
-        // 5 seconds max fallback timeout
-        setTimeout(completePreloader, 5000);
+        // Reset start time to when the window load event actually fires, so the 3-6s is counted from here
+        startTime = Date.now();
+        
+        // Start the smooth animation loop
+        requestAnimationFrame(loop);
 
         assetsToPreload.forEach(url => {
             if (url.match(/\.(jpeg|jpg|png|gif|svg|webp)$/i)) {
                 const img = new Image();
                 img.onload = updateProgress;
-                img.onerror = updateProgress;
+                img.onerror = updateProgress; // Increment even on error so we don't block
                 img.src = url;
             } else {
                 fetch(url, { mode: 'no-cors', cache: 'force-cache' })
                     .then(updateProgress)
-                    .catch(updateProgress);
+                    .catch(updateProgress); // Increment even on error
             }
         });
     });
