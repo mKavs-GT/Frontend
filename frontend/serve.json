@@ -1,8 +1,4 @@
 {
-  "redirects": [
-    { "source": "/", "destination": "/Home", "permanent": true },
-    { "source": "/index.html", "destination": "/Home", "permanent": true }
-  ],
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },
     { "source": "/About", "destination": "/about/index.html" },
