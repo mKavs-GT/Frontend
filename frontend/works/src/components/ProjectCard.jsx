@@ -4,7 +4,10 @@ import Tag from './Tag';
 
 const ProjectCard = ({ project }) => {
   return (
-    <motion.div 
+    <motion.a 
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -18,8 +21,8 @@ const ProjectCard = ({ project }) => {
           <h3 className="text-3xl md:text-4xl font-bold tracking-tighter text-gray-900 group-hover:text-black transition-colors">
             {project.title}
           </h3>
-          <p className="text-lg md:text-xl text-gray-400 mt-1 font-light">
-            {project.location}
+          <p className="text-base md:text-lg text-gray-500 mt-2 font-light line-clamp-2">
+            {project.description}
           </p>
         </div>
         
@@ -38,12 +41,12 @@ const ProjectCard = ({ project }) => {
             <img 
               src={project.image} 
               alt={project.title}
-              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-in-out"
+              className="w-[115%] max-w-none -ml-[7.5%] h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-in-out"
             />
           </div>
         </div>
       </div>
-    </motion.div>
+    </motion.a>
   );
 };
 

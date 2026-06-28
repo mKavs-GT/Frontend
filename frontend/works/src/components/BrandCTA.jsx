@@ -163,9 +163,9 @@ const BrandCTA = () => {
 
         .cards-grid-exact {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 3rem;
-          padding: 10rem 4rem 150px 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 2rem;
+          padding: 10rem 2rem 150px 0;
           width: 100%;
         }
 
@@ -202,12 +202,24 @@ const BrandCTA = () => {
           font-weight: 300;
         }
 
-        .project-card-exact img {
+        .img-container-exact {
           width: 100%;
+          height: 220px;
           margin-top: 1.5rem;
+          overflow: hidden;
           border-radius: 8px;
+        }
+
+        .img-container-exact img {
+          width: 100%;
+          height: 100%;
           object-fit: cover;
-          aspect-ratio: 16/9;
+          display: block;
+          transition: transform 0.5s ease;
+        }
+
+        .project-card-exact:hover .img-container-exact img {
+          transform: scale(1.05);
         }
 
         .card-link-exact {
@@ -275,7 +287,9 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Portfolio Websites</h3>
                 <p>High-impact designs that showcase your creative projects with intention.</p>
-                <img src="./images/portfolio.jpg" alt="Portfolio Websites" />
+                <div className="img-container-exact">
+                  <img src="./src/assets/portfolio.jpg" alt="Portfolio Websites" />
+                </div>
               </div>
               <div className="card-link-exact">
                 View More
@@ -291,7 +305,9 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">E Commerce Websites</h3>
                 <p>Scalable digital stores integrated with online booking systems to drive business growth.</p>
-                <img src="./images/ecommerce.jpg" alt="E Commerce Websites" />
+                <div className="img-container-exact">
+                  <img src="./src/assets/ecommerce.jpg" alt="E Commerce Websites" />
+                </div>
               </div>
               <div className="card-link-exact">
                 View More
@@ -307,7 +323,9 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Company Websites</h3>
                 <p>Professional full-stack web solutions that establish a strong brand identity and digital presence.</p>
-                <img src="./images/company.jpg" alt="Company Websites" />
+                <div className="img-container-exact">
+                  <img src="./src/assets/company.jpg" alt="Company Websites" />
+                </div>
               </div>
               <div className="card-link-exact">
                 View More
@@ -323,7 +341,9 @@ const BrandCTA = () => {
               <div>
                 <h3 className="text-white">Portals & Dashboards</h3>
                 <p>Custom-built technical architectures designed to manage complex data and streamline user interactions.</p>
-                <img src="./images/dashboard.jpg" alt="Portals & Dashboards" />
+                <div className="img-container-exact">
+                  <img src="./src/assets/dashboard.jpg" alt="Portals & Dashboards" />
+                </div>
               </div>
               <div className="card-link-exact">
                 View More

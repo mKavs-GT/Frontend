@@ -38,10 +38,10 @@ function App() {
           <BrandCTA />
         </div>
         
-        <Section id="portfolio" title={projectCategories.PORTFOLIO} items={portfolioSites} className="mt-40 md:mt-60" />
-        <Section id="ecommerce" title={projectCategories.ECOMMERCE} items={ecommerceSites} />
+        <Section id="ecommerce" title={projectCategories.ECOMMERCE} items={ecommerceSites} className="mt-40 md:mt-60" />
         <Section id="company" title={projectCategories.COMPANY} items={companySites} />
         <Section id="portal" title={projectCategories.PORTAL} items={portalSites} />
+        <Section id="portfolio" title={projectCategories.PORTFOLIO} items={portfolioSites} />
       </main>
 
       {/* Footer is outside the max-width main container to be full width like pricing page */}
