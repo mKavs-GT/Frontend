@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import mrvImg from './mrv.png';
 
 const Header = () => {
   // CONFIGURATION: Set the start position here (e.g., -500, -100vw, etc.)
@@ -44,7 +45,7 @@ const Header = () => {
         className="hidden lg:block absolute bottom-0 right-0 pointer-events-none translate-x-12 translate-y-2 z-10"
       >
         <img
-          src="./mrv.png"
+          src={mrvImg}
           alt="MRV Mascot"
           className="w-auto h-[400px] object-contain animate-pulse-subtle"
           style={{

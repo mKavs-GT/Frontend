@@ -1,24 +1,15 @@
 {
+  "trailingSlash": true,
+  "cleanUrls": false,
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },
-<<<<<<< HEAD
     { "source": "/About", "destination": "/about/index.html" },
-    { "source": "/Works", "destination": "/works/index.html" },
+    { "source": "/Works", "destination": "/works/dist/index.html" },
     { "source": "/Branding", "destination": "/branding/index.html" },
     { "source": "/Pricing", "destination": "/pricingpage/index.html" },
     { "source": "/BookUs", "destination": "/loginpg/index.html" },
     { "source": "/Consult", "destination": "/consult/index.html" },
     { "source": "/Support", "destination": "/support/index.html" },
     { "source": "/Login", "destination": "/loginpg/index.html" }
-=======
-    { "source": "/About", "destination": "/about/about.html" },
-    { "source": "/Works", "destination": "/works/index.html" },
-    { "source": "/Branding", "destination": "/branding/branding.html" },
-    { "source": "/Pricing", "destination": "/pricingpage/pricing.html" },
-    { "source": "/BookUs", "destination": "/loginpg/login.html" },
-    { "source": "/Consult", "destination": "/consult/consult.html" },
-    { "source": "/Support", "destination": "/support/support.html" },
-    { "source": "/Login", "destination": "/loginpg/login.html" }
->>>>>>> 43d2d95afcb6c4c1f688da39e1f03fe074fb23ec
   ]
 }

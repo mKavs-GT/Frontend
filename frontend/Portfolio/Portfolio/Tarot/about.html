@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Kristy - Tarot Reader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --padding: 8vmin;
+            --color-background: #000000;
+            --font-size-large: 7vw;
+            --font-size-medium: 3.5vw;
+            --font-size-normal: 1.8vw;
+            --accent-color: #e94560;
+        }
+
+        @media only screen and (min-width: 800px) {
+            :root {
+                --font-size-large: 56px;
+                --font-size-medium: 28px;
+                --font-size-normal: 16px;
+            }
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 60px;
+            gap: 60px;
+        }
+
+        .navbar-logo {
+            font-family: "Cinzel", serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo:hover {
+            color: #e94560;
+        }
+
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navbar-menu li {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .navbar-menu a:hover {
+            color: white;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #e94560;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-signup-btn {
+            font-family: "Cinzel", serif;
+            font-size: 0.9rem;
+            color: white;
+            background: #e94560;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1.2px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .navbar-signup-btn:hover {
+            background: #ff6f6c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-content {
+                padding: 0 40px;
+                gap: 40px;
+            }
+
+            .navbar-menu {
+                gap: 35px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 25px;
+                gap: 20px;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-menu {
+                gap: 20px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.85rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-content {
+                padding: 0 15px;
+                gap: 10px;
+            }
+
+            .navbar-menu {
+                gap: 12px;
+            }
+
+            .navbar-menu a {
+                font-size: 0.75rem;
+            }
+
+            .navbar-signup-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            min-width: 100%;
+            font-family: "Cormorant Garamond", serif;
+            background-color: var(--color-background);
+            color: #f0f0f0;
+            font-weight: 400;
+            font-size: var(--font-size-normal);
+            overflow-x: hidden;
+            padding-top: 0;
+        }
+
+        canvas {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .content { position: relative; z-index: 1; padding-top: 70px; }
+
+        .loading {
+            position: fixed;
+            width: 100vw; height: 100vh;
+            top: 0; left: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: var(--font-size-medium);
+            background: var(--color-background);
+            z-index: 1000;
+        }
+
+        .section {
+            position: relative;
+            padding: var(--padding);
+            --pad2: calc(var(--padding) * 2);
+            width: calc(100vw - var(--pad2));
+            height: calc(100vh - var(--pad2) - 70px);
+            margin: 0 auto;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .section h1, .section h2 {
+            margin: 0 0 10px 0;
+            line-height: 1.1;
+        }
+        .section p, .section h3 {
+            margin: 5px 0;
+            max-width: 400px;
+            line-height: 1.4;
+        }
+
+        .section.dark { color: white; background-color: transparent; }
+        .section.right { text-align: right; align-items: flex-end; }
+        .section.right p, .section.right h3 { margin-left: auto; }
+
+        .blueprint {
+            position: relative;
+            background-color: #05162b;
+            background-image: 
+                linear-gradient(rgba(233,69,96,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(233,69,96,0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
+        }
+
+        .ground-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: -100px;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: cover;
+            filter: grayscale(0.7) brightness(0.3) contrast(1.2);
+        }
+
+        .ground {
+            z-index: -1;
+            background-image: url("https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=2000");
+        }
+
+        .scroll-cta {
+            position: absolute;
+            bottom: var(--padding);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            color: var(--accent-color);
+        }
+
+        .sunset {
+            background: linear-gradient(to bottom, #0a0a12, #2d132c);
+        }
+
+        h1, h2 {
+            font-size: var(--font-size-large);
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        h3 { font-size: var(--font-size-medium); font-weight: 400; color: #fff; }
+        .end h2 { margin-bottom: 20vh; }
+    </style>
+</head>
+<body>
+    <!-- Navigation Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="navbar-logo">Kristy</a>
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="daily-reading.html">Daily Card</a></li>
+                <li><a href="booking.html">Book Reading</a></li>
+                <li><a href="shop/shop.html">Shop</a></li>
+                <li><a href="login.html" class="navbar-signup-btn">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="loading">Aligning the Stars...</div>
+
+    <div class="content">
+        <div class="section">
+            <h1>Kristy Tarot.</h1>
+            <h3>A guide to clarity, wisdom, and spiritual awakening.</h3>
+            <p>I'm Kristy, a dedicated tarot reader with over 8 years of experience in spiritual guidance and intuitive readings.</p>
+            <div class="scroll-cta">↓ Scroll to Learn More</div>
+        </div>
+
+        <div class="section right">
+            <h2>My Journey.</h2>
+            <p>My path to tarot began with curiosity and evolved into a profound spiritual practice. What started as personal exploration transformed into a calling to help others navigate life's complexities with clarity and wisdom.</p>
+        </div>
+
+        <div class="ground-container">
+            <div class="parallax ground"></div>
+            <div class="section right">
+                <h2>What I Offer.</h2>
+                <p>I provide intuitive tarot readings that honor your unique journey. Whether seeking guidance on relationships, career decisions, or spiritual growth, I create a sacred space for honest exploration and meaningful insight.</p>
+            </div>
+
+            <div class="section">
+                <h2>My Approach.</h2>
+                <p>I blend traditional tarot wisdom with intuitive channeling to provide readings that resonate deeply. Each reading is personalized, compassionate, and designed to empower you with the clarity you need to move forward.</p>
+            </div>
+
+            <div class="section right">
+                <h2>Intuition.</h2>
+                <p>Defying all logic and reason. It's not magic; it's just pure, unfiltered intuition.</p>
+            </div>
+        </div>
+
+        <div class="blueprint">
+            <div class="section dark">
+                <h2>Specializations.</h2>
+                <p>I specialize in relationship guidance, career decisions, spiritual growth, and life transitions.</p>
+            </div>
+            <div class="section dark">
+                <h2>Deep-Dive Readings.</h2>
+                <p>Comprehensive sessions that explore multiple dimensions of your situation with detailed insight.</p>
+            </div>
+            <div class="section dark">
+                <h2>Daily Guidance.</h2>
+                <p>Quick, focused readings to center yourself and receive the message you need most today.</p>
+            </div>
+            <div class="section dark">
+                <h2>Transformation Through Insight.</h2>
+                <p>Tarot is a tool for self-discovery, empowerment, and alignment with your highest truth.</p>
+            </div>
+        </div>
+
+        <div class="sunset">
+            <div class="section"></div>
+            <div class="section end">
+                <h2>Let's Connect.</h2>
+                <p>When you're ready for clarity, guidance, or deeper understanding, I'm here to help you illuminate your path forward.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Scene {
+            constructor(cardGroup) {
+                this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(window.devicePixelRatio);
+                document.body.appendChild(this.renderer.domElement);
+
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
+                this.camera.position.set(0, 0, 140);
+
+                const light = new THREE.PointLight(0xffffff, 1.2);
+                light.position.set(50, 50, 100);
+                this.scene.add(light);
+                this.scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+                this.modelGroup = cardGroup;
+                this.scene.add(this.modelGroup);
+
+                window.addEventListener("resize", () => this.onResize());
+                this.onResize();
+            }
+
+            render = () => {
+                this.renderer.render(this.scene, this.camera);
+            };
+
+            onResize = () => {
+                this.w = window.innerWidth;
+                this.h = window.innerHeight;
+                this.renderer.setSize(this.w, this.h);
+                this.camera.aspect = this.w / this.h;
+                this.camera.updateProjectionMatrix();
+                this.render();
+            };
+        }
+
+        function createTarotCard() {
+            const group = new THREE.Group();
+            const width = 32, height = 56, depth = 0.6;
+            const geometry = new THREE.BoxGeometry(width, height, depth);
+
+            return Promise.all([
+                createCardTexture(true),
+                createCardTexture(false)
+            ]).then(([frontTexture, backTexture]) => {
+                const materials = [
+                    new THREE.MeshStandardMaterial({ color: 0xccac00, roughness: 0.3 }), 
+                    new THREE.MeshStandardMaterial({ color: 0xccac00, roughness: 0.3 }), 
+                    new THREE.MeshStandardMaterial({ color: 0xccac00, roughness: 0.3 }), 
+                    new THREE.MeshStandardMaterial({ color: 0xccac00, roughness: 0.3 }), 
+                    new THREE.MeshStandardMaterial({ color: 0xffffff, map: frontTexture }),
+                    new THREE.MeshStandardMaterial({ color: 0x1a1a2e, map: backTexture })
+                ];
+
+                const card = new THREE.Mesh(geometry, materials);
+                group.add(card);
+                return group;
+            });
+        }
+
+        function createCardTexture(isFace) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.src = isFace ? 'baby.png' : 'me.png';
+                
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, 512, 1024);
+                    const texture = new THREE.CanvasTexture(canvas);
+                    texture.needsUpdate = true;
+                    resolve(texture);
+                };
+                
+                img.onerror = () => {
+                    // Fallback color if image fails to load
+                    ctx.fillStyle = '#2a2a2a';
+                    ctx.fillRect(0, 0, 512, 1024);
+                    const texture = new THREE.CanvasTexture(canvas);
+                    resolve(texture);
+                };
+            });
+        }
+
+        function init() {
+            gsap.registerPlugin(ScrollTrigger);
+            createTarotCard().then(cardGroup => {
+                const scene = new Scene(cardGroup);
+                const card = scene.modelGroup;
+
+                gsap.to(".loading", { autoAlpha: 0, duration: 0.8 });
+                gsap.fromTo("canvas", { autoAlpha: 0 }, { autoAlpha: 1, visibility: 'visible', duration: 1.5 });
+                gsap.to(".scroll-cta", { opacity: 1, duration: 1, delay: 1, yoyo: true, repeat: -1 });
+
+                const tau = Math.PI * 2;
+                
+                gsap.set(card.rotation, { x: 0.1, y: -0.2, z: 0 });
+                gsap.set(card.position, { x: 45, y: 0, z: 0 });
+
+                gsap.to(".ground", { y: "25%", scrollTrigger: { trigger: ".ground-container", scrub: true }});
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: ".content", start: "top top", end: "bottom bottom", scrub: 1.2,
+                        onUpdate: scene.render
+                    }
+                });
+
+            const dur = 1;
+
+            // 1. Intro -> Symbolism
+            tl.to(".scroll-cta", { opacity: 0, duration: 0.2 }, 0);
+            tl.to(card.position, { x: -40, y: 5, z: 10 }, 0);
+            tl.to(card.rotation, { y: tau * 0.75, x: 0.4, z: 0.2 }, 0); 
+
+            // 2. Symbolism -> The Void
+            tl.to(card.position, { x: -50, y: -10, z: -10 }, dur);
+            tl.to(card.rotation, { y: tau * 1.25, x: -0.2, z: -0.1 }, dur);
+
+            // 3. The Void -> The Bridge
+            tl.to(card.position, { x: 45, y: 0, z: 15 }, dur * 2);
+            tl.to(card.rotation, { y: tau * 2, x: 0.5, z: -0.2 }, dur * 2);
+
+            // 4. The Bridge -> Intuition
+            tl.to(card.position, { x: -45, y: 5, z: 0 }, dur * 3);
+            tl.to(card.rotation, { y: tau * 2.75, x: -0.4, z: 0.3 }, dur * 3);
+
+            // 5. Intuition -> Geometry Section
+            tl.to(card.position, { x: 35, y: 0, z: 30 }, dur * 4);
+            tl.to(card.rotation, { x: 0, y: tau * 3, z: 0 }, dur * 4);
+
+            // 6. Inspecting Geometry
+            tl.to(card.position, { x: 35, y: 5, z: 40 }, dur * 5);
+            tl.to(card.rotation, { y: tau * 3.5, x: 0.2 }, dur * 5);
+
+            tl.to(card.position, { x: 35, y: -5, z: 50 }, dur * 6);
+            tl.to(card.rotation, { y: tau * 4, x: -0.1, z: 0.05 }, dur * 6);
+
+            // 7. Final Ascend
+            tl.to(card.position, { x: 0, y: 150, z: -200 }, dur * 7);
+            tl.to(card.rotation, { x: tau * 2, y: tau * 6, z: tau }, dur * 7);
+
+                scene.render();
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

@@ -3,6 +3,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
+import portfolioImg from '../assets/portfolio.jpg';
+import ecommerceImg from '../assets/ecommerce.jpg';
+import companyImg from '../assets/company.jpg';
+import dashboardImg from '../assets/dashboard.jpg';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const BrandCTA = () => {
@@ -288,7 +293,7 @@ const BrandCTA = () => {
                 <h3 className="text-white">Portfolio Websites</h3>
                 <p>High-impact designs that showcase your creative projects with intention.</p>
                 <div className="img-container-exact">
-                  <img src="./src/assets/portfolio.jpg" alt="Portfolio Websites" />
+                  <img src={portfolioImg} alt="Portfolio Websites" />
                 </div>
               </div>
               <div className="card-link-exact">
@@ -306,7 +311,7 @@ const BrandCTA = () => {
                 <h3 className="text-white">E Commerce Websites</h3>
                 <p>Scalable digital stores integrated with online booking systems to drive business growth.</p>
                 <div className="img-container-exact">
-                  <img src="./src/assets/ecommerce.jpg" alt="E Commerce Websites" />
+                  <img src={ecommerceImg} alt="E Commerce Websites" />
                 </div>
               </div>
               <div className="card-link-exact">
@@ -324,7 +329,7 @@ const BrandCTA = () => {
                 <h3 className="text-white">Company Websites</h3>
                 <p>Professional full-stack web solutions that establish a strong brand identity and digital presence.</p>
                 <div className="img-container-exact">
-                  <img src="./src/assets/company.jpg" alt="Company Websites" />
+                  <img src={companyImg} alt="Company Websites" />
                 </div>
               </div>
               <div className="card-link-exact">
@@ -342,7 +347,7 @@ const BrandCTA = () => {
                 <h3 className="text-white">Portals & Dashboards</h3>
                 <p>Custom-built technical architectures designed to manage complex data and streamline user interactions.</p>
                 <div className="img-container-exact">
-                  <img src="./src/assets/dashboard.jpg" alt="Portals & Dashboards" />
+                  <img src={dashboardImg} alt="Portals & Dashboards" />
                 </div>
               </div>
               <div className="card-link-exact">

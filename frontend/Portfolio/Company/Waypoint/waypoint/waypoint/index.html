@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'><path d='M100 5 L118 45 C155 40, 185 45, 195 50 C185 70, 145 95, 118 115 L100 100 L82 115 C55 95, 15 70, 5 50 C15 45, 45 40, 82 45 Z' fill='%23A665A5'/></svg>" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAYPOINT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-zoom-pan-pinch": "https://esm.sh/react-zoom-pan-pinch"
+  }
+}
+</script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'waypoint-primary': '#A665A5',
+            'waypoint-secondary': '#C4A4D4',
+            'waypoint-accent': '#E5B4E2',
+            'waypoint-dark': '#4C2A4C',
+            'waypoint-darkest': '#3F172C',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Smooth scrolling for anchor links and general navigation */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Default transitions for a smoother feel on all interactive elements */
+    button,
+    a,
+    input,
+    select,
+    textarea {
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* A subtle press-down effect on click for tactile feedback */
+    button:active,
+    a:active {
+      transform: scale(0.97);
+      transition-duration: 0.1s;
+    }
+
+    /* Keyframes for page transitions */
+    @keyframes page-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-page-fade-in {
+      animation: page-fade-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* Keyframes for component/modal fade-in-up effect */
+    @keyframes fade-in-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.8s ease-out forwards;
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal-init {
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+
+    .reveal-active {
+      opacity: 1 !important;
+      transform: translate(0, 0) !important;
+    }
+
+    .reveal-up {
+      transform: translateY(30px);
+    }
+
+    .reveal-down {
+      transform: translateY(-30px);
+    }
+
+    .reveal-left {
+      transform: translateX(30px);
+    }
+
+    .reveal-right {
+      transform: translateX(-30px);
+    }
+
+    .reveal-fade {
+      transform: scale(0.98);
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        text-shadow: 0 0 10px rgba(229, 180, 226, 0.2);
+        opacity: 0.9;
+      }
+
+      50% {
+        text-shadow: 0 0 25px rgba(229, 180, 226, 0.5);
+        opacity: 1;
+      }
+    }
+
+    .animate-pulse-glow {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+  </style>
+  <script>
+    // Expose React and ReactDOM globally for Recharts UMD bundle
+    window.React = React;
+    window.ReactDOM = ReactDOM;
+  </script>
+  <script src="https://unpkg.com/recharts/umd/Recharts.min.js" defer></script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="bg-waypoint-darkest">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
