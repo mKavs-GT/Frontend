@@ -296,14 +296,14 @@
                         <span id="hero-dynamic-text" class="text-[#0C1AC1] block md:inline-block">Web<br
                                 class="md:hidden"> Development</span>
                     </h1>
-                    <p class="text-lg md:text-xl font-bold text-[#4B4B4B] mt-1 md:mt-4 uppercase tracking-wider">
-                        WE BUILD YOUR DIGITAL SUPERHERO
+                    <p class="text-[10px] sm:text-xs md:text-xl font-bold text-[#4B4B4B] mt-1 md:mt-4 uppercase tracking-widest leading-snug whitespace-nowrap">
+                        WE BUILD KREATIVE ADVANCED VISUAL SITES
                     </p>
                     <div class="flex flex-row items-center gap-3 mt-3 md:mt-6">
                         <!-- View Brochure Button -->
                         <a href="./docs/Brochure.pdf" target="_blank"
                             class="inline-flex items-center gap-2 md:gap-4 bg-[#0C1AC1] text-white font-black py-2 px-5 md:py-1 md:pl-10 md:pr-1.5 rounded-full text-[10px] md:text-sm hover:bg-[#0a1599] transition-all uppercase tracking-widest group shadow-xl">
-                            <span>View Brochure</span>
+                            <span><span class="hidden md:inline">View </span>Brochure</span>
                             <div
                                 class="bg-white rounded-full w-5 h-5 md:w-8 md:h-8 flex items-center justify-center text-[#0C1AC1] transform group-hover:translate-x-1 transition-transform">
                                 <i class="fa-solid fa-chevron-right text-[8px] md:text-[10px]"></i>
@@ -339,419 +339,138 @@
                 </div>
 
                 <!-- Light Grey Section under the hero -->
-                <div class="w-full bg-[#FDFDFD] md:bg-transparent pointer-events-auto z-40 relative mt-[100vh] md:mt-0">
-                    <div class="community-section">
-                        <style>
-                            /* Scoped CSS for the Community Section */
-                            .community-section {
-                                --bg-color: #FDFDFD;
-                                --text-main: #2b2d42;
-                                --text-muted: #8d99ae;
-                                --clay-light: #ffffff;
-                                --clay-dark: #d1d1d1;
-                                background-color: transparent;
-                                color: var(--text-main);
-                                width: 100%;
-                                min-height: 250vh;
-                                position: relative;
-                            }
-
-                            .community-section * {
-                                box-sizing: border-box;
-                            }
-
-                            .community-section .sticky-wrapper {
-                                position: sticky;
-                                top: 0;
-                                height: 100vh;
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
-                                overflow: hidden;
-                            }
-
-                            .community-section .header {
-                                text-align: center;
-                                margin-bottom: 2vh;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                gap: 10px;
-                            }
-
-                            .community-section .subtitle {
-                                font-size: 0.75rem;
-                                font-weight: 700;
-                                letter-spacing: 3px;
-                                text-transform: uppercase;
-                                color: var(--text-muted);
-                                text-shadow: 1px 1px 1px var(--clay-light), -1px -1px 1px rgba(0, 0, 0, 0.05);
-                            }
-
-                            .community-section .title {
-                                font-size: 4.5rem;
-                                font-weight: 800;
-                                letter-spacing: -0.03em;
-                                color: var(--text-main);
-                                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1), -2px -2px 4px var(--clay-light);
-                            }
-
-                            .community-section .carousel-section {
-                                width: 100%;
-                                height: 70vh;
-                                display: flex;
-                                align-items: center;
-                                overflow: hidden;
-                                perspective: 1500px;
-                            }
-
-                            .community-section .carousel-container {
-                                width: 100%;
-                                transform-style: preserve-3d;
-                            }
-
-                            .community-section .carousel-track {
-                                display: flex;
-                                gap: 40px;
-                                padding: 0 50vw;
-                                align-items: center;
-                                transform-style: preserve-3d;
-                                will-change: transform;
-                            }
-
-                            .community-section .carousel-item {
-                                flex-shrink: 0;
-                                width: 540px;
-                                height: 440px;
-                                padding: 0;
-                                border-radius: 24px;
-                                background: var(--bg-color);
-                                box-shadow: 16px 16px 32px var(--clay-dark),
-                                    -16px -16px 32px var(--clay-light),
-                                    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
-                                    inset -2px -2px 4px rgba(0, 0, 0, 0.05);
-                                border: none;
-                                transform-style: preserve-3d;
-                                will-change: transform;
-                                overflow: hidden;
-                            }
-
-                            .community-section .image-wrapper {
-                                position: relative;
-                                width: 100%;
-                                height: 240px;
-                                border-radius: 24px 24px 0 0;
-                                overflow: hidden;
-                                background: rgba(0, 0, 0, 0.05);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            }
-
-                            .community-section .carousel-item img {
-                                width: 100%;
-                                height: 100%;
-                                object-fit: contain;
-                                filter: contrast(0.95) brightness(0.95);
-                            }
-
-                            .community-section .carousel-item img.blurry-image {
-                                filter: blur(8px) brightness(0.5);
-                                object-fit: cover;
-                            }
-
-                            .community-section .view-all-overlay {
-                                position: absolute;
-                                inset: 0;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                background: rgba(0, 0, 0, 0.25);
-                                transition: background 0.3s ease;
-                            }
-
-                            .community-section .carousel-item:hover .view-all-overlay {
-                                background: rgba(0, 0, 0, 0.15);
-                            }
-
-                            .community-section .overlay-text {
-                                color: #c7f908;
-                                font-size: 1.6rem;
-                                font-weight: 900;
-                                text-transform: uppercase;
-                                letter-spacing: 2px;
-                                display: flex;
-                                align-items: center;
-                                gap: 12px;
-                                text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-                                transition: gap 0.3s ease;
-                            }
-
-                            .community-section .carousel-item:hover .overlay-text {
-                                gap: 18px;
-                            }
-
-                            .community-section .carousel-text {
-                                margin-top: 20px;
-                                text-align: left;
-                                padding: 0 24px 24px 24px;
-                            }
-
-                            .community-section .carousel-heading {
-                                font-size: 1.2rem;
-                                font-weight: 800;
-                                margin: 0;
-                                color: var(--text-main);
-                                letter-spacing: -0.01em;
-                                display: -webkit-box;
-                                -webkit-line-clamp: 2;
-                                -webkit-box-orient: vertical;
-                                overflow: hidden;
-                            }
-
-                            .community-section .carousel-subheading {
-                                font-size: 0.85rem;
-                                color: var(--text-muted);
-                                margin: 6px 0 0 0;
-                                font-weight: 600;
-                                letter-spacing: 0.5px;
-                                line-height: 1.4;
-                                display: -webkit-box;
-                                -webkit-line-clamp: 2;
-                                -webkit-box-orient: vertical;
-                                overflow: hidden;
-                            }
-
-                            .community-section .form-section {
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 10vh 20px;
-                            }
-
-                            .community-section .form-wrapper {
-                                display: flex;
-                                align-items: center;
-                                background: var(--bg-color);
-                                padding: 10px;
-                                border-radius: 20px;
-                                box-shadow: 10px 10px 20px var(--clay-dark),
-                                    -10px -10px 20px var(--clay-light);
-                                margin-bottom: 20px;
-                            }
-
-                            .community-section .clay-input {
-                                border: none;
-                                background: var(--bg-color);
-                                padding: 18px 25px;
-                                font-size: 1rem;
-                                width: 300px;
-                                border-radius: 12px;
-                                outline: none;
-                                box-shadow: inset 6px 6px 12px var(--clay-dark),
-                                    inset -6px -6px 12px var(--clay-light);
-                                color: var(--text-main);
-                                transition: all 0.3s ease;
-                            }
-
-                            .community-section .clay-input::placeholder {
-                                color: var(--text-muted);
-                            }
-
-                            .community-section .clay-input:focus {
-                                box-shadow: inset 8px 8px 16px var(--clay-dark),
-                                    inset -8px -8px 16px var(--clay-light);
-                            }
-
-                            .community-section .clay-btn {
-                                border: none;
-                                background: var(--accent);
-                                color: white;
-                                padding: 18px 35px;
-                                margin-left: 10px;
-                                border-radius: 12px;
-                                font-size: 0.9rem;
-                                font-weight: 700;
-                                letter-spacing: 1px;
-                                cursor: pointer;
-                                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2),
-                                    -4px -4px 10px rgba(255, 255, 255, 0.1),
-                                    inset 2px 2px 4px rgba(255, 255, 255, 0.2),
-                                    inset -2px -2px 4px rgba(0, 0, 0, 0.4);
-                                transition: transform 0.1s, box-shadow 0.1s;
-                            }
-
-                            .community-section .clay-btn:active {
-                                transform: scale(0.97);
-                                box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.5),
-                                    inset -2px -2px 4px rgba(255, 255, 255, 0.1);
-                            }
-
-                            .community-section .disclaimer {
-                                font-size: 0.75rem;
-                                color: var(--text-muted);
-                                opacity: 0.7;
-                            }
-
-                            @media (max-width: 768px) {
-                                .community-section .title {
-                                    font-size: 3rem;
-                                }
-
-                                .community-section .carousel-item {
-                                    width: 350px;
-                                    height: 330px;
-                                    padding: 0;
-                                    border: none;
-                                }
-
-                                .community-section .image-wrapper {
-                                    height: 180px;
-                                    border-radius: 24px 24px 0 0;
-                                }
-
-                                .community-section .overlay-text {
-                                    font-size: 1.2rem;
-                                }
-
-                                .community-section .carousel-text {
-                                    margin-top: 15px;
-                                    padding: 0 16px 16px 16px;
-                                }
-
-                                .community-section .carousel-heading {
-                                    font-size: 1rem;
-                                }
-
-                                .community-section .carousel-subheading {
-                                    font-size: 0.75rem;
-                                    margin-top: 4px;
-                                }
-
-                                .community-section .form-wrapper {
-                                    flex-direction: column;
-                                    gap: 15px;
-                                    padding: 20px;
-                                }
-
-                                .community-section .clay-btn {
-                                    margin-left: 0;
-                                    width: 100%;
-                                }
-
-                                .community-section .clay-input {
-                                    width: 100%;
-                                }
-                            }
-                        </style>
-
-                        <div class="sticky-wrapper">
-                            <header class="header">
-                                <p class="subtitle">NEW AT MKAVS</p>
-                                <h1 class="title">Highlights</h1>
-                            </header>
-                            <section class="carousel-section">
-                                <div class="carousel-container">
-                                    <div class="carousel-track">
-                                        <!-- Card 1 -->
-                                        <div class="carousel-item">
-                                            <div class="image-wrapper">
-                                                <img src="images/1.png"
-                                                    alt="First multi-project deal with Prof. DP Sudhaghar">
-                                            </div>
-                                            <div class="carousel-text">
-                                                <h3 class="carousel-heading">First multi-project deal with Prof. DP
-                                                    Sudhaghar</h3>
-                                                <p class="carousel-subheading">A sincere thank you to DP Sudhagar Sir
-                                                    for this opportunity and for placing your trust in mKavs.</p>
-                                            </div>
-                                        </div>
-                                        <!-- Card 2 -->
-                                        <div class="carousel-item">
-                                            <div class="image-wrapper">
-                                                <img src="images/2.png" alt="Collaboration with Gan Eden Biotic">
-                                            </div>
-                                            <div class="carousel-text">
-                                                <h3 class="carousel-heading">Collaboration with Gan Eden Biotic</h3>
-                                                <p class="carousel-subheading">A heartfelt thank you to Sebin Cyriac,
-                                                    Founder and Jitha Ajay, Co founder of Gan Eden Biotic.</p>
-                                            </div>
-                                        </div>
-                                        <!-- Card 3 -->
-                                        <div class="carousel-item">
-                                            <div class="image-wrapper">
-                                                <img src="images/3.png" alt="Contract signed with Swasth Ashraya">
-                                            </div>
-                                            <div class="carousel-text">
-                                                <h3 class="carousel-heading">Contract signed with Swasth Ashraya</h3>
-                                                <p class="carousel-subheading">Proud to be working on the development of
-                                                    organic micro-greens with Swasth Ashraya's efforts.</p>
-                                            </div>
-                                        </div>
-                                        <!-- Card 4 -->
-                                        <div class="carousel-item">
-                                            <div class="image-wrapper">
-                                                <img src="images/4.png" alt="Brand Identity for ByDPS.com">
-                                            </div>
-                                            <div class="carousel-text">
-                                                <h3 class="carousel-heading">Brand Identity for ByDPS.com</h3>
-                                                <p class="carousel-subheading">Initiation of the build to deployment of
-                                                    5 projects under Prof. DP Sudhaghar</p>
-                                            </div>
-                                        </div>
-                                        <!-- Card 5 (View All) -->
-                                        <div class="carousel-item view-all-card cursor-pointer"
-                                            onclick="window.location.hash='#our-works'">
-                                            <div class="image-wrapper">
-                                                <img src="images/1.png" alt="View All" class="blurry-image">
-                                                <div class="view-all-overlay">
-                                                    <span class="overlay-text">View All <i
-                                                            class="fa-solid fa-arrow-right"></i></span>
-                                                </div>
-                                            </div>
-                                            <div class="carousel-text">
-                                                <h3 class="carousel-heading">View All <i
-                                                        class="fa-solid fa-arrow-right text-xs"></i></h3>
-                                                <p class="carousel-subheading">Explore all of our projects and
-                                                    collaborations.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                <div class="w-full bg-[#FDFDFD] md:bg-transparent pointer-events-auto z-40 relative mt-[90vh] md:mt-0">
+                    
+                    <!-- Thumbnails Marquee below Hero -->
+                    <div class="w-full overflow-hidden z-50 relative block md:hidden mb-2" style="line-height: 0;">
+                        <div class="marquee-container animate-scroll-left flex" style="animation-duration: 25s; display: inline-flex;">
+                            <!-- Thumbnails -->
+                            <img src="/Portfolio/Thumbnails/bags aura.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="bag">
+                            <img src="/Portfolio/Thumbnails/cars.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="car">
+                            <img src="/Portfolio/Thumbnails/editing.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="edit">
+                            <img src="/Portfolio/Thumbnails/filmaura.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="film">
+                            <img src="/Portfolio/Thumbnails/jeri.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="jeri">
+                            <img src="/Portfolio/Thumbnails/kaizoku.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kaizoku">
+                            <img src="/Portfolio/Thumbnails/kristy.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kristy">
+                            <img src="/Portfolio/Thumbnails/kyat.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kyat">
+                            <img src="/Portfolio/Thumbnails/latency.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="latency">
+                            <img src="/Portfolio/Thumbnails/pritam.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="pritam">
+                            <img src="/Portfolio/Thumbnails/serch.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="serch">
+                            <img src="/Portfolio/Thumbnails/slick.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="slick">
+                            <img src="/Portfolio/Thumbnails/waypoint.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="waypoint">
+                            <img src="/Portfolio/Thumbnails/wegrow.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="wegrow">
+                            <!-- Duplicate for seamless loop -->
+                            <img src="/Portfolio/Thumbnails/bags aura.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="bag">
+                            <img src="/Portfolio/Thumbnails/cars.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="car">
+                            <img src="/Portfolio/Thumbnails/editing.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="edit">
+                            <img src="/Portfolio/Thumbnails/filmaura.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="film">
+                            <img src="/Portfolio/Thumbnails/jeri.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="jeri">
+                            <img src="/Portfolio/Thumbnails/kaizoku.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kaizoku">
+                            <img src="/Portfolio/Thumbnails/kristy.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kristy">
+                            <img src="/Portfolio/Thumbnails/kyat.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="kyat">
+                            <img src="/Portfolio/Thumbnails/latency.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="latency">
+                            <img src="/Portfolio/Thumbnails/pritam.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="pritam">
+                            <img src="/Portfolio/Thumbnails/serch.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="serch">
+                            <img src="/Portfolio/Thumbnails/slick.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="slick">
+                            <img src="/Portfolio/Thumbnails/waypoint.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="waypoint">
+                            <img src="/Portfolio/Thumbnails/wegrow.png" class="h-24 md:h-32 w-auto object-cover m-0 p-0 block" alt="wegrow">
                         </div>
+                    </div>
+
+                    <div class="community-section w-full bg-[#FDFDFD] flex flex-col md:flex-row items-center justify-center min-h-[auto] md:min-h-[60vh] px-8 md:px-24 pt-6 pb-12 md:py-16 md:-mt-20 relative z-40">
+                        <!-- Left Column (Text) -->
+                        <div class="w-full md:w-2/5 flex flex-col justify-center items-start z-10 pr-0 md:pr-16 md:mb-0">
+                            <p class="text-[#8d99ae] font-bold tracking-[4px] text-xs uppercase mb-4">NEW AT MKAVS</p>
+                            <h1 class="text-4xl md:text-6xl font-black text-[#2b2d42] tracking-tighter leading-none md:mb-10 text-shadow-sm">Highlights</h1>
+                            
+                            <!-- Dynamic Text Container (DESKTOP) -->
+                            <div class="hl-text-container hidden md:flex transition-opacity duration-500 opacity-100 flex-col gap-4">
+                                <h3 class="hl-heading text-xl md:text-2xl font-black text-[#1a1a1a] leading-tight">First multi-project deal with Prof. DP Sudhaghar</h3>
+                                <p class="hl-subheading text-gray-500 text-sm md:text-base leading-relaxed font-medium">A sincere thank you to DP Sudhagar Sir for this opportunity and for placing your trust in mKavs.</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Column (Images) -->
+                        <div class="w-full md:w-3/5 flex flex-col gap-0 md:gap-6">
+                            <div class="w-full relative h-[20vh] md:h-[40vh] overflow-hidden">
+                                <img id="hl-img-0" src="images/1.png" class="absolute inset-0 m-auto max-w-full max-h-full rounded-3xl transition-opacity duration-1000 opacity-100 z-10" alt="Highlight 1">
+                                <img id="hl-img-1" src="images/2.png" class="absolute inset-0 m-auto max-w-full max-h-full rounded-3xl transition-opacity duration-1000 opacity-0 z-0" alt="Highlight 2">
+                                <img id="hl-img-2" src="images/3.png" class="absolute inset-0 m-auto max-w-full max-h-full rounded-3xl transition-opacity duration-1000 opacity-0 z-0" alt="Highlight 3">
+                                <img id="hl-img-3" src="images/4.png" class="absolute inset-0 m-auto max-w-full max-h-full rounded-3xl transition-opacity duration-1000 opacity-0 z-0" alt="Highlight 4">
+                            </div>
+
+                            <!-- Dynamic Text Container (MOBILE) -->
+                            <div class="hl-text-container flex md:hidden transition-opacity duration-500 opacity-100 flex-col gap-3 pl-1">
+                                <h3 class="hl-heading text-xl font-black text-[#1a1a1a] leading-tight">First multi-project deal with Prof. DP Sudhaghar</h3>
+                                <p class="hl-subheading text-gray-500 text-sm leading-relaxed font-medium">A sincere thank you to DP Sudhagar Sir for this opportunity and for placing your trust in mKavs.</p>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                const data = [
+                                    {
+                                        heading: "First multi-project deal with Prof. DP Sudhaghar",
+                                        subheading: "A sincere thank you to DP Sudhagar Sir for this opportunity and for placing your trust in mKavs."
+                                    },
+                                    {
+                                        heading: "Collaboration with Gan Eden Biotic",
+                                        subheading: "A heartfelt thank you to Sebin Cyriac, Founder and Jitha Ajay, Co founder of Gan Eden Biotic."
+                                    },
+                                    {
+                                        heading: "Contract signed with Swasth Ashraya",
+                                        subheading: "Proud to be working on the development of organic micro-greens with Swasth Ashraya's efforts."
+                                    },
+                                    {
+                                        heading: "Brand Identity for ByDPS.com",
+                                        subheading: "Initiation of the build to deployment of 5 projects under Prof. DP Sudhagar"
+                                    }
+                                ];
+                                
+                                const textContainers = document.querySelectorAll('.hl-text-container');
+                                const headingEls = document.querySelectorAll('.hl-heading');
+                                const subheadingEls = document.querySelectorAll('.hl-subheading');
+                                
+                                let currentIndex = 0;
+                                const totalItems = 4;
+                                
+                                setInterval(() => {
+                                    // 1. Start crossfading images immediately
+                                    const currentImg = document.getElementById(`hl-img-${currentIndex}`);
+                                    currentImg.classList.remove('opacity-100', 'z-10');
+                                    currentImg.classList.add('opacity-0', 'z-0');
+                                    
+                                    // Fade out text
+                                    textContainers.forEach(container => {
+                                        container.classList.remove('opacity-100');
+                                        container.classList.add('opacity-0');
+                                    });
+                                    
+                                    // Increment index
+                                    currentIndex = (currentIndex + 1) % totalItems;
+                                    
+                                    const newImg = document.getElementById(`hl-img-${currentIndex}`);
+                                    newImg.classList.remove('opacity-0', 'z-0');
+                                    newImg.classList.add('opacity-100', 'z-10');
+                                    
+                                    // 2. Wait for text to fade out (500ms), then swap and fade back in
+                                    setTimeout(() => {
+                                        headingEls.forEach(el => el.innerHTML = data[currentIndex].heading);
+                                        subheadingEls.forEach(el => el.innerHTML = data[currentIndex].subheading);
+                                        
+                                        textContainers.forEach(container => {
+                                            container.classList.remove('opacity-0');
+                                            container.classList.add('opacity-100');
+                                        });
+                                    }, 500); 
+                                    
+                                }, 3000); // Change slide every 3 seconds
+                            });
+                        </script>
                     </div>
                 </div>
 
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        gsap.registerPlugin(ScrollTrigger);
-                        const track = document.querySelector(".community-section .carousel-track");
-                        const items = gsap.utils.toArray(".community-section .carousel-item");
 
-                        gsap.from(".community-section .header > *", {
-                            y: 40, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power4.out"
-                        });
-
-
-                        gsap.ticker.add(() => {
-                            const centerX = window.innerWidth / 2;
-                            items.forEach((item) => {
-                                const bounds = item.getBoundingClientRect();
-                                const itemCenter = bounds.left + bounds.width / 2;
-                                const distFromCenter = itemCenter - centerX;
-                                const maxRotation = 35;
-                                const rotationY = (distFromCenter / centerX) * maxRotation;
-                                const z = Math.abs(distFromCenter / centerX) * -120;
-                                const scale = 1 - Math.abs(distFromCenter / window.innerWidth) * 0.15;
-                                gsap.set(item, { rotationY: rotationY, z: z, scale: scale });
-                            });
-                        });
-                    });
-                </script>
             </div>
         </div>
 
@@ -770,11 +489,20 @@
                         </div>
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 w-full">
                             <h2
-                                class="text-4xl md:text-5xl lg:text-[4rem] font-black text-white uppercase tracking-tighter leading-tight w-full md:w-3/4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                                <span>WE BUILD KREATIVE ADVANCED</span>
-                                <span
-                                    class="bg-[#c7f908] text-black px-6 py-2 rounded-full border-2 border-[#1F1F1F] shadow-lg transform rotate-2 inline-block">VISUAL
-                                    SITES</span>
+                                class="text-white uppercase tracking-tighter leading-tight w-full md:w-3/4 font-black">
+                                <!-- Mobile Layout (Straight, stacked, slightly smaller) -->
+                                <div class="block md:hidden text-3xl space-y-2">
+                                    <span>WE BUILD</span>
+                                    <span class="block">KREATIVE ADVANCED</span>
+                                    <span class="inline-block bg-[#c7f908] text-black px-5 py-1.5 rounded-full border-2 border-[#1F1F1F] shadow-md">VISUAL SITES</span>
+                                </div>
+                                <!-- Desktop Layout (Original styled layout) -->
+                                <div class="hidden md:flex flex-wrap items-center gap-x-4 gap-y-2 text-4xl md:text-5xl lg:text-[4rem]">
+                                    <span>WE BUILD KREATIVE ADVANCED</span>
+                                    <span
+                                        class="bg-[#c7f908] text-black px-6 py-2 rounded-full border-2 border-[#1F1F1F] shadow-lg transform rotate-2 inline-block">VISUAL
+                                        SITES</span>
+                                </div>
                             </h2>
                             <div class="shrink-0 flex flex-col items-end gap-4 mt-4 md:mt-0 w-full md:w-1/4">
                                 <p class="text-gray-400 text-sm md:text-base text-right leading-relaxed font-medium">
@@ -791,15 +519,14 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Desktop Version (Hidden on Mobile) -->
+                    <div class="hidden md:grid md:grid-cols-3 gap-6">
                         <!-- Card 1 -->
-                        <div id="slide-2-card-1"
-                            class="tilt-effect group flex flex-col p-6 md:p-8 bg-[#1a1a1a] h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent hover:bg-[#222]">
+                        <div class="slide-2-card tilt-effect group flex flex-col p-6 md:p-8 bg-[#1a1a1a] h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent hover:bg-[#222]">
                             <div class="flex justify-between items-start mb-4">
                                 <h3 class="text-3xl font-black text-white uppercase italic leading-tight w-3/4">
-                                    Custom<br>Website Design.</h3>
-                                <div
-                                    class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                    Custom<br>Website<br>Design.</h3>
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-arrow-right -rotate-45 text-lg md:text-xl text-black"></i>
                                 </div>
                             </div>
@@ -811,8 +538,7 @@
                             </div>
                         </div>
                         <!-- Card 2 -->
-                        <div id="slide-2-card-2"
-                            class="tilt-effect group flex flex-col p-6 md:p-8 bg-[#0c19ad] md:-mt-8 md:mb-8 h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent z-10 relative">
+                        <div class="slide-2-card tilt-effect group flex flex-col p-6 md:p-8 bg-[#0c19ad] md:-mt-8 md:mb-8 h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent z-10 relative">
                             <div class="h-56 w-full overflow-hidden mb-6 relative z-10">
                                 <img src="images/2.jpeg" alt="Full Stack Web Development"
                                     class="w-full h-full object-cover group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
@@ -821,8 +547,7 @@
                                 <div class="flex justify-between items-center mb-4">
                                     <h3 class="text-3xl font-black text-white uppercase italic leading-tight w-3/4">
                                         Full-Stack<br>Web<br>Development.</h3>
-                                    <div
-                                        class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
                                         <i class="fa-solid fa-arrow-right -rotate-45 text-lg md:text-xl text-black"></i>
                                     </div>
                                 </div>
@@ -831,13 +556,11 @@
                             </div>
                         </div>
                         <!-- Card 3 -->
-                        <div id="slide-2-card-3"
-                            class="tilt-effect group flex flex-col p-6 md:p-8 bg-[#1a1a1a] h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent hover:bg-[#222]">
+                        <div class="slide-2-card tilt-effect group flex flex-col p-6 md:p-8 bg-[#1a1a1a] h-[550px] transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent hover:bg-[#222]">
                             <div class="flex justify-between items-start mb-4">
                                 <h3 class="text-3xl font-black text-white uppercase italic leading-tight w-3/4">
                                     Portfolio &<br>Business<br>Websites.</h3>
-                                <div
-                                    class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-arrow-right -rotate-45 text-lg md:text-xl text-black"></i>
                                 </div>
                             </div>
@@ -849,20 +572,82 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Mobile Version (Hidden on Desktop) -->
+                    <div class="block md:hidden relative w-full overflow-hidden">
+                        <div id="slide-2-cards-track" class="flex flex-row gap-6 w-max transition-transform duration-75 ease-out px-4">
+                            <!-- Card 1 -->
+                            <div class="slide-2-card tilt-effect group flex flex-col p-5 bg-[#1a1a1a] w-[260px] h-[390px] shrink-0 transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h3 class="text-2xl font-black text-white uppercase italic leading-[1.1] w-[70%]">
+                                        Custom<br>Website<br>Design.</h3>
+                                    <div class="w-10 h-10 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-arrow-right -rotate-45 text-lg text-black"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-snug mt-2 mb-3">
+                                    Unique, aesthetic, and tailored <br> layouts. No templates, <br> no shortcuts.
+                                </p>
+                                <div class="mt-auto w-full aspect-square overflow-hidden relative z-10 rounded-lg">
+                                    <img src="/Portfolio/Thumbnails/kaizoku.png" alt="Custom Web Design"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="slide-2-card tilt-effect group flex flex-col p-5 bg-[#0c19ad] w-[260px] h-[390px] shrink-0 transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent z-10 relative">
+                                <div class="w-full aspect-square overflow-hidden relative z-10 order-3 mt-auto rounded-lg">
+                                    <img src="/Portfolio/Thumbnails/kyat.png" alt="Full Stack Web Development"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <div class="mt-0 order-1">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <h3 class="text-2xl font-black text-white uppercase italic leading-[1.1] w-[75%]">
+                                            Full-Stack<br>Website<br>Development.
+                                        </h3>
+                                        <div class="w-10 h-10 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                            <i class="fa-solid fa-arrow-right -rotate-45 text-lg text-black"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-white/90 text-sm leading-snug mt-2 mb-3 order-2">
+                                    Fast, secure, scalable websites <br> built <br> with the latest tech.
+                                </p>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="slide-2-card tilt-effect group flex flex-col p-5 bg-[#1a1a1a] w-[260px] h-[390px] shrink-0 transition-all duration-700 ease-out scale-0 opacity-0 border border-transparent">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h3 class="text-2xl font-black text-white uppercase italic leading-[1.1] w-[70%]">
+                                        Portfolio &<br>Business<br>Websites.</h3>
+                                    <div class="w-10 h-10 rounded-full bg-[#c7f908] flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-arrow-right -rotate-45 text-lg text-black"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-snug mt-2 mb-3">
+                                    Sleek, professional, mobile-friendly<br> sites for creators, startups <br> and Brands
+                                </p>
+                                <div class="mt-auto w-full aspect-square overflow-hidden relative z-10 rounded-lg">
+                                    <img src="/Portfolio/Thumbnails/cars.png" alt="Portfolio"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Mobile Scroll Right-side Spacer -->
+                            <div class="w-6 shrink-0"></div>
+                        </div>
+                    </div>
                 </div>
 
 
                 <br><br>
 
-                <div class="max-w-7xl mx-auto px-4 -mt-50 pb-10">
+                <div class="max-w-7xl mx-auto px-8 md:px-10 -mt-50 pb-0 md:pb-10">
                     <div class="flex flex-col gap-16">
                         <!-- Text Row -->
                         <div id="slide-2-bottom-text"
-                            class="flex flex-col gap-12 w-full opacity-0 -translate-x-full transition-all duration-1000 ease-out md:px-10">
+                            class="flex flex-col gap-4 md:gap-12 w-full opacity-0 -translate-x-full transition-all duration-1000 ease-out">
                             <!-- Header Section -->
                             <div
                                 class="flex flex-col md:flex-row justify-between items-start md:items-end relative mb-2">
-                                <div class="flex items-center">
+                                <div class="flex items-center pl-5 md:pl-0">
                                     <h2
                                         class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none">
                                         Why Choose <span class="text-[#c7f908]">mKavs?</span>
@@ -873,13 +658,12 @@
                                     <p class="text-gray-300 text-sm font-bold tracking-widest text-left">
                                         We take your vision and transform it into something beautiful, functional, and
                                         built to last.
-
                                     </p>
                                 </div>
                             </div>
 
-                            <!-- The 3 Boxes Grid -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mt-6">
+                            <!-- Desktop Version (Hidden on Mobile) -->
+                            <div class="hidden md:grid md:grid-cols-3 gap-12 md:gap-8 mt-6">
 
                                 <!-- Box 1 -->
                                 <div
@@ -979,6 +763,170 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Mobile Version (Accordion Dropdowns - Hidden on Desktop) -->
+                            <div class="block md:hidden w-full space-y-4 mt-2">
+                                <style>
+                                    .accordion-divider {
+                                        opacity: 0;
+                                        transition: opacity 0.2s ease-out;
+                                        transition-delay: 0s;
+                                    }
+                                    .accordion-item.is-open .accordion-divider {
+                                        opacity: 1;
+                                        transition-delay: 0.15s;
+                                    }
+                                </style>
+                                
+                                <!-- Dropdown 1 -->
+                                <div class="accordion-item w-full flex flex-col bg-[#1a1a1a] rounded-[1.75rem] border border-white/10 transition-all duration-300 overflow-hidden">
+                                    <button class="accordion-trigger w-full flex justify-between items-center px-6 py-5 text-left text-white focus:outline-none transition-all duration-300 bg-transparent">
+                                        <span class="font-black uppercase tracking-tight text-sm">
+                                            Vision & Creativity
+                                        </span>
+                                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300 shrink-0"></i>
+                                    </button>
+                                    <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-6 bg-transparent">
+                                        <div class="accordion-divider h-[1px] bg-[#2d2d2d] w-full"></div>
+                                        <div class="pt-4 pb-6 text-gray-400 text-sm leading-relaxed flex flex-col gap-4">
+                                            <p>We build with intention- We don't rush, reuse templates, or settle for "good enough."</p>
+                                            <img src="/Portfolio/Thumbnails/slick.png" alt="Vision & Creativity" class="w-full h-32 object-cover rounded-xl mt-2">
+                                            <div>
+                                                <a href="#slide-3" class="bg-[#0C1AC1] text-white rounded-full pl-6 pr-2 py-2 inline-flex items-center gap-4 group hover:bg-[#0a1599] transition-colors shadow-md">
+                                                    <span class="text-xs font-black uppercase tracking-wider">Discover</span>
+                                                    <div class="bg-white rounded-full w-8 h-8 flex items-center justify-center transform group-hover:translate-x-1 transition-transform">
+                                                        <i class="fa-solid fa-chevron-right text-xs text-[#0C1AC1]"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dropdown 2 -->
+                                <div class="accordion-item w-full flex flex-col bg-[#1a1a1a] rounded-[1.75rem] border border-white/10 transition-all duration-300 overflow-hidden">
+                                    <button class="accordion-trigger w-full flex justify-between items-center px-6 py-5 text-left text-white focus:outline-none transition-all duration-300 bg-transparent">
+                                        <span class="font-black uppercase tracking-tight text-sm">
+                                            Flexible Communication
+                                        </span>
+                                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300 shrink-0"></i>
+                                    </button>
+                                    <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-6 bg-transparent">
+                                        <div class="accordion-divider h-[1px] bg-[#2d2d2d] w-full"></div>
+                                        <div class="pt-4 pb-6 text-gray-400 text-sm leading-relaxed flex flex-col gap-4">
+                                            <p>We're Everywhere. WhatsApp, Discord, Teams, Google Meet. We adjust to your comfort.</p>
+                                            <img src="/Portfolio/Thumbnails/wegrow.png" alt="Flexible Communication" class="w-full h-32 object-cover rounded-xl mt-2">
+                                            <div>
+                                                <a href="https://discord.gg/HENvXDQQZJ" target="_blank" class="bg-[#0C1AC1] text-white rounded-full pl-6 pr-2 py-2 inline-flex items-center gap-4 group hover:bg-[#0a1599] transition-colors shadow-md">
+                                                    <span class="text-xs font-black uppercase tracking-wider">Connect</span>
+                                                    <div class="bg-white rounded-full w-8 h-8 flex items-center justify-center transform group-hover:translate-x-1 transition-transform">
+                                                        <i class="fa-solid fa-chevron-right text-xs text-[#0C1AC1]"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dropdown 3 -->
+                                <div class="accordion-item w-full flex flex-col bg-[#1a1a1a] rounded-[1.75rem] border border-white/10 transition-all duration-300 overflow-hidden">
+                                    <button class="accordion-trigger w-full flex justify-between items-center px-6 py-5 text-left text-white focus:outline-none transition-all duration-300 bg-transparent">
+                                        <span class="font-black uppercase tracking-tight text-sm">
+                                            Dedicated Support
+                                        </span>
+                                        <i class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300 shrink-0"></i>
+                                    </button>
+                                    <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-6 bg-transparent">
+                                        <div class="accordion-divider h-[1px] bg-[#2d2d2d] w-full"></div>
+                                        <div class="pt-4 pb-6 text-gray-400 text-sm leading-relaxed flex flex-col gap-4">
+                                            <p>We stick with you before, during, and after the project. Updates? Fixes? New ideas? We're here.</p>
+                                            <img src="/Portfolio/Thumbnails/latency.png" alt="Dedicated Support" class="w-full h-32 object-cover rounded-xl mt-2">
+                                            <div>
+                                                <a href="/Support" class="bg-[#0C1AC1] text-white rounded-full pl-6 pr-2 py-2 inline-flex items-center gap-4 group hover:bg-[#0a1599] transition-colors shadow-md">
+                                                    <span class="text-xs font-black uppercase tracking-wider">Get Support</span>
+                                                    <div class="bg-white rounded-full w-8 h-8 flex items-center justify-center transform group-hover:translate-x-1 transition-transform">
+                                                        <i class="fa-solid fa-chevron-right text-xs text-[#0C1AC1]"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const items = document.querySelectorAll('.accordion-item');
+                                    const triggers = document.querySelectorAll('.accordion-trigger');
+                                    const contents = document.querySelectorAll('.accordion-content');
+                                    
+                                    if (items.length === 0) return;
+
+                                    // Helper function to open a specific dropdown
+                                    function openDropdown(index) {
+                                        const item = items[index];
+                                        const content = contents[index];
+                                        const chevron = item.querySelector('.fa-chevron-down');
+                                        
+                                        if (content) {
+                                            content.style.maxHeight = content.scrollHeight + 'px';
+                                        }
+                                        if (chevron) {
+                                            chevron.style.transform = 'rotate(180deg)';
+                                        }
+                                        if (item) {
+                                            item.classList.add('is-open');
+                                        }
+                                    }
+                                    
+                                    // Helper function to close a specific dropdown
+                                    function closeDropdown(index) {
+                                        const item = items[index];
+                                        const content = contents[index];
+                                        const chevron = item.querySelector('.fa-chevron-down');
+                                        
+                                        if (content) {
+                                            content.style.maxHeight = '0px';
+                                        }
+                                        if (chevron) {
+                                            chevron.style.transform = 'rotate(0deg)';
+                                        }
+                                        if (item) {
+                                            item.classList.remove('is-open');
+                                        }
+                                    }
+                                    
+                                    // 1. Initially open the first dropdown after a small delay to ensure layout is ready
+                                    setTimeout(() => {
+                                        openDropdown(0);
+                                    }, 300);
+                                    
+                                    // 2. Add click listeners to triggers
+                                    triggers.forEach((trigger, index) => {
+                                        trigger.addEventListener('click', () => {
+                                            const isOpen = items[index].classList.contains('is-open');
+                                            
+                                            if (isOpen) {
+                                                // User is closing the currently open dropdown.
+                                                // Close this one, and open the next one in the cycle!
+                                                closeDropdown(index);
+                                                const nextIndex = (index + 1) % items.length;
+                                                openDropdown(nextIndex);
+                                            } else {
+                                                // User is opening a different dropdown.
+                                                // Close all others, then open this one.
+                                                items.forEach((item, i) => {
+                                                    if (i !== index) {
+                                                        closeDropdown(i);
+                                                    }
+                                                });
+                                                openDropdown(index);
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        </div>
                         </div>
 
 
@@ -986,7 +934,7 @@
                 </div>
 
                 <!-- Why Choose mKavs Video Block -->
-                <div class="w-full max-w-4xl mx-auto px-4 mt-8 md:mt-16 mb-12">
+                <div class="w-full max-w-4xl mx-auto px-4 mt-0 md:mt-16 mb-12">
                     <div class="w-full overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                         onclick="window.location.href='/Branding'">
                         <video src="images/why.mp4" autoplay loop muted playsinline
@@ -994,6 +942,664 @@
                     </div>
                 </div>
 
+
+                <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
+                    <p>Scroll down for next slide</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- id="slide-3" -->
+        <div id="slide-3"
+            class="slide bg-transparent z-30 translate-y-full slide-transition flex flex-col justify-start overflow-y-auto">
+
+
+
+            <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
+            <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
+            <div
+                class="w-full flex-shrink-0 bg-[#FDFDFD] z-40 relative pt-8 md:pt-12 pb-0 rounded-t-[40px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+                <div class="w-full min-h-full pt-8 pb-0 flex flex-col justify-center relative">
+
+                    <!-- Running Mascot Video Animation -->
+                    <div id="mascot-track"
+                        class="absolute top-0 left-0 w-full h-24 md:h-32 pointer-events-none z-10 overflow-hidden">
+                        <video id="mascot-runner" src="images/run.mp4" loop muted playsinline
+                            class="h-full w-auto absolute top-0" style="left: -200px;">
+                        </video>
+                    </div>
+                    <!-- Inline style for custom mascot animation -->
+                    <style>
+                        @keyframes runAnimationForwards {
+                            0% {
+                                transform: translateX(0);
+                            }
+
+                            100% {
+                                transform: translateX(calc(100vw + 200px));
+                            }
+                        }
+
+                        .animate-run-loop {
+                            animation: runAnimationForwards 12s linear infinite !important;
+                        }
+                    </style>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const track = document.getElementById("mascot-track");
+                            const runner = document.getElementById("mascot-runner");
+
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        runner.classList.add("animate-run-loop");
+                                        runner.play();
+                                        // Wait until fully visible before running but allow repeating infinitely
+                                        observer.unobserve(track);
+                                    }
+                                });
+                            }, {
+                                rootMargin: "0px 0px -25% 0px",
+                                threshold: 0
+                            });
+
+                            if (track) observer.observe(track);
+                        });
+                    </script>
+                    <br>
+                    <div class="max-w-7xl mx-auto px-6 w-full mb-16 relative z-20">
+                        <!-- Our Expertise Header -->
+                        <div class="text-left w-full mb-16 md:mt-20">
+                            <div class="flex items-center gap-2 mb-4">
+                                <i class="fa-solid fa-star text-[#0c19ad] text-base md:text-lg"></i>
+                                <span class="text-black text-sm md:text-base font-bold uppercase tracking-widest">Here
+                                    at MKAVS</span>
+                            </div>
+                            <h2
+                                class="text-4xl sm:text-5xl md:text-6xl font-black text-black uppercase tracking-tighter leading-tight">
+                                OUR <span class="text-[#0c19ad]">EXPERTISE</span>
+                            </h2>
+                        </div>
+
+                        <!-- Desktop Expertise Grid (hidden on mobile) -->
+                        <div class="max-md:hidden grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-4 w-full relative z-10 font-sans">
+                            <!-- Left Tall Box: 1. Advanced Frontend -->
+                            <div class="tilt-effect bg-[#1a1a1a] p-8 md:p-10 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px]">
+                                <!-- Subtitle / Tag -->
+                                <div class="text-[10px] md:text-xs font-bold text-gray-400 mb-6 md:mb-12 uppercase tracking-widest relative z-10">React • GSAP • Framer Motion • Node.js • Express.js</div>
+                                <div class="mt-auto md:mb-auto">
+                                    <h3 class="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10 md:w-5/6">Advanced Frontend<br>& Backend</h3>
+                                    <p class="text-gray-300 text-sm md:text-base leading-relaxed font-medium relative z-10 md:w-5/6">We craft fast, animated, modern frontends paired with a rock-solid backend.<br>Smooth transitions, clean interactions, secure APIs.</p>
+                                </div>
+                                <!-- Bottom Action imitating "All products" -->
+                                <div class="mt-8 relative z-10 flex items-center">
+                                    <a href="/BookUs" rel="noopener noreferrer" class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
+                                        <div class="px-6 py-3 flex flex-col justify-center">
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's Talk</span>
+                                            <span class="text-sm font-bold text-black">Free Consultation</span>
+                                        </div>
+                                        <div class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
+                                            <i class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="absolute -right-16 md:-right-8 -bottom-16 md:-bottom-8 w-64 h-64 md:w-80 md:h-80 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                            </div>
+                            <!-- Right Side Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                                <!-- Top Wide Box: 2. SEO & Google Indexing -->
+                                <div class="tilt-effect col-span-2 bg-[#f4f4f4] p-8 md:p-10 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative overflow-hidden h-full min-h-[220px]">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">A website that Google loves.</div>
+                                        <i class="fa-solid fa-arrow-up-right text-gray-400 text-xl md:text-2xl -mt-1 -mr-1"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-3xl md:text-4xl font-medium text-black leading-tight tracking-tight relative z-10">SEO & Google Indexing</h3>
+                                        <p class="text-gray-600 text-sm md:text-base leading-relaxed font-medium pt-3 max-w-md">We optimize your structure, content, speed, and metadata so your site <br>gets indexed fast and ranks higher. <br>Better visibility = more clients.</p>
+                                    </div>
+                                    <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
+                                </div>
+                                <!-- Bottom Left Box: 3. Branding -->
+                                <div class="tilt-effect bg-[#0c19ad] p-6 md:p-8 hover:bg-[#0a1595] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="text-[10px] font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">We don't just design — we brand.</div>
+                                        <i class="fa-solid fa-arrow-up-right text-white text-lg font-light"></i>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <h3 class="text-2xl md:text-3xl font-medium text-white leading-tight tracking-tight pb-1">Branding</h3>
+                                        <p class="text-white/80 text-[11px] md:text-xs font-medium leading-relaxed">Custom color systems, typography sets, <br>mood boards & visual direction.</p>
+                                    </div>
+                                </div>
+                                <!-- Bottom Right Box: Let's Talk -->
+                                <div class="tilt-effect bg-[#cafe00] p-6 md:p-8 hover:bg-[#cafe00] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div class="text-[10px] font-bold text-[#1a1a1a] uppercase tracking-widest leading-snug">Personality & Identity</div>
+                                        <i class="fa-regular fa-paper-plane text-[#1a1a1a] text-lg transform -rotate-12"></i>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <h3 class="text-2xl md:text-3xl font-medium text-black leading-tight tracking-tight pb-1">Customizations</h3>
+                                        <p class="text-black/80 text-[11px] md:text-xs font-medium leading-relaxed">Your brand will look <br>intentional and premium.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Expertise Stack (hidden on desktop) -->
+                        <div class="md:hidden grid grid-cols-1 gap-4 w-full relative z-10 font-sans pb-[50vh]">
+                            <!-- Left Tall Box: 1. Advanced Frontend -->
+                            <div class="tilt-effect bg-[#1a1a1a] p-8 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px] sticky top-[12vh] z-10">
+                                <div class="text-[10px] font-bold text-gray-400 mb-6 uppercase tracking-widest relative z-10">React • GSAP • Framer Motion • Node.js • Express.js</div>
+                                <div class="mt-auto">
+                                    <h3 class="text-4xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10">Advanced Frontend<br>& Backend</h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed font-medium relative z-10">We craft fast, animated, modern frontends paired with a rock-solid backend.<br>Smooth transitions, clean interactions, secure APIs.</p>
+                                </div>
+                                <div class="mt-8 relative z-10 flex items-center">
+                                    <a href="/BookUs" rel="noopener noreferrer" class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
+                                        <div class="px-6 py-3 flex flex-col justify-center">
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's Talk</span>
+                                            <span class="text-sm font-bold text-black">Free Consultation</span>
+                                        </div>
+                                        <div class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
+                                            <i class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                            </div>
+
+                            <!-- Top Wide Box: 2. SEO & Google Indexing -->
+                            <div class="tilt-effect bg-[#f4f4f4] p-8 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] shadow-xl relative overflow-hidden h-full min-h-[220px] sticky top-[15vh] z-20 mt-[40vh]">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">A website that Google loves.</div>
+                                    <i class="fa-solid fa-arrow-up-right text-gray-400 text-xl -mt-1 -mr-1"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-3xl font-medium text-black leading-tight tracking-tight relative z-10">SEO & Google Indexing</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed font-medium pt-3 max-w-md">We optimize your structure, content, speed, and metadata so your site<br>gets indexed fast and ranks higher. <br>Better visibility = more clients.</p>
+                                </div>
+                                <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
+                            </div>
+
+                            <!-- Bottom Box: 3. Branding & Customizations -->
+                            <div class="tilt-effect bg-[#0c19ad] p-8 hover:bg-[#0a1595] transition-colors flex flex-col justify-between rounded-[2rem] shadow-xl relative overflow-hidden h-full min-h-[220px] sticky top-[18vh] z-30 mt-[40vh] mb-[10vh]">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-[10px] font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">We don't just design — we brand.</div>
+                                    <i class="fa-solid fa-arrow-up-right text-[#cafe00] text-xl"></i>
+                                </div>
+                                <div class="mt-auto relative z-10">
+                                    <h3 class="text-3xl font-medium text-white leading-tight tracking-tight pb-2">Branding & <span class="text-[#cafe00]">Customizations</span></h3>
+                                    <p class="text-white/80 text-sm font-medium leading-relaxed max-w-md">Custom color systems, typography sets, and visual direction. Your brand will look intentional, unique, and premium.</p>
+                                </div>
+                                <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-[#cafe00] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marquee Tape (Programming Languages) -->
+                    <div class="w-full relative overflow-hidden mt-12 mb-0 z-0">
+                        <div class="w-full bg-black text-white py-4 border-none shadow-sm text-center">
+                            <div
+                                class="marquee-container animate-scroll-left flex items-center gap-20 font-black uppercase tracking-widest text-xl md:text-2xl w-max">
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-react"></i> REACT</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-node-js"></i> NODE.JS</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/next-js.svg"
+                                        class="h-6 md:h-8 w-auto invert" alt="Next.js"> NEXT.JS</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i class="fa-brands fa-js"></i>
+                                    JAVASCRIPT</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg"
+                                        class="h-6 md:h-8 w-auto" alt="MongoDB"> MONGODB</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-html5"></i> HTML5</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-css3-alt"></i> CSS3</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"
+                                        class="h-6 md:h-8 w-auto" alt="GSAP"> GSAP</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/framer-motion.svg"
+                                        class="h-6 md:h-8 w-auto" alt="Framer Motion"> FRAMER MOTION</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-python"></i> PYTHON</span>
+
+                                <!-- Duplicate for looping -->
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-react"></i> REACT</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-node-js"></i> NODE.JS</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/next-js.svg"
+                                        class="h-6 md:h-8 w-auto invert" alt="Next.js"> NEXT.JS</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i class="fa-brands fa-js"></i>
+                                    JAVASCRIPT</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg"
+                                        class="h-6 md:h-8 w-auto" alt="MongoDB"> MONGODB</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-html5"></i> HTML5</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-css3-alt"></i> CSS3</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"
+                                        class="h-6 md:h-8 w-auto" alt="GSAP"> GSAP</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><img
+                                        src="https://cdn.worldvectorlogo.com/logos/framer-motion.svg"
+                                        class="h-6 md:h-8 w-auto" alt="Framer Motion"> FRAMER MOTION</span>
+                                <span class="whitespace-nowrap flex items-center gap-5"><i
+                                        class="fa-brands fa-python"></i> PYTHON</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Section inside Slide 3 -->
+            <div id="vid-section"
+                class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
+                onclick="window.location.href = '/Branding'">
+                <!-- Desktop Video -->
+                <video id="end-cap-video-desktop" class="max-md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
+                    preload="metadata">
+                    <source src="images/vid.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Mobile Video -->
+                <video id="end-cap-video-mobile" class="md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
+                    preload="metadata">
+                    <source src="images/mobvid.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const vidSection = document.getElementById("vid-section");
+                    const endCapVideoDesk = document.getElementById("end-cap-video-desktop");
+                    const endCapVideoMob = document.getElementById("end-cap-video-mobile");
+
+                    const vidObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                if (endCapVideoDesk) endCapVideoDesk.play();
+                                if (endCapVideoMob) endCapVideoMob.play();
+                            } else {
+                                if (endCapVideoDesk) endCapVideoDesk.pause();
+                                if (endCapVideoMob) endCapVideoMob.pause();
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    if (vidSection) {
+                        vidObserver.observe(vidSection);
+                    }
+                });
+            </script>
+
+            <!-- 3D Rotating Carousel Section -->
+            <style>
+                .industry-carousel-container {
+                    perspective: 1500px;
+                    overflow: hidden;
+                    background-color: #EBEBEB;
+                }
+
+                .industry-carousel-track {
+                    transform-style: preserve-3d;
+                    animation: rotateIndustryAxis 60s linear infinite;
+                }
+
+                .industry-carousel-track:hover {
+                    animation-play-state: paused;
+                }
+
+                @keyframes rotateIndustryAxis {
+                    from {
+                        transform: rotateY(0deg);
+                    }
+
+                    to {
+                        transform: rotateY(-360deg);
+                    }
+                }
+
+                /* 5 items -> 72deg each - Tighter orbit for smaller cards */
+                .ind-card-1 {
+                    transform: rotateY(0deg) translateZ(280px);
+                }
+
+                .ind-card-2 {
+                    transform: rotateY(72deg) translateZ(280px);
+                }
+
+                .ind-card-3 {
+                    transform: rotateY(144deg) translateZ(280px);
+                }
+
+                .ind-card-4 {
+                    transform: rotateY(216deg) translateZ(280px);
+                }
+
+                .ind-card-5 {
+                    transform: rotateY(288deg) translateZ(280px);
+                }
+
+                @media (max-width: 1024px) {
+                    .ind-card-1 {
+                        transform: rotateY(0deg) translateZ(220px);
+                    }
+
+                    .ind-card-2 {
+                        transform: rotateY(72deg) translateZ(220px);
+                    }
+
+                    .ind-card-3 {
+                        transform: rotateY(144deg) translateZ(220px);
+                    }
+
+                    .ind-card-4 {
+                        transform: rotateY(216deg) translateZ(220px);
+                    }
+
+                    .ind-card-5 {
+                        transform: rotateY(288deg) translateZ(220px);
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .ind-card-1 {
+                        transform: rotateY(0deg) translateZ(180px);
+                    }
+
+                    .ind-card-2 {
+                        transform: rotateY(72deg) translateZ(180px);
+                    }
+
+                    .ind-card-3 {
+                        transform: rotateY(144deg) translateZ(180px);
+                    }
+
+                    .ind-card-4 {
+                        transform: rotateY(216deg) translateZ(180px);
+                    }
+
+                    .ind-card-5 {
+                        transform: rotateY(288deg) translateZ(180px);
+                    }
+                }
+            </style>
+
+            <div class="max-md:hidden w-full flex-shrink-0 industry-carousel-container pt-2 pb-12 md:pt-4 md:pb-20 relative">
+                <!-- Left Side Content -->
+                <div
+                    class="absolute left-8 md:left-20 lg:left-32 top-1/4 -translate-y-1/2 z-[100] max-w-[300px] md:max-w-md pointer-events-auto">
+                    <h2
+                        class="text-4xl md:text-5xl lg:text-6xl font-black leading-[0.9] tracking-tighter text-black uppercase mb-6">
+                        Customer<br>
+                        <span class="text-[#0C1AC1]">Testimonials</span>
+                    </h2>
+                    <p class="text-gray-600 mb-8 font-medium text-sm md:text-base leading-relaxed">
+                        See why leading brands trust MKAVS to deliver exceptional digital experiences and measurable
+                        growth.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="/Works"
+                            class="inline-block bg-[#0C1AC1] text-white px-6 py-3 rounded-full font-bold text-[11px] md:text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            View Works
+                        </a>
+                        <a href="/BookUs"
+                            class="auth-consult-btn inline-block border-2 border-black text-black px-6 py-3 rounded-full font-bold text-[11px] md:text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+                            Book Consultation
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-full h-[600px] md:h-[800px] flex justify-center items-center relative md:translate-x-32 lg:translate-x-48"
+                    style="transform-style: preserve-3d;">
+                    <!-- Stationary Center Image -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"
+                        style="transform: translateZ(0);">
+                        <img src="images/mockup.png" alt="Center Mockup"
+                            class="max-h-[80%] md:max-h-[90%] w-auto object-contain drop-shadow-2xl">
+                    </div>
+                    <!-- Smaller Horizontal Track shifted to base -->
+                    <div
+                        class="absolute bottom-[-50px] md:bottom-[160px] w-full max-w-[260px] md:max-w-[320px] lg:max-w-[360px] h-[140px] md:h-[180px] industry-carousel-track">
+
+                        <!-- Card 1 -->
+                        <div class="absolute inset-0 flex items-center justify-center ind-card-1">
+                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
+                                style="transform: perspective(1000px) rotateY(10deg);">
+                                <div>
+                                    <div
+                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+                                        [Website design]</div>
+                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
+                                        "Honestly, the MKAVS guys nailed our branding. I was a bit skeptical at first,
+                                        but the final website looks insane. Really happy with the whole process."
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        <img src="https://i.pravatar.cc/150?img=11" alt="Aarav Sharma"
+                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
+                                    </div>
+                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Aarav Sharma</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="absolute inset-0 flex items-center justify-center ind-card-2">
+                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
+                                style="transform: perspective(1000px) rotateY(10deg);">
+                                <div>
+                                    <div
+                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+                                        [Web App Dev]</div>
+                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
+                                        "They completely flipped our online presence. It wasn't just about making it
+                                        look pretty—they actually understood what we wanted to build and got it done."
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        <img src="https://i.pravatar.cc/150?img=12" alt="Rohan Patel"
+                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
+                                    </div>
+                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Rohan Patel</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="absolute inset-0 flex items-center justify-center ind-card-3">
+                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
+                                style="transform: perspective(1000px) rotateY(10deg);">
+                                <div>
+                                    <div
+                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+                                        [E-Commerce]</div>
+                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
+                                        "Super talented team. They didn't just give us a standard template; the site
+                                        feels so alive and dynamic now. Our sales have genuinely picked up since the
+                                        launch."
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        <img src="https://i.pravatar.cc/150?img=5" alt="Priya Desai"
+                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
+                                    </div>
+                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Priya Desai</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="absolute inset-0 flex items-center justify-center ind-card-4">
+                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
+                                style="transform: perspective(1000px) rotateY(10deg);">
+                                <div>
+                                    <div
+                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+                                        [UI/UX Design]</div>
+                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
+                                        "What I loved most was their communication. They kept us in the loop the entire
+                                        time and the final product is top notch. Definitely coming back for our next
+                                        project."
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        <img src="https://i.pravatar.cc/150?img=14" alt="Vikram Singh"
+                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
+                                    </div>
+                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Vikram Singh</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="absolute inset-0 flex items-center justify-center ind-card-5">
+                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
+                                style="transform: perspective(1000px) rotateY(10deg);">
+                                <div>
+                                    <div
+                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+                                        [SEO Optimization]</div>
+                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
+                                        "We were struggling to get noticed on Google, and in a few months, these guys
+                                        got us to the first page. No BS, just real results and great support."
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        <img src="https://i.pravatar.cc/150?img=9" alt="Neha Gupta"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Neha Gupta</div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Testimonials Layout -->
+                <div class="md:hidden w-full px-6 pt-16 pb-20 flex flex-col bg-[#FDFDFD]">
+                    <h2 class="text-3xl font-bold text-center text-black mb-4">Read reviews,<br>ride with confidence.</h2>
+                    <div class="flex items-center justify-center gap-2 mb-16">
+                        <span class="text-gray-800 font-medium text-sm">4.2/5</span>
+                        <div class="flex items-center text-[#00b67a] text-lg">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="font-black text-black text-lg tracking-tight">Trustpilot</span>
+                        <span class="text-gray-500 text-xs font-medium ml-1">Based on 5210 reviews</span>
+                    </div>
+
+                    <div class="w-full overflow-x-auto flex items-center gap-6 pb-12 pt-4 snap-x snap-mandatory hide-scrollbar -mx-6 px-6" style="scroll-padding-left: 1.5rem; width: calc(100% + 3rem);">
+                        
+                        <!-- Header Block within Scroll -->
+                        <div class="snap-start flex-shrink-0 w-[65vw] max-w-[280px] flex flex-col justify-center pr-2">
+                            <i class="fa-solid fa-quote-left text-gray-300 text-5xl mb-6"></i>
+                            <h3 class="text-[26px] font-bold text-black mb-8 leading-[1.1] tracking-tight">What our<br>customers are<br>saying</h3>
+                            
+                            <div class="flex items-center gap-3 text-gray-400">
+                                <i class="fa-solid fa-arrow-left text-sm cursor-pointer hover:text-black transition-colors" onclick="this.parentElement.parentElement.parentElement.scrollBy({left: -300, behavior: 'smooth'})"></i>
+                                <div class="h-[2px] w-16 bg-gray-200 relative rounded-full">
+                                    <div class="absolute left-0 top-0 h-full w-1/3 bg-gray-800 rounded-full"></div>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-black text-sm cursor-pointer hover:scale-110 transition-transform" onclick="this.parentElement.parentElement.parentElement.scrollBy({left: 300, behavior: 'smooth'})"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Card 1 -->
+                        <div class="snap-start flex-shrink-0 w-[85vw] max-w-[320px] bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative speech-bubble-card">
+                            <p class="text-gray-700 text-sm leading-relaxed mb-8 font-medium">
+                                "Honestly, the MKAVS guys nailed our branding. I was a bit skeptical at first, but the final website looks insane. Really happy with the whole process."
+                            </p>
+                            <div class="flex text-[#00b67a] gap-1 mb-8 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?img=11" alt="Aarav Sharma" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-sm text-black">Aarav Sharma</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">1 week ago</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="snap-start flex-shrink-0 w-[85vw] max-w-[320px] bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative speech-bubble-card">
+                            <p class="text-gray-700 text-sm leading-relaxed mb-8 font-medium">
+                                "They completely flipped our online presence. It wasn't just about making it look pretty—they actually understood what we wanted to build and got it done."
+                            </p>
+                            <div class="flex text-[#00b67a] gap-1 mb-8 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?img=12" alt="Rohan Patel" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-sm text-black">Rohan Patel</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">2 weeks ago</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="snap-start flex-shrink-0 w-[85vw] max-w-[320px] bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative speech-bubble-card">
+                            <p class="text-gray-700 text-sm leading-relaxed mb-8 font-medium">
+                                "Super talented team. They didn't just give us a standard template; the site feels so alive and dynamic now. Our sales have genuinely picked up since the launch."
+                            </p>
+                            <div class="flex text-[#00b67a] gap-1 mb-8 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <img src="https://i.pravatar.cc/150?img=5" alt="Priya Desai" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold text-sm text-black">Priya Desai</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">3 weeks ago</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <style>
+                        .speech-bubble-card {
+                            border-bottom-left-radius: 4px !important;
+                        }
+                        .speech-bubble-card::after {
+                            content: '';
+                            position: absolute;
+                            bottom: -16px;
+                            left: 0;
+                            width: 0;
+                            height: 0;
+                            border-top: 16px solid white;
+                            border-right: 20px solid transparent;
+                            filter: drop-shadow(-2px 4px 4px rgba(0,0,0,0.02));
+                        }
+                        .hide-scrollbar::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .hide-scrollbar {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }
+                    </style>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!-- MOVED PORTFOLIO SITES HERE -->
                 <style>
                     #projects-exact {
                         display: flex;
@@ -1167,16 +1773,54 @@
                             width: 100%;
                             height: auto;
                             position: relative;
-                            padding: 4rem 8vw;
+                            padding: 4rem 8vw 0 8vw;
                         }
 
                         .project-right-exact {
                             width: 100%;
+                            overflow: hidden;
                         }
 
                         .cards-grid-exact {
-                            grid-template-columns: 1fr;
-                            padding: 2rem 8vw 4rem 8vw;
+                            display: flex !important;
+                            flex-direction: row !important;
+                            flex-wrap: nowrap !important;
+                            width: max-content !important;
+                            gap: 1.5rem !important;
+                            padding: 1rem 8vw 4rem 8vw !important;
+                            transition: transform 0.075s ease-out;
+                            will-change: transform;
+                        }
+
+                        .project-card-exact {
+                            width: 280px !important;
+                            flex-shrink: 0 !important;
+                            min-height: 330px !important;
+                            padding: 1.5rem !important;
+                            justify-content: flex-start !important;
+                        }
+
+                        .project-card-exact h3 {
+                            font-size: 1.25rem;
+                            margin-bottom: 0.75rem;
+                        }
+
+                        .project-card-exact p {
+                            font-size: 0.9rem;
+                            line-height: 1.5;
+                        }
+
+                        .project-card-exact img {
+                            margin-top: 1.25rem;
+                        }
+
+                        .card-link-exact {
+                            margin-top: 0.75rem !important;
+                            font-size: 0.8rem;
+                        }
+
+                        .project-description-exact {
+                            margin-bottom: 1.5rem;
                         }
 
                         .project-title-exact {
@@ -1190,8 +1834,8 @@
                         <div class="project-left-content-exact">
                             <h2 class="project-title-exact">EXPLORE <br /><em>Our Latest</em> Work</h2>
                             <p class="project-description-exact">
-                                From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
-                                reality. Dive into our portfolio to see how we help businesses stand out and grow.
+                                <span class="hidden md:inline">From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
+                                reality. </span>Dive into our portfolio to see how we help businesses stand out and grow.
                             </p>
                             <a href="/Works" class="btn-arrow-exact">
                                 View all Projects
@@ -1210,7 +1854,7 @@
                                 <div>
                                     <h3 class="text-white">Portfolio Websites</h3>
                                     <p>High-impact designs that showcase your creative projects with intention.</p>
-                                    <img src="works/src/assets/portfolio.jpg" alt="Portfolio Websites" />
+                                    <img src="images/portfolio.jpg" alt="Portfolio Websites" />
                                 </div>
                                 <div class="card-link-exact">
                                     View More
@@ -1227,7 +1871,7 @@
                                     <h3 class="text-white">E Commerce Websites</h3>
                                     <p>Scalable digital stores integrated with online booking systems to drive business
                                         growth.</p>
-                                    <img src="works/src/assets/ecommerce.jpg" alt="E Commerce Websites" />
+                                    <img src="images/ecommerce.jpg" alt="E Commerce Websites" />
                                 </div>
                                 <div class="card-link-exact">
                                     View More
@@ -1244,7 +1888,7 @@
                                     <h3 class="text-white">Company Websites</h3>
                                     <p>Professional full-stack web solutions that establish a strong brand identity and
                                         digital presence.</p>
-                                    <img src="works/src/assets/company.jpg" alt="Company Websites" />
+                                    <img src="images/company.jpg" alt="Company Websites" />
                                 </div>
                                 <div class="card-link-exact">
                                     View More
@@ -1261,7 +1905,7 @@
                                     <h3 class="text-white">Portals & Dashboards</h3>
                                     <p>Custom-built technical architectures designed to manage complex data and
                                         streamline user interactions.</p>
-                                    <img src="works/src/assets/dashboard.jpg" alt="Portals & Dashboards" />
+                                    <img src="images/dashboard.jpg" alt="Portals & Dashboards" />
                                 </div>
                                 <div class="card-link-exact">
                                     View More
@@ -1276,564 +1920,23 @@
                     </div>
                 </section>
 
-                <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
-                    <p>Scroll down for next slide</p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- SLIDE 3: OUR EXPERTISE -->
-        <div id="slide-3"
-            class="slide bg-transparent z-30 translate-y-full slide-transition flex flex-col justify-start relative overflow-y-auto">
-
-
-
-            <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
-            <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
-            <div
-                class="w-full flex-shrink-0 bg-[#FDFDFD] z-40 relative pt-8 md:pt-12 pb-0 rounded-t-[40px] md:rounded-t-[80px] overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-                <div class="w-full min-h-full pt-8 pb-0 flex flex-col justify-center relative">
-
-                    <!-- Running Mascot Video Animation -->
-                    <div id="mascot-track"
-                        class="absolute top-0 left-0 w-full h-24 md:h-32 pointer-events-none z-10 overflow-hidden">
-                        <video id="mascot-runner" src="images/run.mp4" loop muted playsinline
-                            class="h-full w-auto absolute top-0" style="left: -200px;">
-                        </video>
-                    </div>
-                    <!-- Inline style for custom mascot animation -->
-                    <style>
-                        @keyframes runAnimationForwards {
-                            0% {
-                                transform: translateX(0);
-                            }
-
-                            100% {
-                                transform: translateX(calc(100vw + 200px));
-                            }
-                        }
-
-                        .animate-run-loop {
-                            animation: runAnimationForwards 12s linear infinite !important;
-                        }
-                    </style>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            const track = document.getElementById("mascot-track");
-                            const runner = document.getElementById("mascot-runner");
-
-                            const observer = new IntersectionObserver((entries) => {
-                                entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        runner.classList.add("animate-run-loop");
-                                        runner.play();
-                                        // Wait until fully visible before running but allow repeating infinitely
-                                        observer.unobserve(track);
-                                    }
-                                });
-                            }, {
-                                rootMargin: "0px 0px -25% 0px",
-                                threshold: 0
-                            });
-
-                            if (track) observer.observe(track);
-                        });
-                    </script>
-                    <br>
-                    <div class="max-w-7xl mx-auto px-6 w-full mb-16 relative z-20">
-                        <!-- Our Expertise Header -->
-                        <div class="text-left w-full mb-16 md:mt-20">
-                            <div class="flex items-center gap-2 mb-4">
-                                <i class="fa-solid fa-star text-[#0c19ad] text-base md:text-lg"></i>
-                                <span class="text-black text-sm md:text-base font-bold uppercase tracking-widest">Here
-                                    at MKAVS</span>
-                            </div>
-                            <h2
-                                class="text-5xl md:text-6xl font-black text-black uppercase tracking-tighter leading-tight">
-                                OUR <span class="text-[#0c19ad]">EXPERTISE</span>
-                            </h2>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-4 w-full relative z-10 font-sans">
-
-                            <!-- Left Tall Box: 1. Advanced Frontend -->
-                            <div
-                                class="tilt-effect bg-[#1a1a1a] p-8 md:p-10 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px]">
-                                <!-- Subtitle / Tag -->
-                                <div
-                                    class="text-[10px] md:text-xs font-bold text-gray-400 mb-6 md:mb-12 uppercase tracking-widest relative z-10">
-                                    React • GSAP • Framer Motion • Node.js • Express.js</div>
-
-                                <div class="mt-auto md:mb-auto">
-                                    <h3
-                                        class="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10 md:w-5/6">
-                                        Advanced Frontend<br>& Backend</h3>
-
-                                    <p
-                                        class="text-gray-300 text-sm md:text-base leading-relaxed font-medium relative z-10 md:w-5/6">
-                                        We craft fast, animated, modern frontends paired with a rock-solid backend.<BR>
-                                        Smooth transitions, clean interactions, secure APIs.
-                                    </p>
-                                </div>
-
-                                <!-- Bottom Action imitating "All products" -->
-                                <div class="mt-8 relative z-10 flex items-center">
-                                    <a href="/BookUs" rel="noopener noreferrer"
-                                        class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
-                                        <div class="px-6 py-3 flex flex-col justify-center">
-                                            <span
-                                                class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's
-                                                Talk</span>
-                                            <span class="text-sm font-bold text-black">Free Consultation</span>
-                                        </div>
-                                        <div
-                                            class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
-                                            <i
-                                                class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
-                                        </div>
-                                    </a>
-                                </div>
-
-                                <!-- Background decoration -->
-                                <div
-                                    class="absolute -right-16 md:-right-8 -bottom-16 md:-bottom-8 w-64 h-64 md:w-80 md:h-80 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110">
-                                </div>
-                            </div>
-
-                            <!-- Right Side Grid -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-                                <!-- Top Wide Box: 2. SEO & Google Indexing -->
-                                <div
-                                    class="tilt-effect col-span-2 bg-[#f4f4f4] p-8 md:p-10 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative overflow-hidden h-full min-h-[220px]">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div
-                                            class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                            A website that Google loves.</div>
-                                        <i
-                                            class="fa-solid fa-arrow-up-right text-gray-400 text-xl md:text-2xl -mt-1 -mr-1"></i>
-                                    </div>
-                                    <div>
-                                        <h3
-                                            class="text-3xl md:text-4xl font-medium text-black leading-tight tracking-tight relative z-10">
-                                            SEO & Google Indexing</h3>
-                                        <p
-                                            class="text-gray-600 text-sm md:text-base leading-relaxed font-medium pt-3 max-w-md">
-                                            We optimize your structure, content, speed, and metadata so your site
-                                            <br>gets
-                                            indexed fast and ranks higher. <br>Better visibility = more clients.
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none">
-                                    </div>
-                                </div>
-
-                                <!-- Bottom Left Box: 3. Branding -->
-                                <div
-                                    class="tilt-effect bg-[#0c19ad] p-6 md:p-8 hover:bg-[#0a1595] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div
-                                            class="text-[10px] font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">
-                                            We don't just design — we brand.</div>
-                                        <i class="fa-solid fa-arrow-up-right text-white text-lg font-light"></i>
-                                    </div>
-                                    <div class="mt-auto">
-                                        <h3
-                                            class="text-2xl md:text-3xl font-medium text-white leading-tight tracking-tight pb-1">
-                                            Branding</h3>
-                                        <p class="text-white/80 text-[11px] md:text-xs font-medium leading-relaxed">
-                                            Custom color systems, typography sets, <br>mood boards & visual direction.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Bottom Right Box: Let's Talk -->
-                                <div
-                                    class="tilt-effect bg-[#cafe00] p-6 md:p-8 hover:bg-[#cafe00] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div
-                                            class="text-[10px] font-bold text-[#1a1a1a] uppercase tracking-widest leading-snug">
-                                            Personality & Identity</div>
-                                        <i
-                                            class="fa-regular fa-paper-plane text-[#1a1a1a] text-lg transform -rotate-12">
-                                        </i>
-                                    </div>
-                                    <div class="mt-auto">
-                                        <h3
-                                            class="text-2xl md:text-3xl font-medium text-black leading-tight tracking-tight pb-1">
-                                            Customizations
-                                        </h3>
-                                        <p class="text-black/80 text-[11px] md:text-xs font-medium leading-relaxed">
-                                            Your brand will look <br>
-                                            intentional and premium.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Marquee Tape (Programming Languages) -->
-                    <div class="w-full relative overflow-hidden mt-12 mb-0 z-0">
-                        <div class="w-full bg-black text-white py-4 border-none shadow-sm text-center">
-                            <div
-                                class="marquee-container animate-scroll-left flex items-center gap-20 font-black uppercase tracking-widest text-xl md:text-2xl w-max">
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-react"></i> REACT</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-node-js"></i> NODE.JS</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/next-js.svg"
-                                        class="h-6 md:h-8 w-auto invert" alt="Next.js"> NEXT.JS</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i class="fa-brands fa-js"></i>
-                                    JAVASCRIPT</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg"
-                                        class="h-6 md:h-8 w-auto" alt="MongoDB"> MONGODB</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-html5"></i> HTML5</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-css3-alt"></i> CSS3</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"
-                                        class="h-6 md:h-8 w-auto" alt="GSAP"> GSAP</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/framer-motion.svg"
-                                        class="h-6 md:h-8 w-auto" alt="Framer Motion"> FRAMER MOTION</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-python"></i> PYTHON</span>
-
-                                <!-- Duplicate for looping -->
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-react"></i> REACT</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-node-js"></i> NODE.JS</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/next-js.svg"
-                                        class="h-6 md:h-8 w-auto invert" alt="Next.js"> NEXT.JS</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i class="fa-brands fa-js"></i>
-                                    JAVASCRIPT</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg"
-                                        class="h-6 md:h-8 w-auto" alt="MongoDB"> MONGODB</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-html5"></i> HTML5</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-css3-alt"></i> CSS3</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg"
-                                        class="h-6 md:h-8 w-auto" alt="GSAP"> GSAP</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><img
-                                        src="https://cdn.worldvectorlogo.com/logos/framer-motion.svg"
-                                        class="h-6 md:h-8 w-auto" alt="Framer Motion"> FRAMER MOTION</span>
-                                <span class="whitespace-nowrap flex items-center gap-5"><i
-                                        class="fa-brands fa-python"></i> PYTHON</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video Section inside Slide 3 -->
-            <div id="vid-section"
-                class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
-                onclick="window.location.href = '/Branding'">
-                <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover" muted playsinline
-                    preload="metadata">
-                    <source src="images/vid.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const vidSection = document.getElementById("vid-section");
-                    const endCapVideo = document.getElementById("end-cap-video");
-
-                    const vidObserver = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                endCapVideo.play();
-                                vidObserver.unobserve(vidSection); // Don't stop playing once started
-                            }
-                        });
-                    }, {
-                        threshold: 0.5 // Triggers when 50% of the viewport intersects
-                    });
-
-                    if (vidSection) vidObserver.observe(vidSection);
-                });
-            </script>
-
-            <!-- 3D Rotating Carousel Section -->
-            <style>
-                .industry-carousel-container {
-                    perspective: 1500px;
-                    overflow: hidden;
-                    background-color: #EBEBEB;
-                }
-
-                .industry-carousel-track {
-                    transform-style: preserve-3d;
-                    animation: rotateIndustryAxis 60s linear infinite;
-                }
-
-                .industry-carousel-track:hover {
-                    animation-play-state: paused;
-                }
-
-                @keyframes rotateIndustryAxis {
-                    from {
-                        transform: rotateY(0deg);
-                    }
-
-                    to {
-                        transform: rotateY(-360deg);
-                    }
-                }
-
-                /* 5 items -> 72deg each - Tighter orbit for smaller cards */
-                .ind-card-1 {
-                    transform: rotateY(0deg) translateZ(280px);
-                }
-
-                .ind-card-2 {
-                    transform: rotateY(72deg) translateZ(280px);
-                }
-
-                .ind-card-3 {
-                    transform: rotateY(144deg) translateZ(280px);
-                }
-
-                .ind-card-4 {
-                    transform: rotateY(216deg) translateZ(280px);
-                }
-
-                .ind-card-5 {
-                    transform: rotateY(288deg) translateZ(280px);
-                }
-
-                @media (max-width: 1024px) {
-                    .ind-card-1 {
-                        transform: rotateY(0deg) translateZ(220px);
-                    }
-
-                    .ind-card-2 {
-                        transform: rotateY(72deg) translateZ(220px);
-                    }
-
-                    .ind-card-3 {
-                        transform: rotateY(144deg) translateZ(220px);
-                    }
-
-                    .ind-card-4 {
-                        transform: rotateY(216deg) translateZ(220px);
-                    }
-
-                    .ind-card-5 {
-                        transform: rotateY(288deg) translateZ(220px);
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .ind-card-1 {
-                        transform: rotateY(0deg) translateZ(180px);
-                    }
-
-                    .ind-card-2 {
-                        transform: rotateY(72deg) translateZ(180px);
-                    }
-
-                    .ind-card-3 {
-                        transform: rotateY(144deg) translateZ(180px);
-                    }
-
-                    .ind-card-4 {
-                        transform: rotateY(216deg) translateZ(180px);
-                    }
-
-                    .ind-card-5 {
-                        transform: rotateY(288deg) translateZ(180px);
-                    }
-                }
-            </style>
-
-            <div class="w-full flex-shrink-0 industry-carousel-container pt-2 pb-12 md:pt-4 md:pb-20 relative">
-                <!-- Left Side Content -->
-                <div
-                    class="absolute left-8 md:left-20 lg:left-32 top-1/4 -translate-y-1/2 z-[100] max-w-[300px] md:max-w-md pointer-events-auto">
-                    <h2
-                        class="text-4xl md:text-5xl lg:text-6xl font-black leading-[0.9] tracking-tighter text-black uppercase mb-6">
-                        Customer<br>
-                        <span class="text-[#0C1AC1]">Testimonials</span>
-                    </h2>
-                    <p class="text-gray-600 mb-8 font-medium text-sm md:text-base leading-relaxed">
-                        See why leading brands trust MKAVS to deliver exceptional digital experiences and measurable
-                        growth.
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="/Works"
-                            class="inline-block bg-[#0C1AC1] text-white px-6 py-3 rounded-full font-bold text-[11px] md:text-xs uppercase tracking-widest hover:scale-105 transition-transform">
-                            View Works
-                        </a>
-                        <a href="/BookUs"
-                            class="auth-consult-btn inline-block border-2 border-black text-black px-6 py-3 rounded-full font-bold text-[11px] md:text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all">
-                            Book Consultation
-                        </a>
-                    </div>
-                </div>
-
-                <div class="w-full h-[600px] md:h-[800px] flex justify-center items-center relative md:translate-x-32 lg:translate-x-48"
-                    style="transform-style: preserve-3d;">
-                    <!-- Stationary Center Image -->
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none"
-                        style="transform: translateZ(0);">
-                        <img src="images/mockup.png" alt="Center Mockup"
-                            class="max-h-[80%] md:max-h-[90%] w-auto object-contain drop-shadow-2xl">
-                    </div>
-                    <!-- Smaller Horizontal Track shifted to base -->
-                    <div
-                        class="absolute bottom-[-50px] md:bottom-[160px] w-full max-w-[260px] md:max-w-[320px] lg:max-w-[360px] h-[140px] md:h-[180px] industry-carousel-track">
-
-                        <!-- Card 1 -->
-                        <div class="absolute inset-0 flex items-center justify-center ind-card-1">
-                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
-                                style="transform: perspective(1000px) rotateY(10deg);">
-                                <div>
-                                    <div
-                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                                        [Website design]</div>
-                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "Honestly, the MKAVS guys nailed our branding. I was a bit skeptical at first,
-                                        but the final website looks insane. Really happy with the whole process."
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-3 mt-4">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
-                                        <img src="https://i.pravatar.cc/150?img=11" alt="Aarav Sharma"
-                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
-                                    </div>
-                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Aarav Sharma</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="absolute inset-0 flex items-center justify-center ind-card-2">
-                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
-                                style="transform: perspective(1000px) rotateY(10deg);">
-                                <div>
-                                    <div
-                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                                        [Web App Dev]</div>
-                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "They completely flipped our online presence. It wasn't just about making it
-                                        look pretty—they actually understood what we wanted to build and got it done."
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-3 mt-4">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
-                                        <img src="https://i.pravatar.cc/150?img=12" alt="Rohan Patel"
-                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
-                                    </div>
-                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Rohan Patel</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="absolute inset-0 flex items-center justify-center ind-card-3">
-                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
-                                style="transform: perspective(1000px) rotateY(10deg);">
-                                <div>
-                                    <div
-                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                                        [E-Commerce]</div>
-                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "Super talented team. They didn't just give us a standard template; the site
-                                        feels so alive and dynamic now. Our sales have genuinely picked up since the
-                                        launch."
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-3 mt-4">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
-                                        <img src="https://i.pravatar.cc/150?img=5" alt="Priya Desai"
-                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
-                                    </div>
-                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Priya Desai</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="absolute inset-0 flex items-center justify-center ind-card-4">
-                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
-                                style="transform: perspective(1000px) rotateY(10deg);">
-                                <div>
-                                    <div
-                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                                        [UI/UX Design]</div>
-                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "What I loved most was their communication. They kept us in the loop the entire
-                                        time and the final product is top notch. Definitely coming back for our next
-                                        project."
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-3 mt-4">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
-                                        <img src="https://i.pravatar.cc/150?img=14" alt="Vikram Singh"
-                                            class="w-full h-full object-cover" loading="lazy" width="32" height="32">
-                                    </div>
-                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Vikram Singh</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 5 -->
-                        <div class="absolute inset-0 flex items-center justify-center ind-card-5">
-                            <div class="w-full h-full rounded-[2rem] bg-[#f8f9fa] shadow-[0_10px_30px_rgba(0,0,0,0.05),inset_0_0_20px_rgba(0,0,0,0.02)] border border-gray-100 p-4 md:p-5 flex flex-col justify-between relative group transition-all duration-500 hover:scale-105"
-                                style="transform: perspective(1000px) rotateY(10deg);">
-                                <div>
-                                    <div
-                                        class="text-[11px] md:text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
-                                        [SEO Optimization]</div>
-                                    <p class="text-gray-800 text-[10px] md:text-xs leading-relaxed font-medium">
-                                        "We were struggling to get noticed on Google, and in a few months, these guys
-                                        got us to the first page. No BS, just real results and great support."
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-3 mt-4">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
-                                        <img src="https://i.pravatar.cc/150?img=9" alt="Neha Gupta"
-                                            class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="font-bold text-[10px] md:text-[11px] text-gray-900">Neha Gupta</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-
         <!-- SLIDE 6: FOOTER SECTION -->
         <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] overflow-y-auto">
             <div class="slide-content-centered">
-                <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase mb-12">
+                <h1 class="text-3xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase mb-8 md:mb-12">
                     YOUR
                     <span class="text-[#0C1AC1]">DIGITAL JOURNEY</span><br>
                     <span class="text-[#c7f908]">STARTS HERE.</span>
                 </h1>
 
-                <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 mb-24">
+                <div class="flex flex-row gap-4 md:gap-8 mb-2 md:mb-24 relative z-20">
                     <a href="/BookUs"
-                        class="auth-consult-btn button-transition px-12 py-4 bg-[#C7F908] rounded-full text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        class="auth-consult-btn button-transition px-5 py-2.5 md:px-12 md:py-4 bg-[#C7F908] rounded-full text-sm md:text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         BOOK NOW
                     </a>
                     <a href="/Pricing"
-                        class="auth-pricing-btn button-transition px-12 py-4 bg-transparent rounded-full text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        class="auth-pricing-btn button-transition px-5 py-2.5 md:px-12 md:py-4 bg-transparent rounded-full text-sm md:text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         VIEW PLANS
                     </a>

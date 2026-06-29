@@ -300,9 +300,14 @@ function calculateSlideHeights() {
     const slide3RealHeight = slide3El ? slide3El.scrollHeight : viewportHeight;
     const slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
 
+    let s2Height = getScrollHeight(slide2);
+    if (window.innerWidth < 768) {
+        s2Height += 1200; // Add 1200px of virtual scroll space for two horizontal scrolls (600px each) on mobile
+    }
+
     slideHeights = [
         getScrollHeight(document.getElementById('slide-1')), // Slide 1
-        getScrollHeight(slide2), // Slide 2
+        s2Height, // Slide 2
         slide3TotalHeight, // Slide 3 (Animation + Scrolling)
         getScrollHeight(document.getElementById('slide-6')) // Slide 6
     ];
@@ -435,6 +440,7 @@ function updateScrollState(newGlobalY, instant = false) {
             slide1.scrollTop = localScrollY;
             
             // Translate the new community section carousel horizontally
+            /*
             const track = slide1.querySelector('.carousel-track');
             const section = slide1.querySelector('.community-section');
             if (track && section) {
@@ -452,11 +458,84 @@ function updateScrollState(newGlobalY, instant = false) {
                     track.style.transform = `translateX(0px)`;
                 }
             }
+            */
         }
     }
     else if (newSlideIndex === 1) { // Slide 2
         if (slide2) {
-            slide2.scrollTop = localScrollY;
+            if (window.innerWidth < 768) {
+                const cardsTrack = document.getElementById('slide-2-cards-track');
+                const latestWorksTrack = document.querySelector('.cards-grid-exact');
+                const parentContainer = cardsTrack ? cardsTrack.parentElement : null;
+                const latestWorksSection = document.getElementById('projects-exact');
+                
+                // Phase 1 setup (What We Do)
+                let startY1 = 150; 
+                if (parentContainer) {
+                    const offsetTop = parentContainer.offsetTop;
+                    const containerHeight = parentContainer.offsetHeight;
+                    startY1 = Math.max(0, offsetTop - (window.innerHeight - containerHeight) / 2);
+                }
+                const scrollDist1 = 600;
+                
+                // Phase 2 setup (Latest Works)
+                let startY2 = 1200;
+                if (latestWorksSection) {
+                    const offsetTop = latestWorksSection.offsetTop;
+                    const sectionHeight = latestWorksSection.offsetHeight;
+                    startY2 = Math.max(0, offsetTop - (window.innerHeight - sectionHeight) / 2);
+                }
+                const scrollDist2 = 600;
+                
+                if (cardsTrack && latestWorksTrack) {
+                    const maxScrollX1 = cardsTrack.scrollWidth - window.innerWidth + 32;
+                    const maxScrollX2 = latestWorksTrack.scrollWidth - window.innerWidth + 32;
+                    
+                    if (localScrollY < startY1) {
+                        // Vertical scroll before Phase 1
+                        slide2.scrollTop = localScrollY;
+                        cardsTrack.style.transform = `translateX(0px)`;
+                        latestWorksTrack.style.transform = `translateX(0px)`;
+                    } else if (localScrollY >= startY1 && localScrollY <= startY1 + scrollDist1) {
+                        // Phase 1: Horizontal scroll of What We Do cards
+                        slide2.scrollTop = startY1;
+                        const progress = (localScrollY - startY1) / scrollDist1;
+                        cardsTrack.style.transform = `translateX(${-progress * maxScrollX1}px)`;
+                        latestWorksTrack.style.transform = `translateX(0px)`;
+                        
+                        // Trigger bottom text appearance immediately when horizontal scroll starts
+                        const bottomText = document.getElementById('slide-2-bottom-text');
+                        if (bottomText && bottomText.classList.contains('opacity-0')) {
+                            bottomText.classList.remove('opacity-0', '-translate-x-full');
+                            bottomText.classList.add('opacity-100', 'translate-x-0');
+                        }
+                    } else if (localScrollY > startY1 + scrollDist1 && localScrollY < startY2 + scrollDist1) {
+                        // Vertical scroll between Phase 1 and Phase 2
+                        slide2.scrollTop = localScrollY - scrollDist1;
+                        cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
+                        latestWorksTrack.style.transform = `translateX(0px)`;
+                    } else if (localScrollY >= startY2 + scrollDist1 && localScrollY <= startY2 + scrollDist1 + scrollDist2) {
+                        // Phase 2: Horizontal scroll of Latest Works cards
+                        slide2.scrollTop = startY2;
+                        const progress = (localScrollY - (startY2 + scrollDist1)) / scrollDist2;
+                        cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
+                        latestWorksTrack.style.transform = `translateX(${-progress * maxScrollX2}px)`;
+                    } else {
+                        // Vertical scroll after Phase 2
+                        slide2.scrollTop = localScrollY - scrollDist1 - scrollDist2;
+                        cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
+                        latestWorksTrack.style.transform = `translateX(${-maxScrollX2}px)`;
+                    }
+                } else {
+                    slide2.scrollTop = localScrollY;
+                }
+            } else {
+                slide2.scrollTop = localScrollY;
+                const cardsTrack = document.getElementById('slide-2-cards-track');
+                const latestWorksTrack = document.querySelector('.cards-grid-exact');
+                if (cardsTrack) cardsTrack.style.transform = '';
+                if (latestWorksTrack) latestWorksTrack.style.transform = '';
+            }
         }
     }
     else if (newSlideIndex === 2) { // Slide 3 (Scroll Appended Content)
@@ -911,15 +990,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.classList.remove('opacity-0', '-translate-x-full');
                     el.classList.add('opacity-100', 'translate-x-0');
 
-                    // Trigger the 3 cards immediately with a slight stagger
-                    ['slide-2-card-1', 'slide-2-card-2', 'slide-2-card-3'].forEach((id, idx) => {
-                        const card = document.getElementById(id);
-                        if (card) {
-                            setTimeout(() => {
-                                card.classList.remove('opacity-0', 'scale-0');
-                                card.classList.add('opacity-100', 'scale-100');
-                            }, idx * 150);
-                        }
+                    // Trigger all Slide 2 cards immediately with a slight stagger
+                    const cards = document.querySelectorAll('.slide-2-card');
+                    cards.forEach((card, idx) => {
+                        setTimeout(() => {
+                            card.classList.remove('opacity-0', 'scale-0');
+                            card.classList.add('opacity-100', 'scale-100');
+                        }, (idx % 3) * 150);
                     });
                     observer.unobserve(el);
                 }
@@ -1097,13 +1174,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.closest('#kairon-panel') || e.target.closest('#kairon-button')) return;
         
         // Prevent default only if we are scrolling our virtual area
-        // e.preventDefault(); // Note: This might require passive: false
+        e.preventDefault(); // Note: This might require passive: false
 
         const touchY = e.touches[0].clientY;
         const delta = (touchStartY - touchY) * 2; // Sensitivity factor
         const potentialY = touchStartScrollY + delta;
         targetScrollY = Math.max(0, Math.min(potentialY, totalVirtualHeight - window.innerHeight));
-    }, { passive: true });
+    }, { passive: false });
 
     // 2. Keyboard (Arrow Keys)
     window.addEventListener('keydown', (e) => {
