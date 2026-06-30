@@ -146,7 +146,7 @@ html {
     display: flex;
     align-items: center;
     width: fit-content;
-    /* 🚩 FIXED: Reverting to 200% (assuming content is duplicated in HTML) 
+    /* ðŸš© FIXED: Reverting to 200% (assuming content is duplicated in HTML) 
        or using fit-content with an explicit display: flex/inline-flex on content */
     min-width: 200%;
 }
@@ -170,7 +170,7 @@ html {
     -webkit-text-stroke: 2px #d8fb4c;
     letter-spacing: 0.1em;
     user-select: none;
-    /* 🚩 FIXED: Ensures the text span is treated as a block for accurate width calculation */
+    /* ðŸš© FIXED: Ensures the text span is treated as a block for accurate width calculation */
     display: inline-block;
     box-sizing: content-box;
 }
@@ -453,6 +453,97 @@ html {
     gap: 40px;
 }
 
+/* Mobile: 4-column grid, neat alignment */
+@media (max-width: 768px) {
+    .discord-footer {
+        padding: 24px 14px 28px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 10px;
+        align-items: start;
+    }
+
+    .footer-brand-side {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .footer-contact {
+        margin-bottom: 12px;
+    }
+
+    .contact-item {
+        font-size: 0.6rem;
+        gap: 5px;
+        margin-bottom: 5px;
+        align-items: center;
+    }
+
+    .contact-item i {
+        font-size: 0.6rem;
+        width: 12px;
+    }
+
+    .contact-item a {
+        word-break: break-all;
+    }
+
+    .footer-socials {
+        gap: 10px;
+        font-size: 0.9rem;
+        justify-content: flex-start;
+    }
+
+    .footer-column h4 {
+        font-size: 0.6rem;
+        margin-bottom: 10px;
+        letter-spacing: 0.3px;
+    }
+
+    .footer-column h4::after {
+        left: 0;
+        transform: none;
+        height: 2px;
+        width: 18px;
+        bottom: -5px;
+    }
+
+    .footer-column ul li {
+        margin-bottom: 7px;
+    }
+
+    .footer-column ul li a {
+        font-size: 0.6rem;
+        font-weight: 500;
+    }
+
+    .footer-column ul li a:hover {
+        transform: none;
+    }
+
+    .footer-column ul li a::before {
+        display: none;
+    }
+
+    .footer-watermark-container {
+        margin-top: 0;
+        padding-top: 0;
+        margin-left: -14px;
+        margin-right: -14px;
+        width: calc(100% + 28px);
+        overflow: hidden;
+    }
+
+    .footer-watermark-image {
+        width: 100% !important;
+        max-width: none !important;
+        display: block;
+        margin-top: 0;
+    }
+}
+
 .footer-contact {
     color: #000000;
     margin-bottom: 25px;
@@ -522,7 +613,7 @@ html {
 }
 
 .footer-column ul li a::before {
-    content: '→';
+    content: 'â†’';
     font-family: monospace;
     opacity: 0;
     transform: translateX(-10px);
@@ -739,18 +830,32 @@ html {
 }
 
 @media (max-width: 768px) {
+    .slide-content-centered {
+        padding-bottom: 30px !important;
+    }
+
     .footer-characters-container {
-        height: 100px;
-        margin-top: -80px;
+        height: 120px;
+        margin-top: 0px;
+        margin-bottom: -10px; /* Pull into the green footer */
+        position: relative;
+        z-index: 20;
     }
 
-    .char-left {
-        left: 15%;
+    .footer-char {
+        height: 100%;
+        bottom: -5px; /* Sink them slightly to stand firmly on the green edge */
     }
 
-    .char-right {
-        left: 85%;
-    }
+    .char-leftbot, .char-rightbot { display: block; }
+
+    .char-back { left: 10%; bottom: 0; height: 100%; }
+    .char-leftbot { left: 23%; bottom: 0; height: 100%; }
+    .char-left { left: 36%; bottom: 0; height: 100%; }
+    .char-mid { left: 50%; bottom: 0; height: 100%; }
+    .char-right { left: 64%; bottom: 0; height: 100%; }
+    .char-rightbot { left: 77%; bottom: 0; height: 100%; }
+    .char-end { left: 90%; bottom: 0; height: 100%; }
 }
 
 /* expertise slide styles */
@@ -1075,6 +1180,20 @@ html {
         justify-content: center;
     }
 
+    /* Fix Booking link inside footer column - strip button styling */
+    .footer-column ul li a.auth-consult-btn {
+        padding: 0 !important;
+        min-height: unset !important;
+        display: inline !important;
+        background: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        font-size: 0.58rem !important;
+        font-weight: 500 !important;
+        color: #222 !important;
+    }
+
     /* Mobile Kairon Chatbot Overrides */
     #kairon-button {
         width: 45px !important;
@@ -1114,4 +1233,105 @@ html {
         top: max(85px, calc(59vh - 331px)) !important;
     }
 }
-
+
+/* ==================================== */
+/* MOBILE OPTIMIZATIONS                 */
+/* ==================================== */
+@media (max-width: 768px) {
+    .marquee-text {
+        font-size: 2.5rem !important;
+        padding: 0 1rem !important;
+    }
+    .community-section .title {
+        font-size: 2.2rem !important;
+    }
+    .footer-container {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+        gap: 10px !important;
+        text-align: left !important;
+        align-items: start !important;
+    }
+    .footer-column h4::after {
+        left: 0 !important;
+        transform: none !important;
+        height: 2px !important;
+        width: 18px !important;
+    }
+    .footer-brand-side {
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+    .footer-socials {
+        justify-content: flex-start !important;
+        gap: 10px !important;
+        font-size: 0.85rem !important;
+    }
+    .discord-footer {
+        padding: 22px 14px 26px !important;
+    }
+    .footer-contact {
+        margin-bottom: 10px !important;
+    }
+    .contact-item {
+        font-size: 0.55rem !important;
+        gap: 4px !important;
+        margin-bottom: 4px !important;
+    }
+    .contact-item i {
+        font-size: 0.55rem !important;
+        width: 10px !important;
+    }
+    .contact-item a {
+        font-size: 0.55rem !important;
+        word-break: break-all !important;
+    }
+    .footer-column h4 {
+        font-size: 0.58rem !important;
+        margin-bottom: 4px !important;
+        letter-spacing: 0.2px !important;
+        line-height: 1.2 !important;
+    }
+    .footer-column h4::after {
+        display: none !important;
+    }
+    .footer-column ul {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .footer-column ul li {
+        margin-bottom: 1px !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+    }
+    .footer-column ul li a {
+        font-size: 0.58rem !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        display: block !important;
+    }
+    .footer-column ul li a::before {
+        display: none !important;
+    }
+    .footer-column ul li a:hover {
+        transform: none !important;
+    }
+    .gallery-thumb {
+        width: 5rem !important;
+        height: 4rem !important;
+    }
+    #thumbnail-gallery .gallery-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #thumbnail-gallery {
+        left: 50% !important;
+        transform: translateX(-50%);
+        bottom: 1rem !important;
+        width: 100% !important;
+    }
+    #stats-box {
+        transform: scale(0.8) !important;
+        transform-origin: bottom left;
+    }
+}
+

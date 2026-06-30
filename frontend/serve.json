@@ -1,10 +1,8 @@
 {
-  "trailingSlash": true,
-  "cleanUrls": false,
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },
     { "source": "/About", "destination": "/about/index.html" },
-    { "source": "/Works", "destination": "/works/dist/index.html" },
+    { "source": "/Works", "destination": "/works-build/index.dev.html" },
     { "source": "/Branding", "destination": "/branding/index.html" },
     { "source": "/Pricing", "destination": "/pricingpage/index.html" },
     { "source": "/BookUs", "destination": "/loginpg/index.html" },

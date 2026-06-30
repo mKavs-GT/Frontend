@@ -942,6 +942,325 @@
                     </div>
                 </div>
 
+                <style>
+                    #projects-exact {
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        min-height: 100vh;
+                        position: relative;
+                        background: #151515;
+                        border-top: 1px solid #1a1a1a;
+                        overflow: visible;
+                        backface-visibility: hidden;
+                        transform-style: preserve-3d;
+                        font-family: "Space Grotesk", sans-serif;
+                        margin-top: 0px;
+                        border-radius: 40px;
+                    }
+
+                    .project-left-exact {
+                        width: 40%;
+                        height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 4rem 6vw;
+                        z-index: 10;
+                        position: sticky;
+                        top: 0;
+                        backface-visibility: hidden;
+                    }
+
+                    .project-left-content-exact {
+                        max-width: 450px;
+                    }
+
+                    .project-title-exact {
+                        font-family: "Syncopate", sans-serif;
+                        font-size: 3.8vw;
+                        line-height: 0.95;
+                        font-weight: 800;
+                        margin-bottom: 2.5rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                    }
+
+                    .project-title-exact em {
+                        font-family: "Playfair Display", serif;
+                        font-weight: 400;
+                        font-style: italic;
+                        color: #ccff00;
+                        text-transform: lowercase;
+                        -webkit-text-stroke: 0;
+                    }
+
+                    .project-description-exact {
+                        font-size: 1.1rem;
+                        line-height: 1.6;
+                        color: #888;
+                        margin-bottom: 3.5rem;
+                        font-weight: 300;
+                    }
+
+                    .btn-arrow-exact {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-decoration: none;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 0.9rem;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                        padding: 10px 0;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+
+                    .btn-arrow-exact svg {
+                        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    }
+
+                    .btn-arrow-exact:hover {
+                        color: #ccff00;
+                        border-color: #ccff00;
+                    }
+
+                    .btn-arrow-exact:hover svg {
+                        transform: translateX(8px);
+                        stroke: #ccff00;
+                    }
+
+                    .project-right-exact {
+                        width: 60%;
+                        height: auto;
+                        overflow: visible;
+                        position: relative;
+                    }
+
+                    .cards-grid-exact {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 3rem;
+                        padding: 10rem 4rem 150px 0;
+                        width: 100%;
+                    }
+
+                    .project-card-exact {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 2.5rem;
+                        background: #080808;
+                        border: 1px solid #222;
+                        transition: all 0.5s ease;
+                        min-height: 450px;
+                        cursor: pointer;
+                    }
+
+                    .project-card-exact:hover {
+                        border-color: #ccff00;
+                    }
+
+                    .project-card-exact h3 {
+                        font-family: 'Syncopate', sans-serif;
+                        font-size: 1.8rem;
+                        font-weight: 700;
+                        color: white;
+                        margin-bottom: 1.5rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
+
+                    .project-card-exact p {
+                        color: #888;
+                        font-size: 1.1rem;
+                        line-height: 1.6;
+                        font-weight: 300;
+                    }
+
+                    .project-card-exact img {
+                        width: 100%;
+                        margin-top: 1.5rem;
+                        border-radius: 8px;
+                        object-fit: cover;
+                        aspect-ratio: 16/9;
+                    }
+
+                    .card-link-exact {
+                        margin-top: 2rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        color: #fff;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        font-size: 0.8rem;
+                        transition: color 0.3s ease;
+                    }
+
+                    .project-card-exact:hover .card-link-exact {
+                        color: #ccff00;
+                    }
+
+                    @media (max-width: 1024px) {
+                        #projects-exact {
+                            flex-direction: column;
+                            height: auto;
+                        }
+
+                        .project-left-exact {
+                            width: 100%;
+                            height: auto;
+                            position: relative;
+                            padding: 4rem 8vw 0 8vw;
+                        }
+
+                        .project-right-exact {
+                            width: 100%;
+                            overflow: hidden;
+                        }
+
+                        .cards-grid-exact {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            flex-wrap: nowrap !important;
+                            width: max-content !important;
+                            gap: 1.5rem !important;
+                            padding: 1rem 8vw 4rem 8vw !important;
+                            transition: transform 0.075s ease-out;
+                            will-change: transform;
+                        }
+
+                        .project-card-exact {
+                            width: 280px !important;
+                            flex-shrink: 0 !important;
+                            min-height: 330px !important;
+                            padding: 1.5rem !important;
+                            justify-content: flex-start !important;
+                        }
+
+                        .project-card-exact h3 {
+                            font-size: 1.25rem;
+                            margin-bottom: 0.75rem;
+                        }
+
+                        .project-card-exact p {
+                            font-size: 0.9rem;
+                            line-height: 1.5;
+                        }
+
+                        .project-card-exact img {
+                            margin-top: 1.25rem;
+                        }
+
+                        .card-link-exact {
+                            margin-top: 0.75rem !important;
+                            font-size: 0.8rem;
+                        }
+
+                        .project-description-exact {
+                            margin-bottom: 1.5rem;
+                        }
+
+                        .project-title-exact {
+                            font-size: 10vw;
+                        }
+                    }
+                </style>
+
+                <section id="projects-exact">
+                    <div class="project-left-exact">
+                        <div class="project-left-content-exact">
+                            <h2 class="project-title-exact">EXPLORE <br /><em>Our Latest</em> Work</h2>
+                            <p class="project-description-exact">
+                                <span class="hidden md:inline">From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
+                                reality. </span>Dive into our portfolio to see how we help businesses stand out and grow.
+                            </p>
+                            <a href="/Works" class="btn-arrow-exact">
+                                View all Projects
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-right-exact">
+                        <div class="cards-grid-exact">
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Portfolio Websites</h3>
+                                    <p>High-impact designs that showcase your creative projects with intention.</p>
+                                    <img src="works/src/assets/portfolio.jpg" alt="Portfolio Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">E Commerce Websites</h3>
+                                    <p>Scalable digital stores integrated with online booking systems to drive business
+                                        growth.</p>
+                                    <img src="works/src/assets/ecommerce.jpg" alt="E Commerce Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Company Websites</h3>
+                                    <p>Professional full-stack web solutions that establish a strong brand identity and
+                                        digital presence.</p>
+                                    <img src="works/src/assets/company.jpg" alt="Company Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Portals & Dashboards</h3>
+                                    <p>Custom-built technical architectures designed to manage complex data and
+                                        streamline user interactions.</p>
+                                    <img src="works/src/assets/dashboard.jpg" alt="Portals & Dashboards" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
                 <div class="h-24 flex items-center justify-center text-gray-500 animate-pulse">
                     <p>Scroll down for next slide</p>
@@ -1022,117 +1341,100 @@
                             </h2>
                         </div>
 
-                        <!-- Desktop Expertise Grid (hidden on mobile) -->
-                        <div class="max-md:hidden grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-4 w-full relative z-10 font-sans">
+                        <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-4 w-full relative z-10 font-sans pb-[50vh] lg:pb-0">
+
                             <!-- Left Tall Box: 1. Advanced Frontend -->
-                            <div class="tilt-effect bg-[#1a1a1a] p-8 md:p-10 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px]">
+                            <div
+                                class="lg:col-start-1 lg:row-start-1 lg:row-span-2 tilt-effect bg-[#1a1a1a] p-8 md:p-10 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px] max-lg:sticky max-lg:top-[12vh] max-lg:z-10">
                                 <!-- Subtitle / Tag -->
-                                <div class="text-[10px] md:text-xs font-bold text-gray-400 mb-6 md:mb-12 uppercase tracking-widest relative z-10">React • GSAP • Framer Motion • Node.js • Express.js</div>
+                                <div
+                                    class="text-[10px] md:text-xs font-bold text-gray-400 mb-6 md:mb-12 uppercase tracking-widest relative z-10">
+                                    React • GSAP • Framer Motion • Node.js • Express.js</div>
+
                                 <div class="mt-auto md:mb-auto">
-                                    <h3 class="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10 md:w-5/6">Advanced Frontend<br>& Backend</h3>
-                                    <p class="text-gray-300 text-sm md:text-base leading-relaxed font-medium relative z-10 md:w-5/6">We craft fast, animated, modern frontends paired with a rock-solid backend.<br>Smooth transitions, clean interactions, secure APIs.</p>
+                                    <h3
+                                        class="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10 md:w-5/6">
+                                        Advanced Frontend<br>& Backend</h3>
+
+                                    <p
+                                        class="text-gray-300 text-sm md:text-base leading-relaxed font-medium relative z-10 md:w-5/6">
+                                        We craft fast, animated, modern frontends paired with a rock-solid backend.<BR>
+                                        Smooth transitions, clean interactions, secure APIs.
+                                    </p>
                                 </div>
+
                                 <!-- Bottom Action imitating "All products" -->
                                 <div class="mt-8 relative z-10 flex items-center">
-                                    <a href="/BookUs" rel="noopener noreferrer" class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
+                                    <a href="/BookUs" rel="noopener noreferrer"
+                                        class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
                                         <div class="px-6 py-3 flex flex-col justify-center">
-                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's Talk</span>
+                                            <span
+                                                class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's
+                                                Talk</span>
                                             <span class="text-sm font-bold text-black">Free Consultation</span>
                                         </div>
-                                        <div class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
-                                            <i class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
+                                        <div
+                                            class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
+                                            <i
+                                                class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
                                         </div>
                                     </a>
                                 </div>
-                                <div class="absolute -right-16 md:-right-8 -bottom-16 md:-bottom-8 w-64 h-64 md:w-80 md:h-80 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+
+                                <!-- Background decoration -->
+                                <div
+                                    class="absolute -right-16 md:-right-8 -bottom-16 md:-bottom-8 w-64 h-64 md:w-80 md:h-80 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110">
+                                </div>
                             </div>
-                            <!-- Right Side Grid -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+
+                            <!-- Right Side Grid Items (Flattened) -->
                                 <!-- Top Wide Box: 2. SEO & Google Indexing -->
-                                <div class="tilt-effect col-span-2 bg-[#f4f4f4] p-8 md:p-10 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative overflow-hidden h-full min-h-[220px]">
+                                <div
+                                    class="lg:col-start-2 lg:row-start-1 tilt-effect bg-[#f4f4f4] p-8 md:p-10 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative overflow-hidden h-full min-h-[220px] max-lg:sticky max-lg:top-[15vh] max-lg:z-20 max-lg:mt-[40vh]">
                                     <div class="flex justify-between items-start mb-4">
-                                        <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">A website that Google loves.</div>
-                                        <i class="fa-solid fa-arrow-up-right text-gray-400 text-xl md:text-2xl -mt-1 -mr-1"></i>
+                                        <div
+                                            class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                            A website that Google loves.</div>
+                                        <i
+                                            class="fa-solid fa-arrow-up-right text-gray-400 text-xl md:text-2xl -mt-1 -mr-1"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-3xl md:text-4xl font-medium text-black leading-tight tracking-tight relative z-10">SEO & Google Indexing</h3>
-                                        <p class="text-gray-600 text-sm md:text-base leading-relaxed font-medium pt-3 max-w-md">We optimize your structure, content, speed, and metadata so your site <br>gets indexed fast and ranks higher. <br>Better visibility = more clients.</p>
+                                        <h3
+                                            class="text-3xl md:text-4xl font-medium text-black leading-tight tracking-tight relative z-10">
+                                            SEO & Google Indexing</h3>
+                                        <p
+                                            class="text-gray-600 text-sm md:text-base leading-relaxed font-medium pt-3 max-w-md">
+                                            We optimize your structure, content, speed, and metadata so your site
+                                            <br>gets
+                                            indexed fast and ranks higher. <br>Better visibility = more clients.
+                                        </p>
                                     </div>
-                                    <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
+                                    <div
+                                        class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none">
+                                    </div>
                                 </div>
-                                <!-- Bottom Left Box: 3. Branding -->
-                                <div class="tilt-effect bg-[#0c19ad] p-6 md:p-8 hover:bg-[#0a1595] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
+
+                                <!-- Bottom Box: 3. Branding & Customizations -->
+                                <div
+                                    class="lg:col-start-2 lg:row-start-2 tilt-effect bg-[#0c19ad] p-8 md:p-10 hover:bg-[#0a1595] transition-colors flex flex-col justify-between rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative overflow-hidden h-full min-h-[220px] max-lg:sticky max-lg:top-[18vh] max-lg:z-30 max-lg:mt-[40vh] max-lg:mb-[10vh]">
                                     <div class="flex justify-between items-start mb-4">
-                                        <div class="text-[10px] font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">We don't just design — we brand.</div>
-                                        <i class="fa-solid fa-arrow-up-right text-white text-lg font-light"></i>
+                                        <div
+                                            class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">
+                                            We don't just design — we brand.</div>
+                                        <i class="fa-solid fa-arrow-up-right text-[#cafe00] text-xl md:text-2xl"></i>
                                     </div>
-                                    <div class="mt-auto">
-                                        <h3 class="text-2xl md:text-3xl font-medium text-white leading-tight tracking-tight pb-1">Branding</h3>
-                                        <p class="text-white/80 text-[11px] md:text-xs font-medium leading-relaxed">Custom color systems, typography sets, <br>mood boards & visual direction.</p>
+                                    <div class="mt-auto relative z-10">
+                                        <h3
+                                            class="text-3xl md:text-4xl font-medium text-white leading-tight tracking-tight pb-2">
+                                            Branding & <span class="text-[#cafe00]">Customizations</span></h3>
+                                        <p class="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-md">
+                                            Custom color systems, typography sets, and visual direction. Your brand will look intentional, unique, and premium.
+                                        </p>
                                     </div>
-                                </div>
-                                <!-- Bottom Right Box: Let's Talk -->
-                                <div class="tilt-effect bg-[#cafe00] p-6 md:p-8 hover:bg-[#cafe00] transition-colors flex flex-col rounded-[2rem] md:rounded-[2.5rem] shadow-xl relative h-full min-h-[220px]">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div class="text-[10px] font-bold text-[#1a1a1a] uppercase tracking-widest leading-snug">Personality & Identity</div>
-                                        <i class="fa-regular fa-paper-plane text-[#1a1a1a] text-lg transform -rotate-12"></i>
-                                    </div>
-                                    <div class="mt-auto">
-                                        <h3 class="text-2xl md:text-3xl font-medium text-black leading-tight tracking-tight pb-1">Customizations</h3>
-                                        <p class="text-black/80 text-[11px] md:text-xs font-medium leading-relaxed">Your brand will look <br>intentional and premium.</p>
+                                    <div
+                                        class="absolute -right-12 -bottom-12 w-48 h-48 bg-[#cafe00] rounded-full blur-[60px] opacity-20 pointer-events-none">
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Mobile Expertise Stack (hidden on desktop) -->
-                        <div class="md:hidden grid grid-cols-1 gap-4 w-full relative z-10 font-sans pb-[50vh]">
-                            <!-- Left Tall Box: 1. Advanced Frontend -->
-                            <div class="tilt-effect bg-[#1a1a1a] p-8 hover:opacity-95 transition-opacity flex flex-col justify-between rounded-[2rem] shadow-2xl relative overflow-hidden group h-full min-h-[400px] sticky top-[12vh] z-10">
-                                <div class="text-[10px] font-bold text-gray-400 mb-6 uppercase tracking-widest relative z-10">React • GSAP • Framer Motion • Node.js • Express.js</div>
-                                <div class="mt-auto">
-                                    <h3 class="text-4xl font-medium text-white leading-tight mb-4 tracking-tight relative z-10">Advanced Frontend<br>& Backend</h3>
-                                    <p class="text-gray-300 text-sm leading-relaxed font-medium relative z-10">We craft fast, animated, modern frontends paired with a rock-solid backend.<br>Smooth transitions, clean interactions, secure APIs.</p>
-                                </div>
-                                <div class="mt-8 relative z-10 flex items-center">
-                                    <a href="/BookUs" rel="noopener noreferrer" class="auth-consult-btn bg-[#f4f4f4] hover:bg-white transition-colors rounded-2xl flex items-center overflow-hidden w-max group shadow-md hover:shadow-xl hover:-translate-y-1 transform duration-300">
-                                        <div class="px-6 py-3 flex flex-col justify-center">
-                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5 group-hover:text-black transition-colors">Let's Talk</span>
-                                            <span class="text-sm font-bold text-black">Free Consultation</span>
-                                        </div>
-                                        <div class="px-5 py-3 h-full border-l border-gray-300 flex items-center justify-center bg-gray-200/50 group-hover:bg-[#c7f908] transition-colors">
-                                            <i class="fa-solid fa-arrow-right text-black text-lg transform group-hover:-rotate-45 transition-transform duration-300"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-[#0c19ad] rounded-full blur-[80px] opacity-20 pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
-                            </div>
-
-                            <!-- Top Wide Box: 2. SEO & Google Indexing -->
-                            <div class="tilt-effect bg-[#f4f4f4] p-8 transition-opacity hover:bg-white flex flex-col justify-between rounded-[2rem] shadow-xl relative overflow-hidden h-full min-h-[220px] sticky top-[15vh] z-20 mt-[40vh]">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">A website that Google loves.</div>
-                                    <i class="fa-solid fa-arrow-up-right text-gray-400 text-xl -mt-1 -mr-1"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-3xl font-medium text-black leading-tight tracking-tight relative z-10">SEO & Google Indexing</h3>
-                                    <p class="text-gray-600 text-sm leading-relaxed font-medium pt-3 max-w-md">We optimize your structure, content, speed, and metadata so your site<br>gets indexed fast and ranks higher. <br>Better visibility = more clients.</p>
-                                </div>
-                                <div class="absolute -right-12 -top-12 w-48 h-48 bg-[#c7f908] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
-                            </div>
-
-                            <!-- Bottom Box: 3. Branding & Customizations -->
-                            <div class="tilt-effect bg-[#0c19ad] p-8 hover:bg-[#0a1595] transition-colors flex flex-col justify-between rounded-[2rem] shadow-xl relative overflow-hidden h-full min-h-[220px] sticky top-[18vh] z-30 mt-[40vh] mb-[10vh]">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="text-[10px] font-bold text-white/80 uppercase tracking-widest w-4/5 leading-snug">We don't just design — we brand.</div>
-                                    <i class="fa-solid fa-arrow-up-right text-[#cafe00] text-xl"></i>
-                                </div>
-                                <div class="mt-auto relative z-10">
-                                    <h3 class="text-3xl font-medium text-white leading-tight tracking-tight pb-2">Branding & <span class="text-[#cafe00]">Customizations</span></h3>
-                                    <p class="text-white/80 text-sm font-medium leading-relaxed max-w-md">Custom color systems, typography sets, and visual direction. Your brand will look intentional, unique, and premium.</p>
-                                </div>
-                                <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-[#cafe00] rounded-full blur-[60px] opacity-20 pointer-events-none"></div>
-                            </div>
                         </div>
                     </div>
 
@@ -1201,14 +1503,7 @@
             <div id="vid-section"
                 class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
                 onclick="window.location.href = '/Branding'">
-                <!-- Desktop Video -->
-                <video id="end-cap-video-desktop" class="max-md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
-                    preload="metadata">
-                    <source src="images/vid.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <!-- Mobile Video -->
-                <video id="end-cap-video-mobile" class="md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
+                <video id="end-cap-video" class="absolute inset-0 w-full h-full object-cover" muted playsinline
                     preload="metadata">
                     <source src="images/mobvid.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -1217,24 +1512,20 @@
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     const vidSection = document.getElementById("vid-section");
-                    const endCapVideoDesk = document.getElementById("end-cap-video-desktop");
-                    const endCapVideoMob = document.getElementById("end-cap-video-mobile");
+                    const endCapVideo = document.getElementById("end-cap-video");
 
                     const vidObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
-                                if (endCapVideoDesk) endCapVideoDesk.play();
-                                if (endCapVideoMob) endCapVideoMob.play();
-                            } else {
-                                if (endCapVideoDesk) endCapVideoDesk.pause();
-                                if (endCapVideoMob) endCapVideoMob.pause();
+                                endCapVideo.play();
+                                vidObserver.unobserve(vidSection); // Don't stop playing once started
                             }
                         });
-                    }, { threshold: 0.1 });
+                    }, {
+                        threshold: 0.5 // Triggers when 50% of the viewport intersects
+                    });
 
-                    if (vidSection) {
-                        vidObserver.observe(vidSection);
-                    }
+                    if (vidSection) vidObserver.observe(vidSection);
                 });
             </script>
 
@@ -1598,345 +1889,23 @@
             </div>
         </div>
 
-
-        <!-- MOVED PORTFOLIO SITES HERE -->
-                <style>
-                    #projects-exact {
-                        display: flex;
-                        flex-wrap: wrap;
-                        width: 100%;
-                        min-height: 100vh;
-                        position: relative;
-                        background: #151515;
-                        border-top: 1px solid #1a1a1a;
-                        overflow: visible;
-                        backface-visibility: hidden;
-                        transform-style: preserve-3d;
-                        font-family: "Space Grotesk", sans-serif;
-                        margin-top: 0px;
-                        border-radius: 40px;
-                    }
-
-                    .project-left-exact {
-                        width: 40%;
-                        height: 100vh;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        padding: 4rem 6vw;
-                        z-index: 10;
-                        position: sticky;
-                        top: 0;
-                        backface-visibility: hidden;
-                    }
-
-                    .project-left-content-exact {
-                        max-width: 450px;
-                    }
-
-                    .project-title-exact {
-                        font-family: "Syncopate", sans-serif;
-                        font-size: 3.8vw;
-                        line-height: 0.95;
-                        font-weight: 800;
-                        margin-bottom: 2.5rem;
-                        color: #fff;
-                        text-transform: uppercase;
-                    }
-
-                    .project-title-exact em {
-                        font-family: "Playfair Display", serif;
-                        font-weight: 400;
-                        font-style: italic;
-                        color: #ccff00;
-                        text-transform: lowercase;
-                        -webkit-text-stroke: 0;
-                    }
-
-                    .project-description-exact {
-                        font-size: 1.1rem;
-                        line-height: 1.6;
-                        color: #888;
-                        margin-bottom: 3.5rem;
-                        font-weight: 300;
-                    }
-
-                    .btn-arrow-exact {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 15px;
-                        text-decoration: none;
-                        color: #fff;
-                        font-weight: 700;
-                        font-size: 0.9rem;
-                        text-transform: uppercase;
-                        letter-spacing: 2px;
-                        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                        padding: 10px 0;
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    }
-
-                    .btn-arrow-exact svg {
-                        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                    }
-
-                    .btn-arrow-exact:hover {
-                        color: #ccff00;
-                        border-color: #ccff00;
-                    }
-
-                    .btn-arrow-exact:hover svg {
-                        transform: translateX(8px);
-                        stroke: #ccff00;
-                    }
-
-                    .project-right-exact {
-                        width: 60%;
-                        height: auto;
-                        overflow: visible;
-                        position: relative;
-                    }
-
-                    .cards-grid-exact {
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        gap: 3rem;
-                        padding: 10rem 4rem 150px 0;
-                        width: 100%;
-                    }
-
-                    .project-card-exact {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        padding: 2.5rem;
-                        background: #080808;
-                        border: 1px solid #222;
-                        transition: all 0.5s ease;
-                        min-height: 450px;
-                        cursor: pointer;
-                    }
-
-                    .project-card-exact:hover {
-                        border-color: #ccff00;
-                    }
-
-                    .project-card-exact h3 {
-                        font-family: 'Syncopate', sans-serif;
-                        font-size: 1.8rem;
-                        font-weight: 700;
-                        color: white;
-                        margin-bottom: 1.5rem;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                    }
-
-                    .project-card-exact p {
-                        color: #888;
-                        font-size: 1.1rem;
-                        line-height: 1.6;
-                        font-weight: 300;
-                    }
-
-                    .project-card-exact img {
-                        width: 100%;
-                        margin-top: 1.5rem;
-                        border-radius: 8px;
-                        object-fit: cover;
-                        aspect-ratio: 16/9;
-                    }
-
-                    .card-link-exact {
-                        margin-top: 2rem;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        color: #fff;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 2px;
-                        font-size: 0.8rem;
-                        transition: color 0.3s ease;
-                    }
-
-                    .project-card-exact:hover .card-link-exact {
-                        color: #ccff00;
-                    }
-
-                    @media (max-width: 1024px) {
-                        #projects-exact {
-                            flex-direction: column;
-                            height: auto;
-                        }
-
-                        .project-left-exact {
-                            width: 100%;
-                            height: auto;
-                            position: relative;
-                            padding: 4rem 8vw 0 8vw;
-                        }
-
-                        .project-right-exact {
-                            width: 100%;
-                            overflow: hidden;
-                        }
-
-                        .cards-grid-exact {
-                            display: flex !important;
-                            flex-direction: row !important;
-                            flex-wrap: nowrap !important;
-                            width: max-content !important;
-                            gap: 1.5rem !important;
-                            padding: 1rem 8vw 4rem 8vw !important;
-                            transition: transform 0.075s ease-out;
-                            will-change: transform;
-                        }
-
-                        .project-card-exact {
-                            width: 280px !important;
-                            flex-shrink: 0 !important;
-                            min-height: 330px !important;
-                            padding: 1.5rem !important;
-                            justify-content: flex-start !important;
-                        }
-
-                        .project-card-exact h3 {
-                            font-size: 1.25rem;
-                            margin-bottom: 0.75rem;
-                        }
-
-                        .project-card-exact p {
-                            font-size: 0.9rem;
-                            line-height: 1.5;
-                        }
-
-                        .project-card-exact img {
-                            margin-top: 1.25rem;
-                        }
-
-                        .card-link-exact {
-                            margin-top: 0.75rem !important;
-                            font-size: 0.8rem;
-                        }
-
-                        .project-description-exact {
-                            margin-bottom: 1.5rem;
-                        }
-
-                        .project-title-exact {
-                            font-size: 10vw;
-                        }
-                    }
-                </style>
-
-                <section id="projects-exact">
-                    <div class="project-left-exact">
-                        <div class="project-left-content-exact">
-                            <h2 class="project-title-exact">EXPLORE <br /><em>Our Latest</em> Work</h2>
-                            <p class="project-description-exact">
-                                <span class="hidden md:inline">From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
-                                reality. </span>Dive into our portfolio to see how we help businesses stand out and grow.
-                            </p>
-                            <a href="/Works" class="btn-arrow-exact">
-                                View all Projects
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-right-exact">
-                        <div class="cards-grid-exact">
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Portfolio Websites</h3>
-                                    <p>High-impact designs that showcase your creative projects with intention.</p>
-                                    <img src="images/portfolio.jpg" alt="Portfolio Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">E Commerce Websites</h3>
-                                    <p>Scalable digital stores integrated with online booking systems to drive business
-                                        growth.</p>
-                                    <img src="images/ecommerce.jpg" alt="E Commerce Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Company Websites</h3>
-                                    <p>Professional full-stack web solutions that establish a strong brand identity and
-                                        digital presence.</p>
-                                    <img src="images/company.jpg" alt="Company Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Portals & Dashboards</h3>
-                                    <p>Custom-built technical architectures designed to manage complex data and
-                                        streamline user interactions.</p>
-                                    <img src="images/dashboard.jpg" alt="Portals & Dashboards" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
         <!-- SLIDE 6: FOOTER SECTION -->
         <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] overflow-y-auto">
             <div class="slide-content-centered">
-                <h1 class="text-3xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase mb-8 md:mb-12">
+                <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter text-white uppercase mb-12">
                     YOUR
                     <span class="text-[#0C1AC1]">DIGITAL JOURNEY</span><br>
                     <span class="text-[#c7f908]">STARTS HERE.</span>
                 </h1>
 
-                <div class="flex flex-row gap-4 md:gap-8 mb-2 md:mb-24 relative z-20">
+                <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-8 mb-24">
                     <a href="/BookUs"
-                        class="auth-consult-btn button-transition px-5 py-2.5 md:px-12 md:py-4 bg-[#C7F908] rounded-full text-sm md:text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        class="auth-consult-btn button-transition px-12 py-4 bg-[#C7F908] rounded-full text-xl font-black text-[#0E0E0E] shadow-2xl hover:bg-white hover:text-[#c7f908] border-2 border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         BOOK NOW
                     </a>
                     <a href="/Pricing"
-                        class="auth-pricing-btn button-transition px-5 py-2.5 md:px-12 md:py-4 bg-transparent rounded-full text-sm md:text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
+                        class="auth-pricing-btn button-transition px-12 py-4 bg-transparent rounded-full text-xl font-black text-white shadow-2xl hover:bg-[#c7f908] hover:text-black border-2 border-white hover:border-[#c7f908] transition-all duration-300 inline-block text-center"
                         rel="noopener noreferrer">
                         VIEW PLANS
                     </a>
