@@ -956,6 +956,324 @@
 
 
 
+        <!-- MOVED PORTFOLIO SITES HERE -->
+                <style>
+                    #projects-exact {
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        min-height: 100vh;
+                        position: relative;
+                        background: #151515;
+                        border-top: 1px solid #1a1a1a;
+                        overflow: visible;
+                        flex-shrink: 0;
+                        font-family: "Space Grotesk", sans-serif;
+                        margin-top: 0px;
+                        border-radius: 40px;
+                    }
+
+                    .project-left-exact {
+                        width: 40%;
+                        height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 4rem 6vw;
+                        z-index: 10;
+                        position: sticky;
+                        top: 0;
+                    }
+
+                    .project-left-content-exact {
+                        max-width: 450px;
+                    }
+
+                    .project-title-exact {
+                        font-family: "Syncopate", sans-serif;
+                        font-size: 3.8vw;
+                        line-height: 0.95;
+                        font-weight: 800;
+                        margin-bottom: 2.5rem;
+                        color: #fff;
+                        text-transform: uppercase;
+                    }
+
+                    .project-title-exact em {
+                        font-family: "Playfair Display", serif;
+                        font-weight: 400;
+                        font-style: italic;
+                        color: #ccff00;
+                        text-transform: lowercase;
+                        -webkit-text-stroke: 0;
+                    }
+
+                    .project-description-exact {
+                        font-size: 1.1rem;
+                        line-height: 1.6;
+                        color: #888;
+                        margin-bottom: 3.5rem;
+                        font-weight: 300;
+                    }
+
+                    .btn-arrow-exact {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-decoration: none;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 0.9rem;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                        padding: 10px 0;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+
+                    .btn-arrow-exact svg {
+                        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    }
+
+                    .btn-arrow-exact:hover {
+                        color: #ccff00;
+                        border-color: #ccff00;
+                    }
+
+                    .btn-arrow-exact:hover svg {
+                        transform: translateX(8px);
+                        stroke: #ccff00;
+                    }
+
+                    .project-right-exact {
+                        width: 60%;
+                        height: auto;
+                        overflow: visible;
+                        position: relative;
+                    }
+
+                    .cards-grid-exact {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 3rem;
+                        padding: 10rem 4rem 150px 0;
+                        width: 100%;
+                    }
+
+                    .project-card-exact {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 2.5rem;
+                        background: #080808;
+                        border: 1px solid #222;
+                        transition: all 0.5s ease;
+                        min-height: 450px;
+                        cursor: pointer;
+                    }
+
+                    .project-card-exact:hover {
+                        border-color: #ccff00;
+                    }
+
+                    .project-card-exact h3 {
+                        font-family: 'Syncopate', sans-serif;
+                        font-size: 1.8rem;
+                        font-weight: 700;
+                        color: white;
+                        margin-bottom: 1.5rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    }
+
+                    .project-card-exact p {
+                        color: #888;
+                        font-size: 1.1rem;
+                        line-height: 1.6;
+                        font-weight: 300;
+                    }
+
+                    .project-card-exact img {
+                        width: 100%;
+                        margin-top: 1.5rem;
+                        border-radius: 8px;
+                        object-fit: cover;
+                        aspect-ratio: 16/9;
+                    }
+
+                    .card-link-exact {
+                        margin-top: 2rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        color: #fff;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        font-size: 0.8rem;
+                        transition: color 0.3s ease;
+                    }
+
+                    .project-card-exact:hover .card-link-exact {
+                        color: #ccff00;
+                    }
+
+                    @media (max-width: 1024px) {
+                        #projects-exact {
+                            flex-direction: column;
+                            height: auto;
+                        }
+
+                        .project-left-exact {
+                            width: 100%;
+                            height: auto;
+                            position: relative;
+                            padding: 4rem 8vw 0 8vw;
+                        }
+
+                        .project-right-exact {
+                            width: 100%;
+                            overflow: hidden;
+                        }
+
+                        .cards-grid-exact {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            flex-wrap: nowrap !important;
+                            width: max-content !important;
+                            gap: 1.5rem !important;
+                            padding: 1rem 8vw 4rem 8vw !important;
+                            transition: transform 0.075s ease-out;
+                            will-change: transform;
+                        }
+
+                        .project-card-exact {
+                            width: 280px !important;
+                            flex-shrink: 0 !important;
+                            min-height: 330px !important;
+                            padding: 1.5rem !important;
+                            justify-content: flex-start !important;
+                        }
+
+                        .project-card-exact h3 {
+                            font-size: 1.25rem;
+                            margin-bottom: 0.75rem;
+                        }
+
+                        .project-card-exact p {
+                            font-size: 0.9rem;
+                            line-height: 1.5;
+                        }
+
+                        .project-card-exact img {
+                            margin-top: 1.25rem;
+                        }
+
+                        .card-link-exact {
+                            margin-top: 0.75rem !important;
+                            font-size: 0.8rem;
+                        }
+
+                        .project-description-exact {
+                            margin-bottom: 1.5rem;
+                        }
+
+                        .project-title-exact {
+                            font-size: 10vw;
+                        }
+                    }
+                </style>
+
+                <section id="projects-exact">
+                    <div class="project-left-exact">
+                        <div class="project-left-content-exact">
+                            <h2 class="project-title-exact">EXPLORE <br /><em>Our Latest</em> Work</h2>
+                            <p class="project-description-exact">
+                                <span class="hidden md:inline">From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
+                                reality. </span>Dive into our portfolio to see how we help businesses stand out and grow.
+                            </p>
+                            <a href="/Works" class="btn-arrow-exact">
+                                View all Projects
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-right-exact">
+                        <div class="cards-grid-exact">
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Portfolio Websites</h3>
+                                    <p>High-impact designs that showcase your creative projects with intention.</p>
+                                    <img src="images/portfolio.jpg" alt="Portfolio Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">E Commerce Websites</h3>
+                                    <p>Scalable digital stores integrated with online booking systems to drive business
+                                        growth.</p>
+                                    <img src="images/ecommerce.jpg" alt="E Commerce Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Company Websites</h3>
+                                    <p>Professional full-stack web solutions that establish a strong brand identity and
+                                        digital presence.</p>
+                                    <img src="images/company.jpg" alt="Company Websites" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
+                                <div>
+                                    <h3 class="text-white">Portals & Dashboards</h3>
+                                    <p>Custom-built technical architectures designed to manage complex data and
+                                        streamline user interactions.</p>
+                                    <img src="images/dashboard.jpg" alt="Portals & Dashboards" />
+                                </div>
+                                <div class="card-link-exact">
+                                    View More
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
             <!-- OUR EXPERTISE SECTION (Scrolls seamlessly within Slide 3) -->
             <div
@@ -1599,326 +1917,6 @@
         </div>
 
 
-        <!-- MOVED PORTFOLIO SITES HERE -->
-                <style>
-                    #projects-exact {
-                        display: flex;
-                        flex-wrap: wrap;
-                        width: 100%;
-                        min-height: 100vh;
-                        position: relative;
-                        background: #151515;
-                        border-top: 1px solid #1a1a1a;
-                        overflow: visible;
-                        backface-visibility: hidden;
-                        transform-style: preserve-3d;
-                        font-family: "Space Grotesk", sans-serif;
-                        margin-top: 0px;
-                        border-radius: 40px;
-                    }
-
-                    .project-left-exact {
-                        width: 40%;
-                        height: 100vh;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        padding: 4rem 6vw;
-                        z-index: 10;
-                        position: sticky;
-                        top: 0;
-                        backface-visibility: hidden;
-                    }
-
-                    .project-left-content-exact {
-                        max-width: 450px;
-                    }
-
-                    .project-title-exact {
-                        font-family: "Syncopate", sans-serif;
-                        font-size: 3.8vw;
-                        line-height: 0.95;
-                        font-weight: 800;
-                        margin-bottom: 2.5rem;
-                        color: #fff;
-                        text-transform: uppercase;
-                    }
-
-                    .project-title-exact em {
-                        font-family: "Playfair Display", serif;
-                        font-weight: 400;
-                        font-style: italic;
-                        color: #ccff00;
-                        text-transform: lowercase;
-                        -webkit-text-stroke: 0;
-                    }
-
-                    .project-description-exact {
-                        font-size: 1.1rem;
-                        line-height: 1.6;
-                        color: #888;
-                        margin-bottom: 3.5rem;
-                        font-weight: 300;
-                    }
-
-                    .btn-arrow-exact {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 15px;
-                        text-decoration: none;
-                        color: #fff;
-                        font-weight: 700;
-                        font-size: 0.9rem;
-                        text-transform: uppercase;
-                        letter-spacing: 2px;
-                        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                        padding: 10px 0;
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    }
-
-                    .btn-arrow-exact svg {
-                        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                    }
-
-                    .btn-arrow-exact:hover {
-                        color: #ccff00;
-                        border-color: #ccff00;
-                    }
-
-                    .btn-arrow-exact:hover svg {
-                        transform: translateX(8px);
-                        stroke: #ccff00;
-                    }
-
-                    .project-right-exact {
-                        width: 60%;
-                        height: auto;
-                        overflow: visible;
-                        position: relative;
-                    }
-
-                    .cards-grid-exact {
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        gap: 3rem;
-                        padding: 10rem 4rem 150px 0;
-                        width: 100%;
-                    }
-
-                    .project-card-exact {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        padding: 2.5rem;
-                        background: #080808;
-                        border: 1px solid #222;
-                        transition: all 0.5s ease;
-                        min-height: 450px;
-                        cursor: pointer;
-                    }
-
-                    .project-card-exact:hover {
-                        border-color: #ccff00;
-                    }
-
-                    .project-card-exact h3 {
-                        font-family: 'Syncopate', sans-serif;
-                        font-size: 1.8rem;
-                        font-weight: 700;
-                        color: white;
-                        margin-bottom: 1.5rem;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                    }
-
-                    .project-card-exact p {
-                        color: #888;
-                        font-size: 1.1rem;
-                        line-height: 1.6;
-                        font-weight: 300;
-                    }
-
-                    .project-card-exact img {
-                        width: 100%;
-                        margin-top: 1.5rem;
-                        border-radius: 8px;
-                        object-fit: cover;
-                        aspect-ratio: 16/9;
-                    }
-
-                    .card-link-exact {
-                        margin-top: 2rem;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        color: #fff;
-                        font-weight: 700;
-                        text-transform: uppercase;
-                        letter-spacing: 2px;
-                        font-size: 0.8rem;
-                        transition: color 0.3s ease;
-                    }
-
-                    .project-card-exact:hover .card-link-exact {
-                        color: #ccff00;
-                    }
-
-                    @media (max-width: 1024px) {
-                        #projects-exact {
-                            flex-direction: column;
-                            height: auto;
-                        }
-
-                        .project-left-exact {
-                            width: 100%;
-                            height: auto;
-                            position: relative;
-                            padding: 4rem 8vw 0 8vw;
-                        }
-
-                        .project-right-exact {
-                            width: 100%;
-                            overflow: hidden;
-                        }
-
-                        .cards-grid-exact {
-                            display: flex !important;
-                            flex-direction: row !important;
-                            flex-wrap: nowrap !important;
-                            width: max-content !important;
-                            gap: 1.5rem !important;
-                            padding: 1rem 8vw 4rem 8vw !important;
-                            transition: transform 0.075s ease-out;
-                            will-change: transform;
-                        }
-
-                        .project-card-exact {
-                            width: 280px !important;
-                            flex-shrink: 0 !important;
-                            min-height: 330px !important;
-                            padding: 1.5rem !important;
-                            justify-content: flex-start !important;
-                        }
-
-                        .project-card-exact h3 {
-                            font-size: 1.25rem;
-                            margin-bottom: 0.75rem;
-                        }
-
-                        .project-card-exact p {
-                            font-size: 0.9rem;
-                            line-height: 1.5;
-                        }
-
-                        .project-card-exact img {
-                            margin-top: 1.25rem;
-                        }
-
-                        .card-link-exact {
-                            margin-top: 0.75rem !important;
-                            font-size: 0.8rem;
-                        }
-
-                        .project-description-exact {
-                            margin-bottom: 1.5rem;
-                        }
-
-                        .project-title-exact {
-                            font-size: 10vw;
-                        }
-                    }
-                </style>
-
-                <section id="projects-exact">
-                    <div class="project-left-exact">
-                        <div class="project-left-content-exact">
-                            <h2 class="project-title-exact">EXPLORE <br /><em>Our Latest</em> Work</h2>
-                            <p class="project-description-exact">
-                                <span class="hidden md:inline">From bold branding to intuitive user interfaces, we turn ambitious ideas into digital
-                                reality. </span>Dive into our portfolio to see how we help businesses stand out and grow.
-                            </p>
-                            <a href="/Works" class="btn-arrow-exact">
-                                View all Projects
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-right-exact">
-                        <div class="cards-grid-exact">
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Portfolio Websites</h3>
-                                    <p>High-impact designs that showcase your creative projects with intention.</p>
-                                    <img src="images/portfolio.jpg" alt="Portfolio Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">E Commerce Websites</h3>
-                                    <p>Scalable digital stores integrated with online booking systems to drive business
-                                        growth.</p>
-                                    <img src="images/ecommerce.jpg" alt="E Commerce Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Company Websites</h3>
-                                    <p>Professional full-stack web solutions that establish a strong brand identity and
-                                        digital presence.</p>
-                                    <img src="images/company.jpg" alt="Company Websites" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="project-card-exact" onclick="window.location.href = '/Works'">
-                                <div>
-                                    <h3 class="text-white">Portals & Dashboards</h3>
-                                    <p>Custom-built technical architectures designed to manage complex data and
-                                        streamline user interactions.</p>
-                                    <img src="images/dashboard.jpg" alt="Portals & Dashboards" />
-                                </div>
-                                <div class="card-link-exact">
-                                    View More
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
         <!-- SLIDE 6: FOOTER SECTION -->
         <section id="slide-6" class="slide slide-transition translate-y-full bg-[#181818] overflow-y-auto">
