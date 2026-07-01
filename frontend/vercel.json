@@ -1,4 +1,6 @@
 {
+  "cleanUrls": false,
+  "trailingSlash": true,
   "redirects": [
     { "source": "/", "destination": "/Home", "permanent": true },
     { "source": "/index.html", "destination": "/Home", "permanent": true }
@@ -6,7 +8,7 @@
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },
     { "source": "/About", "destination": "/about/index.html" },
-    { "source": "/Works", "destination": "/works/index.html" },
+    { "source": "/Works", "destination": "/works/dist/index.html" },
     { "source": "/Branding", "destination": "/branding/index.html" },
     { "source": "/Pricing", "destination": "/pricingpage/index.html" },
     { "source": "/BookUs", "destination": "/loginpg/index.html" },
