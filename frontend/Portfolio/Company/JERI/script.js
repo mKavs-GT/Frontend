@@ -71,6 +71,20 @@ const quizData = {
   }
 };
 
+const petImages = {
+  "Mary": "pup1.jpg",
+  "Luigi": "pup2.jpg",
+  "Vidia": "pup3.jpg",
+  "Pico & Poppy": "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg",
+  "Lucy": "https://images.unsplash.com/photo-1537151608804-ea2f1fa3dfc2?w=400&q=80",
+  "Cleo": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&q=80",
+  "Max": "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=400&q=80",
+  "Moo": "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400&q=80",
+  "Bean": "https://images.unsplash.com/photo-1425082661705-1834bfd0999c?w=400&q=80",
+  "Cashew": "https://images.unsplash.com/photo-1584880537064-96f3cda3fdb9?w=400&q=80",
+  "Peanut": "https://images.unsplash.com/photo-1548247416-ec66f4900b2e?w=400&q=80"
+};
+
 // DOM Elements
 const quizIntro = document.getElementById('quiz-intro');
 const quizQuestions = document.getElementById('quiz-questions');
@@ -105,9 +119,19 @@ function startQuiz() {
 
 // Show Question
 function showQuestion() {
-  // Update progress
-  progressBar.style.width = `${(currentQuestion + 1) / quizData.questions.length * 100}%`;
-  progressText.textContent = `Question ${currentQuestion + 1} of ${quizData.questions.length}`;
+  // Update dashed progress
+  const dashes = document.querySelectorAll('.quiz-dashed-progress .dash');
+  dashes.forEach((dash, idx) => {
+    if (idx <= currentQuestion) {
+      dash.classList.add('active');
+    } else {
+      dash.classList.remove('active');
+    }
+  });
+  
+  if (progressText) {
+    progressText.textContent = `QUESTION 0${currentQuestion + 1}`;
+  }
   
   // Update navigation buttons
   prevQuestionBtn.disabled = currentQuestion === 0;
@@ -116,13 +140,15 @@ function showQuestion() {
   // Display current question
   const question = quizData.questions[currentQuestion];
   questionContainer.innerHTML = `
-    <h4 class="mb-4">${question.question}</h4>
-    <div class="quiz-options">
+    <h3 class="mb-4 fw-medium" style="font-size: 1.75rem; color: #2c3e50;">${question.question}</h3>
+    <small class="text-uppercase text-secondary d-block mb-3" style="letter-spacing: 1px; font-size: 0.7rem; font-weight: 600;">SELECT ONLY ONE</small>
+    <div class="quiz-options-wrapper">
       ${question.options.map((option, index) => `
-        <button type="button" class="quiz-option ${answers[currentQuestion] === index ? 'selected' : ''}" 
-                data-index="${index}" onclick="selectOption(this)">
-          ${option.text}
-        </button>
+        <div class="quiz-option-modern ${answers[currentQuestion] === index ? 'selected' : ''}" 
+             data-index="${index}" onclick="selectOption(this)">
+          <div class="radio-circle"></div>
+          <span>${option.text}</span>
+        </div>
       `).join('')}
     </div>
   `;
@@ -130,7 +156,7 @@ function showQuestion() {
 
 // Select Option
 function selectOption(option) {
-  const options = document.querySelectorAll('.quiz-option');
+  const options = document.querySelectorAll('.quiz-option-modern');
   options.forEach(opt => opt.classList.remove('selected'));
   option.classList.add('selected');
   answers[currentQuestion] = parseInt(option.getAttribute('data-index'));
@@ -202,10 +228,11 @@ function showResults() {
       <div class="row">
         ${result.pets.map(pet => `
           <div class="col-md-4 mb-3">
-            <div class="card h-100">
+            <div class="card h-100 overflow-hidden">
+              <img src="${petImages[pet] || 'pup1.jpg'}" class="card-img-top" alt="${pet}" style="height: 150px; object-fit: cover;">
               <div class="card-body text-center">
-                <h6>${pet}</h6>
-                <a href="adopt.html" class="btn btn-sm btn-purple mt-2">Meet ${pet.split(' ')[0]}</a>
+                <h6 class="mb-2 fw-bold text-dark">${pet}</h6>
+                <a href="adopt.html" class="btn btn-sm btn-quiz-next mt-1">Meet ${pet.split(' ')[0]}</a>
               </div>
             </div>
           </div>
@@ -238,6 +265,12 @@ function filterPets(type) {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   initQuiz();
+  
+  // Reduce hero video playback speed
+  const heroVideo = document.querySelector('.hero-section video');
+  if (heroVideo) {
+    heroVideo.playbackRate = 0.25;
+  }
   
   // Pet filter event listeners
   document.querySelectorAll('[data-filter]').forEach(item => {

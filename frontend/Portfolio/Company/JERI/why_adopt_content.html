@@ -1,51 +1,103 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10 text-center">
-      <h2 class="mb-4">Why Adopt From JERI?</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="h-100 p-4 bg-white rounded shadow-sm">
-            <div class="icon-box bg-purple text-white rounded-circle mx-auto mb-3">
-              <i class="fas fa-heart fa-2x"></i>
-            </div>
-            <h5>Save a Life</h5>
-            <p class="mb-0">Every adoption opens space for us to rescue another animal in need.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="h-100 p-4 bg-white rounded shadow-sm">
-            <div class="icon-box bg-purple text-white rounded-circle mx-auto mb-3">
-              <i class="fas fa-stethoscope fa-2x"></i>
-            </div>
-            <h5>Health Guarantee</h5>
-            <p class="mb-0">All pets are spayed/neutered, vaccinated, and microchipped before adoption.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="h-100 p-4 bg-white rounded shadow-sm">
-            <div class="icon-box bg-purple text-white rounded-circle mx-auto mb-3">
-              <i class="fas fa-hands-helping fa-2x"></i>
-            </div>
-            <h5>Lifetime Support</h5>
-            <p class="mb-0">We provide post-adoption support and will always take our animals back if needed.</p>
-          </div>
-        </div>
-      </div>
-      <div class="mt-5">
-        <div class="row g-4 align-items-center">
-          <div class="col-lg-6">
-            <div class="ratio ratio-16x9">
-              <iframe src="https://www.youtube.com/embed/ISJrw6W5Diw" title="Why Adopt" allowfullscreen></iframe>
-            </div>
-          </div>
-          <div class="col-lg-6 text-start">
-            <h3 class="mb-3">The Adoption Difference</h3>
-            <p>When you adopt from JERI, you're not just getting a pet - you're becoming part of our rescue family. We take the time to understand your lifestyle and match you with the perfect companion.</p>
-            <p>Our animals receive comprehensive behavioral assessments, so you'll know exactly what to expect. We're transparent about any special needs or requirements.</p>
-            <a href="adopt.html" class="btn btn-purple mt-3">Meet Adoptable Pets</a>
-          </div>
-        </div>
+<style>
+.checkerboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.checkerboard-item {
+  flex: 0 0 25%;
+  max-width: 25%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: white;
+}
+.checkerboard-item.img {
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+}
+.checkerboard-item h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  color: inherit;
+}
+.checkerboard-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.checkerboard-item .subtext {
+  margin-top: auto;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+@media (max-width: 991px) {
+  .checkerboard-item {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+@media (max-width: 576px) {
+  .checkerboard-item {
+    flex: 0 0 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    min-height: 300px;
+  }
+}
+.bg-olive { background-color: #8c8851; }
+.bg-deep-purple { background-color: #615a78; }
+.bg-mustard { background-color: #f7c04a; color: #333 !important; }
+.bg-mustard h3 { color: #333 !important; }
+.bg-coral { background-color: #f48052; }
+</style>
+
+<div class="container-fluid px-0 py-5">
+  <div class="checkerboard-grid">
+    <!-- Row 1 -->
+    <div class="checkerboard-item img" style="background-image: url('pup1.jpg');"></div>
+    <div class="checkerboard-item bg-olive">
+      <h3>Why Adopt From JERI?</h3>
+      <p>Every adoption opens space for us to rescue another animal in need. Join our family of happy adopters!</p>
+      <div class="subtext">
+        Save a Life
       </div>
     </div>
+    <div class="checkerboard-item img" style="background-image: url('pup2.jpg');"></div>
+    <div class="checkerboard-item bg-deep-purple">
+      <h3>Health Guarantee</h3>
+      <p>All pets are spayed or neutered, fully vaccinated, and microchipped before adoption. You can be confident in their health.</p>
+      <div class="subtext">
+        Full Medical<br>Clearance
+      </div>
+    </div>
+    
+    <!-- Row 2 -->
+    <div class="checkerboard-item bg-mustard">
+      <h3>Lifetime Support</h3>
+      <p>We provide post-adoption support and training resources. Plus, we will always take our animals back if circumstances change.</p>
+      <div class="subtext">
+        24/7 Expert<br>Guidance
+      </div>
+    </div>
+    <div class="checkerboard-item img" style="background-image: url('pup3.jpg');"></div>
+    <div class="checkerboard-item bg-coral">
+      <h3>The Difference</h3>
+      <p>We take the time to understand your lifestyle, living situation, and preferences to match you with the absolutely perfect companion.</p>
+      <div class="subtext">
+        Personalized<br>Matching
+      </div>
+    </div>
+    <div class="checkerboard-item img" style="background-image: url('pup1.jpg'); filter: hue-rotate(180deg);"></div>
   </div>
 </div>

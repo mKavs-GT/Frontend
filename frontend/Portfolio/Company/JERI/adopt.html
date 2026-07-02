@@ -10,7 +10,7 @@
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-purple">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav">
     <div class="container">
       <a class="navbar-brand" href="index.html">
         <img src="logo.png" alt="JERI Logo" height="50" class="d-inline-block align-top">
@@ -31,8 +31,12 @@
   </nav>
 
   <!-- Adoption Hero -->
-  <header class="adoption-hero">
-    <div class="container py-5 text-center">
+  <header class="adoption-hero position-relative overflow-hidden">
+    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover;">
+      <source src="mainhero.mp4" type="video/mp4">
+    </video>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.5); z-index: 1;"></div>
+    <div class="container py-5 text-center position-relative" style="z-index: 2;">
       <h1 class="display-4 fw-bold text-white">Find Your New Best Friend</h1>
       <p class="lead text-white">Browse our available pets and start your adoption journey today</p>
     </div>
@@ -381,7 +385,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-4 mb-lg-0">
-          <h2><i class="fas fa-exclamation-triangle me-2"></i> Emergency Animal Rescue</h2>
+          <h2 class="text-white"><i class="fas fa-exclamation-triangle me-2"></i> Emergency Animal Rescue</h2>
           <p class="lead">If you've found an animal in immediate danger, we're here to help 24/7.</p>
           <p>Our emergency response team can assist with:</p>
           <ul>
@@ -400,9 +404,9 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="card bg-dark">
+          <div class="card bg-dark text-white border-secondary">
             <div class="card-body">
-              <h5 class="card-title">Emergency Rescue Tips</h5>
+              <h5 class="card-title text-white">Emergency Rescue Tips</h5>
               <ul class="list-group list-group-flush bg-transparent">
                 <li class="list-group-item bg-transparent text-white">
                   <i class="fas fa-check-circle text-success me-2"></i> Approach injured animals cautiously
