@@ -878,19 +878,19 @@ async function checkAuthStatus() {
             // User is not logged in
             if (loginBtn) {
                 loginBtn.textContent = 'Login';
-                loginBtn.href = '/Login';
+                loginBtn.href = '/BookUs';
             }
 
             // If user icon is clicked while logged out, redirect to login
             if (userIcon) {
-                userIcon.href = '/Login';
+                userIcon.href = '/BookUs';
             }
 
             if (getStartedBtn) {
                 getStartedBtn.href = '/BookUs';
             }
             authConsultBtns.forEach(btn => btn.href = '/BookUs');
-            authPricingBtns.forEach(btn => btn.href = '/Login');
+            authPricingBtns.forEach(btn => btn.href = '/BookUs');
         }
     } catch (error) {
         console.error('Error checking auth status:', error);

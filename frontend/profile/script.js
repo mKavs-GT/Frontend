@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadFontFavorites();
             } else if (response.status === 401) {
                 // Not authenticated - redirect to login
-                window.location.href = '/Login';
+                window.location.href = '/BookUs';
             }
         } catch (error) {
             console.error('Error loading user profile:', error);

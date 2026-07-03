@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             const isBookingFlow =
                                 window.location.pathname === '/BookUs' ||
-                                document.referrer.includes('/BookUs') ||
+                                document.referrer.includes('./index.html') ||
                                 explicitRedirect === '/Consult';
 
                             if (explicitRedirect) {
