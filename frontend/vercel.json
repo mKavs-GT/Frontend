@@ -1,6 +1,6 @@
 {
   "cleanUrls": false,
-  "trailingSlash": true,
+  "trailingSlash": false,
 
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },

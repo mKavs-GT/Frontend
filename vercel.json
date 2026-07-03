@@ -1,0 +1,15 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/Home", "destination": "/frontend/index.html" },
+    { "source": "/About", "destination": "/frontend/about/index.html" },
+    { "source": "/Works", "destination": "/frontend/works-build/index.dev.html" },
+    { "source": "/Branding", "destination": "/frontend/branding/index.html" },
+    { "source": "/Pricing", "destination": "/frontend/pricingpage/index.html" },
+    { "source": "/BookUs", "destination": "/frontend/loginpg/index.html" },
+    { "source": "/Consult", "destination": "/frontend/consult/index.html" },
+    { "source": "/Support", "destination": "/frontend/support/index.html" },
+    { "source": "/Login", "destination": "/frontend/loginpg/index.html" }
+  ]
+}
