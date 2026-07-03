@@ -10,7 +10,7 @@
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-purple">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-nav">
     <div class="container">
       <a class="navbar-brand" href="index.html">
         <img src="logo.png" alt="JERI Logo" height="50" class="d-inline-block align-top">
@@ -31,13 +31,18 @@
   </nav>
 
   <!-- Hero Section -->
-  <header class="hero-section">
-    <div class="container text-center py-5">
-      <h1 class="display-4 fw-bold text-white">Joint Effort Rescue Initiative</h1>
-      <p class="lead text-white">Second Chances And Forever Homes</p>
-      <div class="mt-4">
-        <a href="adopt.html" class="btn btn-outline-light btn-lg">Meet Our Pets</a>
-        <a href="#personality-quiz" class="btn btn-outline-light btn-lg">Find Your Match</a>
+  <header class="hero-section position-relative overflow-hidden d-flex align-items-center" style="min-height: 85vh;">
+    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover;">
+      <source src="mainhero.mp4" type="video/mp4">
+    </video>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.4); z-index: 1;"></div>
+    
+    <div class="container text-center py-5 position-relative" style="z-index: 2;">
+      <h1 class="display-3 fw-bold text-white mb-3">Joint Effort Rescue Initiative</h1>
+      <p class="lead text-white mb-5 fs-4">Second Chances And Forever Homes</p>
+      <div>
+        <a href="adopt.html" class="btn btn-outline-light btn-lg px-4 me-2">Meet Our Pets</a>
+        <a href="#personality-quiz" class="btn btn-outline-light btn-lg px-4">Find Your Match</a>
       </div>
     </div>
   </header>
@@ -55,101 +60,102 @@
   </section>
 
   <!-- Pet Slider -->
+  <!-- Featured Pets -->
   <section class="py-5">
     <div class="container">
       <h2 class="text-center mb-5">Featured Pets</h2>
-      <div id="featuredPetsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="row justify-content-center">
-              <div class="col-md-4 mb-4">
-                <div class="card pet-card h-100">
-                  <img src="pup1.jpg" class="card-img-top" alt="Pup 1">
-                  <div class="card-body">
-                    <h5 class="card-title">Mary</h5>
-                    <p class="card-text">Regained her sight after severe infection. Loves sunbathing!</p>
-                    <a href="adopt.html" class="btn btn-purple">Meet Mary</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-4">
-                <div class="card pet-card h-100">
-                  <img src="pup2.jpg" class="card-img-top" alt="Pup 2">
-                  <div class="card-body">
-                    <h5 class="card-title">Luigi</h5>
-                    <p class="card-text">Recovered from malnourishment. Loves playing with friends!</p>
-                    <a href="adopt.html" class="btn btn-purple">Meet Luigi</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="row justify-content-center">
-              <div class="col-md-4 mb-4">
-                <div class="card pet-card h-100">
-                  <img src="pup3.jpg" class="card-img-top" alt="Pup 3">
-                  <div class="card-body">
-                    <h5 class="card-title">Vidia</h5>
-                    <p class="card-text">Thriving after losing a leg. Adores flowers!</p>
-                    <a href="adopt.html" class="btn btn-purple">Meet Vidia</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-4">
-                <div class="card pet-card h-100">
-                  <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg" class="card-img-top" alt="Pico and Poppy">
-                  <div class="card-body">
-                    <h5 class="card-title">Pico & Poppy</h5>
-                    <p class="card-text">2-month-old bonded siblings looking for a home together!</p>
-                    <a href="adopt.html" class="btn btn-purple">Meet Them</a>
-                  </div>
-                </div>
-              </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card pet-card h-100">
+            <img src="pup1.jpg" class="card-img-top" alt="Pup 1">
+            <div class="card-body">
+              <h5 class="card-title">Mary</h5>
+              <p class="card-text">Regained her sight after severe infection. Loves sunbathing!</p>
+              <a href="adopt.html" class="btn btn-purple">Meet Mary</a>
             </div>
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#featuredPetsCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#featuredPetsCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card pet-card h-100">
+            <img src="pup2.jpg" class="card-img-top" alt="Pup 2">
+            <div class="card-body">
+              <h5 class="card-title">Luigi</h5>
+              <p class="card-text">Recovered from malnourishment. Loves playing with friends!</p>
+              <a href="adopt.html" class="btn btn-purple">Meet Luigi</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card pet-card h-100">
+            <img src="pup3.jpg" class="card-img-top" alt="Pup 3">
+            <div class="card-body">
+              <h5 class="card-title">Vidia</h5>
+              <p class="card-text">Thriving after losing a leg. Adores flowers!</p>
+              <a href="adopt.html" class="btn btn-purple">Meet Vidia</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card pet-card h-100">
+            <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg" class="card-img-top" alt="Pico and Poppy">
+            <div class="card-body">
+              <h5 class="card-title">Pico & Poppy</h5>
+              <p class="card-text">2-month-old bonded siblings looking for a home together!</p>
+              <a href="adopt.html" class="btn btn-purple">Meet Them</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Personality Quiz Section -->
-  <section id="personality-quiz" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5">Find Your Perfect Pet Match</h2>
+  <section id="personality-quiz" class="py-5 position-relative overflow-hidden" style="background-color: #2c3e50;">
+    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover; opacity: 0.6;">
+      <source src="quiz.mp4" type="video/mp4">
+    </video>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.3); z-index: 1;"></div>
+    <div class="container position-relative" style="z-index: 2;">
+      <h2 class="text-center mb-5 text-white">Find Your Perfect Pet Match</h2>
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow">
-            <div class="card-body p-4">
-              <div id="quiz-container">
-                <div id="quiz-intro">
-                  <h3 class="mb-4">Pet Personality Quiz</h3>
-                  <p>Answer a few questions to discover which pet would be the best match for your lifestyle!</p>
-                  <button id="start-quiz" class="btn btn-purple">Start Quiz</button>
-                </div>
-                <div id="quiz-questions" class="d-none">
-                  <div class="quiz-progress mb-3">
-                    <div class="progress">
-                      <div id="quiz-progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+        <div class="col-lg-6 col-md-8">
+          <div class="quiz-card-wrapper position-relative">
+            <div class="quiz-card-bg-2"></div>
+            <div class="quiz-card-bg-1"></div>
+            
+            <div class="card quiz-card border-0">
+              <div class="card-body p-5">
+                <div id="quiz-container">
+                  <div id="quiz-intro" class="text-center">
+                    <h3 class="mb-4">Pet Personality Quiz</h3>
+                    <p class="mb-4">Answer a few questions to discover which pet would be the best match for your lifestyle!</p>
+                    <button id="start-quiz" class="btn btn-quiz-next">Start Quiz</button>
+                  </div>
+                  <div id="quiz-questions" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <div class="quiz-dashed-progress d-flex flex-grow-1 me-3">
+                        <div class="dash active"></div>
+                        <div class="dash"></div>
+                        <div class="dash"></div>
+                        <div class="dash"></div>
+                        <div class="dash"></div>
+                      </div>
+                      <button class="btn-close quiz-close-btn" aria-label="Close" onclick="retakeQuiz()"></button>
                     </div>
-                    <small id="progress-text" class="text-muted">Question 1 of 5</small>
+                    
+                    <small id="progress-text" class="fw-bold text-secondary text-uppercase mb-2 d-block" style="letter-spacing: 1px; font-size: 0.75rem;">QUESTION 01</small>
+                    
+                    <div id="question-container"></div>
+                    <div id="quiz-navigation" class="d-flex justify-content-between align-items-center mt-5">
+                      <button id="prev-question" class="btn btn-link text-dark text-decoration-none px-0 fw-bold" disabled>Back</button>
+                      <button id="next-question" class="btn btn-quiz-next px-4 py-2 rounded-3">Next</button>
+                    </div>
                   </div>
-                  <div id="question-container"></div>
-                  <div id="quiz-navigation" class="mt-4">
-                    <button id="prev-question" class="btn btn-outline-secondary me-2" disabled>Previous</button>
-                    <button id="next-question" class="btn btn-purple">Next</button>
+                  <div id="quiz-results" class="d-none text-center py-4">
+                    <h3 class="mb-4">Your Perfect Match Is...</h3>
+                    <div id="result-content"></div>
+                    <button id="retake-quiz" class="btn btn-outline-dark mt-4 rounded-3 fw-bold">Retake Quiz</button>
                   </div>
-                </div>
-                <div id="quiz-results" class="d-none text-center py-4">
-                  <h3 class="mb-4">Your Perfect Match Is...</h3>
-                  <div id="result-content"></div>
-                  <button id="retake-quiz" class="btn btn-outline-purple mt-4">Retake Quiz</button>
                 </div>
               </div>
             </div>
@@ -160,55 +166,50 @@
   </section>
 
   <!-- Success Stories -->
-  <section class="py-5">
+  <section class="py-5 bg-light">
     <div class="container">
-      <h2 class="text-center mb-5">Success Stories</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-              <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9" class="rounded-circle mb-3" width="150" height="150" alt="Happy adopter">
-              <h5>Max & The Johnson Family</h5>
-              <p>"Max has brought so much joy to our home. The adoption process was smooth and we got all the support we needed."</p>
-              <div class="rating mb-2">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
+      <div class="text-center mb-5">
+        <h6 class="text-uppercase fw-bold text-purple" style="letter-spacing: 2px;">Testimonials</h6>
+        <h2 class="display-5 fw-bold mb-3">Success Stories</h2>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">Read about some of the lives changed through our adoption program. We love hearing from our extended rescue family!</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-lg rounded-4 pt-4 px-3 pb-4 position-relative">
+            <i class="fas fa-quote-right fa-3x position-absolute opacity-25" style="top: 20px; right: 20px; color: #ddd;"></i>
+            <div class="card-body text-center mt-3">
+              <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9" class="rounded-circle shadow mb-3 border border-3 border-white" width="90" height="90" style="object-fit: cover;" alt="Happy adopter">
+              <div class="rating mb-3">
+                <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>
               </div>
+              <p class="fst-italic text-secondary mb-4">"Max has brought so much joy to our home. The adoption process was smooth and we got all the support we needed."</p>
+              <h5 class="fw-bold mb-1">Max & The Johnsons</h5>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-              <img src="https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5" class="rounded-circle mb-3" width="150" height="150" alt="Happy adopter">
-              <h5>Luna & Sarah</h5>
-              <p>"As a first-time pet owner, I was nervous, but JERI provided training resources and follow-up support that made all the difference."</p>
-              <div class="rating mb-2">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star-half-alt text-warning"></i>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-lg rounded-4 pt-4 px-3 pb-4 position-relative">
+            <i class="fas fa-quote-right fa-3x position-absolute opacity-25" style="top: 20px; right: 20px; color: #ddd;"></i>
+            <div class="card-body text-center mt-3">
+              <img src="https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5" class="rounded-circle shadow mb-3 border border-3 border-white" width="90" height="90" style="object-fit: cover;" alt="Happy adopter">
+              <div class="rating mb-3">
+                <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star-half-alt text-warning"></i>
               </div>
+              <p class="fst-italic text-secondary mb-4">"As a first-time pet owner, I was nervous, but JERI provided training resources and follow-up support that made all the difference."</p>
+              <h5 class="fw-bold mb-1">Luna & Sarah</h5>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2" class="rounded-circle mb-3" width="150" height="150" alt="Happy adopter">
-              <h5>Rocky & The Martinez Family</h5>
-              <p>"We adopted Rocky as a foster-to-adopt and knew within a week he was meant to be part of our family forever."</p>
-              <div class="rating mb-2">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-lg rounded-4 pt-4 px-3 pb-4 position-relative">
+            <i class="fas fa-quote-right fa-3x position-absolute opacity-25" style="top: 20px; right: 20px; color: #ddd;"></i>
+            <div class="card-body text-center mt-3">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2" class="rounded-circle shadow mb-3 border border-3 border-white" width="90" height="90" style="object-fit: cover;" alt="Happy adopter">
+              <div class="rating mb-3">
+                <i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>
               </div>
+              <p class="fst-italic text-secondary mb-4">"We adopted Rocky as a foster-to-adopt and knew within a week he was meant to be part of our family forever."</p>
+              <h5 class="fw-bold mb-1">Rocky & The Martinez Family</h5>
             </div>
           </div>
         </div>
@@ -250,43 +251,77 @@
   </section>
 
   <!-- Foster First Program -->
-  <section class="py-5">
-    <div class="container">
+  <section class="py-5 position-relative text-white overflow-hidden" style="background-color: #2c3e50;">
+    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover; opacity: 0.7;">
+      <source src="foster.mp4" type="video/mp4">
+    </video>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.5); z-index: 1;"></div>
+    <div class="container position-relative" style="z-index: 2;">
       <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2>Try Our Foster First Program</h2>
-          <p class="lead">Not sure if you're ready to adopt? Foster first!</p>
-          <p>Our unique Foster First program allows you to temporarily care for a pet with all supplies provided by us. It's the perfect way to test compatibility before making a lifelong commitment.</p>
-          <div class="d-flex align-items-center mb-3">
-            <div class="bg-purple text-white rounded-circle p-3 me-3">
-              <i class="fas fa-paw fa-2x"></i>
+        <!-- Text Column -->
+        <div class="col-lg-7 mb-5 mb-lg-0 pe-lg-5">
+          <h2 class="text-white mb-3 fw-bold display-5">Foster First Program</h2>
+          <p class="lead mb-4 text-white" style="font-size: 1.1rem; opacity: 0.9;">Not ready to adopt? Foster with us. We provide all supplies and medical care—you provide the love.</p>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <span class="fw-medium">All Supplies Provided</span>
+              </div>
             </div>
-            <div>
-              <h5 class="mb-0">All Supplies Provided</h5>
-              <p class="mb-0">Food, bedding, toys, and medical care included</p>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <span class="fw-medium">Flexible Duration</span>
+              </div>
             </div>
-          </div>
-          <div class="d-flex align-items-center mb-3">
-            <div class="bg-purple text-white rounded-circle p-3 me-3">
-              <i class="fas fa-hand-holding-heart fa-2x"></i>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <span class="fw-medium">Adoption Priority</span>
+              </div>
             </div>
-            <div>
-              <h5 class="mb-0">Flexible Duration</h5>
-              <p class="mb-0">From 2 weeks to 3 months - you choose</p>
-            </div>
-          </div>
-          <div class="d-flex align-items-center">
-            <div class="bg-purple text-white rounded-circle p-3 me-3">
-              <i class="fas fa-home fa-2x"></i>
-            </div>
-            <div>
-              <h5 class="mb-0">Adoption Priority</h5>
-              <p class="mb-0">First option to adopt if you fall in love</p>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <span class="fw-medium">24/7 Support</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-6 order-lg-1">
-          <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee" alt="Foster pet with family" class="img-fluid rounded shadow">
+        
+        <!-- Form Column -->
+        <div class="col-lg-5">
+          <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="card-body p-4 p-md-5">
+              <h4 class="mb-4 text-dark fw-bold text-center">Become a Foster</h4>
+              <form>
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-bold mb-1">Full Name</label>
+                  <input type="text" class="form-control bg-light border-0 py-2" placeholder="John Doe" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-bold mb-1">Email Address</label>
+                  <input type="email" class="form-control bg-light border-0 py-2" placeholder="john@example.com" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label text-secondary small fw-bold mb-1">Phone Number</label>
+                  <input type="tel" class="form-control bg-light border-0 py-2" placeholder="(123) 456-7890">
+                </div>
+                <div class="mb-4">
+                  <label class="form-label text-secondary small fw-bold mb-1">Preferred Pet Type</label>
+                  <select class="form-select bg-light border-0 py-2">
+                    <option>Dogs & Puppies</option>
+                    <option>Cats & Kittens</option>
+                    <option>Small Animals</option>
+                    <option>Any Available Pet</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-purple w-100 py-3 fw-bold rounded-pill">Submit Application</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -297,7 +332,7 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-9">
-          <h3 class="mb-3 mb-md-0"><i class="fas fa-phone-alt me-2"></i> Emergency Animal Rescue Hotline</h3>
+          <h3 class="mb-3 mb-md-0 text-white"><i class="fas fa-phone-alt me-2"></i> Emergency Animal Rescue Hotline</h3>
         </div>
         <div class="col-md-3 text-md-end">
           <a href="tel:+18005551234" class="btn btn-light">Call Now: 1-800-555-1234</a>

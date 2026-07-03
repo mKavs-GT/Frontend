@@ -1,10 +1,14 @@
 {
   "cleanUrls": false,
   "trailingSlash": true,
+<<<<<<< HEAD
   "redirects": [
     { "source": "/", "destination": "/Home" },
     { "source": "/index.html", "destination": "/Home" }
   ],
+=======
+
+>>>>>>> 795cec78fbedb4991a513ee022dad2a25217f2c5
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },
     { "source": "/About", "destination": "/about/index.html" },
