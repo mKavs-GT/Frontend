@@ -298,11 +298,15 @@ function calculateSlideHeights() {
     const slide3BaseVirtualHeight = viewportHeight;
     const slide3El = document.getElementById('slide-3');
     const slide3RealHeight = slide3El ? slide3El.scrollHeight : viewportHeight;
-    const slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
+    let slide3TotalHeight = slide3BaseVirtualHeight + Math.max(0, slide3RealHeight - viewportHeight);
+    
+    if (window.innerWidth < 768) {
+        slide3TotalHeight += 800; // Mobile horizontal scroll for Latest Works
+    }
 
     let s2Height = getScrollHeight(slide2);
     if (window.innerWidth < 768) {
-        s2Height += 1200; // Add 1200px of virtual scroll space for two horizontal scrolls (600px each) on mobile
+        s2Height += 600; // Add 600px of virtual scroll space for one horizontal scroll on mobile
     }
 
     slideHeights = [
@@ -387,7 +391,22 @@ function updateScrollState(newGlobalY, instant = false) {
         for (let j = 0; j < index; j++) startY += slideHeights[j];
 
         if (index === 0) {
-            slide.style.transform = `translateY(0)`; // Hero stays fixed in back
+            // Scale and round corners of Slide 1 as Slide 2 comes up
+            if (globalScrollY > 0 && globalScrollY <= window.innerHeight) {
+                const s2Progress = globalScrollY / window.innerHeight;
+                slide.style.transform = `translateY(0) scale(${1 - s2Progress * 0.05})`; // Scale down slightly
+                slide.style.borderRadius = `${s2Progress * 40}px`;
+                slide.style.overflow = 'hidden';
+            } else if (globalScrollY > window.innerHeight) {
+                slide.style.transform = `translateY(0) scale(0.95)`;
+                slide.style.borderRadius = `40px`;
+                slide.style.overflow = 'hidden';
+            } else {
+                slide.style.transform = `translateY(0) scale(1)`;
+                slide.style.borderRadius = `0px`;
+                slide.style.overflow = '';
+            }
+            
             // Hide hero if we are deep enough to avoid transparency flicker
             if (newSlideIndex >= 2) slide.style.opacity = '0';
             else slide.style.opacity = '1';
@@ -465,9 +484,7 @@ function updateScrollState(newGlobalY, instant = false) {
         if (slide2) {
             if (window.innerWidth < 768) {
                 const cardsTrack = document.getElementById('slide-2-cards-track');
-                const latestWorksTrack = document.querySelector('.cards-grid-exact');
                 const parentContainer = cardsTrack ? cardsTrack.parentElement : null;
-                const latestWorksSection = document.getElementById('projects-exact');
                 
                 // Phase 1 setup (What We Do)
                 let startY1 = 150; 
@@ -478,30 +495,18 @@ function updateScrollState(newGlobalY, instant = false) {
                 }
                 const scrollDist1 = 600;
                 
-                // Phase 2 setup (Latest Works)
-                let startY2 = 1200;
-                if (latestWorksSection) {
-                    const offsetTop = latestWorksSection.offsetTop;
-                    const sectionHeight = latestWorksSection.offsetHeight;
-                    startY2 = Math.max(0, offsetTop - (window.innerHeight - sectionHeight) / 2);
-                }
-                const scrollDist2 = 600;
-                
-                if (cardsTrack && latestWorksTrack) {
+                if (cardsTrack) {
                     const maxScrollX1 = cardsTrack.scrollWidth - window.innerWidth + 32;
-                    const maxScrollX2 = latestWorksTrack.scrollWidth - window.innerWidth + 32;
                     
                     if (localScrollY < startY1) {
                         // Vertical scroll before Phase 1
                         slide2.scrollTop = localScrollY;
                         cardsTrack.style.transform = `translateX(0px)`;
-                        latestWorksTrack.style.transform = `translateX(0px)`;
                     } else if (localScrollY >= startY1 && localScrollY <= startY1 + scrollDist1) {
                         // Phase 1: Horizontal scroll of What We Do cards
                         slide2.scrollTop = startY1;
                         const progress = (localScrollY - startY1) / scrollDist1;
                         cardsTrack.style.transform = `translateX(${-progress * maxScrollX1}px)`;
-                        latestWorksTrack.style.transform = `translateX(0px)`;
                         
                         // Trigger bottom text appearance immediately when horizontal scroll starts
                         const bottomText = document.getElementById('slide-2-bottom-text');
@@ -509,22 +514,10 @@ function updateScrollState(newGlobalY, instant = false) {
                             bottomText.classList.remove('opacity-0', '-translate-x-full');
                             bottomText.classList.add('opacity-100', 'translate-x-0');
                         }
-                    } else if (localScrollY > startY1 + scrollDist1 && localScrollY < startY2 + scrollDist1) {
-                        // Vertical scroll between Phase 1 and Phase 2
+                    } else {
+                        // Vertical scroll after Phase 1
                         slide2.scrollTop = localScrollY - scrollDist1;
                         cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
-                        latestWorksTrack.style.transform = `translateX(0px)`;
-                    } else if (localScrollY >= startY2 + scrollDist1 && localScrollY <= startY2 + scrollDist1 + scrollDist2) {
-                        // Phase 2: Horizontal scroll of Latest Works cards
-                        slide2.scrollTop = startY2;
-                        const progress = (localScrollY - (startY2 + scrollDist1)) / scrollDist2;
-                        cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
-                        latestWorksTrack.style.transform = `translateX(${-progress * maxScrollX2}px)`;
-                    } else {
-                        // Vertical scroll after Phase 2
-                        slide2.scrollTop = localScrollY - scrollDist1 - scrollDist2;
-                        cardsTrack.style.transform = `translateX(${-maxScrollX1}px)`;
-                        latestWorksTrack.style.transform = `translateX(${-maxScrollX2}px)`;
                     }
                 } else {
                     slide2.scrollTop = localScrollY;
@@ -532,9 +525,7 @@ function updateScrollState(newGlobalY, instant = false) {
             } else {
                 slide2.scrollTop = localScrollY;
                 const cardsTrack = document.getElementById('slide-2-cards-track');
-                const latestWorksTrack = document.querySelector('.cards-grid-exact');
                 if (cardsTrack) cardsTrack.style.transform = '';
-                if (latestWorksTrack) latestWorksTrack.style.transform = '';
             }
         }
     }
@@ -542,7 +533,37 @@ function updateScrollState(newGlobalY, instant = false) {
         handleSlide3Flip(localScrollY, instant);
 
         const slide3 = document.getElementById('slide-3');
-        if (slide3) slide3.scrollTop = localScrollY;
+        if (slide3) {
+            let s3ScrollTop = localScrollY;
+            if (window.innerWidth < 768) {
+                const latestWorksSection = document.getElementById('projects-exact');
+                const latestWorksTrack = document.querySelector('.cards-grid-exact');
+                const rightExact = document.querySelector('.project-right-exact');
+                
+                if (latestWorksSection && latestWorksTrack && rightExact) {
+                    let pinStart = latestWorksSection.offsetTop + rightExact.offsetTop - 50;
+                    pinStart = Math.max(0, pinStart);
+                    const scrollDist = 800;
+                    const maxScrollX = latestWorksTrack.scrollWidth - window.innerWidth + 32;
+                    
+                    if (localScrollY < pinStart) {
+                        s3ScrollTop = localScrollY;
+                        latestWorksTrack.style.transform = `translateX(0px)`;
+                    } else if (localScrollY >= pinStart && localScrollY <= pinStart + scrollDist) {
+                        s3ScrollTop = pinStart;
+                        const progress = (localScrollY - pinStart) / scrollDist;
+                        latestWorksTrack.style.transform = `translateX(${-progress * maxScrollX}px)`;
+                    } else {
+                        s3ScrollTop = localScrollY - scrollDist;
+                        latestWorksTrack.style.transform = `translateX(${-maxScrollX}px)`;
+                    }
+                }
+            } else {
+                const latestWorksTrack = document.querySelector('.cards-grid-exact');
+                if (latestWorksTrack) latestWorksTrack.style.transform = '';
+            }
+            slide3.scrollTop = s3ScrollTop;
+        }
     }
     else if (newSlideIndex === 3) { // Slide 6 (Footer)
         const slide6 = document.getElementById('slide-6');
