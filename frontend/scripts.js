@@ -882,7 +882,7 @@ async function checkAuthStatus() {
             }
 
             if (userIcon) {
-                userIcon.href = './profile/profile.html';
+                userIcon.href="/Profile";
 
                 if (data.user) {
                     const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;

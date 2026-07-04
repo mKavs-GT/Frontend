@@ -60,6 +60,14 @@ const replacements = [
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*support\/(?:support|index)\.html[`"']/gi, replacement: '"/Support"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*support\.html[`"']/gi, replacement: '"/Support"' },
   
+  // Profile
+  { regex: /href\s*:\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: 'href:"/Profile"' },
+  { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: 'href="/Profile"' },
+  { regex: /href\s*:\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\.html(?:\?login=success)?[`"']/gi, replacement: 'href:"/Profile"' },
+  { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\.html(?:\?login=success)?[`"']/gi, replacement: 'href="/Profile"' },
+  { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: '"/Profile"' },
+  { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\.html(?:\?login=success)?[`"']/gi, replacement: '"/Profile"' },
+  
   // Also explicitly replace /index.html with /Home
   { regex: /href\s*=\s*[`"']\/index\.html[`"']/gi, replacement: 'href="/Home"' },
   { regex: /href\s*:\s*[`"']\/index\.html[`"']/gi, replacement: 'href:"/Home"' },

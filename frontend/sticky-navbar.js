@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 userIcons.forEach(icon => {
                     const parent = icon.parentElement;
                     if (parent) {
-                        parent.href = '/profile/profile.html';
+                        parent.href="/Profile";
                     }
                     if (data.user) {
                         const profileImageUrl = data.user.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.user.displayName || 'User')}&background=ccff00&color=000&size=150`;
