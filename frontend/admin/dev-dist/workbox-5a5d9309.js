@@ -2877,7 +2877,7 @@ define(['exports'], (function (exports) { 'use strict';
       }
       /**
        * Returns the cache key used for storing a given URL. If that URL is
-       * unversioned, like `/index.html', then the cache key will be the original
+       * unversioned, like "/Home", then the cache key will be the original
        * URL with a search parameter appended to it.
        *
        * @param {string} url A URL whose cache key you want to look up.
@@ -2906,7 +2906,7 @@ define(['exports'], (function (exports) { 'use strict';
        * and it will automatically look up the correct cache key for the currently
        * active revision of that URL.
        *
-       * E.g., `matchPrecache('index.html')` will find the correct precached
+       * E.g., `matchPrecache("/Home")` will find the correct precached
        * response for the currently active service worker, even if the actual cache
        * key is `'/index.html?__WB_REVISION__=1234abcd'`.
        *
@@ -3016,7 +3016,7 @@ define(['exports'], (function (exports) { 'use strict';
      */
     function* generateURLVariations(url, {
       ignoreURLParametersMatching = [/^utm_/, /^fbclid$/],
-      directoryIndex = 'index.html',
+      directoryIndex = "/Home",
       cleanURLs = true,
       urlManipulation
     } = {}) {

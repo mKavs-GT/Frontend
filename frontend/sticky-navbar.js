@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // User is logged in. Point "Book Us" links directly to /Consult
-                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes('./loginpg/index.html') || a.href.includes('consult.html')));
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes("/BookUs") || a.href.includes("/Consult")));
                 bookUsLinks.forEach(link => {
                     link.href = '/Consult';
                 });
@@ -123,14 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // Update "Book Us" links to point to login if they require auth
-                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes('./loginpg/index.html') || a.href.includes('consult.html')));
+                const bookUsLinks = Array.from(document.querySelectorAll('a')).filter(a => a.href && (a.href.includes("/BookUs") || a.href.includes("/Consult")));
                 bookUsLinks.forEach(link => {
                     link.href = '/BookUs'; // Native /BookUs route points to Login anyway
                 });
 
                 // Actively protect the /Consult page (not /BookUs, which is the login page)
                 const currentPath = window.location.pathname;
-                if (currentPath.includes('./consult/index.html') || currentPath.endsWith('consult.html')) {
+                if (currentPath.includes("/Consult") || currentPath.endsWith("/Consult")) {
                     window.location.href = '/Login?redirect=/Consult';
                 }
             }

@@ -170,7 +170,7 @@ export function FooterCTA() {
         </div>
         <div className="footer-cta-btns">
           <a
-            href="../consult/consult.html"
+            href="/Consult"
             className="btn-neon"
             id="cta-consultation"
             aria-label="Book a free consultation"

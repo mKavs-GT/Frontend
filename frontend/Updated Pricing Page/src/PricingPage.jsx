@@ -120,7 +120,7 @@ function PricingCard({ plan }) {
 
       {/* CTA */}
       <a
-        href="../consult/consult.html"
+        href="/Consult"
         className={ctaClass}
         id={`cta-${plan.id}`}
         aria-label={`${plan.cta} — ${plan.name} plan at ₹${plan.price.toLocaleString('en-IN')}`}

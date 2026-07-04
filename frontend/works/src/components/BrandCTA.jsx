@@ -14,7 +14,7 @@ const BrandCTA = () => {
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
   const rightSideRef = useRef(null);
-  const [authUrl, setAuthUrl] = useState('/loginpg/login.html'); // Default to login
+  const [authUrl, setAuthUrl] = useState("/BookUs"); // Default to login
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -24,9 +24,9 @@ const BrandCTA = () => {
         });
         const data = await response.json();
         if (data.loggedIn) {
-          setAuthUrl('/consult/consult.html');
+          setAuthUrl("/Consult");
         } else {
-          setAuthUrl('/loginpg/login.html');
+          setAuthUrl("/BookUs");
         }
       } catch (error) {
         console.error('Auth check failed:', error);

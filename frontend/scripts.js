@@ -1494,7 +1494,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href="#slide-3"], a[href*="#slide-3"], a[href="#our-works"], a[href*="#our-works"]').forEach(link => {
         link.addEventListener('click', (e) => {
             // Only intercept if we are on index.html
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+            if (window.location.pathname.endsWith("/Home") || window.location.pathname === '/') {
                 e.preventDefault();
                 history.pushState(null, null, '#our-works');
                 handleHashNavigation();
@@ -1507,7 +1507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (homeLink) {
         homeLink.addEventListener('click', (e) => {
             // Only scroll if we are on index.html
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.hash === '#our-works') {
+            if (window.location.pathname.endsWith("/Home") || window.location.pathname === '/' || window.location.hash === '#our-works') {
                 e.preventDefault();
                 // If there's a hash, clear it
                 if (window.location.hash) {

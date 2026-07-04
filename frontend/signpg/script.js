@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         successMsg.classList.add('visible');
 
                         setTimeout(function () {
-                            window.location.href = '/index.html';
+                            window.location.href="/Home";
                         }, 2000);
                     } else {
                         const errorMessage = data.error || 'Signup failed';

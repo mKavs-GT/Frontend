@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
   let pathname = parsedUrl.pathname;
 
   // Default to index.html for root
-  if (pathname === '/') pathname = '/index.html';
+  if (pathname === '/') pathname = "/Home";
 
   // Serve static files from current directory (media)
   const filePath = path.join(__dirname, pathname);
