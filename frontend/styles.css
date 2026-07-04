@@ -613,7 +613,7 @@ html {
 }
 
 .footer-column ul li a::before {
-    content: 'â†’';
+    content: '';
     font-family: monospace;
     opacity: 0;
     transform: translateX(-10px);
