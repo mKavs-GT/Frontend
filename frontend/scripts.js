@@ -391,21 +391,7 @@ function updateScrollState(newGlobalY, instant = false) {
         for (let j = 0; j < index; j++) startY += slideHeights[j];
 
         if (index === 0) {
-            // Scale and round corners of Slide 1 as Slide 2 comes up
-            if (globalScrollY > 0 && globalScrollY <= window.innerHeight) {
-                const s2Progress = globalScrollY / window.innerHeight;
-                slide.style.transform = `translateY(0) scale(${1 - s2Progress * 0.05})`; // Scale down slightly
-                slide.style.borderRadius = `${s2Progress * 40}px`;
-                slide.style.overflow = 'hidden';
-            } else if (globalScrollY > window.innerHeight) {
-                slide.style.transform = `translateY(0) scale(0.95)`;
-                slide.style.borderRadius = `40px`;
-                slide.style.overflow = 'hidden';
-            } else {
-                slide.style.transform = `translateY(0) scale(1)`;
-                slide.style.borderRadius = `0px`;
-                slide.style.overflow = '';
-            }
+            slide.style.transform = `translateY(0)`;
             
             // Hide hero if we are deep enough to avoid transparency flicker
             if (newSlideIndex >= 2) slide.style.opacity = '0';
@@ -541,7 +527,7 @@ function updateScrollState(newGlobalY, instant = false) {
                 const rightExact = document.querySelector('.project-right-exact');
                 
                 if (latestWorksSection && latestWorksTrack && rightExact) {
-                    let pinStart = latestWorksSection.offsetTop + rightExact.offsetTop - 50;
+                    let pinStart = latestWorksSection.offsetTop;
                     pinStart = Math.max(0, pinStart);
                     const scrollDist = 800;
                     const maxScrollX = latestWorksTrack.scrollWidth - window.innerWidth + 32;
