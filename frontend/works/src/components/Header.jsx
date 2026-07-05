@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import mrvImg from './mrv.png';
+const mrvImg = '/images/mrv.png';
 
 const Header = () => {
   // CONFIGURATION: Set the start position here (e.g., -500, -100vw, etc.)
