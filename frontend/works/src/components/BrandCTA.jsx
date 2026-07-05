@@ -3,10 +3,10 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
-import portfolioImg from '../assets/portfolio.jpg';
-import ecommerceImg from '../assets/ecommerce.jpg';
-import companyImg from '../assets/company.jpg';
-import dashboardImg from '../assets/dashboard.jpg';
+const portfolioImg = '/images/portfolio.jpg';
+const ecommerceImg = '/images/ecommerce.jpg';
+const companyImg = '/images/company.jpg';
+const dashboardImg = '/images/dashboard.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
