@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-const mrvImg = '/images/mrv.png';
+import mrvImg from '../../../../images/mrv.png';
 
 const Header = () => {
   // CONFIGURATION: Set the start position here (e.g., -500, -100vw, etc.)
-  const mascotStartPosition = -1300;
+  const mascotStartPosition = 1300;
   const animationDuration = 3.5;
   const animationDelay = 0.5;
 
