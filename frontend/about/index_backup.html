@@ -821,6 +821,201 @@
             const container = document.querySelector('.sticky-cards-container');
             if (!container) return;
             
+            let isAligning = false;
+            
+            container.addEventListener('wheel', (e) => {
+                if (isAligning) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                const rect = container.getBoundingClientRect();
+                const isNotAligned = Math.abs(rect.top) > 5 && Math.abs(rect.top) < window.innerHeight;
+                
+                // Trap if scrolling down into a below container, OR scrolling up into an above container
+                if (isNotAligned && ((rect.top > 0 && e.deltaY > 0) || (rect.top < 0 && e.deltaY < 0))) {
+                    e.preventDefault();
+                    isAligning = true;
+                    window.scrollBy({ top: rect.top, behavior: 'smooth' });
+                    
+                                rel="noopener noreferrer">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                        <div class="about-policy-links">
+                            <a href="../docs/T&C and Privacy Policy.pdf" target="_blank"
+                                rel="noopener noreferrer">Privacy
+                                Policy</a>
+                            <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund
+                                Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright-text">
+                &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+            </div>
+        </div>
+    </section>
+
+    <script src="about.js"></script>
+    <!-- Kairon Chat Widget Integration -->
+    <link rel="stylesheet" href="../neoncode/kairon-live-bot/styles.css" target="_blank" rel="noopener noreferrer">
+    <script>window.KAIRON_BASE_PATH = "../neoncode/kairon-live-bot/";</script>
+    <div id="kairon">
+        <button id="kairon-button" aria-label="Open chat">
+            <img src="../about/images/little.png" alt="Kairon">
+        </button>
+        <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window">
+            <div class="panel-header">
+                <div class="left-section">
+                    <div class="logo-placeholder">
+                        <img src="../about/images/little.png" alt="Logo">
+                    </div>
+                    <div class="title">Kairon</div>
+                </div>
+                <select id="agent-selector" class="agent-selector" style="display:none">
+                    <option value="" disabled selected>Talk to Agent</option>
+                    <option value="Mr.K">Mr.K</option>
+                    <option value="Mr.A">Mr.A</option>
+                    <option value="Mr.S">Mr.S</option>
+                    <option value="Mr.V">Mr.V</option>
+                    <option value="Mr.M">Mr.M</option>
+                </select>
+                <button id="kairon-close" class="close-btn" aria-label="Close chat">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="kairon-messages" class="messages"></div>
+            <div class="interactive-area">
+                <div id="kairon-controls" class="kairon-controls">
+                    <div id="kairon-categories" class="kairon-categories"></div>
+                    <button id="kairon-browse-all" class="kairon-browse-all">Browse all</button>
+                </div>
+                <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+            </div>
+            <form id="kairon-form" class="composer" autocomplete="off">
+                <input id="kairon-input" type="text" aria-label="Message" />
+                <button type="submit" aria-label="Send">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="kairon-live" class="kairon-live-panel" style="display:none"></div>
+    <button id="kairon-header-back-bot" style="display:none"></button>
+    <button id="kairon-faq-toggle" style="display:none"></button>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!window.showTypingIndicator) {
+                window.showTypingIndicator = () => {
+                    const msgs = document.getElementById('kairon-messages');
+                    const indicator = document.createElement('div');
+                    indicator.id = 'typing-indicator';
+                    indicator.className = 'typing-indicator';
+                    indicator.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+                    msgs.appendChild(indicator);
+                    msgs.scrollTop = msgs.scrollHeight;
+                };
+            }
+            if (!window.hideTypingIndicator) {
+                window.hideTypingIndicator = () => {
+                    const indicator = document.getElementById('typing-indicator');
+                    if (indicator) indicator.remove();
+                };
+            }
+        });
+    </script>
+    <script src="../neoncode/kairon-live-bot/script.fixed.js" defer></script>
+
+        <!-- Mobile Side Menu Overlay -->
+        <div id="mobile-menu-overlay"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
+        </div>
+
+        <!-- Mobile Side Menu Panel -->
+        <div id="mobile-menu-panel"
+            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+            <!-- Close Button -->
+            <div class="flex justify-between items-center mb-8">
+                <!-- Logo Image -->
+                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+                <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
+                    aria-label="Close Menu">&times;</button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
+                <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+                <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+                <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+                <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+                <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+                <a href="/BookUs" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+                <a href="/BookUs" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="mt-auto pt-8">
+                <div class="flex space-x-6 mb-6">
+                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-discord"></i></a>
+                    <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-linkedin"></i></a>
+                    <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-regular fa-user"></i></a>
+                </div>
+            </div>
+        </div>
+
+    <!-- Mobile Side Menu Logic -->
+    <script>
+    (() => {
+        const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
+        const customTrigger = document.getElementById('custom-mobile-menu-trigger');
+        const trigger = mobileMenuTrigger || customTrigger;
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+        if (trigger && mobileMenuOverlay && mobileMenuPanel) {
+            const openMobileMenu = () => {
+                mobileMenuPanel.classList.remove('-translate-x-full');
+                mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
+            };
+
+            const closeMobileMenu = () => {
+                mobileMenuPanel.classList.add('-translate-x-full');
+                mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+                mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+            };
+
+            trigger.addEventListener('click', openMobileMenu);
+            if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
+    })();
+    </script>
+    <script src="../sticky-navbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.sticky-cards-container');
+            if (!container) return;
+            
             let isScrolling = false;
             const scrollDuration = 1000; // 1 second duration
             

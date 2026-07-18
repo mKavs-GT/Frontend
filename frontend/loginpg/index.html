@@ -618,6 +618,11 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    // Cache auth state so navbar shows Logout instantly across all pages
+                    try {
+                        const authData = { loggedIn: true, user: data.user || null, ts: Date.now() };
+                        localStorage.setItem('mkavs_auth_cache', JSON.stringify(authData));
+                    } catch(e) {}
                     // Success -> Redirect to Home
                     window.location.href = '/Home';
                 } else {
