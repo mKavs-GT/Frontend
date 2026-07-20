@@ -54,7 +54,7 @@ const endpoints = {
 
 // Helper function to build API URL
 const buildUrl = (endpoint, params = {}) => {
-    const url = new url("/Portfolio/Company/filmaura/`${BASE_URL}${endpoint}`");
+    const url = new URL(`${BASE_URL}${endpoint}`);
     url.searchParams.append('api_key', API_KEY);
 
     Object.keys(params).forEach(key => {

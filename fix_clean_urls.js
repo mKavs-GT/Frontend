@@ -185,7 +185,7 @@ portfolioDirs.forEach(({root, basePath}) => {
 
           content = content.replace(/href=["'](?!\/|http|mailto|tel|#|data:)(?:\.\/)?([^"']+)["']/gi, (match, p1) => `href="${siteBasePath}${p1}"`);
           content = content.replace(/src=["'](?!\/|http|data:)(?:\.\/)?([^"']+)["']/gi, (match, p1) => `src="${siteBasePath}${p1}"`);
-          content = content.replace(/url\(['"]?(?!\/|http|data:)(?:\.\/)?([^'"\)]+)['"]?\)/gi, (match, p1) => `url("${siteBasePath}${p1}")`);
+          content = content.replace(/url\(['"]?(?!\/|http|data:)(?:\.\/)?([^'"\)]+)['"]?\)/g, (match, p1) => `url("${siteBasePath}${p1}")`);
 
           if (content !== originalContent) {
             fs.writeFileSync(fullPath, content);
