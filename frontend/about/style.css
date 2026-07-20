@@ -26,8 +26,6 @@
     box-sizing: border-box;
 }
 
-
-
 body {
     font-family: var(--font-body);
     background-color: #f0f0f0;
@@ -840,371 +838,336 @@ p {
     100% { transform: translateX(-50%); }
 }
 
-/* ============================================
-   LEADERSHIP SECTION — Fishfinger Style
-   Sticky-Stacking Full-Screen Cards
-   ============================================ */
-
-.sticky-leadership-section {
+/* Founder Section */
+.founder-section {
+    background-color: #fafafa;
+    padding: 8rem 2rem;
     position: relative;
-    width: 100%;
-    /* No overflow: hidden here, or sticky won't work */
-    background: #000;
-    font-family: 'Inter', 'Outfit', sans-serif;
-}
-
-/* Introduction / Header */
-.sticky-leadership-header {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #000;
-    position: relative;
-    z-index: 1;
-}
-
-.massive-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(4rem, 12vw, 10rem);
-    font-weight: 900;
-    color: #fff;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 0.85;
-    letter-spacing: -2px;
-    margin: 0;
-    text-shadow: 
-        1px 1px 0 #555,
-        2px 2px 0 #555,
-        3px 3px 0 #444,
-        4px 4px 0 #444,
-        5px 5px 0 #333,
-        6px 6px 0 #333,
-        7px 7px 0 #222,
-        8px 8px 0 #222,
-        9px 9px 20px rgba(255, 255, 255, 0.1);
-}
-
-/* Container for all sticky cards */
-.sticky-cards-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-.sticky-cards-container::-webkit-scrollbar {
-    display: none;
-}
-.snap-wrapper {
-    height: 100vh;
-}
-
-/* Individual Sticky Card */
-.sticky-card {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 100%;
     overflow: hidden;
-    /* Box shadow to create depth when cards stack */
-    box-shadow: 0 -20px 40px rgba(0,0,0,0.3);
 }
 
-/* --- Card Entry Animations --- */
-.sticky-text-col > *, .split-text-wrapper > * {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.sticky-img-col img, .split-img-wrapper img {
-    opacity: 0;
-    transform: scale(0.92);
-    transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.2s;
+.founder-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 5rem;
+    align-items: flex-start;
 }
 
-/* Active State Triggered by JS */
-.sticky-card.is-active .sticky-text-col > *,
-.sticky-card.is-active .split-text-wrapper > * {
-    opacity: 1;
-    transform: translateY(0);
-}
-.sticky-card.is-active .sticky-img-col img,
-.sticky-card.is-active .split-img-wrapper img {
-    opacity: 1;
-    transform: scale(1);
+/* Image Column */
+.founder-image-column.new-layout {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #e6f0f2;
+    aspect-ratio: 4/4.5;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
 }
 
-/* Staggering for text elements */
-.sticky-card.is-active .sticky-text-col > *:nth-child(1), .sticky-card.is-active .split-text-wrapper > *:nth-child(1) { transition-delay: 0.1s; }
-.sticky-card.is-active .sticky-text-col > *:nth-child(2), .sticky-card.is-active .split-text-wrapper > *:nth-child(2) { transition-delay: 0.3s; }
-.sticky-card.is-active .sticky-text-col > *:nth-child(3), .sticky-card.is-active .split-text-wrapper > *:nth-child(3) { transition-delay: 0.5s; }
-.sticky-card.is-active .sticky-text-col > *:nth-child(4), .sticky-card.is-active .split-text-wrapper > *:nth-child(4) { transition-delay: 0.7s; }
-.sticky-card.is-active .sticky-text-col > *:nth-child(5), .sticky-card.is-active .split-text-wrapper > *:nth-child(5) { transition-delay: 0.9s; }
-/* --------------------------- */
-
-/* Colors */
-.card-navy { background-color: #0b132b; color: #fff; }
-.card-gold { background-color: #fca311; color: #14213d; }
-.card-slate { background-color: #1e293b; color: #fff; }
-.card-coral { background-color: #D90429; color: #fff; }
-.card-teal { background-color: #06d6a0; color: #14213d; }
-.card-purple { background-color: #7209b7; color: #fff; }
-
-.text-dark { color: #14213d !important; }
-.badge-dark { 
-    border-color: #14213d !important; 
-    color: #14213d !important;
-}
-
-/* Card Layout */
-.sticky-card-inner {
-    display: flex;
+.founder-image-column.new-layout img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Text Column */
+.founder-text-column.new-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.founder-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.5px;
+}
+
+.founder-role {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+.founder-intro {
+    font-size: 1.05rem;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.founder-hr {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.founder-subhead {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.founder-quote-text {
+    font-size: 1.25rem;
+    color: #222;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.founder-quote-text::before {
+    content: '\201C';
+    color: #0c19ad;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-right: 0.2rem;
+    line-height: 0;
+    vertical-align: -0.2rem;
+}
+
+.founder-quote-text::after {
+    content: '\201D';
+    color: #0c19ad;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-left: 0.1rem;
+    line-height: 0;
+    vertical-align: -0.6rem;
+}
+
+.founder-checklist-title {
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.founder-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.founder-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+.founder-checklist li i {
+    color: #111;
+    font-size: 1.2rem;
+    margin-top: 0.15rem;
+}
+
+.founder-linkedin-btn {
+    display: inline-flex;
     align-items: center;
-    max-width: 1600px;
+    gap: 0.5rem;
+    color: #0c19ad;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    align-self: flex-start;
+}
+
+.founder-linkedin-btn:hover {
+    color: #111;
+    transform: translateX(5px);
+}
+
+@media (max-width: 900px) {
+    .founder-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+
+/* Team Section */
+.team-section {
+    background-color: #fafafa;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-container {
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-.sticky-card-inner.reverse-layout {
-    flex-direction: row-reverse;
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+    margin-bottom: 5rem;
 }
 
-.sticky-text-col {
+.team-header-left {
     flex: 1;
-    padding: 5rem 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
 }
 
-.sticky-img-col {
-    flex: 1;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.sticky-img-col img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%;
-}
-
-.darker-bg {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Typography & Elements */
-.sticky-badge {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    padding: 0.4rem 1.2rem;
-    border: 2px solid currentColor;
-    border-radius: 100px;
-    display: inline-block;
-    width: fit-content;
-    margin-bottom: 2rem;
-}
-
-.sticky-name {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(3.5rem, 8vw, 7rem);
-    font-weight: 900;
-    line-height: 0.9;
-    letter-spacing: -1px;
-    margin: 0 0 1rem 0;
-    text-transform: uppercase;
-}
-
-.sticky-role {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-    opacity: 0.9;
-    margin-bottom: 3rem;
-    letter-spacing: 1px;
-}
-
-.sticky-headline {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.sticky-bio p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-    opacity: 0.85;
-    max-width: 550px;
-}
-
-.sticky-quote {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: 1.3rem;
-    font-style: italic;
-    line-height: 1.5;
-    margin: 0;
-    border-left: 4px solid currentColor;
-    padding-left: 1.5rem;
-    opacity: 0.9;
-    max-width: 550px;
-}
-
-/* Split Layout for Co-Founders / Executives */
-.split-layout {
-    display: flex;
-    flex-direction: row !important; /* Force side-by-side */
-    width: 100%;
-}
-
-.split-half {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-right: 2px solid rgba(0,0,0,0.1);
-    transition: filter 0.4s ease, opacity 0.4s ease;
-}
-
-/* Hover Blur Effect */
-.split-layout:hover .split-half {
-    filter: blur(8px);
-    opacity: 0.5;
-}
-
-.split-layout .split-half:hover {
-    filter: blur(0);
-    opacity: 1;
-}
-.split-half:last-child { border-right: none; }
-
-.split-img-wrapper {
-    height: 75%;
-    width: 100%;
-}
-
-.split-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%; /* Shift image up to reveal chest */
-}
-
-.split-text-wrapper {
-    height: 25%;
-    padding: 1.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.small-name {
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    line-height: 0.9;
-    margin-bottom: 0.5rem;
-}
-
-.split-quote {
-    font-family: Georgia, 'Times New Roman', serif;
+.team-tag {
     font-size: 1rem;
-    font-style: italic;
-    margin-top: auto;
-    opacity: 0.8;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+    display: inline-block;
 }
 
-/* ============================================
-   Responsive
-   ============================================ */
-@media (max-width: 1100px) {
-    .sticky-text-col {
-        padding: 4rem 2rem;
+.team-tag sup {
+    font-size: 0.6em;
+    vertical-align: super;
+    margin-left: 0.1rem;
+}
+
+.team-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #111;
+    text-transform: none;
+    letter-spacing: -1px;
+}
+
+.team-header-right {
+    flex: 1;
+    padding-top: 2rem;
+}
+
+.team-desc {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-member-img {
+    width: 100%;
+    aspect-ratio: 3.5/4;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background-color: #eee;
+}
+
+.team-member-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-member:hover .team-member-img img {
+    transform: scale(1.05);
+}
+
+.team-member-info {
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.team-member-role-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.team-member-role {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.team-member-name {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0;
+    margin-bottom: 0.25rem;
+}
+
+.team-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #f0f0f0;
+    color: #444;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.85rem;
+}
+
+.team-social-link:hover {
+    background-color: #0c19ad;
+    color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
     }
 }
 
 @media (max-width: 900px) {
-    .sticky-card-inner,
-    .sticky-card-inner.reverse-layout {
-        flex-direction: column;
-    }
-    
-    .sticky-text-col {
-        padding: 3rem 2rem;
-        height: auto;
-        flex: none;
-    }
-
-    .sticky-img-col {
-        flex: 1;
-        min-height: 40vh;
-    }
-
-    .sticky-name {
-        font-size: 3.5rem;
-    }
-
-    .sticky-role {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .sticky-bio p {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Split layout becomes a 2x2 grid on medium */
-    .split-layout {
-        flex-direction: column !important;
-    }
-    .split-half {
-        flex-direction: row;
-        height: 50%;
-        border-right: none;
-        border-bottom: 2px solid rgba(0,0,0,0.1);
-    }
-    .split-img-wrapper {
-        height: 100%;
-        width: 40%;
-    }
-    .split-text-wrapper {
-        height: 100%;
-        width: 60%;
-        padding: 2rem;
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 }
 
 @media (max-width: 600px) {
-    .sticky-name {
+    .team-header {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .team-header-right {
+        padding-top: 0;
+    }
+
+    .team-title {
         font-size: 2.5rem;
     }
-    .split-half {
-        flex-direction: column;
-    }
-    .split-img-wrapper {
-        width: 100%;
-        height: 40%;
-    }
-    .split-text-wrapper {
-        width: 100%;
-        height: 60%;
-        padding: 1.5rem;
-    }
-    .small-name {
-        font-size: 2rem;
+
+    .team-grid {
+        grid-template-columns: 1fr;
     }
 }
+
 
 /* CTA Section */
 .cta-section {
@@ -1568,6 +1531,9 @@ p {
     background-color: #1a1a1a;
     /* Match Founder Section Color */
     color: #fff;
+    border-top-left-radius: 10% 80px;
+    border-top-right-radius: 10% 80px;
+    margin-top: -20px;
     z-index: 10;
 }
 
