@@ -71,7 +71,23 @@ const replacements = [
   // Also explicitly replace /index.html with /Home
   { regex: /href\s*=\s*[`"']\/index\.html[`"']/gi, replacement: 'href="/Home"' },
   { regex: /href\s*:\s*[`"']\/index\.html[`"']/gi, replacement: 'href:"/Home"' },
-  { regex: /[`"']\/index\.html[`"']/gi, replacement: '"/Home"' }
+  { regex: /[`"']\/index\.html[`"']/gi, replacement: '"/Home"' },
+
+  // E-Commerce Portfolio Migrations (with index.html removal)
+  { regex: /Portfolio\/Ecommerce\/Bag\/index\.html/gi, replacement: 'Portfolio/E-Commerce/hush/' },
+  { regex: /Portfolio\/Ecommerce\/Ink\/index\.html/gi, replacement: 'Portfolio/E-Commerce/slick/' },
+  { regex: /Portfolio\/Ecommerce\/Kaizoku\/index\.html/gi, replacement: 'Portfolio/E-Commerce/kaizoku/' },
+  { regex: /Portfolio\/Ecommerce\/Kaizoku\/dist\/index\.html/gi, replacement: 'Portfolio/E-Commerce/kaizoku/' },
+  { regex: /Portfolio\/E-Commerce\/kaizoku\/dist\/index\.html/gi, replacement: 'Portfolio/E-Commerce/kaizoku/' },
+  { regex: /Portfolio\/Ecommerce\/Wegrow\/index\.html/gi, replacement: 'Portfolio/E-Commerce/wegrow/' },
+  { regex: /Portfolio\/Ecommerce\/Bag/gi, replacement: 'Portfolio/E-Commerce/hush' },
+  { regex: /Portfolio\/Ecommerce\/Ink/gi, replacement: 'Portfolio/E-Commerce/slick' },
+  { regex: /Portfolio\/Ecommerce\/Kaizoku/gi, replacement: 'Portfolio/E-Commerce/kaizoku' },
+  { regex: /Portfolio\/Ecommerce\/Wegrow/gi, replacement: 'Portfolio/E-Commerce/wegrow' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Bag/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/hush' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Ink/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/slick' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Kaizoku/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/kaizoku' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Wegrow/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/wegrow' }
 ];
 
 function processDir(dir) {

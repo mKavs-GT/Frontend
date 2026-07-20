@@ -3,7 +3,15 @@
   "trailingSlash": true,
   "redirects": [
     { "source": "/", "destination": "/Home" },
-    { "source": "/index.html", "destination": "/Home" }
+    { "source": "/index.html", "destination": "/Home" },
+    { "source": "/Portfolio/Ecommerce/Bag", "destination": "/Portfolio/E-Commerce/hush" },
+    { "source": "/Portfolio/Ecommerce/Ink", "destination": "/Portfolio/E-Commerce/slick" },
+    { "source": "/Portfolio/Ecommerce/Kaizoku", "destination": "/Portfolio/E-Commerce/kaizoku" },
+    { "source": "/Portfolio/Ecommerce/Wegrow", "destination": "/Portfolio/E-Commerce/wegrow" },
+    { "source": "/Portfolio/Ecommerce/Bag/(.*)", "destination": "/Portfolio/E-Commerce/hush/$1" },
+    { "source": "/Portfolio/Ecommerce/Ink/(.*)", "destination": "/Portfolio/E-Commerce/slick/$1" },
+    { "source": "/Portfolio/Ecommerce/Kaizoku/(.*)", "destination": "/Portfolio/E-Commerce/kaizoku/$1" },
+    { "source": "/Portfolio/Ecommerce/Wegrow/(.*)", "destination": "/Portfolio/E-Commerce/wegrow/$1" }
   ],
   "rewrites": [
     { "source": "/Home", "destination": "/index.html" },

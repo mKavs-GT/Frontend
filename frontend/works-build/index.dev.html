@@ -59,20 +59,26 @@
 \n
     <!-- Custom Style to override broken React menu and add our own -->
     <style>
-        /* Hide the React hamburger menu SVG by targeting the likely Lucide menu icon */
-        #root svg.lucide-menu { display: none !important; }
+        /* Hide the React hamburger menu SVG */
+        #root header svg, #root header button, #root .lucide-menu, #root [class*="menu"] { display: none !important; }
         
         #custom-mobile-menu-trigger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
+            position: absolute;
+            top: 2rem;
+            left: 1.5rem;
             z-index: 100;
-            color: black;
-            font-size: 2.5rem;
             cursor: pointer;
             background: none;
             border: none;
             padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #custom-mobile-menu-trigger svg {
+            width: 28px;
+            height: 28px;
+            color: #1F2937;
         }
         @media (min-width: 768px) {
             #custom-mobile-menu-trigger {
@@ -81,7 +87,9 @@
         }
     </style>
 
-    <button id="custom-mobile-menu-trigger" aria-label="Menu">&#x2261;</button>
+    <button id="custom-mobile-menu-trigger" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+    </button>
 
     <!-- Mobile Side Menu Logic -->
     <script>
