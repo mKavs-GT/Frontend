@@ -87,7 +87,43 @@ const replacements = [
   { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Bag/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/hush' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Ink/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/slick' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Kaizoku/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/kaizoku' },
-  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Wegrow/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/wegrow' }
+  { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Wegrow/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/wegrow' },
+
+  // Company Portfolio Migrations
+  { regex: /Portfolio\/Company\/Cars-website-main\/index\.html/gi, replacement: 'Portfolio/Company/cars/' },
+  { regex: /Portfolio\/Company\/FilmAura\/index\.html/gi, replacement: 'Portfolio/Company/filmaura/' },
+  { regex: /Portfolio\/Company\/JERI\/index\.html/gi, replacement: 'Portfolio/Company/jeri/' },
+  { regex: /Portfolio\/Company\/Waypoint\/index\.html/gi, replacement: 'Portfolio/Company/waypoint/' },
+  { regex: /Portfolio\/Company\/Cars-website-main/gi, replacement: 'Portfolio/Company/cars' },
+  { regex: /Portfolio\/Company\/FilmAura/gi, replacement: 'Portfolio/Company/filmaura' },
+  { regex: /Portfolio\/Company\/JERI/gi, replacement: 'Portfolio/Company/jeri' },
+  { regex: /Portfolio\/Company\/Waypoint/gi, replacement: 'Portfolio/Company/waypoint' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/Cars-website-main/gi, replacement: 'dev.mkavs.com/Portfolio/Company/cars' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/FilmAura/gi, replacement: 'dev.mkavs.com/Portfolio/Company/filmaura' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/JERI/gi, replacement: 'dev.mkavs.com/Portfolio/Company/jeri' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/Waypoint/gi, replacement: 'dev.mkavs.com/Portfolio/Company/waypoint' },
+
+  // Dashboard Portfolio Migrations
+  { regex: /Portfolio\/Dashboards\/Kyat\/index\.html/gi, replacement: 'Portfolio/Dashboard/Kyat/' },
+  { regex: /Portfolio\/Dashboards\/Serch\/index\.html/gi, replacement: 'Portfolio/Dashboard/Serch/' },
+  { regex: /Portfolio\/Dashboards\/Kyat/gi, replacement: 'Portfolio/Dashboard/Kyat' },
+  { regex: /Portfolio\/Dashboards\/Serch/gi, replacement: 'Portfolio/Dashboard/Serch' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Dashboards\/Kyat/gi, replacement: 'dev.mkavs.com/Portfolio/Dashboard/Kyat' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Dashboards\/Serch/gi, replacement: 'dev.mkavs.com/Portfolio/Dashboard/Serch' },
+
+  // Portfolio Sites Migrations
+  { regex: /Portfolio\/Portfolio\/Editing\/index\.html/gi, replacement: 'Portfolio/Portfolio/Editing/' },
+  { regex: /Portfolio\/Portfolio\/Latency\/index\.html/gi, replacement: 'Portfolio/Portfolio/Latency/' },
+  { regex: /Portfolio\/Portfolio\/Pritam\/index\.html/gi, replacement: 'Portfolio/Portfolio/Pritam/' },
+  { regex: /Portfolio\/Portfolio\/Tarot\/index\.html/gi, replacement: 'Portfolio/Portfolio/Tarot/' },
+  { regex: /Portfolio\/Portfolio\/Editing/gi, replacement: 'Portfolio/Portfolio/Editing' },
+  { regex: /Portfolio\/Portfolio\/Latency/gi, replacement: 'Portfolio/Portfolio/Latency' },
+  { regex: /Portfolio\/Portfolio\/Pritam/gi, replacement: 'Portfolio/Portfolio/Pritam' },
+  { regex: /Portfolio\/Portfolio\/Tarot/gi, replacement: 'Portfolio/Portfolio/Tarot' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Editing/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Editing' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Latency/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Latency' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Pritam/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Pritam' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Tarot/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Tarot' }
 ];
 
 function processDir(dir) {
@@ -120,3 +156,44 @@ function processDir(dir) {
 
 processDir(path.resolve('c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend'));
 processDir(path.resolve('c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/works-src'));
+
+// Absolute Path Fix for Portfolio Items
+const portfolioDirs = [
+  { root: 'c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend/Portfolio/E-Commerce', basePath: '/Portfolio/E-Commerce/' },
+  { root: 'c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend/Portfolio/Company', basePath: '/Portfolio/Company/' },
+  { root: 'c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend/Portfolio/Dashboard', basePath: '/Portfolio/Dashboard/' },
+  { root: 'c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend/Portfolio/Portfolio', basePath: '/Portfolio/Portfolio/' }
+];
+
+portfolioDirs.forEach(({root, basePath}) => {
+  if (!fs.existsSync(root)) return;
+  const sites = fs.readdirSync(root).filter(f => fs.statSync(path.join(root, f)).isDirectory());
+  
+  sites.forEach(site => {
+    const siteDir = path.join(root, site);
+    const siteBasePath = `${basePath}${site}/`;
+
+    function processSiteDir(dir) {
+      const files = fs.readdirSync(dir);
+      for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+          if (!['node_modules', '.git'].includes(file)) processSiteDir(fullPath);
+        } else if (fullPath.endsWith('.html') || fullPath.endsWith('.css') || fullPath.endsWith('.js')) {
+          let content = fs.readFileSync(fullPath, 'utf8');
+          let originalContent = content;
+
+          content = content.replace(/href=["'](?!\/|http|mailto|tel|#|data:)(?:\.\/)?([^"']+)["']/gi, (match, p1) => `href="${siteBasePath}${p1}"`);
+          content = content.replace(/src=["'](?!\/|http|data:)(?:\.\/)?([^"']+)["']/gi, (match, p1) => `src="${siteBasePath}${p1}"`);
+          content = content.replace(/url\(['"]?(?!\/|http|data:)(?:\.\/)?([^'"\)]+)['"]?\)/gi, (match, p1) => `url("${siteBasePath}${p1}")`);
+
+          if (content !== originalContent) {
+            fs.writeFileSync(fullPath, content);
+            console.log(`Updated relative paths to absolute in: ${fullPath}`);
+          }
+        }
+      }
+    }
+    processSiteDir(siteDir);
+  });
+});

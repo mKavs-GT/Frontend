@@ -17,7 +17,7 @@ const omdbApi = {
      * @returns {Promise} Search results
      */
     search: async (query, page = 1, type = '') => {
-        const url = new URL(OMDB_BASE_URL);
+        const url = new url("/Portfolio/Company/filmaura/OMDB_BASE_URL");
         url.searchParams.append('apikey', OMDB_API_KEY);
         url.searchParams.append('s', query);
         url.searchParams.append('page', page);
@@ -34,7 +34,7 @@ const omdbApi = {
      * @returns {Promise} Movie details
      */
     getByImdbId: async (imdbId, fullPlot = true) => {
-        const url = new URL(OMDB_BASE_URL);
+        const url = new url("/Portfolio/Company/filmaura/OMDB_BASE_URL");
         url.searchParams.append('apikey', OMDB_API_KEY);
         url.searchParams.append('i', imdbId);
         url.searchParams.append('plot', fullPlot ? 'full' : 'short');
@@ -51,7 +51,7 @@ const omdbApi = {
      * @returns {Promise} Movie details
      */
     getByTitle: async (title, year = '', type = '') => {
-        const url = new URL(OMDB_BASE_URL);
+        const url = new url("/Portfolio/Company/filmaura/OMDB_BASE_URL");
         url.searchParams.append('apikey', OMDB_API_KEY);
         url.searchParams.append('t', title);
         if (year) url.searchParams.append('y', year);
@@ -69,7 +69,7 @@ const omdbApi = {
      * @returns {Promise} Season details
      */
     getSeason: async (imdbId, season) => {
-        const url = new URL(OMDB_BASE_URL);
+        const url = new url("/Portfolio/Company/filmaura/OMDB_BASE_URL");
         url.searchParams.append('apikey', OMDB_API_KEY);
         url.searchParams.append('i', imdbId);
         url.searchParams.append('Season', season);

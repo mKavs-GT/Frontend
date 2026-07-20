@@ -229,10 +229,10 @@ function showResults() {
         ${result.pets.map(pet => `
           <div class="col-md-4 mb-3">
             <div class="card h-100 overflow-hidden">
-              <img src="${petImages[pet] || 'pup1.jpg'}" class="card-img-top" alt="${pet}" style="height: 150px; object-fit: cover;">
+              <img src="/Portfolio/Company/jeri/${petImages[pet] || "pup1.jpg'}" class="card-img-top" alt="${pet}" style="height: 150px; object-fit: cover;">
               <div class="card-body text-center">
                 <h6 class="mb-2 fw-bold text-dark">${pet}</h6>
-                <a href="adopt.html" class="btn btn-sm btn-quiz-next mt-1">Meet ${pet.split(' ')[0]}</a>
+                <a href="/Portfolio/Company/jeri/adopt.html" class="btn btn-sm btn-quiz-next mt-1">Meet ${pet.split(' ')[0]}</a>
               </div>
             </div>
           </div>

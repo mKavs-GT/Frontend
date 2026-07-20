@@ -10,7 +10,19 @@
     { "source": "/Portfolio/Ecommerce/Bag/:match*", "destination": "/Portfolio/E-Commerce/hush/:match*", "permanent": true },
     { "source": "/Portfolio/Ecommerce/Ink/:match*", "destination": "/Portfolio/E-Commerce/slick/:match*", "permanent": true },
     { "source": "/Portfolio/Ecommerce/Kaizoku/:match*", "destination": "/Portfolio/E-Commerce/kaizoku/:match*", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Wegrow/:match*", "destination": "/Portfolio/E-Commerce/wegrow/:match*", "permanent": true }
+    { "source": "/Portfolio/Ecommerce/Wegrow/:match*", "destination": "/Portfolio/E-Commerce/wegrow/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/Cars-website-main", "destination": "/Portfolio/Company/cars", "permanent": true },
+    { "source": "/Portfolio/Company/FilmAura", "destination": "/Portfolio/Company/filmaura", "permanent": true },
+    { "source": "/Portfolio/Company/JERI", "destination": "/Portfolio/Company/jeri", "permanent": true },
+    { "source": "/Portfolio/Company/Waypoint", "destination": "/Portfolio/Company/waypoint", "permanent": true },
+    { "source": "/Portfolio/Company/Cars-website-main/:match*", "destination": "/Portfolio/Company/cars/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/FilmAura/:match*", "destination": "/Portfolio/Company/filmaura/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/JERI/:match*", "destination": "/Portfolio/Company/jeri/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/Waypoint/:match*", "destination": "/Portfolio/Company/waypoint/:match*", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Kyat", "destination": "/Portfolio/Dashboard/Kyat", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Serch", "destination": "/Portfolio/Dashboard/Serch", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Kyat/:match*", "destination": "/Portfolio/Dashboard/Kyat/:match*", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Serch/:match*", "destination": "/Portfolio/Dashboard/Serch/:match*", "permanent": true }
   ],
 
   "rewrites": [

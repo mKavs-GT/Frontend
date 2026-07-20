@@ -29,7 +29,7 @@ const fetchFromIMDb = async (endpoint, params = {}) => {
         return cached.data;
     }
 
-    const url = new URL(`${BASE_URL}${endpoint}`);
+    const url = new url("/Portfolio/Company/filmaura/`${BASE_URL}${endpoint}`");
 
     // Add query parameters
     Object.keys(params).forEach(key => {

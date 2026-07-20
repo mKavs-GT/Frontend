@@ -121,17 +121,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .adoption-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('adopt-hero.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/Portfolio/Company/jeri/adopt-hero.jpg") center/cover no-repeat;
   padding: 6rem 0;
 }
 
 .about-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('about-hero.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/Portfolio/Company/jeri/about-hero.jpg") center/cover no-repeat;
   padding: 6rem 0;
 }
 
 .contact-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('contact-hero.jpg') center/cover no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/Portfolio/Company/jeri/contact-hero.jpg") center/cover no-repeat;
   padding: 6rem 0;
 }
 
