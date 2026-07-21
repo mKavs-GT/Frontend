@@ -519,7 +519,7 @@
             </form>
 
             <footer class="signup-prompt">
-                Don't have an account? <a href="/signpg/signup.html" class="signup-link">Sign up</a>
+                Don't have an account? <a href="/SignUp" class="signup-link">Sign up</a>
             </footer>
         </main>
     </div>
@@ -556,7 +556,7 @@
         if (error) {
             if (error === 'no_account') {
                 googleBanner.style.display = 'block';
-                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/signpg/signup.html">create an account</a> first.';
+                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/SignUp">create an account</a> first.';
             } else if (error === 'auth_failed') {
                 googleBanner.style.display = 'block';
                 googleBanner.textContent = 'Google authentication failed. Please try again.';

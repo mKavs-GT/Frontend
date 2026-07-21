@@ -10,6 +10,7 @@
     { "source": "/BookUs", "destination": "/frontend/loginpg/index.html" },
     { "source": "/Consult", "destination": "/frontend/consult/index.html" },
     { "source": "/Support", "destination": "/frontend/support/index.html" },
-    { "source": "/Login", "destination": "/frontend/loginpg/index.html" }
+    { "source": "/Login", "destination": "/frontend/loginpg/index.html" },
+    { "source": "/SignUp", "destination": "/frontend/signpg/index.html" }
   ]
 }

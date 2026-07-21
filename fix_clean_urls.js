@@ -123,7 +123,11 @@ const replacements = [
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Editing/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Editing' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Latency/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Latency' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Pritam/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Pritam' },
-  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Tarot/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Tarot' }
+  { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Tarot/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Tarot' },
+  
+  // SignUp Migrations
+  { regex: /signpg\/index\.html/gi, replacement: 'SignUp' },
+  { regex: /signpg\/signup\.html/gi, replacement: 'SignUp' }
 ];
 
 function processDir(dir) {

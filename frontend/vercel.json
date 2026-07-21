@@ -35,6 +35,7 @@
     { "source": "/Consult", "destination": "/consult/index.html" },
     { "source": "/Support", "destination": "/support/index.html" },
     { "source": "/Login", "destination": "/loginpg/index.html" },
-    { "source": "/Profile", "destination": "/profile/index.html" }
+    { "source": "/Profile", "destination": "/profile/index.html" },
+    { "source": "/SignUp", "destination": "/signpg/index.html" }
   ]
 }
