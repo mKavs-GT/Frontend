@@ -28,7 +28,7 @@
 <body>
 
     <!-- Mobile Hamburger Trigger Button (Top Left) -->
-    <button id="mobile-menu-trigger" class="mobile-menu-hamburger-btn" aria-label="Menu">&#x2261;</button>
+    <button id="mobile-menu-trigger" class="md:hidden text-3xl mr-auto pointer-events-auto text-white p-2 hover:text-[#c7f908] transition-colors" aria-label="Menu">&#x2261;</button>
 
     <!-- Navigation Toolbar -->
     <nav class="main-toolbar">
@@ -488,7 +488,7 @@
                 <!-- Member 1 -->
                 <div class="team-member">
                     <div class="team-member-img">
-                        <img src="images/Vinith.png" alt="Vinith V Rangan">
+                        <img src="images/vinith.png" alt="Vinith V Rangan">
                     </div>
                     <div class="team-member-info">
                         <h3 class="team-member-name">Vinith V Rangan</h3>
@@ -502,7 +502,7 @@
                 <!-- Member 2 -->
                 <div class="team-member">
                     <div class="team-member-img">
-                        <img src="images/Sitesh.png" alt="Sitesh Moharana">
+                        <img src="images/sitesh.png" alt="Sitesh Moharana">
                     </div>
                     <div class="team-member-info">
                         <h3 class="team-member-name">Sitesh Moharana</h3>
@@ -516,7 +516,7 @@
                 <!-- Member 3 -->
                 <div class="team-member">
                     <div class="team-member-img">
-                        <img src="images/Sofia.png" alt="Sofia Stalance">
+                        <img src="images/sofia.png" alt="Sofia Stalance">
                     </div>
                     <div class="team-member-info">
                         <h3 class="team-member-name">Sofia Stalance</h3>
@@ -530,7 +530,7 @@
                 <!-- Member 4 -->
                 <div class="team-member">
                     <div class="team-member-img">
-                        <img src="images/Michael.png" alt="Michael">
+                        <img src="images/michael.png" alt="Michael">
                     </div>
                     <div class="team-member-info">
                         <h3 class="team-member-name">Michael Antony</h3>
@@ -544,7 +544,7 @@
                 <!-- Member 5 -->
                 <div class="team-member">
                     <div class="team-member-img">
-                        <img src="images/Abuzar.png" alt="Mhd Abuzar">
+                        <img src="images/abuzar.png" alt="Mhd Abuzar">
                     </div>
                     <div class="team-member-info">
                         <h3 class="team-member-name">Mohamed Abuzar</h3>
@@ -808,7 +808,7 @@
     </script>
     <script src="../neoncode/kairon-live-bot/script.fixed.js" defer></script>
 
-        <!-- Mobile Side Menu Overlay -->
+                <!-- Mobile Side Menu Overlay -->
         <div id="mobile-menu-overlay"
             class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
         </div>
@@ -819,7 +819,7 @@
             <!-- Close Button -->
             <div class="flex justify-between items-center mb-8">
                 <!-- Logo Image -->
-                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+                <img src="/images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
                 <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
                     aria-label="Close Menu">&times;</button>
             </div>
@@ -836,22 +836,20 @@
                 <a href="/loginpg/index.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
             </div>
 
-            <!-- Bottom Section -->
-            <div class="mt-auto pt-8">
-                <div class="flex space-x-6 mb-6">
-                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-instagram"></i></a>
-                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-discord"></i></a>
-                    <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-linkedin"></i></a>
-                    <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-regular fa-user"></i></a>
-                </div>
+            <!-- Social Icons at bottom -->
+            <div class="flex space-x-6 text-2xl pt-6 border-t border-white/10 mt-auto justify-center">
+                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="https://discord.gg/HENvXDQQZJ" class="text-white hover:text-[#c7f908]" target="_blank"
+                    rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+                <a href="/loginpg/index.html" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"
+                    aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
             </div>
+        </div>
         </div>
 \n
     <!-- Mobile Side Menu Logic -->
@@ -887,3 +885,4 @@
 </body>
 
 </html>
+

@@ -12,157 +12,260 @@
     <title>MKAVS Global Tech - Our Works</title>
     <script type="module" crossorigin src="/works-build/assets/index-BMg4ettD.js"></script>
     <link rel="stylesheet" crossorigin href="/works-build/assets/index-BfMJ6ZyI.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  
-        <!-- Mobile Side Menu Overlay -->
-        <div id="mobile-menu-overlay"
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
-        </div>
-
-        <!-- Mobile Side Menu Panel -->
-        <div id="mobile-menu-panel"
-            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
-            <!-- Close Button -->
-            <div class="flex justify-between items-center mb-8">
-                <!-- Logo Image -->
-                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
-                <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
-                    aria-label="Close Menu">&times;</button>
-            </div>
-
-            <!-- Navigation Links -->
-            <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
-                <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
-                <a href="/about/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
-                <a href="/works-build/index.dev.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
-                <a href="/branding/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
-                <a href="/pricingpage/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
-                <a href="/loginpg/index.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
-                <a href="/support/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
-                <a href="/loginpg/index.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
-            </div>
-
-            <!-- Bottom Section -->
-            <div class="mt-auto pt-8">
-                <div class="flex space-x-6 mb-6">
-                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-instagram"></i></a>
-                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-discord"></i></a>
-                    <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-linkedin"></i></a>
-                    <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-regular fa-user"></i></a>
-                </div>
-            </div>
-        </div>
-\n
-    <!-- Custom Style to override broken React menu and add our own -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Hide the React hamburger menu SVG */
-        #root header svg, #root header button, #root .lucide-menu, #root [class*="menu"] { display: none !important; }
-        
-        #custom-mobile-menu-trigger {
-            position: absolute;
-            top: 2rem;
-            left: 1.5rem;
-            z-index: 100;
+        /* Hide React's own hamburger/menu buttons so ours takes over */
+        #root header button { display: none !important; }
+
+        /* Our custom hamburger trigger - fixed top-left, clean 3 black lines, no background */
+        #mkavs-hamburger {
+            position: fixed;
+            top: 1.25rem;
+            left: 1.25rem;
+            z-index: 9999;
             cursor: pointer;
-            background: none;
-            border: none;
-            padding: 8px;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 4px !important;
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            touch-action: manipulation;
         }
-        #custom-mobile-menu-trigger svg {
+        #mkavs-hamburger svg {
             width: 28px;
             height: 28px;
-            color: #1F2937;
+            stroke: #000000 !important;
+            display: block;
         }
         @media (min-width: 768px) {
-            #custom-mobile-menu-trigger {
-                display: none;
+            #mkavs-hamburger { display: none !important; }
+        }
+
+        /* Fix DIGITAL INDEX text alignment so it doesn't overlap hamburger on mobile */
+        @media (max-width: 768px) {
+            header, [class*="min-h-[400px]"], main > div:first-child {
+                padding-top: 5rem !important;
+            }
+            header h1, .text-5xl {
+                font-size: 2.75rem !important;
+                line-height: 1.05 !important;
+                margin-top: 0.5rem !important;
+            }
+        }
+
+        /* 2x2 Grid for 4 Website Types & Remove Pin Screen Effect on Mobile */
+        @media (max-width: 1024px) {
+            .pin-spacer {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 0 !important;
+                position: relative !important;
+            }
+            #projects-exact {
+                display: flex !important;
+                flex-direction: column !important;
+                position: relative !important;
+                transform: none !important;
+                min-height: auto !important;
+                height: auto !important;
+                padding: 2rem 1.25rem !important;
+                border-radius: 24px !important;
+            }
+            .project-left-exact {
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                padding: 0 0 1.5rem 0 !important;
+                position: relative !important;
+            }
+            .project-title-exact {
+                font-size: 2.2rem !important;
+                margin-bottom: 0.75rem !important;
+                line-height: 1 !important;
+            }
+            .project-description-exact {
+                font-size: 0.9rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 1.25rem !important;
+            }
+            .btn-arrow-exact {
+                font-size: 0.8rem !important;
+                padding: 6px 0 !important;
+            }
+            .project-right-exact {
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                position: relative !important;
+            }
+            .cards-grid-exact {
+                transform: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 0.75rem !important;
+                width: 100% !important;
+            }
+            .project-card-exact {
+                padding: 0.85rem 0.75rem !important;
+                min-height: 150px !important;
+                height: auto !important;
+                border-radius: 12px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                background: #0d0d0d !important;
+                border: 1px solid #262626 !important;
+            }
+            .project-card-exact h3 {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.35rem !important;
+                line-height: 1.2 !important;
+                letter-spacing: 0.5px !important;
+            }
+            .project-card-exact p {
+                display: none !important;
+            }
+            .img-container-exact {
+                height: 75px !important;
+                margin-top: 0.35rem !important;
+                border-radius: 6px !important;
+            }
+            .card-link-exact {
+                font-size: 0.65rem !important;
+                margin-top: 0.4rem !important;
+                letter-spacing: 0.5px !important;
+                gap: 0.25rem !important;
+            }
+            .card-link-exact svg {
+                width: 12px !important;
+                height: 12px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            #projects-exact {
+                padding: 1.5rem 0.85rem !important;
+                border-radius: 16px !important;
+            }
+            .project-title-exact {
+                font-size: 1.75rem !important;
+            }
+            .cards-grid-exact {
+                gap: 0.5rem !important;
+            }
+            .project-card-exact {
+                padding: 0.7rem 0.55rem !important;
+                min-height: 135px !important;
+                border-radius: 10px !important;
+            }
+            .project-card-exact h3 {
+                font-size: 0.68rem !important;
+            }
+            .img-container-exact {
+                height: 62px !important;
+            }
+            .card-link-exact {
+                font-size: 0.58rem !important;
+            }
+            .card-link-exact svg {
+                width: 10px !important;
+                height: 10px !important;
             }
         }
     </style>
+  </head>
+  <body>
+    <div id="root"></div>
 
-    <button id="custom-mobile-menu-trigger" aria-label="Menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+    <!-- MKAVS Mobile Hamburger Trigger -->
+    <button id="mkavs-hamburger" aria-label="Open Menu" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
     </button>
 
-    <!-- Fix Discord Icon and MRV Mascot Image -->
+    <!-- Mobile Side Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9990] opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+
+    <!-- Mobile Side Menu Panel -->
+    <div id="mobile-menu-panel"
+        class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212] border-r border-white/10 z-[9995] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+        <!-- Close Button + Logo -->
+        <div class="flex justify-between items-center mb-8">
+            <img src="/images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+            <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2" aria-label="Close Menu">&times;</button>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
+            <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Home</a>
+            <a href="/about/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">About</a>
+            <a href="/works-build/index.dev.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Our Work</a>
+            <a href="/branding/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Branding</a>
+            <a href="/pricingpage/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Pricing</a>
+            <a href="/loginpg/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Book Us</a>
+            <a href="/support/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Support</a>
+            <a href="/loginpg/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/10">Login</a>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="flex space-x-6 text-2xl pt-6 border-t border-white/10 mt-auto justify-center">
+            <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://discord.gg/HENvXDQQZJ" target="_blank" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="/loginpg/index.html" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer" aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Script -->
     <script>
-    (() => {
-        const fixAssets = () => {
-            // Fix Discord Icon
-            const discordLink = document.querySelector('a[href*="discord.gg"]');
-            if (discordLink) {
-                const wrongSvg = discordLink.querySelector('svg');
-                if (wrongSvg && !wrongSvg.classList.contains('discord-icon')) {
-                    wrongSvg.innerHTML = `<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.057a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>`;
-                    wrongSvg.setAttribute('viewBox', '0 0 24 24');
-                    wrongSvg.setAttribute('fill', 'currentColor');
-                    wrongSvg.setAttribute('stroke', 'none');
-                    wrongSvg.classList.remove('lucide', 'lucide-disc');
-                    wrongSvg.classList.add('discord-icon');
-                }
-            }
+    (function() {
+        var hamburger = document.getElementById('mkavs-hamburger');
+        var overlay   = document.getElementById('mobile-menu-overlay');
+        var panel     = document.getElementById('mobile-menu-panel');
+        var closeBtn  = document.getElementById('mobile-menu-close');
 
-            // Fix MRV Mascot Image
-            const mascotImg = document.querySelector('img[alt="MRV Mascot"]');
-            if (mascotImg && !mascotImg.src.includes('/images/mrv.png')) {
-                mascotImg.src = '/images/mrv.png';
-            }
-        };
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(fixAssets, 500);
-                setTimeout(fixAssets, 1500);
-                setTimeout(fixAssets, 3000);
-            });
-        } else {
-            setTimeout(fixAssets, 500);
-            setTimeout(fixAssets, 1500);
-            setTimeout(fixAssets, 3000);
+        function openMenu() {
+            panel.style.transform   = 'translateX(0)';
+            overlay.style.opacity   = '1';
+            overlay.style.pointerEvents = 'auto';
         }
+
+        function closeMenu() {
+            panel.style.transform   = 'translateX(-100%)';
+            overlay.style.opacity   = '0';
+            overlay.style.pointerEvents = 'none';
+        }
+
+        // Use both onclick and addEventListener for maximum compatibility on mobile
+        hamburger.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openMenu();
+        };
+        hamburger.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openMenu();
+        }, { passive: false });
+
+        closeBtn.onclick = closeMenu;
+        overlay.onclick  = closeMenu;
     })();
     </script>
-
-    <!-- Mobile Side Menu Logic -->
-    <script>
-    (() => {
-        const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
-        const customTrigger = document.getElementById('custom-mobile-menu-trigger');
-        const trigger = mobileMenuTrigger || customTrigger;
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const mobileMenuPanel = document.getElementById('mobile-menu-panel');
-        const mobileMenuClose = document.getElementById('mobile-menu-close');
-
-        if (trigger && mobileMenuOverlay && mobileMenuPanel) {
-            const openMobileMenu = () => {
-                mobileMenuPanel.classList.remove('-translate-x-full');
-                mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-                mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
-            };
-
-            const closeMobileMenu = () => {
-                mobileMenuPanel.classList.add('-translate-x-full');
-                mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
-                mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
-            };
-
-            trigger.addEventListener('click', openMobileMenu);
-            if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        }
-    });
-    </script>
-\n</body>
+  </body>
 </html>

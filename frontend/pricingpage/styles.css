@@ -825,25 +825,47 @@ body {
 
 @media (max-width: 768px) {
     .pricing-dj-content {
-        padding: 4rem 0 3rem;
+        padding: 3rem 1rem 2rem;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
     }
 
     .pricing-dj-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .pricing-dj-video {
-        width: 180px;
-        align-self: flex-end;
+        width: 150px;
+        align-self: center;
+        margin-top: 1.5rem;
     }
 
     .pricing-footer-base {
-        height: 260px;
+        height: 220px;
     }
 
     .pricing-footer-title {
         font-size: 1.25rem;
+    }
+
+    .pricing-social-links {
+        gap: 1.25rem;
+        font-size: 1.8rem;
+    }
+    
+    .pricing-policy-links {
+        gap: 1rem;
+        font-size: 0.7rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pricing-card {
+        padding: 2rem 1.25rem;
+    }
+
+    .pricing-card.popular {
+        transform: scale(1);
     }
 }

@@ -2882,7 +2882,8 @@ p {
 
     .process-section-title {
         font-size: 2rem !important;
-        margin-bottom: 1.5rem !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
         padding-left: 1.25rem !important;
         text-align: left !important;
     }
@@ -2990,6 +2991,20 @@ p {
         font-size: 0.75rem !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
+    }
+
+    .social-links {
+        gap: 1.5rem !important;
+        font-size: 2rem !important;
+    }
+
+    .footer-header-container {
+        padding: 1rem 1rem 2rem 1rem !important;
+    }
+    
+    .footer-socials {
+        padding-top: 2rem !important;
+        padding-bottom: 1rem !important;
     }
 }
 

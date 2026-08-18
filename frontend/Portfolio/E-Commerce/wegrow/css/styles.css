@@ -2088,3 +2088,18 @@ button {
     font-size: 20px;
     color: #555;
 }
+
+@media (max-width: 768px) {
+  .search-products-grid, .footer-grid, .stores-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+  .header-main, .main-nav, .search-container {
+    flex-direction: column !important;
+  }
+  .main-nav {
+    display: none !important;
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}

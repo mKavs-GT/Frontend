@@ -246,24 +246,107 @@ const BrandCTA = () => {
 
         @media (max-width: 1024px) {
           #projects-exact {
-            flex-direction: column;
-            height: auto;
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 2rem 1.25rem !important;
+            border-radius: 24px !important;
           }
 
-          .project-left-exact, .project-right-exact {
-            width: 100%;
-            height: auto;
-            padding: 4rem 8vw;
+          .project-left-exact {
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 0 0 1.5rem 0 !important;
+          }
+
+          .project-right-exact {
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 0 !important;
+            overflow: visible !important;
           }
 
           .cards-grid-exact {
-            grid-template-columns: 1fr;
-            padding-right: 0;
-            padding-top: 2rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.75rem !important;
+            padding: 0 !important;
+            margin-top: 0 !important;
+          }
+
+          .project-card-exact {
+            padding: 0.85rem 0.75rem !important;
+            min-height: 150px !important;
+            height: auto !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            background: #0d0d0d !important;
+            border: 1px solid #262626 !important;
+          }
+
+          .project-card-exact h3 {
+            font-size: 0.75rem !important;
+            margin-bottom: 0.35rem !important;
+            line-height: 1.2 !important;
+          }
+
+          .project-card-exact p {
+            display: none !important;
+          }
+
+          .img-container-exact {
+            height: 75px !important;
+            margin-top: 0.35rem !important;
+            border-radius: 6px !important;
+          }
+
+          .card-link-exact {
+            font-size: 0.65rem !important;
+            margin-top: 0.4rem !important;
+            gap: 0.25rem !important;
+          }
+
+          .card-link-exact svg {
+            width: 12px !important;
+            height: 12px !important;
           }
 
           .project-title-exact {
-            font-size: 10vw;
+            font-size: 2.2rem !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          #projects-exact {
+            padding: 1.5rem 0.85rem !important;
+            border-radius: 16px !important;
+          }
+          .project-title-exact {
+            font-size: 1.75rem !important;
+          }
+          .cards-grid-exact {
+            gap: 0.5rem !important;
+          }
+          .project-card-exact {
+            padding: 0.7rem 0.55rem !important;
+            min-height: 135px !important;
+            border-radius: 10px !important;
+          }
+          .project-card-exact h3 {
+            font-size: 0.68rem !important;
+          }
+          .img-container-exact {
+            height: 62px !important;
+          }
+          .card-link-exact {
+            font-size: 0.58rem !important;
+          }
+          .card-link-exact svg {
+            width: 10px !important;
+            height: 10px !important;
           }
         }
       `}</style>

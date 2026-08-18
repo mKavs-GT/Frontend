@@ -181,24 +181,107 @@ Error generating stack: `+e.message+`
 
         @media (max-width: 1024px) {
           #projects-exact {
-            flex-direction: column;
-            height: auto;
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 2rem 1.25rem !important;
+            border-radius: 24px !important;
           }
 
-          .project-left-exact, .project-right-exact {
-            width: 100%;
-            height: auto;
-            padding: 4rem 8vw;
+          .project-left-exact {
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 0 0 1.5rem 0 !important;
+          }
+
+          .project-right-exact {
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 0 !important;
+            overflow: visible !important;
           }
 
           .cards-grid-exact {
-            grid-template-columns: 1fr;
-            padding-right: 0;
-            padding-top: 2rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.75rem !important;
+            padding: 0 !important;
+            margin-top: 0 !important;
+          }
+
+          .project-card-exact {
+            padding: 0.85rem 0.75rem !important;
+            min-height: 150px !important;
+            height: auto !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            background: #0d0d0d !important;
+            border: 1px solid #262626 !important;
+          }
+
+          .project-card-exact h3 {
+            font-size: 0.75rem !important;
+            margin-bottom: 0.35rem !important;
+            line-height: 1.2 !important;
+          }
+
+          .project-card-exact p {
+            display: none !important;
+          }
+
+          .img-container-exact {
+            height: 75px !important;
+            margin-top: 0.35rem !important;
+            border-radius: 6px !important;
+          }
+
+          .card-link-exact {
+            font-size: 0.65rem !important;
+            margin-top: 0.4rem !important;
+            gap: 0.25rem !important;
+          }
+
+          .card-link-exact svg {
+            width: 12px !important;
+            height: 12px !important;
           }
 
           .project-title-exact {
-            font-size: 10vw;
+            font-size: 2.2rem !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          #projects-exact {
+            padding: 1.5rem 0.85rem !important;
+            border-radius: 16px !important;
+          }
+          .project-title-exact {
+            font-size: 1.75rem !important;
+          }
+          .cards-grid-exact {
+            gap: 0.5rem !important;
+          }
+          .project-card-exact {
+            padding: 0.7rem 0.55rem !important;
+            min-height: 135px !important;
+            border-radius: 10px !important;
+          }
+          .project-card-exact h3 {
+            font-size: 0.68rem !important;
+          }
+          .img-container-exact {
+            height: 62px !important;
+          }
+          .card-link-exact {
+            font-size: 0.58rem !important;
+          }
+          .card-link-exact svg {
+            width: 10px !important;
+            height: 10px !important;
           }
         }
       `}),(0,N.jsxs)(`section`,{id:`projects-exact`,ref:e,children:[(0,N.jsx)(`div`,{className:`project-left-exact`,children:(0,N.jsxs)(`div`,{className:`project-left-content-exact`,children:[(0,N.jsxs)(`h2`,{className:`project-title-exact`,children:[`EXPLORE `,(0,N.jsx)(`br`,{}),(0,N.jsx)(`em`,{children:`Our Latest`}),` Work`]}),(0,N.jsx)(`p`,{className:`project-description-exact`,children:`From bold branding to intuitive user interfaces, we turn ambitious ideas into digital reality. Dive into our portfolio to see how we help businesses stand out and grow.`}),(0,N.jsxs)(`a`,{href:r,className:`btn-arrow-exact`,children:[`Book Consultation`,(0,N.jsxs)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,children:[(0,N.jsx)(`line`,{x1:`5`,y1:`12`,x2:`19`,y2:`12`}),(0,N.jsx)(`polyline`,{points:`12 5 19 12 12 19`})]})]})]})}),(0,N.jsx)(`div`,{className:`project-right-exact`,ref:n,children:(0,N.jsxs)(`div`,{className:`cards-grid-exact`,ref:t,children:[(0,N.jsxs)(`div`,{className:`project-card-exact`,onClick:()=>window.location.hash=`portfolio`,children:[(0,N.jsxs)(`div`,{children:[(0,N.jsx)(`h3`,{className:`text-white`,children:`Portfolio Websites`}),(0,N.jsx)(`p`,{children:`High-impact designs that showcase your creative projects with intention.`}),(0,N.jsx)(`div`,{className:`img-container-exact`,children:(0,N.jsx)(`img`,{src:`/images/portfolio.jpg`,alt:`Portfolio Websites`})})]}),(0,N.jsxs)(`div`,{className:`card-link-exact`,children:[`View More`,(0,N.jsxs)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,children:[(0,N.jsx)(`line`,{x1:`5`,y1:`12`,x2:`19`,y2:`12`}),(0,N.jsx)(`polyline`,{points:`12 5 19 12 12 19`})]})]})]}),(0,N.jsxs)(`div`,{className:`project-card-exact`,onClick:()=>window.location.hash=`ecommerce`,children:[(0,N.jsxs)(`div`,{children:[(0,N.jsx)(`h3`,{className:`text-white`,children:`E Commerce Websites`}),(0,N.jsx)(`p`,{children:`Scalable digital stores integrated with online booking systems to drive business growth.`}),(0,N.jsx)(`div`,{className:`img-container-exact`,children:(0,N.jsx)(`img`,{src:`/images/ecommerce.jpg`,alt:`E Commerce Websites`})})]}),(0,N.jsxs)(`div`,{className:`card-link-exact`,children:[`View More`,(0,N.jsxs)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,children:[(0,N.jsx)(`line`,{x1:`5`,y1:`12`,x2:`19`,y2:`12`}),(0,N.jsx)(`polyline`,{points:`12 5 19 12 12 19`})]})]})]}),(0,N.jsxs)(`div`,{className:`project-card-exact`,onClick:()=>window.location.hash=`company`,children:[(0,N.jsxs)(`div`,{children:[(0,N.jsx)(`h3`,{className:`text-white`,children:`Company Websites`}),(0,N.jsx)(`p`,{children:`Professional full-stack web solutions that establish a strong brand identity and digital presence.`}),(0,N.jsx)(`div`,{className:`img-container-exact`,children:(0,N.jsx)(`img`,{src:`/images/company.jpg`,alt:`Company Websites`})})]}),(0,N.jsxs)(`div`,{className:`card-link-exact`,children:[`View More`,(0,N.jsxs)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,children:[(0,N.jsx)(`line`,{x1:`5`,y1:`12`,x2:`19`,y2:`12`}),(0,N.jsx)(`polyline`,{points:`12 5 19 12 12 19`})]})]})]}),(0,N.jsxs)(`div`,{className:`project-card-exact`,onClick:()=>window.location.hash=`portal`,children:[(0,N.jsxs)(`div`,{children:[(0,N.jsx)(`h3`,{className:`text-white`,children:`Portals & Dashboards`}),(0,N.jsx)(`p`,{children:`Custom-built technical architectures designed to manage complex data and streamline user interactions.`}),(0,N.jsx)(`div`,{className:`img-container-exact`,children:(0,N.jsx)(`img`,{src:`/images/dashboard.jpg`,alt:`Portals & Dashboards`})})]}),(0,N.jsxs)(`div`,{className:`card-link-exact`,children:[`View More`,(0,N.jsxs)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,children:[(0,N.jsx)(`line`,{x1:`5`,y1:`12`,x2:`19`,y2:`12`}),(0,N.jsx)(`polyline`,{points:`12 5 19 12 12 19`})]})]})]})]})})]})]})},py=()=>(0,N.jsxs)(`section`,{className:`pricing-dj-section w-full`,children:[(0,N.jsx)(`div`,{className:`pricing-dj-container`,children:(0,N.jsxs)(`div`,{className:`pricing-dj-content`,children:[(0,N.jsxs)(`div`,{className:`pricing-dj-text`,children:[(0,N.jsxs)(`h1`,{className:`pricing-dj-title`,children:[`YOUR `,(0,N.jsx)(`br`,{}),(0,N.jsx)(`span`,{className:`pricing-dj-blue`,children:`DIGITAL JOURNEY`}),(0,N.jsx)(`br`,{}),(0,N.jsx)(`span`,{className:`pricing-dj-lime`,children:`STARTS HERE.`})]}),(0,N.jsxs)(`div`,{className:`pricing-dj-buttons`,children:[(0,N.jsx)(`a`,{href:`/consult`,rel:`noopener noreferrer`,children:(0,N.jsx)(`button`,{className:`btn-dj btn-dj-primary`,children:`BOOK FREE CONSULTATION`})}),(0,N.jsx)(`a`,{href:`/support`,rel:`noopener noreferrer`,children:(0,N.jsx)(`button`,{className:`btn-dj btn-dj-secondary`,children:`CUSTOMER SUPPORT`})})]})]}),(0,N.jsx)(`div`,{className:`pricing-dj-video`,children:(0,N.jsx)(`video`,{src:`./images/mascot.mp4`,autoPlay:!0,loop:!0,muted:!0,playsInline:!0})})]})}),(0,N.jsx)(`div`,{className:`pricing-copyright`,children:`© COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM`})]}),my={PORTFOLIO:`Portfolio Sites`,ECOMMERCE:`E-Commerce Sites`,COMPANY:`Company Sites`,PORTAL:`Portal and Dashboards`},hy=[{id:1,title:`Kreator Studios`,description:`A sleek, dynamic portfolio showcasing professional video editing and post-production.`,year:`2025`,tags:[`Portfolio`,`Creative`],image:`/Portfolio/Thumbnails/editing.png`,category:my.PORTFOLIO,link:`/Portfolio/Portfolio/Editing/`},{id:2,title:`Latency`,description:`A high-performance design portfolio highlighting immersive digital experiences.`,year:`2025`,tags:[`Portfolio`,`Design`],image:`/Portfolio/Thumbnails/latency.png`,category:my.PORTFOLIO,link:`/Portfolio/Portfolio/Latency/`},{id:3,title:`Pritam`,description:`A minimalist personal portfolio built to showcase creative projects and achievements.`,year:`2025`,tags:[`Portfolio`,`Personal`],image:`/Portfolio/Thumbnails/pritam.png`,category:my.PORTFOLIO,link:`/Portfolio/Portfolio/Pritam/`},{id:4,title:`Kristy Tarot`,description:`A mystical, elegant platform offering personalized daily readings and tarot bookings.`,year:`2025`,tags:[`Portfolio`,`Specialized`],image:`/Portfolio/Thumbnails/kristy.png`,category:my.PORTFOLIO,link:`/Portfolio/Portfolio/Tarot/`},{id:5,title:`HUSH Bags`,description:`A premium e-commerce experience for luxury fashion bags and futuristic accessories.`,year:`2025`,tags:[`E-Commerce`,`Retail`],image:`/Portfolio/Thumbnails/bags aura.png`,category:my.ECOMMERCE,link:`/Portfolio/E-Commerce/hush/`},{id:6,title:`SLICK Art Tools`,description:`A bold, comic-inspired storefront for precision inking and professional manga pens.`,year:`2025`,tags:[`E-Commerce`,`Store`],image:`/Portfolio/Thumbnails/slick.png`,category:my.ECOMMERCE,link:`/Portfolio/E-Commerce/slick/`},{id:7,title:`Kaizoku`,description:`A vibrant e-commerce platform offering curated streetwear and anime merchandise.`,year:`2025`,tags:[`E-Commerce`,`Shop`],image:`/Portfolio/Thumbnails/kaizoku.png`,category:my.ECOMMERCE,link:`/Portfolio/E-Commerce/kaizoku/`},{id:8,title:`Wegrow`,description:`A modern e-commerce marketplace dedicated to sustainable living and organic products.`,year:`2025`,tags:[`E-Commerce`,`Market`],image:`/Portfolio/Thumbnails/wegrow.png`,category:my.ECOMMERCE,link:`/Portfolio/E-Commerce/wegrow/`},{id:9,title:`Velocity Auto`,description:`A high-octane automotive showcase featuring the latest in performance engineering.`,year:`2025`,tags:[`Company`,`Automotive`],image:`/Portfolio/Thumbnails/cars.png`,category:my.COMPANY,link:`/Portfolio/Company/cars/`},{id:10,title:`FilmAura`,description:`A cinematic production company landing page highlighting visionary storytelling.`,year:`2025`,tags:[`Company`,`Production`],image:`/Portfolio/Thumbnails/filmaura.png`,category:my.COMPANY,link:`/Portfolio/Company/FilmAura/`},{id:11,title:`JERI Corporate`,description:`A professional corporate portal for enterprise solutions and strategic consulting.`,year:`2025`,tags:[`Company`,`Corporate`],image:`/Portfolio/Thumbnails/jeri.png`,category:my.COMPANY,link:`/Portfolio/Company/JERI/`},{id:12,title:`Waypoint Logistics`,description:`A robust, data-driven company site for global logistics and supply chain management.`,year:`2025`,tags:[`Company`,`Logistics`],image:`/Portfolio/Thumbnails/waypoint.png`,category:my.COMPANY,link:`/Portfolio/Company/Waypoint/`},{id:13,title:`Kyat Dashboard`,description:`An intuitive financial dashboard portal for tracking analytics and performance metrics.`,year:`2025`,tags:[`Dashboard`,`Portal`],image:`/Portfolio/Thumbnails/kyat.png`,category:my.PORTAL,link:`/Portfolio/Dashboard/Kyat/`},{id:14,title:`Serch`,description:`An innovative knowledge hub and search dashboard for creators and researchers.`,year:`2025`,tags:[`Dashboard`,`Portal`],image:`/Portfolio/Thumbnails/serch.png`,category:my.PORTAL,link:`/Portfolio/Dashboard/Serch/`}];function gy(){let e=hy.filter(e=>e.category===my.PORTFOLIO),t=hy.filter(e=>e.category===my.ECOMMERCE),n=hy.filter(e=>e.category===my.COMPANY),r=hy.filter(e=>e.category===my.PORTAL),i=({id:e,title:t,items:n,className:r=``})=>(0,N.jsxs)(`div`,{className:`mb-32 scroll-mt-32 ${r}`,id:e,children:[(0,N.jsx)(`h2`,{className:`text-2xl md:text-3xl font-bold tracking-tighter text-gray-400 mb-10 uppercase`,children:t}),(0,N.jsx)(`div`,{className:`flex flex-col gap-10 md:gap-12`,children:n.map(e=>(0,N.jsx)(Ou,{project:e},e.id))})]});return(0,N.jsxs)(`div`,{className:`min-h-screen bg-[#f5f5f5] text-gray-900 selection:bg-black selection:text-white overflow-x-hidden`,children:[(0,N.jsx)(P,{}),(0,N.jsxs)(`main`,{className:`max-w-[1600px] mx-auto px-6 md:px-20 pt-12 md:pt-16 flex flex-col`,children:[(0,N.jsx)(Eu,{}),(0,N.jsx)(`div`,{className:`relative z-10`,children:(0,N.jsx)(fy,{})}),(0,N.jsx)(i,{id:`ecommerce`,title:my.ECOMMERCE,items:t,className:`mt-40 md:mt-60`}),(0,N.jsx)(i,{id:`company`,title:my.COMPANY,items:n}),(0,N.jsx)(i,{id:`portal`,title:my.PORTAL,items:r}),(0,N.jsx)(i,{id:`portfolio`,title:my.PORTFOLIO,items:e})]}),(0,N.jsx)(py,{})]})}(0,x.createRoot)(document.getElementById(`root`)).render((0,N.jsx)(b.StrictMode,{children:(0,N.jsx)(gy,{})}));
