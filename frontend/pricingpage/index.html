@@ -12,9 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO: Title & Description -->
-  <title>mKavs Pricing — Transparent Web Development Plans</title>
+  <title>mKavs Pricing â€” Transparent Web Development Plans</title>
   <meta name="description"
-    content="Choose from 5 flexible web development plans at mKavs. From ₹3,999 starter sites to ₹19,999 full e-commerce builds. Transparent pricing, no hidden costs." />
+    content="Choose from 5 flexible web development plans at mKavs. From â‚¹3,999 starter sites to â‚¹19,999 full e-commerce builds. Transparent pricing, no hidden costs." />
   <meta name="keywords"
     content="mKavs, web development pricing, startup website, e-commerce, React development, UI/UX design" />
   <meta name="robots" content="index, follow" />
@@ -31,9 +31,9 @@
   <meta property="og:image:height" content="630" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="mKavs Pricing — Transparent Web Development Plans" />
+  <meta name="twitter:title" content="mKavs Pricing â€” Transparent Web Development Plans" />
   <meta name="twitter:description"
-    content="5 flexible web development plans from ₹3,999. Transparent pricing, no hidden costs." />
+    content="5 flexible web development plans from â‚¹3,999. Transparent pricing, no hidden costs." />
   <meta name="twitter:image" content="https://mkavs.com/og-preview.png" />
   <!-- Extras -->
   <meta name="author" content="mKavs" />
@@ -60,7 +60,7 @@
           "position": 1,
           "item": {
             "@type": "Offer",
-            "name": "T0 Spark — Startup Launch",
+            "name": "T0 Spark â€” Startup Launch",
             "description": "1 page landing site with mobile responsive design, WhatsApp CTA, contact form, basic SEO, and custom color palette. Delivered in 6 days.",
             "price": "3999",
             "priceCurrency": "INR"
@@ -71,8 +71,8 @@
           "position": 2,
           "item": {
             "@type": "Offer",
-            "name": "T1 Launchpad — Starter",
-            "description": "1–2 page site with React animations, Google Analytics setup, and branded typography system. Delivered in 12 days.",
+            "name": "T1 Launchpad â€” Starter",
+            "description": "1â€“2 page site with React animations, Google Analytics setup, and branded typography system. Delivered in 12 days.",
             "price": "5999",
             "priceCurrency": "INR"
           }
@@ -82,8 +82,8 @@
           "position": 3,
           "item": {
             "@type": "Offer",
-            "name": "T2 Velocity — Growth",
-            "description": "3–5 page multipage site with Google Auth, Maps and form integration, and free server deployment. Delivered in 16 days.",
+            "name": "T2 Velocity â€” Growth",
+            "description": "3â€“5 page multipage site with Google Auth, Maps and form integration, and free server deployment. Delivered in 16 days.",
             "price": "9999",
             "priceCurrency": "INR"
           }
@@ -93,8 +93,8 @@
           "position": 4,
           "item": {
             "@type": "Offer",
-            "name": "T3 Empire — Business",
-            "description": "6–8 page business site with complete SEO, free domain for 1 year, speed optimisation, multi-factor auth, admin panel, and 3 months maintenance. Delivered in 22 days.",
+            "name": "T3 Empire â€” Business",
+            "description": "6â€“8 page business site with complete SEO, free domain for 1 year, speed optimisation, multi-factor auth, admin panel, and 3 months maintenance. Delivered in 22 days.",
             "price": "12999",
             "priceCurrency": "INR"
           }
@@ -104,8 +104,8 @@
           "position": 5,
           "item": {
             "@type": "Offer",
-            "name": "T4 Nexus — E-Commerce",
-            "description": "9–12 page full e-commerce store with payment gateway, order tracking, automated emails, and 6 months maintenance. Delivered in 30 days.",
+            "name": "T4 Nexus â€” E-Commerce",
+            "description": "9â€“12 page full e-commerce store with payment gateway, order tracking, automated emails, and 6 months maintenance. Delivered in 30 days.",
             "price": "19999",
             "priceCurrency": "INR"
           }
@@ -203,8 +203,143 @@
       transition: top 0.3s;
     }
 
+
     .skip-link:focus {
       top: 0;
+    }
+
+    /* ===== MOBILE OPTIMIZATIONS ===== */
+    @media (max-width: 768px) {
+      /* Hamburger button - fixed clean to top-left */
+      #mobile-menu-trigger {
+        position: fixed !important;
+        top: 1.25rem !important;
+        left: 1.25rem !important;
+        z-index: 9999 !important;
+        color: #111111 !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 2rem !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+      }
+
+      /* Give root more top space on mobile */
+      #root {
+        margin-top: 60px !important;
+      }
+
+      /* Pricing cards scroll horizontally on mobile */
+      .cards-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        padding: 0 12px !important;
+        max-width: 100% !important;
+      }
+
+      .pricing-card {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* Footer - matching branding page exactly */
+      .digital-journey-section {
+        min-height: auto !important;
+        padding: 1.5rem 1rem 0 1rem !important;
+      }
+
+      .dj-container {
+        height: auto !important;
+        flex-grow: 0 !important;
+      }
+
+      .dj-content {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        gap: 0.5rem !important;
+        padding: 2rem 0 1.5rem 0 !important;
+      }
+
+      .dj-text-group {
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+      }
+
+      .dj-title {
+        font-size: 1.35rem !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      .dj-buttons {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 0.35rem !important;
+        margin-top: 0.5rem !important;
+        width: 100% !important;
+      }
+
+      .dj-buttons a {
+        flex: 1 !important;
+        display: flex !important;
+        min-width: 0 !important;
+      }
+
+      .btn-dj {
+        width: 100% !important;
+        padding: 0.55rem 0.3rem !important;
+        font-size: 0.55rem !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+        border-radius: 20px !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: none !important;
+      }
+
+      .dj-video-group,
+      .video-wrapper {
+        width: 85px !important;
+        min-width: 85px !important;
+        max-width: 85px !important;
+        flex-shrink: 0 !important;
+        align-self: flex-end !important;
+        display: flex !important;
+        align-items: flex-end !important;
+      }
+
+      .dj-video {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 110px !important;
+        object-fit: contain !important;
+      }
+
+      /* Hide Join Our Community + everything below on mobile */
+      .footer-base {
+        display: none !important;
+      }
+
+      .copyright-text {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        text-align: center !important;
+        color: #777777 !important;
+        width: 100% !important;
+        padding: 1rem 0 1.5rem 0 !important;
+        font-size: 0.65rem !important;
+        font-weight: 700 !important;
+      }
     }
   </style>
 </head>
@@ -486,12 +621,12 @@
 
                 <!-- Mobile Side Menu Overlay -->
         <div id="mobile-menu-overlay"
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998] opacity-0 pointer-events-none transition-opacity duration-300" style="z-index: 999998 !important;">
         </div>
 
         <!-- Mobile Side Menu Panel -->
         <div id="mobile-menu-panel"
-            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[999999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto" style="z-index: 999999 !important;">
             <!-- Close Button -->
             <div class="flex justify-between items-center mb-8">
                 <!-- Logo Image -->
@@ -507,7 +642,7 @@
                 <a href="/works-build/index.dev.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
                 <a href="/branding/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
                 <a href="/pricingpage/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
-                <a href="/loginpg/index.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="/loginpg/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
                 <a href="/support/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
                 <a href="/loginpg/index.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
             </div>
@@ -527,7 +662,6 @@
             </div>
         </div>
         </div>
-\n
     <!-- Mobile Side Menu Logic -->
     <script>
     (() => {
@@ -557,134 +691,6 @@
         }
     })();
     </script>
-\n</body>
-
-</html>
-=======
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- SEO: Title & Description -->
-  <title>mKavs Pricing — Transparent Web Development Plans</title>
-  <meta name="description"
-    content="Choose from 5 flexible web development plans at mKavs. From ₹3,999 starter sites to ₹19,999 full e-commerce builds. Transparent pricing, no hidden costs." />
-  <meta name="keywords"
-    content="mKavs, web development pricing, startup website, e-commerce, React development, UI/UX design" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://mkavs.com/pricing" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="mKavs Pricing Tiers" />
-  <meta property="og:description"
-    content="5 flexible plans for every business stage. Transparent pricing from mKavs." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mkavs.com/pricing" />
-  <meta property="og:image" content="https://mkavs.com/og-preview.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="mKavs Pricing — Transparent Web Development Plans" />
-  <meta name="twitter:description"
-    content="5 flexible web development plans from ₹3,999. Transparent pricing, no hidden costs." />
-  <meta name="twitter:image" content="https://mkavs.com/og-preview.png" />
-  <!-- Extras -->
-  <meta name="author" content="mKavs" />
-  <meta name="theme-color" content="#0B0B1E" />
-
-  <!-- JSON-LD Structured Data: ItemList of Pricing Plans -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "mKavs Web Development Pricing Plans",
-      "description": "5 transparent web development pricing tiers from mKavs, from starter landing pages to full e-commerce stores.",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@type": "Offer",
-            "name": "T0 Spark — Startup Launch",
-            "description": "1 page landing site with mobile responsive design, WhatsApp CTA, contact form, basic SEO, and custom color palette. Delivered in 6 days.",
-            "price": "3999",
-            "priceCurrency": "INR"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@type": "Offer",
-            "name": "T1 Launchpad — Starter",
-            "description": "1–2 page site with React animations, Google Analytics setup, and branded typography system. Delivered in 12 days.",
-            "price": "5999",
-            "priceCurrency": "INR"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@type": "Offer",
-            "name": "T2 Velocity — Growth",
-            "description": "3–5 page multipage site with Google Auth, Maps and form integration, and free server deployment. Delivered in 16 days.",
-            "price": "9999",
-            "priceCurrency": "INR"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "item": {
-            "@type": "Offer",
-            "name": "T3 Empire — Business",
-            "description": "6–8 page business site with complete SEO, free domain for 1 year, speed optimisation, multi-factor auth, admin panel, and 3 months maintenance. Delivered in 22 days.",
-            "price": "12999",
-            "priceCurrency": "INR"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "item": {
-            "@type": "Offer",
-            "name": "T4 Nexus — E-Commerce",
-            "description": "9–12 page full e-commerce store with payment gateway, order tracking, automated emails, and 6 months maintenance. Delivered in 30 days.",
-            "price": "19999",
-            "priceCurrency": "INR"
-          }
-        }
-      ]
-    }
-    </script>
-
-  <!-- Performance: Font preconnect + async non-blocking load -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Load fonts async to eliminate render-blocking -->
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" media="print" onload="this.media='all'"
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" />
-  <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" />
-  </noscript>
-  <script type="module" crossorigin src="./assets/index-ZSFvNIf7.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BXQeTZhd.css">
-</head>
-
-<body>
-  <!-- Accessibility: Skip link -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div id="root"></div>
-
 </body>
 
 </html>

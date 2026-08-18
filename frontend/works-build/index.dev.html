@@ -194,6 +194,93 @@
                 height: 10px !important;
             }
         }
+
+        /* Footer Digital Journey section on Mobile: Buttons & Mascot Video Side-by-Side */
+        @media (max-width: 768px) {
+            .pricing-dj-section {
+                padding: 0 !important;
+            }
+            .pricing-dj-container {
+                padding: 0 1rem !important;
+            }
+            .pricing-dj-content {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: flex-end !important;
+                gap: 0.5rem !important;
+                padding: 2.25rem 0 1.75rem 0 !important;
+            }
+            .pricing-dj-text {
+                flex: 1 !important;
+                min-width: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .pricing-dj-title {
+                font-size: 1.4rem !important;
+                line-height: 1.1 !important;
+                letter-spacing: -0.01em !important;
+            }
+            .pricing-dj-buttons {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                gap: 0.35rem !important;
+                align-items: center !important;
+                width: 100% !important;
+            }
+            .pricing-dj-buttons a {
+                flex: 1 !important;
+                display: flex !important;
+                min-width: 0 !important;
+            }
+            .btn-dj {
+                width: 100% !important;
+                padding: 0.55rem 0.3rem !important;
+                font-size: 0.55rem !important;
+                letter-spacing: 0.2px !important;
+                white-space: nowrap !important;
+                text-align: center !important;
+                border-radius: 20px !important;
+                justify-content: center !important;
+                display: inline-flex !important;
+                align-items: center !important;
+            }
+            .pricing-dj-video {
+                width: 85px !important;
+                min-width: 85px !important;
+                max-width: 85px !important;
+                flex-shrink: 0 !important;
+                align-self: flex-end !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: flex-end !important;
+                margin-bottom: 0.2rem !important;
+            }
+            .pricing-dj-video video {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 110px !important;
+                object-fit: contain !important;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .pricing-dj-title {
+                font-size: 1.2rem !important;
+            }
+            .btn-dj {
+                font-size: 0.5rem !important;
+                padding: 0.5rem 0.2rem !important;
+            }
+            .pricing-dj-video {
+                width: 70px !important;
+                min-width: 70px !important;
+                max-width: 70px !important;
+            }
+        }
     </style>
   </head>
   <body>
@@ -210,12 +297,12 @@
 
     <!-- Mobile Side Menu Overlay -->
     <div id="mobile-menu-overlay"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9990] opacity-0 pointer-events-none transition-opacity duration-300">
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998] opacity-0 pointer-events-none transition-opacity duration-300" style="z-index: 999998 !important;">
     </div>
 
     <!-- Mobile Side Menu Panel -->
     <div id="mobile-menu-panel"
-        class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212] border-r border-white/10 z-[9995] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+        class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212] border-r border-white/10 z-[999999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto" style="z-index: 999999 !important;">
         <!-- Close Button + Logo -->
         <div class="flex justify-between items-center mb-8">
             <img src="/images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">

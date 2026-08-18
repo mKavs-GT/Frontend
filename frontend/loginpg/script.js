@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             emailError.textContent = 'Account not created. Redirecting to signup...';
                             emailInput.setAttribute('aria-invalid', 'true');
                             setTimeout(() => {
-                                window.location.href = '/SignUp';
+                                window.location.href = '/signpg/index.html';
                             }, 1500);
                         } else if (errorMessage.toLowerCase().includes('credentials') || errorMessage.toLowerCase().includes('password')) {
                             passwordError.textContent = 'Incorrect password';

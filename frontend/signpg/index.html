@@ -454,11 +454,80 @@
       display: block;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      body, html {
+        height: auto !important;
+        min-height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding-top: 0 !important;
+        overflow-x: hidden !important;
+      }
+
+      /* Hamburger button on top-left corner */
+      #mobile-menu-trigger {
+        position: fixed !important;
+        top: 1.25rem !important;
+        left: 1.25rem !important;
+        right: auto !important;
+        z-index: 9999 !important;
+        color: #ffffff !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 2rem !important;
+        line-height: 1 !important;
+        padding: 4px !important;
+      }
+
+      /* MKAVS Logo text/image centered in the middle header */
       .auth-logo {
-        width: 120px;
-        top: 1.5rem;
-        left: 1.5rem;
+        position: fixed !important;
+        top: 1.25rem !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 110px !important;
+        margin: 0 !important;
+        z-index: 9990 !important;
+      }
+
+      .auth-logo:hover {
+        transform: translateX(-50%) scale(1.05) !important;
+      }
+
+      /* Auth container centered vertically and horizontally */
+      .auth-container {
+        padding-top: 4rem !important;
+        margin: auto !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-grow: 1 !important;
+      }
+
+      /* Smaller centered signup box */
+      .login-card {
+        max-width: 320px !important;
+        width: 90% !important;
+        padding: 1.1rem 1.25rem !important;
+        border-radius: 14px !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+        margin: auto !important;
+      }
+
+      .card-header {
+        margin-bottom: 0.75rem !important;
+      }
+
+      .card-title {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.15rem !important;
+      }
+
+      .card-subtitle {
+        font-size: 0.78rem !important;
       }
     }
 

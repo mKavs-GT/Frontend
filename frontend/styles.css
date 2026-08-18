@@ -1236,6 +1236,21 @@ html {
         justify-content: center;
     }
 
+    /* Fix links inside mobile side panel - strip button styling & force left alignment */
+    #mobile-menu-panel a, #mobile-menu-panel a.auth-consult-btn, #mobile-menu-panel a.login-btn {
+        display: block !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.25rem !important;
+        min-height: unset !important;
+        background: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+
     /* Fix Booking link inside footer column - strip button styling */
     .footer-column ul li a.auth-consult-btn {
         padding: 0 !important;
