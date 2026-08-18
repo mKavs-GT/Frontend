@@ -6,7 +6,7 @@ const replacements = [
   { regex: /href\s*:\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*index\.html[`"']/gi, replacement: 'href:"/Home"' },
   { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*index\.html[`"']/gi, replacement: 'href="/Home"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*index\.html[`"']/gi, replacement: '"/Home"' },
-  
+
   // Works
   { regex: /href\s*:\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*works-build\/index\.dev\.html[`"']/gi, replacement: 'href:"/Works"' },
   { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*works-build\/index\.dev\.html[`"']/gi, replacement: 'href="/Works"' },
@@ -59,7 +59,7 @@ const replacements = [
   { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*support\.html[`"']/gi, replacement: 'href="/Support"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*support\/(?:support|index)\.html[`"']/gi, replacement: '"/Support"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*support\.html[`"']/gi, replacement: '"/Support"' },
-  
+
   // Profile
   { regex: /href\s*:\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: 'href:"/Profile"' },
   { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: 'href="/Profile"' },
@@ -67,7 +67,7 @@ const replacements = [
   { regex: /href\s*=\s*[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\.html(?:\?login=success)?[`"']/gi, replacement: 'href="/Profile"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\/(?:profile|index)\.html(?:\?login=success)?[`"']/gi, replacement: '"/Profile"' },
   { regex: /[`"'](?:\/?)(?:\.\.\/|\.\/)*profile\.html(?:\?login=success)?[`"']/gi, replacement: '"/Profile"' },
-  
+
   // Also explicitly replace /index.html with /Home
   { regex: /href\s*=\s*[`"']\/index\.html[`"']/gi, replacement: 'href="/Home"' },
   { regex: /href\s*:\s*[`"']\/index\.html[`"']/gi, replacement: 'href:"/Home"' },
@@ -90,15 +90,15 @@ const replacements = [
   { regex: /dev\.mkavs\.com\/Portfolio\/Ecommerce\/Wegrow/gi, replacement: 'dev.mkavs.com/Portfolio/E-Commerce/wegrow' },
 
   // Company Portfolio Migrations
-  { regex: /Portfolio\/Company\/Cars-website-main\/index\.html/gi, replacement: 'Portfolio/Company/cars/' },
+  { regex: /Portfolio\/Company\/Cars-website-main\/index\.html/gi, replacement: 'Portfolio/Company/CarGo/' },
   { regex: /Portfolio\/Company\/FilmAura\/index\.html/gi, replacement: 'Portfolio/Company/filmaura/' },
   { regex: /Portfolio\/Company\/JERI\/index\.html/gi, replacement: 'Portfolio/Company/jeri/' },
   { regex: /Portfolio\/Company\/Waypoint\/index\.html/gi, replacement: 'Portfolio/Company/waypoint/' },
-  { regex: /Portfolio\/Company\/Cars-website-main/gi, replacement: 'Portfolio/Company/cars' },
+  { regex: /Portfolio\/Company\/Cars-website-main/gi, replacement: 'Portfolio/Company/CarGo' },
   { regex: /Portfolio\/Company\/FilmAura/gi, replacement: 'Portfolio/Company/filmaura' },
   { regex: /Portfolio\/Company\/JERI/gi, replacement: 'Portfolio/Company/jeri' },
   { regex: /Portfolio\/Company\/Waypoint/gi, replacement: 'Portfolio/Company/waypoint' },
-  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/Cars-website-main/gi, replacement: 'dev.mkavs.com/Portfolio/Company/cars' },
+  { regex: /dev\.mkavs\.com\/Portfolio\/Company\/Cars-website-main/gi, replacement: 'dev.mkavs.com/Portfolio/Company/CarGo' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Company\/FilmAura/gi, replacement: 'dev.mkavs.com/Portfolio/Company/filmaura' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Company\/JERI/gi, replacement: 'dev.mkavs.com/Portfolio/Company/jeri' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Company\/Waypoint/gi, replacement: 'dev.mkavs.com/Portfolio/Company/waypoint' },
@@ -124,7 +124,7 @@ const replacements = [
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Latency/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Latency' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Pritam/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Pritam' },
   { regex: /dev\.mkavs\.com\/Portfolio\/Portfolio\/Tarot/gi, replacement: 'dev.mkavs.com/Portfolio/Portfolio/Tarot' },
-  
+
   // SignUp Migrations
   { regex: /signpg\/index\.html/gi, replacement: 'SignUp' },
   { regex: /signpg\/signup\.html/gi, replacement: 'SignUp' }
@@ -141,15 +141,15 @@ function processDir(dir) {
     } else if (fullPath.endsWith('.html') || fullPath.endsWith('.js') || fullPath.endsWith('.jsx')) {
       let content = fs.readFileSync(fullPath, 'utf8');
       let originalContent = content;
-      
+
       for (const rule of replacements) {
         content = content.replace(rule.regex, rule.replacement);
       }
-      
+
       // Specifically ignore iframe src for portfolio pages which shouldn't be touched.
       // Wait, if it replaces it, I should undo it for portfolio. Let's just fix it.
       content = content.replace(/src="\/Home"/g, 'src="./index.html"');
-      
+
       if (content !== originalContent) {
         fs.writeFileSync(fullPath, content);
         console.log('Fixed links in: ' + fullPath);
@@ -169,10 +169,10 @@ const portfolioDirs = [
   { root: 'c:/Users/lenovo-1/Documents/GitHub/mKavs/Frontend/frontend/Portfolio/Portfolio', basePath: '/Portfolio/Portfolio/' }
 ];
 
-portfolioDirs.forEach(({root, basePath}) => {
+portfolioDirs.forEach(({ root, basePath }) => {
   if (!fs.existsSync(root)) return;
   const sites = fs.readdirSync(root).filter(f => fs.statSync(path.join(root, f)).isDirectory());
-  
+
   sites.forEach(site => {
     const siteDir = path.join(root, site);
     const siteBasePath = `${basePath}${site}/`;
