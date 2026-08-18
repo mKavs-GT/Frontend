@@ -134,12 +134,10 @@
     }
   </style>
   <script>
-    // Expose React and ReactDOM globally for Recharts UMD bundle
-    window.React = React;
-    window.ReactDOM = ReactDOM;
+    // React and ReactDOM will be loaded via importmap
   </script>
   <script src="https://unpkg.com/recharts/umd/Recharts.min.js" defer></script>
-
+  <link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -150,11 +148,12 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/Portfolio/Company/waypoint/assets/index-BLPjySL0.js"></script>
+  <script type="module" crossorigin src="./assets/index-OPWcRnTM.js"></script>
 </head>
 
 <body class="bg-waypoint-darkest">
   <div id="root"></div>
+
 </body>
 
 </html>
