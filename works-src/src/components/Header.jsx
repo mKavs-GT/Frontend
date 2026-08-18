@@ -9,9 +9,9 @@ const Header = () => {
   const animationDelay = 0.5;
 
   return (
-    <header className="relative pt-12 md:pt-20 flex flex-col md:flex-row justify-between items-start md:items-end min-h-[400px] md:min-h-[500px] overflow-hidden">
+    <header className="relative pt-12 md:pt-20 flex flex-col md:flex-row justify-between items-start md:items-end min-h-0 md:min-h-[500px] overflow-hidden">
       {/* Text Content - Reveal Mask synchronized with Mascot */}
-      <div className="flex flex-col flex-1 pb-16 md:pb-24 z-0">
+      <div className="flex flex-col flex-1 pb-4 md:pb-24 z-0">
         <motion.div
           initial={{ clipPath: 'inset(0 100% 0 0)' }}
           animate={{ clipPath: 'inset(0 0% 0 0)' }}
