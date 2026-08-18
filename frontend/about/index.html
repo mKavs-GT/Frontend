@@ -19,12 +19,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Circular Favicon -->
     <link rel="icon" type="image/png" href="../images/LOGOI.png">
     <script src="../config.js"></script>
 </head>
 
 <body>
+
+    <!-- Mobile Hamburger Trigger Button (Top Left) -->
+    <button id="mobile-menu-trigger" class="mobile-menu-hamburger-btn" aria-label="Menu">&#x2261;</button>
 
     <!-- Navigation Toolbar -->
     <nav class="main-toolbar">
@@ -33,17 +37,16 @@
             <div class="toolbar-left">
                 <a href="/" class="nav-link" rel="noopener noreferrer">Home</a>
                 <a href="#" class="nav-link active">About</a>
-                <a href="/Works" class="nav-link" rel="noopener noreferrer">Our Work</a>
-                <a href="/Branding" class="nav-link" rel="noopener noreferrer">Branding</a>
+                <a href="/works-build/index.dev.html" class="nav-link" rel="noopener noreferrer">Our Work</a>
+                <a href="/branding/index.html" class="nav-link" rel="noopener noreferrer">Branding</a>
             </div>
-
 
             <!-- Right Side Links -->
             <div class="toolbar-right">
-                <a href="/Pricing" class="nav-link" rel="noopener noreferrer">Pricing</a>
-                <a href="/BookUs" class="nav-link" rel="noopener noreferrer">Book Us</a>
-                <a href="/Support" class="nav-link" rel="noopener noreferrer">Support</a>
-                <a href="/BookUs" class="nav-link login-btn" rel="noopener noreferrer">Login</a>
+                <a href="/pricingpage/index.html" class="nav-link" rel="noopener noreferrer">Pricing</a>
+                <a href="/loginpg/index.html" class="nav-link" rel="noopener noreferrer">Book Us</a>
+                <a href="/support/index.html" class="nav-link" rel="noopener noreferrer">Support</a>
+                <a href="/loginpg/index.html" class="nav-link login-btn" rel="noopener noreferrer">Login</a>
 
                 <!-- Social Icons -->
                 <div class="social-icons">
@@ -368,7 +371,7 @@
         <div class="founder-container">
             <!-- Left Column: Image -->
             <div class="founder-image-column new-layout">
-                <img src="images/Krishawn.png" alt="Founder Krishawn V Rahul">
+                <img src="images/krishawn.png" alt="Founder Krishawn V Rahul">
             </div>
 
             <!-- Right Column: Text -->
@@ -433,15 +436,15 @@
                     researchers to achieve their full potential.
                 </p>
 
-                <div style="position: relative; padding: 2.5rem 2rem; border-radius: 16px; margin-top: 2rem;">
-                    <i class="fa-solid fa-quote-left"
+                <div class="mentor-quote-box" style="position: relative; padding: 2.5rem 2rem; border-radius: 16px; margin-top: 2rem;">
+                    <i class="fa-solid fa-quote-left mentor-quote-icon-left"
                         style="font-size: 3rem; color: #e0e0e0; position: absolute; top: -0.5rem; left: -0.8rem; z-index: 0;"></i>
-                    <p
+                    <p class="mentor-quote-text"
                         style="position: relative; z-index: 1; font-size: 1.25rem; font-style: italic; color: #111; line-height: 1.6; margin: 0; padding-left: 1.5rem; padding-right: 1.5rem;">
                         True innovation isn't just about adapting to change; it's about leading it with purpose, vision,
                         and a relentless commitment to excellence.
                     </p>
-                    <i class="fa-solid fa-quote-right"
+                    <i class="fa-solid fa-quote-right mentor-quote-icon-right"
                         style="font-size: 3rem; color: #e0e0e0; position: absolute; bottom: 0.5rem; right: 0.1rem; z-index: 0;"></i>
                 </div>
 
@@ -651,12 +654,12 @@
                     </h1>
 
                     <div class="dj-buttons">
-                        <a href="/BookUs" rel="noopener noreferrer">
+                        <a href="/loginpg/index.html" rel="noopener noreferrer">
                             <button class="btn-dj btn-dj-primary">
                                 BOOK NOW
                             </button>
                         </a>
-                        <a href="/Pricing" rel="noopener noreferrer">
+                        <a href="/pricingpage/index.html" rel="noopener noreferrer">
                             <button class="btn-dj btn-dj-secondary">
                                 VIEW PLANS
                             </button>
@@ -673,47 +676,66 @@
                 </div>
             </div>
 
-            <div class="footer-base">
-                <div class="footer-header-container">
-                    <h2 class="footer-title">
-                        JOIN OUR COMMUNITY
-                    </h2>
-                </div>
-                <div class="footer-curve">
-                    <div class="footer-socials">
-                        <div class="social-links">
-                            <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                rel="noopener noreferrer">
-                                <i class="fa-brands fa-instagram"></i>
-                            </a>
-                            <a href="https://discord.gg/HENvXDQQZJ"
-                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                target="_blank" rel="noopener noreferrer">
-                                <i class="fa-brands fa-discord"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300"
-                                rel="noopener noreferrer">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </a>
-                        </div>
-                        <div class="about-policy-links">
-                            <a href="../docs/T&C and Privacy Policy.pdf" target="_blank"
-                                rel="noopener noreferrer">Privacy
-                                Policy</a>
-                            <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund
-                                Policy</a>
-                        </div>
+        </div>
+    </section>
+
+    <footer class="discord-footer">
+        <div class="footer-container">
+            <div class="footer-brand-side">
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="tel:8073499837">8073499837</a>
                     </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <a href="mailto:support@mkavs.com" target="_blank">support@mkavs.com</a>
+                    </div>
+                </div>
+
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"><i
+                            class="fa-brands fa-discord"></i></a>
                 </div>
             </div>
 
-            <div class="copyright-text">
-                &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about/index.html">About</a></li>
+                    <li><a href="/loginpg/index.html" class="auth-consult-btn">Booking</a></li>
+                    <li><a href="/branding/index.html">Branding</a></li>
+                    <li><a href="/pricingpage/index.html">Pricing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/support/index.html" target="_blank">Support</a></li>
+                    <li><a href="https://discord.gg/HENvXDQQZJ" target="_blank">Community</a>
+                    </li>
+                    <li><a href="mailto:support@mkavs.com" target="_blank">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Policies</h4>
+                <ul>
+                    <li><a href="../docs/T&C and Privacy Policy.pdf" target="_blank">T&C and Privacy Policy</a>
+                    </li>
+                    <li><a href="../docs/Refund Policy.pdf" target="_blank">Refund Policy</a></li>
+                    <li><a href="../docs/Brochure.pdf" target="_blank">Brochure</a></li>
+                </ul>
             </div>
         </div>
-    </section>
+
+        <div class="footer-watermark-container">
+            <img src="../images/MKAVS.png" alt="MKAVS LOGO" class="footer-watermark-image">
+        </div>
+    </footer>
 
     <script src="about.js"></script>
     <!-- Kairon Chat Widget Integration -->
@@ -804,14 +826,14 @@
 
             <!-- Navigation Links -->
             <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
-                <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
-                <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
-                <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
-                <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
-                <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
-                <a href="/BookUs" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
-                <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
-                <a href="/BookUs" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+                <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+                <a href="/about/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+                <a href="/works-build/index.dev.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+                <a href="/branding/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+                <a href="/pricingpage/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+                <a href="/loginpg/index.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="/support/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+                <a href="/loginpg/index.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
             </div>
 
             <!-- Bottom Section -->
@@ -859,8 +881,9 @@
             if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
             mobileMenuOverlay.addEventListener('click', closeMobileMenu);
         }
-    });
+    })();
     </script>
-\n</body>
+    <script src="about.js"></script>
+</body>
 
 </html>

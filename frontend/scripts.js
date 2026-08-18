@@ -1168,11 +1168,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
 
     // 1.1 Touch Support (for Mobile)
+    let touchStartX = 0;
     let touchStartY = 0;
     let touchStartScrollY = 0;
 
     window.addEventListener('touchstart', (e) => {
         if (e.target.closest('#kairon-panel') || e.target.closest('#kairon-button')) return;
+        touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchStartScrollY = targetScrollY;
     }, { passive: true });
@@ -1180,8 +1182,22 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchmove', (e) => {
         if (e.target.closest('#kairon-panel') || e.target.closest('#kairon-button')) return;
         
-        // Prevent default only if we are scrolling our virtual area
-        e.preventDefault(); // Note: This might require passive: false
+        // If touching inside horizontal scrolling container (e.g. mobile review cards), check swipe direction
+        const horizScrollable = e.target.closest('.overflow-x-auto, .overflow-x-scroll, .snap-x');
+        if (horizScrollable) {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            const deltaX = Math.abs(touchX - touchStartX);
+            const deltaY = Math.abs(touchY - touchStartY);
+            
+            // If swiping horizontally, allow native horizontal scroll across reviews
+            if (deltaX >= deltaY) {
+                return;
+            }
+        }
+
+        // Prevent default only when scrolling vertical slides
+        e.preventDefault();
 
         const touchY = e.touches[0].clientY;
         const delta = (touchStartY - touchY) * 2; // Sensitivity factor

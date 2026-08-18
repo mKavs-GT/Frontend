@@ -27,6 +27,12 @@ html {
     width: 100%;
 }
 
+.overflow-x-auto, .snap-x {
+    touch-action: pan-x pan-y !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+}
+
 .slide {
     position: absolute;
     inset: 0;
@@ -456,7 +462,7 @@ html {
 /* Mobile: 4-column grid, neat alignment */
 @media (max-width: 768px) {
     .discord-footer {
-        padding: 24px 14px 28px;
+        padding: 24px 14px 0px !important;
     }
 
     .footer-container {
@@ -528,19 +534,24 @@ html {
     }
 
     .footer-watermark-container {
-        margin-top: 0;
-        padding-top: 0;
-        margin-left: -14px;
-        margin-right: -14px;
-        width: calc(100% + 28px);
-        overflow: hidden;
+        margin-top: 45px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: -14px !important;
+        margin-right: -14px !important;
+        width: calc(100% + 28px) !important;
+        overflow: hidden !important;
+        line-height: 0 !important;
     }
 
     .footer-watermark-image {
         width: 100% !important;
         max-width: none !important;
-        display: block;
-        margin-top: 0;
+        display: block !important;
+        margin-top: 0 !important;
+        margin-bottom: -6px !important;
+        vertical-align: bottom !important;
     }
 }
 
@@ -830,32 +841,77 @@ html {
 }
 
 @media (max-width: 768px) {
-    .slide-content-centered {
-        padding-bottom: 30px !important;
+    #slide-6 {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+    }
+
+    #slide-6 .slide-content-centered {
+        align-items: flex-start !important;
+        text-align: left !important;
+        padding: 50px 24px 10px 24px !important;
+        flex-shrink: 0 !important;
+    }
+
+    #slide-6 .slide-content-centered h1 {
+        text-align: left !important;
+        font-size: 2.2rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    #slide-6 .slide-content-centered > div.flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 12px !important;
+        margin-bottom: 10px !important;
+        width: 100% !important;
+    }
+
+    #slide-6 .slide-content-centered a.auth-consult-btn,
+    #slide-6 .slide-content-centered a.auth-pricing-btn {
+        display: inline-block !important;
+        width: 160px !important;
+        text-align: center !important;
+        padding: 10px 18px !important;
+        font-size: 0.9rem !important;
     }
 
     .footer-characters-container {
-        height: 120px;
-        margin-top: 0px;
-        margin-bottom: -10px; /* Pull into the green footer */
-        position: relative;
-        z-index: 20;
+        display: block !important;
+        height: 180px !important;
+        margin-top: auto !important;
+        margin-bottom: -10px !important;
+        position: relative !important;
+        z-index: 20 !important;
+        pointer-events: none !important;
+        width: 100% !important;
     }
 
-    .footer-char {
-        height: 100%;
-        bottom: -5px; /* Sink them slightly to stand firmly on the green edge */
+    .char-back, .char-leftbot, .char-left, .char-right, .char-rightbot, .char-end {
+        display: none !important;
     }
 
-    .char-leftbot, .char-rightbot { display: block; }
+    .char-mid {
+        display: block !important;
+        height: 195px !important;
+        max-height: 195px !important;
+        position: absolute !important;
+        right: 6% !important;
+        left: auto !important;
+        transform: none !important;
+        bottom: -15px !important;
+    }
 
-    .char-back { left: 10%; bottom: 0; height: 100%; }
-    .char-leftbot { left: 23%; bottom: 0; height: 100%; }
-    .char-left { left: 36%; bottom: 0; height: 100%; }
-    .char-mid { left: 50%; bottom: 0; height: 100%; }
-    .char-right { left: 64%; bottom: 0; height: 100%; }
-    .char-rightbot { left: 77%; bottom: 0; height: 100%; }
-    .char-end { left: 90%; bottom: 0; height: 100%; }
+    .discord-footer {
+        padding: 24px 14px 0px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        background: linear-gradient(135deg, #8ea500 0%, #cafe00 100%) !important;
+    }
 }
 
 /* expertise slide styles */

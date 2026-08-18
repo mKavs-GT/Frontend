@@ -638,7 +638,7 @@
 </head>
 
 <body>
-  <a href="/Home" class="auth-logo">
+  <a href="/index.html" class="auth-logo">
     <img src="/images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
@@ -1011,7 +1011,7 @@
 
       <footer class="signup-prompt">
         Already have an account?
-        <a href="/BookUs" class="signup-link">Sign in</a>
+        <a href="/loginpg/index.html" class="signup-link">Sign in</a>
       </footer>
     </main>
   </div>
@@ -1408,7 +1408,7 @@
           if (signupResponse.ok) {
             btn.innerHTML = '<i class="fas fa-check"></i> Success!';
             setTimeout(() => {
-              window.location.href="/Home";
+              window.location.href="/index.html";
             }, 1000);
           } else {
             throw new Error(signupData.error || "Failed to create account");

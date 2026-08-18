@@ -28,12 +28,12 @@ function generateProductCarousels() {
                 <div class="swiper-slide">
                     <div class="product-card">
                         ${badgeHtml}
-                        <div class="product-img-wrapper" onclick="window.location.href="/Portfolio/E-Commerce/wegrow/product-detail.html"" style="cursor:pointer;">
-                            <img src="/Portfolio/E-Commerce/wegrow/${p.img}" alt="${p.title}">
+                        <div class="product-img-wrapper" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'" style="cursor:pointer;">
+                            <img src="${p.img}" alt="${p.title}">
                         </div>
                         <div class="product-info">
                             <div class="rating"><i class='bx bxs-star'></i> 4.8 | 120 Reviews</div>
-                            <h3 class="product-title" onclick="window.location.href="/Portfolio/E-Commerce/wegrow/product-detail.html"" style="cursor:pointer;">${p.title}</h3>
+                            <h3 class="product-title" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'" style="cursor:pointer;">${p.title}</h3>
                             <div class="price-block">
                                 <span class="current-price">${p.price}</span>
                                 ${oldPriceHtml}
@@ -57,7 +57,7 @@ function generateProductCarousels() {
                     <div class="swiper-button-prev"></div>
                 </div>
                 <div class="view-all-wrapper">
-                    <button class="btn-view-all" onclick="location.href="/Portfolio/E-Commerce/wegrow/all-products.html"">View All</button>
+                    <button class="btn-view-all" onclick="location.href='/Portfolio/E-Commerce/wegrow/all-products.html'">View All</button>
                 </div>
             </section>
         `;
@@ -93,11 +93,11 @@ function populateSearchDropdown() {
         html += `
             <div class="search-product-card" style="position:relative; overflow:hidden;">
                 ${badgeHtml}
-                <div style="height:140px; overflow:hidden; border-radius:4px; margin-bottom:10px; cursor:pointer;" onclick="window.location.href="/Portfolio/E-Commerce/wegrow/product-detail.html"">
-                    <img src="/Portfolio/E-Commerce/wegrow/${p.img}" style="width:100%; height:100%; object-fit:cover;">
+                <div style="height:140px; overflow:hidden; border-radius:4px; margin-bottom:10px; cursor:pointer;" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'">
+                    <img src="${p.img}" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div style="font-size:11px; color:#FFB800; margin-bottom:6px;"><i class='bx bxs-star'></i> ${p.rating}</div>
-                <h4 style="font-size:13px; font-weight:700; margin-bottom:4px; line-height:1.3; cursor:pointer;" onclick="window.location.href="/Portfolio/E-Commerce/wegrow/product-detail.html"">${p.title}</h4>
+                <h4 style="font-size:13px; font-weight:700; margin-bottom:4px; line-height:1.3; cursor:pointer;" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'">${p.title}</h4>
                 <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.4; flex:1;">${p.desc}</p>
                 <div style="margin-bottom:12px;">
                     <span style="font-size:13px; font-weight:700; color:var(--sale-red);">${p.price}</span>
@@ -299,7 +299,7 @@ function updateCartUI() {
         count += item.qty;
         itemsHtml += `
             <div class="cart-item-card">
-                <img src="/Portfolio/E-Commerce/wegrow/${item.img}" class="cart-item-img">
+                <img src="${item.img}" class="cart-item-img">
                 <div class="cart-item-details">
                     <div class="cart-item-top">
                         <h4 class="cart-item-title">${item.title}</h4>

@@ -81,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const procHorizontalTrack = document.querySelector('.process-horizontal-track');
 
     if (procScrollContainer && procHorizontalTrack) {
-        window.addEventListener('scroll', () => {
+        const updateProcessScroll = () => {
             const containerRect = procScrollContainer.getBoundingClientRect();
             const containerTop = containerRect.top;
             const containerHeight = containerRect.height;
-            const viewportHeight = window.innerHeight;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
             const scrollDist = containerHeight - viewportHeight;
 
@@ -97,31 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const progress = scrollY / scrollDist;
 
-            // We have 7 cards. Suppose we want to show ~2 at a time.
-            // Width of track? 
-            // In CSS I put width as auto (flex).
-            // We need to calculate how much to translate.
-            // Let's translate until the last card is fully visible aligned to right or left.
-            // Better: Translate from 0 to (trackWidth - viewportWidth + padding)
-
             const trackWidth = procHorizontalTrack.scrollWidth;
-            const viewportWidth = window.innerWidth;
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
-            // Maximum translation to show the end of the track
-            // We adding some padding-right in CSS for mobile, but for desktop?
-            // Let's assume we want to scroll the whole width minus the view.
-
-            // If on mobile, we might have disabled the transform in CSS, check computed style
-            if (window.getComputedStyle(procHorizontalTrack).flexDirection === 'column') {
-                return; // Mobile layout handled by CSS flow
-            }
-
-            const maxTranslate = trackWidth - viewportWidth + (viewportWidth * 0.05); // +5vw margin
-
+            const maxTranslate = Math.max(0, trackWidth - viewportWidth + 30);
             const translateX = -(progress * maxTranslate);
 
-            procHorizontalTrack.style.transform = `translateX(${translateX}px)`;
-        });
+            procHorizontalTrack.style.transform = `translate3d(${translateX}px, 0, 0)`;
+        };
+
+        window.addEventListener('scroll', updateProcessScroll, { passive: true });
+        window.addEventListener('resize', updateProcessScroll);
+        document.addEventListener('touchmove', updateProcessScroll, { passive: true });
+        updateProcessScroll();
     }
 
     // Observe elements with the 'hidden' class
