@@ -852,7 +852,7 @@ html {
     #slide-6 .slide-content-centered {
         align-items: flex-start !important;
         text-align: left !important;
-        padding: 50px 24px 10px 24px !important;
+        padding: 120px 24px 15px 24px !important;
         flex-shrink: 0 !important;
     }
 
@@ -1280,17 +1280,7 @@ html {
         transform: none !important;
     }
 
-    #kairon-panel {
-        width: 75vw !important;
-        height: 75vh !important;
-        top: auto !important;
-        left: auto !important;
-        bottom: 70px !important; /* Positioned right above the icon */
-        right: 15px !important;
-        border-radius: 12px !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-    }
+    /* #kairon-panel mobile styles handled by kairon-live-bot styles.css */
 }
 
 /* ==================================== */

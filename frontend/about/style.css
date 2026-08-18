@@ -1675,26 +1675,94 @@ p {
 /* Mobile Adjustments for Process */
 @media (max-width: 768px) {
     .process-section-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin: 0 auto 1.5rem auto !important;
+        display: block !important;
+    }
+
+    .process-section-title::after {
+        content: '' !important;
+        display: block !important;
+        width: 50px !important;
+        height: 4px !important;
+        background-color: #ffffff !important;
+        margin: 8px auto 0 auto !important;
     }
 
     .process-scroll-wrapper {
-        height: auto;
-        /* Fallback for mobile if needed, or keep scroll */
-    }
-
-    .process-horizontal-track {
-        /* Mobile horizontal scroll layout is managed at the end of style.css */
+        height: 350vh !important;
+        position: relative !important;
     }
 
     .process-sticky-viewport {
-        /* Mobile horizontal scroll layout is managed at the end of style.css */
+        position: sticky !important;
+        top: 0 !important;
+        height: 100vh !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        padding: 1.5rem 0 !important;
+    }
+
+    .process-horizontal-track {
+        display: flex !important;
+        gap: 1rem !important;
+        height: auto !important;
+        align-items: stretch !important;
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
     }
 
     .process-card {
-        width: 100%;
-        height: auto;
-        min-height: 400px;
+        width: 82vw !important;
+        max-width: 320px !important;
+        min-height: 330px !important;
+        height: auto !important;
+        padding: 1.5rem 1.25rem !important;
+        border-radius: 16px !important;
+        background-color: #222 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+    }
+
+    .p-number {
+        position: absolute !important;
+        top: 1.25rem !important;
+        right: 1.25rem !important;
+        font-size: 2.2rem !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .p-content {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        height: 100% !important;
+    }
+
+    .p-content h3 {
+        font-size: 1.25rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        color: #ffffff !important;
+        margin-bottom: 0.85rem !important;
+        max-width: 75% !important;
+        padding-right: 0 !important;
+    }
+
+    .p-content p {
+        font-size: 0.85rem !important;
+        line-height: 1.45 !important;
+        color: #cbd5e1 !important;
+        margin-bottom: 0.4rem !important;
     }
 }
 
@@ -2881,11 +2949,22 @@ p {
     }
 
     .process-section-title {
-        font-size: 2rem !important;
+        font-size: 2.2rem !important;
         margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-left: 1.25rem !important;
-        text-align: left !important;
+        margin-bottom: 1.5rem !important;
+        padding: 0 !important;
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .process-section-title::after {
+        content: '' !important;
+        display: block !important;
+        width: 50px !important;
+        height: 4px !important;
+        background-color: #ffffff !important;
+        margin: 8px auto 0 auto !important;
     }
 
     .process-horizontal-track {
@@ -2906,29 +2985,53 @@ p {
         min-width: 82vw !important;
         max-width: 82vw !important;
         flex: 0 0 82vw !important;
-        padding: 1.5rem 1.25rem !important;
+        padding: 1.75rem 1.4rem !important;
         box-sizing: border-box !important;
-        min-height: 320px !important;
+        min-height: 330px !important;
         max-height: 60vh !important;
-        overflow-y: auto !important;
         border-radius: 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        position: relative !important;
+        background-color: #222 !important;
+        border: 1px solid #333 !important;
     }
 
     .p-number {
-        font-size: 2.2rem !important;
-        margin-bottom: 0.5rem !important;
+        position: absolute !important;
+        top: 1.25rem !important;
+        right: 1.25rem !important;
+        font-size: 2.4rem !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        color: rgba(255, 255, 255, 0.15) !important;
+        margin-bottom: 0 !important;
+    }
+
+    .p-content {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        height: 100% !important;
+        gap: 0.4rem !important;
     }
 
     .p-content h3 {
         font-size: 1.3rem !important;
+        font-weight: 800 !important;
         line-height: 1.25 !important;
-        margin-bottom: 0.5rem !important;
+        color: #ffffff !important;
+        margin-bottom: 0.75rem !important;
+        max-width: 75% !important;
+        padding-right: 0 !important;
     }
 
     .p-content p {
-        font-size: 0.85rem !important;
-        line-height: 1.4 !important;
-        margin-bottom: 0.35rem !important;
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+        color: #cbd5e1 !important;
+        margin-bottom: 0.45rem !important;
     }
 
     /* Digital Journey Section */
@@ -3014,5 +3117,185 @@ p {
     }
     .team-grid {
         grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+/* ============================================================
+   Pricing / Our Works Footer Styles for About Page
+   ============================================================ */
+.pricing-dj-section {
+    background: #181717;
+    margin-top: 0;
+    position: relative;
+    overflow: hidden;
+}
+.pricing-dj-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.pricing-dj-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0 2.5rem;
+    display: flex;
+}
+.pricing-dj-text {
+    flex-direction: column;
+    flex: 1;
+    align-items: flex-start;
+    gap: 2.5rem;
+    display: flex;
+}
+.pricing-dj-video {
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    display: flex;
+}
+.pricing-dj-video video {
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
+.pricing-dj-title {
+    text-transform: uppercase;
+    letter-spacing: -.02em;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+}
+.pricing-dj-blue {
+    color: #0c1ac1;
+}
+.pricing-dj-lime {
+    color: #c7f908;
+}
+.pricing-dj-buttons {
+    flex-wrap: wrap;
+    gap: 1rem;
+    display: flex;
+}
+.pricing-dj-buttons .btn-dj {
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid transparent;
+    border-radius: 50px;
+    padding: 1rem 2.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    transition: all .35s cubic-bezier(.22, 1, .36, 1);
+}
+.pricing-dj-buttons .btn-dj-primary {
+    background: #c7f908;
+    color: #0e0e0e;
+    border-color: #c7f908;
+    box-shadow: 0 6px 20px rgba(217, 255, 0, 0.35);
+}
+.pricing-dj-buttons .btn-dj-primary:hover {
+    color: #0e0e0e;
+    background: #fff;
+    border-color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+.pricing-dj-buttons .btn-dj-secondary {
+    color: #fff;
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+.pricing-dj-buttons .btn-dj-secondary:hover {
+    background: #c7f908;
+    color: #0e0e0e;
+    border-color: #c7f908;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(217, 255, 0, 0.25);
+}
+.pricing-copyright {
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    text-align: center;
+    background: #0e0e0e;
+    width: 100%;
+    padding: 1rem 0;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .pricing-dj-section {
+        padding: 0 !important;
+    }
+    .pricing-dj-container {
+        padding: 0 1rem !important;
+    }
+    .pricing-dj-content {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+        gap: 0.5rem !important;
+        padding: 2.25rem 0 1.75rem 0 !important;
+    }
+    .pricing-dj-text {
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    .pricing-dj-title {
+        font-size: 1.4rem !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.01em !important;
+    }
+    .pricing-dj-buttons {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 0.35rem !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    .pricing-dj-buttons a {
+        flex: 1 !important;
+        display: flex !important;
+        min-width: 0 !important;
+    }
+    .pricing-dj-buttons .btn-dj {
+        width: 100% !important;
+        padding: 0.55rem 0.3rem !important;
+        font-size: 0.55rem !important;
+        letter-spacing: 0.2px !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+        border-radius: 20px !important;
+        justify-content: center !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+    .pricing-dj-video {
+        width: 85px !important;
+        min-width: 85px !important;
+        max-width: 85px !important;
+        flex-shrink: 0 !important;
+        align-self: flex-end !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-end !important;
+        margin-bottom: 0.2rem !important;
+    }
+    .pricing-dj-video video {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 110px !important;
+        object-fit: contain !important;
     }
 }

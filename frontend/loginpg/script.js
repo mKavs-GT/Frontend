@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (explicitRedirect) {
                                 window.location.href = explicitRedirect;
                             } else if (isBookingFlow) {
-                                window.location.href = '/Consult';
+                                window.location.href = '/loginpg/index.html';
                             } else {
                                 window.location.href = defaultRedirect;
                             }

@@ -129,6 +129,7 @@
   <!-- React App Assets -->
   <script type="module" crossorigin src="./assets/index-ADnrm98P.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-5cMzOuyv.css">
+  <link rel="stylesheet" href="../footer.css">
 
   <style>
     /* Ensure navigation doesn't clash with React content */
@@ -243,103 +244,7 @@
         min-width: 0 !important;
       }
 
-      /* Footer - matching branding page exactly */
-      .digital-journey-section {
-        min-height: auto !important;
-        padding: 1.5rem 1rem 0 1rem !important;
-      }
-
-      .dj-container {
-        height: auto !important;
-        flex-grow: 0 !important;
-      }
-
-      .dj-content {
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: flex-end !important;
-        gap: 0.5rem !important;
-        padding: 2rem 0 1.5rem 0 !important;
-      }
-
-      .dj-text-group {
-        flex: 1 !important;
-        min-width: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.75rem !important;
-      }
-
-      .dj-title {
-        font-size: 1.35rem !important;
-        line-height: 1.1 !important;
-        letter-spacing: -0.01em !important;
-      }
-
-      .dj-buttons {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 0.35rem !important;
-        margin-top: 0.5rem !important;
-        width: 100% !important;
-      }
-
-      .dj-buttons a {
-        flex: 1 !important;
-        display: flex !important;
-        min-width: 0 !important;
-      }
-
-      .btn-dj {
-        width: 100% !important;
-        padding: 0.55rem 0.3rem !important;
-        font-size: 0.55rem !important;
-        white-space: nowrap !important;
-        text-align: center !important;
-        border-radius: 20px !important;
-        display: inline-flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        box-shadow: none !important;
-      }
-
-      .dj-video-group,
-      .video-wrapper {
-        width: 85px !important;
-        min-width: 85px !important;
-        max-width: 85px !important;
-        flex-shrink: 0 !important;
-        align-self: flex-end !important;
-        display: flex !important;
-        align-items: flex-end !important;
-      }
-
-      .dj-video {
-        width: 100% !important;
-        height: auto !important;
-        max-height: 110px !important;
-        object-fit: contain !important;
-      }
-
-      /* Hide Join Our Community + everything below on mobile */
-      .footer-base {
-        display: none !important;
-      }
-
-      .copyright-text {
-        position: relative !important;
-        bottom: auto !important;
-        left: auto !important;
-        right: auto !important;
-        text-align: center !important;
-        color: #777777 !important;
-        width: 100% !important;
-        padding: 1rem 0 1.5rem 0 !important;
-        font-size: 0.65rem !important;
-        font-weight: 700 !important;
-      }
+      /* Footer is styled cleanly via footer.css */
     }
   </style>
 </head>
@@ -488,7 +393,7 @@
           <option value="Mr.V">Mr.V</option>
           <option value="Mr.M">Mr.M</option>
         </select>
-        <button id="kairon-close" class="close-btn" aria-label="Close chat">&times;</button>
+        <button id="kairon-close" class="close-btn" aria-label="Minimize chat"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
       </div>
       <div id="kairon-messages" class="messages"></div>
       <div class="interactive-area">
@@ -619,8 +524,81 @@
     })();
   </script>
 
-                <!-- Mobile Side Menu Overlay -->
-        <div id="mobile-menu-overlay"
+  <!-- Digital Journey Section / Footer (Matching Branding Page) -->
+  <section class="digital-journey-section" style="position: relative; z-index: 10;">
+    <div class="dj-container">
+      <div class="dj-content">
+        <div class="dj-text-group">
+          <h1 class="dj-title">
+            YOUR <br>
+            <span class="text-blue">
+              DIGITAL JOURNEY
+            </span><br>
+            <span class="text-lime">STARTS HERE.</span>
+          </h1>
+
+          <div class="dj-buttons">
+            <a href="/loginpg/index.html" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-primary">
+                BOOK NOW
+              </button>
+            </a>
+            <a href="/pricingpage/index.html" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-secondary">
+                VIEW PLANS
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="dj-video-group">
+          <span class="video-wrapper">
+            <video src="../images/mascot.mp4" class="dj-video" autoplay loop muted playsinline>
+              Your browser does not support the video tag.
+            </video>
+          </span>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <div class="footer-header-container">
+          <h2 class="footer-title">
+            JOIN OUR COMMUNITY
+          </h2>
+        </div>
+        <div class="footer-curve">
+          <div class="footer-socials">
+            <div class="social-links">
+              <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://discord.gg/HENvXDQQZJ"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" target="_blank"
+                rel="noopener noreferrer">
+                <i class="fa-brands fa-discord"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+            <div class="about-policy-links" style="display: flex; gap: 15px; font-family: 'Space Grotesk', sans-serif;">
+              <a href="../docs/T&C and Privacy Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+              <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright-text" style="color: #000000;">
+        &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile Side Menu Overlay -->
+  <div id="mobile-menu-overlay"
             class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998] opacity-0 pointer-events-none transition-opacity duration-300" style="z-index: 999998 !important;">
         </div>
 
