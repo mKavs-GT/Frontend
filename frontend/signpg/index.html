@@ -57,7 +57,8 @@
       max-width: 1200px;
       /* Restored container width constraint */
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-left: 12vw;
       align-items: flex-start;
       padding-top: 4vh;
     }
@@ -324,7 +325,7 @@
     }
 
     .char.left-1 {
-      left: calc(50% + 200px);
+      left: calc(12vw + 525px);
       top: 38%;
       width: 320px;
       z-index: 20;
@@ -428,6 +429,10 @@
       .character-base,
       .marquee-tape {
         display: none;
+      }
+      .auth-container {
+        justify-content: center !important;
+        padding-left: 0 !important;
       }
     }
 
