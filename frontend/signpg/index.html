@@ -639,7 +639,7 @@
 </head>
 
 <body>
-  <a href="/Home" class="auth-logo">
+  <a href="/index.html" class="auth-logo">
     <img src="/images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
@@ -1409,7 +1409,7 @@
           if (signupResponse.ok) {
             btn.innerHTML = '<i class="fas fa-check"></i> Success!';
             setTimeout(() => {
-              window.location.href="/Home";
+              window.location.href="/index.html";
             }, 1000);
           } else {
             throw new Error(signupData.error || "Failed to create account");

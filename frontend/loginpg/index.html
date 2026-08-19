@@ -313,7 +313,7 @@
 
         .char.left-1 {
             left: calc(18vw + 235px);
-            top: 36%;
+            top: 30%;
             width: 320px;
             z-index: 20;
             animation-name: entryRight;
@@ -416,6 +416,7 @@
             .marquee-tape {
                 display: none;
             }
+
             .auth-container {
                 justify-content: center !important;
                 padding-left: 0 !important;
@@ -452,7 +453,7 @@
 </head>
 
 <body>
-    <a href="/Home" class="auth-logo">
+    <a href="/index.html" class="auth-logo">
         <img src="../images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
@@ -528,7 +529,7 @@
             </form>
 
             <footer class="signup-prompt">
-                Don't have an account? <a href="/SignUp" class="signup-link">Sign up</a>
+                Don't have an account? <a href="/signpg/index.html" class="signup-link">Sign up</a>
             </footer>
         </main>
     </div>
@@ -565,7 +566,7 @@
         if (error) {
             if (error === 'no_account') {
                 googleBanner.style.display = 'block';
-                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/SignUp">create an account</a> first.';
+                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/signpg/index.html">create an account</a> first.';
             } else if (error === 'auth_failed') {
                 googleBanner.style.display = 'block';
                 googleBanner.textContent = 'Google authentication failed. Please try again.';
@@ -631,7 +632,7 @@
                     try {
                         const authData = { loggedIn: true, user: data.user || null, ts: Date.now() };
                         localStorage.setItem('mkavs_auth_cache', JSON.stringify(authData));
-                    } catch(e) {}
+                    } catch (e) { }
                     // Success -> Redirect to Home
                     window.location.href = '/Home';
                 } else {
@@ -657,80 +658,82 @@
         });
     </script>
 
-        <!-- Mobile Side Menu Overlay -->
-        <div id="mobile-menu-overlay"
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
+    <!-- Mobile Side Menu Overlay -->
+    <div id="mobile-menu-overlay"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+
+    <!-- Mobile Side Menu Panel -->
+    <div id="mobile-menu-panel"
+        class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+        <!-- Close Button -->
+        <div class="flex justify-between items-center mb-8">
+            <!-- Logo Image -->
+            <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+            <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
+                aria-label="Close Menu">&times;</button>
         </div>
 
-        <!-- Mobile Side Menu Panel -->
-        <div id="mobile-menu-panel"
-            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
-            <!-- Close Button -->
-            <div class="flex justify-between items-center mb-8">
-                <!-- Logo Image -->
-                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
-                <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
-                    aria-label="Close Menu">&times;</button>
-            </div>
+        <!-- Navigation Links -->
+        <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
+            <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+            <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+            <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+            <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+            <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+            <a href="/BookUs"
+                class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+            <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+            <a href="/BookUs"
+                class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+        </div>
 
-            <!-- Navigation Links -->
-            <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
-                <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
-                <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
-                <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
-                <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
-                <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
-                <a href="/BookUs" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
-                <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
-                <a href="/BookUs" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
-            </div>
-
-            <!-- Bottom Section -->
-            <div class="mt-auto pt-8">
-                <div class="flex space-x-6 mb-6">
-                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-instagram"></i></a>
-                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-discord"></i></a>
-                    <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-brands fa-linkedin"></i></a>
-                    <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
-                            class="fa-regular fa-user"></i></a>
-                </div>
+        <!-- Bottom Section -->
+        <div class="mt-auto pt-8">
+            <div class="flex space-x-6 mb-6">
+                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-brands fa-discord"></i></a>
+                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-brands fa-linkedin"></i></a>
+                <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-regular fa-user"></i></a>
             </div>
         </div>
+    </div>
 
     <!-- Mobile Side Menu Logic -->
     <script>
-    (() => {
-        const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
-        const customTrigger = document.getElementById('custom-mobile-menu-trigger');
-        const trigger = mobileMenuTrigger || customTrigger;
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const mobileMenuPanel = document.getElementById('mobile-menu-panel');
-        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        (() => {
+            const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
+            const customTrigger = document.getElementById('custom-mobile-menu-trigger');
+            const trigger = mobileMenuTrigger || customTrigger;
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
 
-        if (trigger && mobileMenuOverlay && mobileMenuPanel) {
-            const openMobileMenu = () => {
-                mobileMenuPanel.classList.remove('-translate-x-full');
-                mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
-                mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
-            };
+            if (trigger && mobileMenuOverlay && mobileMenuPanel) {
+                const openMobileMenu = () => {
+                    mobileMenuPanel.classList.remove('-translate-x-full');
+                    mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                    mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
+                };
 
-            const closeMobileMenu = () => {
-                mobileMenuPanel.classList.add('-translate-x-full');
-                mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
-                mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
-            };
+                const closeMobileMenu = () => {
+                    mobileMenuPanel.classList.add('-translate-x-full');
+                    mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+                    mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+                };
 
-            trigger.addEventListener('click', openMobileMenu);
-            if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        }
-    });
+                trigger.addEventListener('click', openMobileMenu);
+                if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+                mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+            }
+        });
     </script>
 </body>
 
