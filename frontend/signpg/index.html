@@ -2,11 +2,6 @@
 <html lang="en">
 
 <head>
-  <!-- Vercel Analytics -->
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
   <base href="/signpg/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,15 +15,18 @@
   <link rel="icon" type="image/png" href="../images/LOGOI.png" />
   <script src="../config.js"></script>
   <style>
-            :root {
-            --primary: #000000;
-            --bg-page: #FAFAFA;
-            --bg-card: transparent;
-            --input-bg: #F3F4F6;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --border-color: #E5E7EB;
-        }
+    :root {
+      --primary: #ccff00;
+      /* Lime Green */
+      --bg-page: #2f2f2d;
+      /* Updated page background */
+      --bg-card: #15161a;
+      /* Updated card background */
+      --input-bg: #1e1e1e;
+      --text-main: #ffffff;
+      --text-muted: #a1a1a1;
+      --border-color: #333333;
+    }
 
     * {
       margin: 0;
@@ -37,51 +35,51 @@
       font-family: "Outfit", sans-serif;
     }
 
-            body,
-        html {
-            height: 100%;
-            width: 100%;
-            background: var(--bg-page);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: 'Outfit', sans-serif;
-        }
+    body,
+    html {
+      height: 100%;
+      width: 100%;
+      background: var(--bg-page);
+      display: flex;
+      align-items: flex-start;
+      /* Changed from center to move higher */
+      justify-content: center;
+      overflow: hidden;
+      padding-top: 1vh;
+      /* Added top spacing */
+    }
 
-            .auth-container {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
+    .auth-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1200px;
+      /* Restored container width constraint */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 4vh;
+    }
 
-            .login-card {
-            width: 100%;
-            max-width: 400px;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 2rem;
-            box-shadow: none;
-            border: none;
-            position: relative;
-            z-index: 10;
-        }
+    .login-card {
+      width: 100%;
+      max-width: 650px;
+      /* Increased for side-by-side fields */
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 0.8rem 1.25rem;
+      /* Further reduced padding */
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      border: 1px solid #333;
+      position: relative;
+      z-index: 10;
+    }
 
     @media (max-width: 650px) {
-              .login-card {
-            width: 100%;
-            max-width: 400px;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 2rem;
-            box-shadow: none;
-            border: none;
-            position: relative;
-            z-index: 10;
-        }
+      .login-card {
+        max-width: 350px;
+        padding: 1.25rem 1.5rem;
+      }
     }
 
     .form-row {
@@ -105,15 +103,13 @@
       /* Reduced margin */
     }
 
-    
-        .card-title {
-            font-size: 2.5rem;
-            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-            font-weight: 800;
-            color: #0d3b66;
-            margin-bottom: 0.25rem;
-        }
-    
+    .card-title {
+      font-size: 1.5rem;
+      /* Smaller title */
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
 
     .card-subtitle {
       font-size: 0.9rem;
@@ -147,7 +143,7 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       /* Smaller radius */
-      color: var(--text-main);
+      color: white;
       font-size: 0.9rem;
       /* Smaller font */
       transition: border-color 0.2s;
@@ -219,18 +215,22 @@
       color: white;
     }
 
-            .submit-button {
-            width: 100%;
-            padding: 0.85rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 9999px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-        }
+    .submit-button {
+      width: 100%;
+      padding: 0.7rem;
+      /* Further reduced padding */
+      background: var(--primary);
+      color: black;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition:
+        transform 0.2s,
+        background-color 0.2s;
+    }
 
     .submit-button:hover {
       transform: translateY(-2px);
@@ -251,16 +251,16 @@
       /* Reduced margin */
       color: #555;
       font-size: 0.7rem;
-      
+      text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-            .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #E5E7EB;
-        }
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #333;
+    }
 
     .divider::before {
       margin-right: 1rem;
@@ -270,28 +270,23 @@
       margin-left: 1rem;
     }
 
-            .sso-button {
-            width: 100%;
-            padding: 0.75rem;
-            background: #FFFFFF;
-            color: #374151;
-            border: 1px solid #E5E7EB;
-            border-radius: 9999px; /* Pill shape */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-        .sso-button:hover {
-            background: #F9FAFB;
-            border-color: #D1D5DB;
-        }
+    .sso-button {
+      width: 100%;
+      padding: 0.65rem;
+      /* Further reduced padding */
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border: 1px solid #333;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: background-color 0.2s;
+    }
 
     .sso-button:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -407,9 +402,23 @@
       }
     }
 
-    
+    .character-base {
+      position: fixed;
+      top: 85svh;
+      left: 0;
+      width: 100vw;
+      height: 25vh;
+      background: #20201F;
+      z-index: 2;
+      pointer-events: none;
+      animation: baseFade 1s ease 0.5s forwards;
+      opacity: 0;
+    }
 
-    
+    @keyframes baseFade {
+      to {
+        opacity: 1;
+      }
     }
 
     @media (max-width: 850px) {
@@ -440,103 +449,12 @@
       display: block;
     }
 
-    @media (max-width: 768px) {
-              body,
-        html {
-            height: 100%;
-            width: 100%;
-            background: var(--bg-page);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: 'Outfit', sans-serif;
-        }
-
-      /* Hamburger button on top-left corner */
-      #mkavs-hamburger-signpg {
-        display: flex !important;
-      }
-
-      /* MKAVS Logo text/image centered in the middle header */
+    @media (max-width: 600px) {
       .auth-logo {
-        position: fixed !important;
-        top: 1.25rem !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 110px !important;
-        margin: 0 !important;
-        z-index: 9990 !important;
+        width: 120px;
+        top: 1.5rem;
+        left: 1.5rem;
       }
-
-      .auth-logo:hover {
-        transform: translateX(-50%) scale(1.05) !important;
-      }
-
-      /* Auth container centered vertically */
-              .auth-container {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
-
-      /* Smaller centered signup box */
-              .login-card {
-            width: 100%;
-            max-width: 400px;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 2rem;
-            box-shadow: none;
-            border: none;
-            position: relative;
-            z-index: 10;
-        }
-
-      .card-header {
-        margin-bottom: 0.75rem !important;
-      }
-
-      
-        .card-title {
-            font-size: 2.5rem;
-            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-            font-weight: 800;
-            color: #0d3b66;
-            margin-bottom: 0.25rem;
-        }
-    
-
-      .card-subtitle {
-        font-size: 0.78rem !important;
-      }
-    }
-
-    /* Hamburger button — hidden on desktop, shown on mobile */
-    #mkavs-hamburger-signpg {
-      display: none;
-      position: fixed;
-      top: 1.25rem;
-      left: 1.25rem;
-      z-index: 999999;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      padding: 4px;
-      align-items: center;
-      justify-content: center;
-    }
-    #mkavs-hamburger-signpg svg {
-      width: 28px;
-      height: 28px;
-      stroke: #ffffff;
-      display: block;
-    }
-    @media (min-width: 769px) {
-      #mkavs-hamburger-signpg { display: none !important; }
     }
 
     /* Step Progress Indicator */
@@ -711,38 +629,23 @@
     .change-email:hover {
       color: var(--text-main);
     }
-  
-        @media (max-width: 1023px) {
-            .auth-logo img {
-                filter: brightness(0);
-            }
-        }
-    
-</style>
+  </style>
 </head>
 
 <body>
-  <a href="/index.html" class="auth-logo">
+  <a href="/Home" class="auth-logo">
     <img src="/images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
-  
-  <div class="flex w-full min-h-screen" style="align-items: stretch;">
-        <!-- Left Panel -->
-        <div class="hidden lg:flex w-1/2 min-h-screen relative flex-col justify-center bg-[#FAFAFA]  ">
-            <img src="../signpg/images/login.png" class="absolute inset-0 w-full h-full object-contain" alt="Background">
-        </div>
-        
-        <!-- Right Panel -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center min-h-screen py-8">
-    
+  <div class="character-base"></div>
+  <div class="auth-container">
     <!-- Exact Character Placement -->
-    
+    <img src="images/1.png" class="char left-1" alt="char 1" />
     <!--
-    
-    
-    
-    
+    <img src="images/2.png" class="char left-2" alt="char 2" />
+    <img src="images/3.png" class="char right-1" alt="char 3">
+    <img src="images/4.png" class="char right-2" alt="char 4" />
+    <img src="images/5.png" class="char sleeping" alt="sleeping char" />
     -->
 
     <main class="login-card">
@@ -1093,17 +996,17 @@
         </div>
       </form>
 
-      <div class="divider">OR CONTINUE WITH</div>
+      <div class="divider">Or Continue With</div>
 
       <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=signup'" class="sso-button"
         style="text-decoration: none">
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
-        Google
+        <i class="fa-brands fa-google"></i>
+        Continue with Google
       </a>
 
       <footer class="signup-prompt">
         Already have an account?
-        <a href="/loginpg/index.html" class="signup-link">Sign in</a>
+        <a href="/BookUs" class="signup-link">Sign in</a>
       </footer>
     </main>
   </div>
@@ -1500,7 +1403,7 @@
           if (signupResponse.ok) {
             btn.innerHTML = '<i class="fas fa-check"></i> Success!';
             setTimeout(() => {
-              window.location.href="/index.html";
+              window.location.href="/Home";
             }, 1000);
           } else {
             throw new Error(signupData.error || "Failed to create account");
@@ -1514,67 +1417,6 @@
           btn.disabled = false;
         }
       });
-  </script>
-
-  <!-- Mobile Hamburger -->
-  <button id="mkavs-hamburger-signpg" aria-label="Open Menu" type="button">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu-overlay-signpg"
-    style="position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:999998;opacity:0;pointer-events:none;transition:opacity 0.3s;">
-  </div>
-
-  <!-- Mobile Side Panel -->
-  <div id="mobile-menu-panel-signpg"
-    style="position:fixed;inset-y:0;left:0;width:75vw;max-width:320px;background:#121212;border-right:1px solid rgba(255,255,255,0.1);z-index:999999;transform:translateX(-100%);transition:transform 0.3s ease-in-out;display:flex;flex-direction:column;padding:1.5rem;pointer-events:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
-      <img src="/images/MKAVS.png" alt="MKAVS" style="height:2rem;width:auto;">
-      <button id="mobile-menu-close-signpg" style="color:white;font-size:2rem;background:none;border:none;cursor:pointer;padding:4px;line-height:1;">&times;</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:1.25rem;font-size:1.1rem;font-weight:700;color:#d1d5db;flex-grow:1;">
-      <a href="/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Home</a>
-      <a href="/about/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">About</a>
-      <a href="/works-build/index.dev.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Our Work</a>
-      <a href="/branding/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Branding</a>
-      <a href="/pricingpage/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Pricing</a>
-      <a href="/loginpg/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Book Us</a>
-      <a href="/support/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Support</a>
-      <a href="/loginpg/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Login</a>
-    </div>
-    <div style="display:flex;gap:1.5rem;font-size:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.1);justify-content:center;">
-      <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://discord.gg/HENvXDQQZJ" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
-      <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
-    </div>
-  </div>
-
-  <script>
-  (function() {
-    var hamburger = document.getElementById('mkavs-hamburger-signpg');
-    var overlay   = document.getElementById('mobile-menu-overlay-signpg');
-    var panel     = document.getElementById('mobile-menu-panel-signpg');
-    var closeBtn  = document.getElementById('mobile-menu-close-signpg');
-    function openMenu() {
-      panel.style.transform = 'translateX(0)';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
-    }
-    function closeMenu() {
-      panel.style.transform = 'translateX(-100%)';
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-    }
-    hamburger.onclick = function(e) { e.preventDefault(); e.stopPropagation(); openMenu(); };
-    hamburger.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); openMenu(); }, { passive: false });
-    closeBtn.onclick = closeMenu;
-    overlay.onclick  = closeMenu;
-  })();
   </script>
 </body>
 

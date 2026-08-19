@@ -15,14 +15,17 @@
     <link rel="icon" type="image/png" href="../images/LOGOI.png">
     <script src="../config.js"></script>
     <style>
-                :root {
-            --primary: #000000;
-            --bg-page: #FAFAFA;
-            --bg-card: transparent;
-            --input-bg: #F3F4F6;
-            --text-main: #111827;
-            --text-muted: #6B7280;
-            --border-color: #E5E7EB;
+        :root {
+            --primary: #CCFF00;
+            /* Lime Green */
+            --bg-page: #2F2F2D;
+            /* Updated page background */
+            --bg-card: #161618;
+            /* Updated card background */
+            --input-bg: #1E1E1E;
+            --text-main: #ffffff;
+            --text-muted: #A1A1A1;
+            --border-color: #333333;
         }
 
         * {
@@ -32,35 +35,43 @@
             font-family: 'Outfit', sans-serif;
         }
 
-                body,
+        body,
         html {
             height: 100%;
             width: 100%;
             background: var(--bg-page);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: flex-start;
+            /* Changed from center to move higher */
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 1vh;
+            /* Added top spacing */
         }
 
-                .auth-container {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .auth-container {
             position: relative;
             z-index: 10;
+            width: 100%;
+            max-width: 1200px;
+            /* Restored container width constraint */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 4vh;
         }
 
-                .login-card {
+        .login-card {
             width: 100%;
-            max-width: 400px;
+            max-width: 330px;
+            /* Reduced specific size again */
             background: var(--bg-card);
-            border-radius: 0;
-            padding: 2rem;
-            box-shadow: none;
-            border: none;
+            border-radius: 16px;
+            /* Slightly smaller radius */
+            padding: 1.25rem 1.5rem;
+            /* Further reduced padding */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
             position: relative;
             z-index: 10;
         }
@@ -72,15 +83,13 @@
             /* Reduced margin */
         }
 
-        
         .card-title {
-            font-size: 2.5rem;
-            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-            font-weight: 800;
-            color: #0d3b66;
+            font-size: 1.5rem;
+            /* Smaller title */
+            font-weight: 700;
+            color: var(--text-main);
             margin-bottom: 0.25rem;
         }
-    
 
         .card-subtitle {
             font-size: 0.9rem;
@@ -113,7 +122,7 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             /* Smaller radius */
-            color: var(--text-main);
+            color: white;
             font-size: 0.9rem;
             /* Smaller font */
             transition: border-color 0.2s;
@@ -169,16 +178,18 @@
             color: white;
         }
 
-                .submit-button {
+        .submit-button {
             width: 100%;
-            padding: 0.85rem;
+            padding: 0.7rem;
+            /* Further reduced padding */
             background: var(--primary);
-            color: white;
+            color: black;
             border: none;
-            border-radius: 9999px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
+            text-transform: uppercase;
             transition: transform 0.2s, background-color 0.2s;
         }
 
@@ -195,15 +206,15 @@
             /* Further reduced margin */
             color: #555;
             font-size: 0.7rem;
-            
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-                .divider::before,
+        .divider::before,
         .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #E5E7EB;
+            border-bottom: 1px solid #333;
         }
 
         .divider::before {
@@ -214,27 +225,23 @@
             margin-left: 1rem;
         }
 
-                .sso-button {
+        .sso-button {
             width: 100%;
-            padding: 0.75rem;
-            background: #FFFFFF;
-            color: #374151;
-            border: 1px solid #E5E7EB;
-            border-radius: 9999px; /* Pill shape */
+            padding: 0.65rem;
+            /* Further reduced padding */
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
             text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-        .sso-button:hover {
-            background: #F9FAFB;
-            border-color: #D1D5DB;
         }
 
         .sso-button:hover {
@@ -381,9 +388,23 @@
             }
         }
 
-        
+        .character-base {
+            position: fixed;
+            top: 87vh;
+            left: 0;
+            width: 100vw;
+            height: 30vh;
+            background: #20201f;
+            z-index: 2;
+            pointer-events: none;
+            animation: baseFade 1s ease 0.5s forwards;
+            opacity: 0;
+        }
 
-        
+        @keyframes baseFade {
+            to {
+                opacity: 1;
+            }
         }
 
         @media (max-width: 850px) {
@@ -421,14 +442,7 @@
                 left: 1.5rem;
             }
         }
-    
-        @media (max-width: 1023px) {
-            .auth-logo img {
-                filter: brightness(0);
-            }
-        }
-    
-</style>
+    </style>
 </head>
 
 <body>
@@ -436,24 +450,15 @@
         <img src="../images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
-    <button id="mobile-menu-trigger" class="md:hidden text-3xl text-black p-2 hover:text-[#c7f908] transition-colors" aria-label="Menu" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 100;">&#x2261;</button>
-    
-    <div class="flex w-full min-h-screen" style="align-items: stretch;">
-        <!-- Left Panel -->
-        <div class="hidden lg:flex w-1/2 min-h-screen relative flex-col justify-center bg-[#FAFAFA]  ">
-            <img src="../signpg/images/login.png" class="absolute inset-0 w-full h-full object-contain" alt="Background">
-        </div>
-        
-        <!-- Right Panel -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center min-h-screen py-8">
-    
+    <div class="character-base"></div>
+    <div class="auth-container">
         <!-- Exact Character Placement -->
-        
+        <img src="images/1.png" class="char left-1" alt="char 1">
         <!--
-        
-        
-        
-        
+        <img src="images/2.png" class="char left-2" alt="char 2">
+        <img src="images/3.png" class="char right-1" alt="char 3">
+        <img src="images/4.png" class="char right-2" alt="char 4">
+        <img src="images/5.png" class="char sleeping" alt="sleeping char">
         -->
 
         <main class="login-card">
@@ -489,7 +494,7 @@
                     <label class="remember-me">
                         <input type="checkbox"> Remember me
                     </label>
-                    <a href="#" class="forgot-link">Forgot?</a>
+                    <a href="#" class="forgot-link">Forgot password?</a>
                 </div>
 
                 <!-- reCAPTCHA Widget -->
@@ -507,20 +512,19 @@
                 <button type="submit" class="submit-button">Sign In</button>
 
                 <div class="divider">
-                    OR CONTINUE WITH
+                    Or Continue With
                 </div>
 
                 <a id="googleSignInBtn" href="#" class="sso-button">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
-                    Google
+                    <i class="fa-brands fa-google"></i>
+                    Continue with Google
                 </a>
             </form>
 
             <footer class="signup-prompt">
-                New here? <a href="/signpg/index.html" class="signup-link">Create an account</a>
+                Don't have an account? <a href="/SignUp" class="signup-link">Sign up</a>
             </footer>
         </main>
-        </div>
     </div>
 
 
@@ -555,7 +559,7 @@
         if (error) {
             if (error === 'no_account') {
                 googleBanner.style.display = 'block';
-                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/signpg/index.html">create an account</a> first.';
+                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/SignUp">create an account</a> first.';
             } else if (error === 'auth_failed') {
                 googleBanner.style.display = 'block';
                 googleBanner.textContent = 'Google authentication failed. Please try again.';
@@ -649,44 +653,47 @@
 
         <!-- Mobile Side Menu Overlay -->
         <div id="mobile-menu-overlay"
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998] !important opacity-0 pointer-events-none transition-opacity duration-300">
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[190] opacity-0 pointer-events-none transition-opacity duration-300">
         </div>
 
         <!-- Mobile Side Menu Panel -->
         <div id="mobile-menu-panel"
-            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[999999] !important transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
+            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[200] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto">
             <!-- Close Button -->
             <div class="flex justify-between items-center mb-8">
                 <!-- Logo Image -->
-                <img src="/images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+                <img src="images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
                 <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
                     aria-label="Close Menu">&times;</button>
             </div>
 
             <!-- Navigation Links -->
             <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
-                <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
-                <a href="/about/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
-                <a href="/works-build/index.dev.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
-                <a href="/branding/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
-                <a href="/pricingpage/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
-                <a href="/loginpg/index.html" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
-                <a href="/support/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
-                <a href="/loginpg/index.html" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+                <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+                <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+                <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+                <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+                <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+                <a href="/BookUs" class="auth-consult-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+                <a href="/BookUs" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
             </div>
 
-            <!-- Social Icons at bottom -->
-            <div class="flex space-x-6 text-2xl pt-6 border-t border-white/10 mt-auto justify-center">
-                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
-                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
-                        class="fa-brands fa-instagram"></i></a>
-                <a href="https://discord.gg/HENvXDQQZJ" class="text-white hover:text-[#c7f908]" target="_blank"
-                    rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
-                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
-                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
-                        class="fa-brands fa-linkedin-in"></i></a>
-                <a href="/loginpg/index.html" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"
-                    aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
+            <!-- Bottom Section -->
+            <div class="mt-auto pt-8">
+                <div class="flex space-x-6 mb-6">
+                    <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="https://discord.gg/HENvXDQQZJ" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-discord"></i></a>
+                    <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                        class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-brands fa-linkedin"></i></a>
+                    <a href="/Profile" class="text-gray-400 hover:text-white transition-colors text-2xl"><i
+                            class="fa-regular fa-user"></i></a>
+                </div>
             </div>
         </div>
 \n
