@@ -2,11 +2,6 @@
 <html lang="en">
 
 <head>
-  <!-- Vercel Analytics -->
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
   <base href="/signpg/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,7 +39,8 @@
     html {
       height: 100%;
       width: 100%;
-      background: var(--bg-page);
+      background: url('/signpg/images/login.png') no-repeat center 25% fixed;
+      background-size: cover;
       display: flex;
       align-items: flex-start;
       /* Changed from center to move higher */
@@ -61,9 +57,10 @@
       max-width: 1200px;
       /* Restored container width constraint */
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-left: 6vw;
       align-items: flex-start;
-      padding-top: 4vh;
+      padding-top: 6vh;
     }
 
     .login-card {
@@ -328,8 +325,8 @@
     }
 
     .char.left-1 {
-      left: calc(50% + 200px);
-      top: 38%;
+      left: calc(12vw + 450px);
+      top: 28%;
       width: 320px;
       z-index: 20;
       animation-name: entryRight;
@@ -433,6 +430,10 @@
       .marquee-tape {
         display: none;
       }
+      .auth-container {
+        justify-content: center !important;
+        padding-left: 0 !important;
+      }
     }
 
     .auth-logo {
@@ -454,97 +455,12 @@
       display: block;
     }
 
-    @media (max-width: 768px) {
-      body, html {
-        height: auto !important;
-        min-height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding-top: 0 !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-      }
-
-      /* Hamburger button on top-left corner */
-      #mkavs-hamburger-signpg {
-        display: flex !important;
-      }
-
-      /* MKAVS Logo text/image centered in the middle header */
+    @media (max-width: 600px) {
       .auth-logo {
-        position: fixed !important;
-        top: 1.25rem !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 110px !important;
-        margin: 0 !important;
-        z-index: 9990 !important;
+        width: 120px;
+        top: 1.5rem;
+        left: 1.5rem;
       }
-
-      .auth-logo:hover {
-        transform: translateX(-50%) scale(1.05) !important;
-      }
-
-      /* Auth container centered vertically */
-      .auth-container {
-        padding-top: 5rem !important;
-        padding-bottom: 2rem !important;
-        margin: auto !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        flex-grow: 1 !important;
-      }
-
-      /* Smaller centered signup box */
-      .login-card {
-        max-width: 320px !important;
-        width: 90% !important;
-        padding: 1.1rem 1.25rem !important;
-        border-radius: 14px !important;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
-        margin: auto !important;
-      }
-
-      .card-header {
-        margin-bottom: 0.75rem !important;
-      }
-
-      .card-title {
-        font-size: 1.3rem !important;
-        margin-bottom: 0.15rem !important;
-      }
-
-      .card-subtitle {
-        font-size: 0.78rem !important;
-      }
-    }
-
-    /* Hamburger button — hidden on desktop, shown on mobile */
-    #mkavs-hamburger-signpg {
-      display: none;
-      position: fixed;
-      top: 1.25rem;
-      left: 1.25rem;
-      z-index: 999999;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      padding: 4px;
-      align-items: center;
-      justify-content: center;
-    }
-    #mkavs-hamburger-signpg svg {
-      width: 28px;
-      height: 28px;
-      stroke: #ffffff;
-      display: block;
-    }
-    @media (min-width: 769px) {
-      #mkavs-hamburger-signpg { display: none !important; }
     }
 
     /* Step Progress Indicator */
@@ -727,7 +643,7 @@
     <img src="/images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
-  <div class="character-base"></div>
+
   <div class="auth-container">
     <!-- Exact Character Placement -->
     <img src="images/1.png" class="char left-1" alt="char 1" />
@@ -1507,67 +1423,6 @@
           btn.disabled = false;
         }
       });
-  </script>
-
-  <!-- Mobile Hamburger -->
-  <button id="mkavs-hamburger-signpg" aria-label="Open Menu" type="button">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu-overlay-signpg"
-    style="position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:999998;opacity:0;pointer-events:none;transition:opacity 0.3s;">
-  </div>
-
-  <!-- Mobile Side Panel -->
-  <div id="mobile-menu-panel-signpg"
-    style="position:fixed;inset-y:0;left:0;width:75vw;max-width:320px;background:#121212;border-right:1px solid rgba(255,255,255,0.1);z-index:999999;transform:translateX(-100%);transition:transform 0.3s ease-in-out;display:flex;flex-direction:column;padding:1.5rem;pointer-events:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
-      <img src="/images/MKAVS.png" alt="MKAVS" style="height:2rem;width:auto;">
-      <button id="mobile-menu-close-signpg" style="color:white;font-size:2rem;background:none;border:none;cursor:pointer;padding:4px;line-height:1;">&times;</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:1.25rem;font-size:1.1rem;font-weight:700;color:#d1d5db;flex-grow:1;">
-      <a href="/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Home</a>
-      <a href="/about/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">About</a>
-      <a href="/works-build/index.dev.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Our Work</a>
-      <a href="/branding/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Branding</a>
-      <a href="/pricingpage/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Pricing</a>
-      <a href="/loginpg/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Book Us</a>
-      <a href="/support/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Support</a>
-      <a href="/loginpg/index.html" style="color:#d1d5db;text-decoration:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);">Login</a>
-    </div>
-    <div style="display:flex;gap:1.5rem;font-size:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.1);justify-content:center;">
-      <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://discord.gg/HENvXDQQZJ" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
-      <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank" style="color:white;" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
-    </div>
-  </div>
-
-  <script>
-  (function() {
-    var hamburger = document.getElementById('mkavs-hamburger-signpg');
-    var overlay   = document.getElementById('mobile-menu-overlay-signpg');
-    var panel     = document.getElementById('mobile-menu-panel-signpg');
-    var closeBtn  = document.getElementById('mobile-menu-close-signpg');
-    function openMenu() {
-      panel.style.transform = 'translateX(0)';
-      overlay.style.opacity = '1';
-      overlay.style.pointerEvents = 'auto';
-    }
-    function closeMenu() {
-      panel.style.transform = 'translateX(-100%)';
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-    }
-    hamburger.onclick = function(e) { e.preventDefault(); e.stopPropagation(); openMenu(); };
-    hamburger.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); openMenu(); }, { passive: false });
-    closeBtn.onclick = closeMenu;
-    overlay.onclick  = closeMenu;
-  })();
   </script>
 </body>
 
