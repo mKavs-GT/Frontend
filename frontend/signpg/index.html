@@ -20,18 +20,15 @@
   <link rel="icon" type="image/png" href="../images/LOGOI.png" />
   <script src="../config.js"></script>
   <style>
-    :root {
-      --primary: #ccff00;
-      /* Lime Green */
-      --bg-page: #2f2f2d;
-      /* Updated page background */
-      --bg-card: #15161a;
-      /* Updated card background */
-      --input-bg: #1e1e1e;
-      --text-main: #ffffff;
-      --text-muted: #a1a1a1;
-      --border-color: #333333;
-    }
+            :root {
+            --primary: #000000;
+            --bg-page: #FAFAFA;
+            --bg-card: transparent;
+            --input-bg: #F3F4F6;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+        }
 
     * {
       margin: 0;
@@ -40,51 +37,51 @@
       font-family: "Outfit", sans-serif;
     }
 
-    body,
-    html {
-      height: 100%;
-      width: 100%;
-      background: var(--bg-page);
-      display: flex;
-      align-items: flex-start;
-      /* Changed from center to move higher */
-      justify-content: center;
-      overflow: hidden;
-      padding-top: 1vh;
-      /* Added top spacing */
-    }
+            body,
+        html {
+            height: 100%;
+            width: 100%;
+            background: var(--bg-page);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
 
-    .auth-container {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      max-width: 1200px;
-      /* Restored container width constraint */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 4vh;
-    }
+            .auth-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
 
-    .login-card {
-      width: 100%;
-      max-width: 650px;
-      /* Increased for side-by-side fields */
-      background: var(--bg-card);
-      border-radius: 16px;
-      padding: 0.8rem 1.25rem;
-      /* Further reduced padding */
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      border: 1px solid #333;
-      position: relative;
-      z-index: 10;
-    }
+            .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 2rem;
+            box-shadow: none;
+            border: none;
+            position: relative;
+            z-index: 10;
+        }
 
     @media (max-width: 650px) {
-      .login-card {
-        max-width: 350px;
-        padding: 1.25rem 1.5rem;
-      }
+              .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 2rem;
+            box-shadow: none;
+            border: none;
+            position: relative;
+            z-index: 10;
+        }
     }
 
     .form-row {
@@ -108,13 +105,16 @@
       /* Reduced margin */
     }
 
-    .card-title {
-      font-size: 1.5rem;
-      /* Smaller title */
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 0.25rem;
-    }
+    
+        .card-title {
+            font-size: 2.5rem;
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            font-weight: 800;
+            color: #0d3b66;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
 
     .card-subtitle {
       font-size: 0.9rem;
@@ -148,7 +148,7 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       /* Smaller radius */
-      color: white;
+      color: var(--text-main);
       font-size: 0.9rem;
       /* Smaller font */
       transition: border-color 0.2s;
@@ -220,22 +220,18 @@
       color: white;
     }
 
-    .submit-button {
-      width: 100%;
-      padding: 0.7rem;
-      /* Further reduced padding */
-      background: var(--primary);
-      color: black;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition:
-        transform 0.2s,
-        background-color 0.2s;
-    }
+            .submit-button {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
 
     .submit-button:hover {
       transform: translateY(-2px);
@@ -256,16 +252,16 @@
       /* Reduced margin */
       color: #555;
       font-size: 0.7rem;
-      text-transform: uppercase;
+      
       letter-spacing: 1px;
     }
 
-    .divider::before,
-    .divider::after {
-      content: "";
-      flex: 1;
-      border-bottom: 1px solid #333;
-    }
+            .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #E5E7EB;
+        }
 
     .divider::before {
       margin-right: 1rem;
@@ -275,23 +271,28 @@
       margin-left: 1rem;
     }
 
-    .sso-button {
-      width: 100%;
-      padding: 0.65rem;
-      /* Further reduced padding */
-      background: rgba(255, 255, 255, 0.05);
-      color: white;
-      border: 1px solid #333;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 0.85rem;
-      transition: background-color 0.2s;
-    }
+            .sso-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #FFFFFF;
+            color: #374151;
+            border: 1px solid #E5E7EB;
+            border-radius: 9999px; /* Pill shape */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .sso-button:hover {
+            background: #F9FAFB;
+            border-color: #D1D5DB;
+        }
 
     .sso-button:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -407,23 +408,9 @@
       }
     }
 
-    .character-base {
-      position: fixed;
-      top: 85svh;
-      left: 0;
-      width: 100vw;
-      height: 25vh;
-      background: #20201F;
-      z-index: 2;
-      pointer-events: none;
-      animation: baseFade 1s ease 0.5s forwards;
-      opacity: 0;
-    }
+    
 
-    @keyframes baseFade {
-      to {
-        opacity: 1;
-      }
+    
     }
 
     @media (max-width: 850px) {
@@ -455,17 +442,16 @@
     }
 
     @media (max-width: 768px) {
-      body, html {
-        height: auto !important;
-        min-height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding-top: 0 !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-      }
+              body,
+        html {
+            height: 100%;
+            width: 100%;
+            background: var(--bg-page);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
 
       /* Hamburger button on top-left corner */
       #mkavs-hamburger-signpg {
@@ -488,35 +474,43 @@
       }
 
       /* Auth container centered vertically */
-      .auth-container {
-        padding-top: 5rem !important;
-        padding-bottom: 2rem !important;
-        margin: auto !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        flex-grow: 1 !important;
-      }
+              .auth-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
 
       /* Smaller centered signup box */
-      .login-card {
-        max-width: 320px !important;
-        width: 90% !important;
-        padding: 1.1rem 1.25rem !important;
-        border-radius: 14px !important;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
-        margin: auto !important;
-      }
+              .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 2rem;
+            box-shadow: none;
+            border: none;
+            position: relative;
+            z-index: 10;
+        }
 
       .card-header {
         margin-bottom: 0.75rem !important;
       }
 
-      .card-title {
-        font-size: 1.3rem !important;
-        margin-bottom: 0.15rem !important;
-      }
+      
+        .card-title {
+            font-size: 2.5rem;
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            font-weight: 800;
+            color: #0d3b66;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
 
       .card-subtitle {
         font-size: 0.78rem !important;
@@ -719,7 +713,14 @@
     .change-email:hover {
       color: var(--text-main);
     }
-  </style>
+  
+        @media (max-width: 1023px) {
+            .auth-logo img {
+                filter: brightness(0);
+            }
+        }
+    
+</style>
 </head>
 
 <body>
@@ -727,15 +728,28 @@
     <img src="/images/MKAVS.png" alt="MKAVS Global Tech" />
   </a>
 
-  <div class="character-base"></div>
-  <div class="auth-container">
+  
+  <div class="flex w-full min-h-screen" style="align-items: stretch;">
+        <!-- Left Panel -->
+        <div class="hidden lg:flex w-1/2 min-h-screen relative flex-col justify-end p-12 text-white">
+            <img src="../signpg/images/login.png" class="absolute inset-0 w-full h-full object-cover" alt="Background">
+            <div class="absolute inset-0 bg-black/40"></div>
+            <div class="relative z-10 pb-16 px-8">
+                <h1 class="text-5xl lg:text-6xl font-serif font-bold mb-6 tracking-tight leading-tight">Welcome to<br>the deep blue.</h1>
+                <p class="text-lg opacity-90 max-w-md">Sign up to access your dashboard, bookings, and gear history.</p>
+            </div>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center min-h-screen py-8">
+    
     <!-- Exact Character Placement -->
-    <img src="images/1.png" class="char left-1" alt="char 1" />
+    
     <!--
-    <img src="images/2.png" class="char left-2" alt="char 2" />
-    <img src="images/3.png" class="char right-1" alt="char 3">
-    <img src="images/4.png" class="char right-2" alt="char 4" />
-    <img src="images/5.png" class="char sleeping" alt="sleeping char" />
+    
+    
+    
+    
     -->
 
     <main class="login-card">
@@ -1086,12 +1100,12 @@
         </div>
       </form>
 
-      <div class="divider">Or Continue With</div>
+      <div class="divider">OR CONTINUE WITH</div>
 
       <a href="#" onclick="this.href=MKAVS_CONFIG.API_BASE_URL + '/auth/google?flow=signup'" class="sso-button"
         style="text-decoration: none">
-        <i class="fa-brands fa-google"></i>
-        Continue with Google
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+        Google
       </a>
 
       <footer class="signup-prompt">

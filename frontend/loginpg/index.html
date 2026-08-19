@@ -15,17 +15,14 @@
     <link rel="icon" type="image/png" href="../images/LOGOI.png">
     <script src="../config.js"></script>
     <style>
-        :root {
-            --primary: #CCFF00;
-            /* Lime Green */
-            --bg-page: #2F2F2D;
-            /* Updated page background */
-            --bg-card: #161618;
-            /* Updated card background */
-            --input-bg: #1E1E1E;
-            --text-main: #ffffff;
-            --text-muted: #A1A1A1;
-            --border-color: #333333;
+                :root {
+            --primary: #000000;
+            --bg-page: #FAFAFA;
+            --bg-card: transparent;
+            --input-bg: #F3F4F6;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
         }
 
         * {
@@ -35,43 +32,35 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        body,
+                body,
         html {
             height: 100%;
             width: 100%;
             background: var(--bg-page);
-            display: flex;
-            align-items: flex-start;
-            /* Changed from center to move higher */
-            justify-content: center;
-            overflow: hidden;
-            padding-top: 1vh;
-            /* Added top spacing */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
         }
 
-        .auth-container {
+                .auth-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
             z-index: 10;
-            width: 100%;
-            max-width: 1200px;
-            /* Restored container width constraint */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 4vh;
         }
 
-        .login-card {
+                .login-card {
             width: 100%;
-            max-width: 330px;
-            /* Reduced specific size again */
+            max-width: 400px;
             background: var(--bg-card);
-            border-radius: 16px;
-            /* Slightly smaller radius */
-            padding: 1.25rem 1.5rem;
-            /* Further reduced padding */
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
+            border-radius: 0;
+            padding: 2rem;
+            box-shadow: none;
+            border: none;
             position: relative;
             z-index: 10;
         }
@@ -83,13 +72,16 @@
             /* Reduced margin */
         }
 
+        
         .card-title {
-            font-size: 1.5rem;
-            /* Smaller title */
-            font-weight: 700;
-            color: var(--text-main);
+            font-size: 2.5rem;
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            font-weight: 800;
+            color: #0d3b66;
             margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
+    
 
         .card-subtitle {
             font-size: 0.9rem;
@@ -122,7 +114,7 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             /* Smaller radius */
-            color: white;
+            color: var(--text-main);
             font-size: 0.9rem;
             /* Smaller font */
             transition: border-color 0.2s;
@@ -178,18 +170,16 @@
             color: white;
         }
 
-        .submit-button {
+                .submit-button {
             width: 100%;
-            padding: 0.7rem;
-            /* Further reduced padding */
+            padding: 0.85rem;
             background: var(--primary);
-            color: black;
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 9999px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            text-transform: uppercase;
             transition: transform 0.2s, background-color 0.2s;
         }
 
@@ -206,15 +196,15 @@
             /* Further reduced margin */
             color: #555;
             font-size: 0.7rem;
-            text-transform: uppercase;
+            
             letter-spacing: 1px;
         }
 
-        .divider::before,
+                .divider::before,
         .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #E5E7EB;
         }
 
         .divider::before {
@@ -225,23 +215,27 @@
             margin-left: 1rem;
         }
 
-        .sso-button {
+                .sso-button {
             width: 100%;
-            padding: 0.65rem;
-            /* Further reduced padding */
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid #333;
-            border-radius: 8px;
+            padding: 0.75rem;
+            background: #FFFFFF;
+            color: #374151;
+            border: 1px solid #E5E7EB;
+            border-radius: 9999px; /* Pill shape */
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             cursor: pointer;
-            font-weight: 500;
-            font-size: 0.85rem;
-            transition: background-color 0.2s;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
             text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .sso-button:hover {
+            background: #F9FAFB;
+            border-color: #D1D5DB;
         }
 
         .sso-button:hover {
@@ -388,23 +382,9 @@
             }
         }
 
-        .character-base {
-            position: fixed;
-            top: 87vh;
-            left: 0;
-            width: 100vw;
-            height: 30vh;
-            background: #20201f;
-            z-index: 2;
-            pointer-events: none;
-            animation: baseFade 1s ease 0.5s forwards;
-            opacity: 0;
-        }
+        
 
-        @keyframes baseFade {
-            to {
-                opacity: 1;
-            }
+        
         }
 
         @media (max-width: 850px) {
@@ -442,7 +422,14 @@
                 left: 1.5rem;
             }
         }
-    </style>
+    
+        @media (max-width: 1023px) {
+            .auth-logo img {
+                filter: brightness(0);
+            }
+        }
+    
+</style>
 </head>
 
 <body>
@@ -450,16 +437,29 @@
         <img src="../images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
-    <button id="mobile-menu-trigger" class="md:hidden text-3xl text-white p-2 hover:text-[#c7f908] transition-colors" aria-label="Menu" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 100;">&#x2261;</button>
-    <div class="character-base"></div>
-    <div class="auth-container">
+    <button id="mobile-menu-trigger" class="md:hidden text-3xl text-black p-2 hover:text-[#c7f908] transition-colors" aria-label="Menu" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 100;">&#x2261;</button>
+    
+    <div class="flex w-full min-h-screen" style="align-items: stretch;">
+        <!-- Left Panel -->
+        <div class="hidden lg:flex w-1/2 min-h-screen relative flex-col justify-end p-12 text-white">
+            <img src="../signpg/images/login.png" class="absolute inset-0 w-full h-full object-cover" alt="Background">
+            <div class="absolute inset-0 bg-black/40"></div>
+            <div class="relative z-10 pb-16 px-8">
+                <h1 class="text-5xl lg:text-6xl font-serif font-bold mb-6 tracking-tight leading-tight">Welcome back<br>to<br>the deep blue.</h1>
+                <p class="text-lg opacity-90 max-w-md">Log in to access your dashboard, bookings, and gear history.</p>
+            </div>
+        </div>
+        
+        <!-- Right Panel -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center min-h-screen py-8">
+    
         <!-- Exact Character Placement -->
-        <img src="images/1.png" class="char left-1" alt="char 1">
+        
         <!--
-        <img src="images/2.png" class="char left-2" alt="char 2">
-        <img src="images/3.png" class="char right-1" alt="char 3">
-        <img src="images/4.png" class="char right-2" alt="char 4">
-        <img src="images/5.png" class="char sleeping" alt="sleeping char">
+        
+        
+        
+        
         -->
 
         <main class="login-card">
@@ -495,7 +495,7 @@
                     <label class="remember-me">
                         <input type="checkbox"> Remember me
                     </label>
-                    <a href="#" class="forgot-link">Forgot password?</a>
+                    <a href="#" class="forgot-link">Forgot?</a>
                 </div>
 
                 <!-- reCAPTCHA Widget -->
@@ -513,19 +513,20 @@
                 <button type="submit" class="submit-button">Sign In</button>
 
                 <div class="divider">
-                    Or Continue With
+                    OR CONTINUE WITH
                 </div>
 
                 <a id="googleSignInBtn" href="#" class="sso-button">
-                    <i class="fa-brands fa-google"></i>
-                    Continue with Google
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                    Google
                 </a>
             </form>
 
             <footer class="signup-prompt">
-                Don't have an account? <a href="/signpg/index.html" class="signup-link">Sign up</a>
+                New here? <a href="/signpg/index.html" class="signup-link">Create an account</a>
             </footer>
         </main>
+        </div>
     </div>
 
 
