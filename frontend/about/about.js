@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProcessScroll();
     }
 
-    // Observe elements with the 'hidden' class
-    document.querySelectorAll('.hidden').forEach(el => {
+    // Observe elements with the 'reveal-anim' class
+    document.querySelectorAll('.reveal-anim').forEach(el => {
         observer.observe(el);
     });
 });

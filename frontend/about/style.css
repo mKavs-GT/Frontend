@@ -66,7 +66,7 @@ p {
 }
 
 /* Animations */
-.hidden {
+.reveal-anim {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -2656,11 +2656,11 @@ p {
         transform: none !important;
     }
 
-    /* Fix Tailwind display:none on animation .hidden class for Mobile */
-    .how-we-work .hidden,
-    .tools-section .hidden,
-    .hww-header.hidden,
-    .hww-card.hidden {
+    /* Fix Tailwind display:none on animation .reveal-anim class for Mobile */
+    .how-we-work .reveal-anim,
+    .tools-section .reveal-anim,
+    .hww-header.reveal-anim,
+    .hww-card.reveal-anim {
         display: block !important;
         opacity: 1 !important;
         transform: none !important;
@@ -2707,7 +2707,7 @@ p {
     }
 
     .hww-card,
-    .hww-card.hidden {
+    .hww-card.reveal-anim {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
@@ -2780,7 +2780,7 @@ p {
 
     .tools-section .tools-grid,
     .tools-grid,
-    .tools-grid.hidden {
+    .tools-grid.reveal-anim {
         display: grid !important;
         grid-template-columns: repeat(7, 1fr) !important;
         gap: 0.25rem !important;
@@ -3299,3 +3299,4 @@ p {
         object-fit: contain !important;
     }
 }
+
