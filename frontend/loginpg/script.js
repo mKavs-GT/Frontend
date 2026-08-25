@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (explicitRedirect) {
                                 window.location.href = explicitRedirect;
                             } else if (isBookingFlow) {
-                                window.location.href = '/loginpg/index.html';
+                                window.location.href="/BookUs";
                             } else {
                                 window.location.href = defaultRedirect;
                             }
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             emailError.textContent = 'Account not created. Redirecting to signup...';
                             emailInput.setAttribute('aria-invalid', 'true');
                             setTimeout(() => {
-                                window.location.href = '/signpg/index.html';
+                                window.location.href = '/SignUp';
                             }, 1500);
                         } else if (errorMessage.toLowerCase().includes('credentials') || errorMessage.toLowerCase().includes('password')) {
                             passwordError.textContent = 'Incorrect password';

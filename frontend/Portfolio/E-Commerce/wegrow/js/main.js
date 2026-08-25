@@ -29,7 +29,7 @@ function generateProductCarousels() {
                     <div class="product-card">
                         ${badgeHtml}
                         <div class="product-img-wrapper" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'" style="cursor:pointer;">
-                            <img src="${p.img}" alt="${p.title}">
+                            <img src="/Portfolio/E-Commerce/wegrow/${p.img}" alt="${p.title}">
                         </div>
                         <div class="product-info">
                             <div class="rating"><i class='bx bxs-star'></i> 4.8 | 120 Reviews</div>
@@ -94,7 +94,7 @@ function populateSearchDropdown() {
             <div class="search-product-card" style="position:relative; overflow:hidden;">
                 ${badgeHtml}
                 <div style="height:140px; overflow:hidden; border-radius:4px; margin-bottom:10px; cursor:pointer;" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'">
-                    <img src="${p.img}" style="width:100%; height:100%; object-fit:cover;">
+                    <img src="/Portfolio/E-Commerce/wegrow/${p.img}" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div style="font-size:11px; color:#FFB800; margin-bottom:6px;"><i class='bx bxs-star'></i> ${p.rating}</div>
                 <h4 style="font-size:13px; font-weight:700; margin-bottom:4px; line-height:1.3; cursor:pointer;" onclick="window.location.href='/Portfolio/E-Commerce/wegrow/product-detail.html'">${p.title}</h4>
@@ -299,7 +299,7 @@ function updateCartUI() {
         count += item.qty;
         itemsHtml += `
             <div class="cart-item-card">
-                <img src="${item.img}" class="cart-item-img">
+                <img src="/Portfolio/E-Commerce/wegrow/${item.img}" class="cart-item-img">
                 <div class="cart-item-details">
                     <div class="cart-item-top">
                         <h4 class="cart-item-title">${item.title}</h4>

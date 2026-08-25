@@ -453,7 +453,7 @@
 </head>
 
 <body>
-    <a href="/index.html" class="auth-logo">
+    <a href="/Home" class="auth-logo">
         <img src="../images/MKAVS.png" alt="MKAVS Global Tech">
     </a>
 
@@ -529,7 +529,7 @@
             </form>
 
             <footer class="signup-prompt">
-                Don't have an account? <a href="/signpg/index.html" class="signup-link">Sign up</a>
+                Don't have an account? <a href="/SignUp" class="signup-link">Sign up</a>
             </footer>
         </main>
     </div>
@@ -566,7 +566,7 @@
         if (error) {
             if (error === 'no_account') {
                 googleBanner.style.display = 'block';
-                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/signpg/index.html">create an account</a> first.';
+                googleBanner.innerHTML = '⚠️ No account found for that Google profile. Please <a href="/SignUp">create an account</a> first.';
             } else if (error === 'auth_failed') {
                 googleBanner.style.display = 'block';
                 googleBanner.textContent = 'Google authentication failed. Please try again.';
@@ -676,7 +676,7 @@
 
         <!-- Navigation Links -->
         <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
-            <a href="/index.html" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+            <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
             <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
             <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
             <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>

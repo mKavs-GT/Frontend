@@ -150,6 +150,10 @@ function processDir(dir) {
       // Wait, if it replaces it, I should undo it for portfolio. Let's just fix it.
       content = content.replace(/src="\/Home"/g, 'src="./index.html"');
 
+      // Fix nested quotes in onclick handlers (e.g. onclick="window.location.href="/BookUs"")
+      content = content.replace(/onclick="window\.location\.href\s*=\s*"\/([^"]+)""/g, 'onclick="window.location.href=\'/$1\'"');
+      content = content.replace(/onclick="window\.location\.href\s*=\s*"([^"]+)""/g, 'onclick="window.location.href=\'$1\'"');
+
       if (content !== originalContent) {
         fs.writeFileSync(fullPath, content);
         console.log('Fixed links in: ' + fullPath);
