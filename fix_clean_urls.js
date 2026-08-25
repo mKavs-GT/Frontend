@@ -187,7 +187,7 @@ portfolioDirs.forEach(({ root, basePath }) => {
         const fullPath = path.join(dir, file);
         if (fs.statSync(fullPath).isDirectory()) {
           if (!['node_modules', '.git'].includes(file)) processSiteDir(fullPath);
-        } else if (fullPath.endsWith('.html') || fullPath.endsWith('.css') || fullPath.endsWith('.js')) {
+        } else if (fullPath.endsWith('.html') || fullPath.endsWith('.css') || (fullPath.endsWith('.js') && !fullPath.split(path.sep).includes('assets'))) {
           let content = fs.readFileSync(fullPath, 'utf8');
           let originalContent = content;
 
