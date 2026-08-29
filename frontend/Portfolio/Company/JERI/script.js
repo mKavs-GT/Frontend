@@ -72,9 +72,9 @@ const quizData = {
 };
 
 const petImages = {
-  "Mary": "pup1.jpg",
-  "Luigi": "pup2.jpg",
-  "Vidia": "pup3.jpg",
+  "Mary": "/Portfolio/Company/jeri/pup1.jpg",
+  "Luigi": "/Portfolio/Company/jeri/pup2.jpg",
+  "Vidia": "/Portfolio/Company/jeri/pup3.jpg",
   "Pico & Poppy": "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg",
   "Lucy": "https://images.unsplash.com/photo-1537151608804-ea2f1fa3dfc2?w=400&q=80",
   "Cleo": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&q=80",

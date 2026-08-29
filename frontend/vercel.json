@@ -12,13 +12,9 @@
     { "source": "/Portfolio/Ecommerce/Kaizoku/:match*", "destination": "/Portfolio/E-Commerce/kaizoku/:match*", "permanent": true },
     { "source": "/Portfolio/Ecommerce/Wegrow/:match*", "destination": "/Portfolio/E-Commerce/wegrow/:match*", "permanent": true },
     { "source": "/Portfolio/Company/Cars-website-main", "destination": "/Portfolio/Company/cars", "permanent": true },
-    { "source": "/Portfolio/Company/FilmAura", "destination": "/Portfolio/Company/filmaura", "permanent": true },
-    { "source": "/Portfolio/Company/JERI", "destination": "/Portfolio/Company/JERI", "permanent": true },
-    { "source": "/Portfolio/Company/Waypoint", "destination": "/Portfolio/Company/Waypoint", "permanent": true },
     { "source": "/Portfolio/Company/Cars-website-main/:match*", "destination": "/Portfolio/Company/cars/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/FilmAura", "destination": "/Portfolio/Company/filmaura", "permanent": true },
     { "source": "/Portfolio/Company/FilmAura/:match*", "destination": "/Portfolio/Company/filmaura/:match*", "permanent": true },
-    { "source": "/Portfolio/Company/JERI/:match*", "destination": "/Portfolio/Company/JERI/:match*", "permanent": true },
-    { "source": "/Portfolio/Company/Waypoint/:match*", "destination": "/Portfolio/Company/Waypoint/:match*", "permanent": true },
     { "source": "/Portfolio/Dashboards/Kyat", "destination": "/Portfolio/Dashboard/Kyat", "permanent": true },
     { "source": "/Portfolio/Dashboards/Serch", "destination": "/Portfolio/Dashboard/Serch", "permanent": true },
     { "source": "/Portfolio/Dashboards/Kyat/:match*", "destination": "/Portfolio/Dashboard/Kyat/:match*", "permanent": true },
@@ -47,6 +43,12 @@
     { "source": "/Profile", "destination": "/profile/index.html" },
     { "source": "/profile", "destination": "/profile/index.html" },
     { "source": "/SignUp", "destination": "/signpg/index.html" },
-    { "source": "/signup", "destination": "/signpg/index.html" }
+    { "source": "/signup", "destination": "/signpg/index.html" },
+    { "source": "/Portfolio/Company/jeri", "destination": "/Portfolio/Company/JERI/index.html" },
+    { "source": "/Portfolio/Company/jeri/", "destination": "/Portfolio/Company/JERI/index.html" },
+    { "source": "/Portfolio/Company/jeri/:match*", "destination": "/Portfolio/Company/JERI/:match*" },
+    { "source": "/Portfolio/Company/waypoint", "destination": "/Portfolio/Company/Waypoint/index.html" },
+    { "source": "/Portfolio/Company/waypoint/", "destination": "/Portfolio/Company/Waypoint/index.html" },
+    { "source": "/Portfolio/Company/waypoint/:match*", "destination": "/Portfolio/Company/Waypoint/:match*" }
   ]
 }

@@ -49,8 +49,35 @@ const rewrites = {
   '/profile': '/profile/index.html',
   '/Profile': '/profile/index.html',
   '/signup': '/signpg/index.html',
-  '/SignUp': '/signpg/index.html'
+  '/SignUp': '/signpg/index.html',
+  // Direct portfolio shortcuts & case normalization
+  '/Portfolio/Company/jeri': '/Portfolio/Company/JERI/index.html',
+  '/Portfolio/Company/jeri/': '/Portfolio/Company/JERI/index.html',
+  '/Portfolio/Company/waypoint': '/Portfolio/Company/Waypoint/index.html',
+  '/Portfolio/Company/waypoint/': '/Portfolio/Company/Waypoint/index.html'
 };
+
+// Case-insensitive file system path resolver
+function resolveCaseInsensitivePath(baseDir, relativePath) {
+  const parts = relativePath.split(/[/\\]/).filter(Boolean);
+  let currentPath = baseDir;
+
+  for (const part of parts) {
+    if (!fs.existsSync(currentPath)) return null;
+    if (!fs.statSync(currentPath).isDirectory()) return null;
+
+    const files = fs.readdirSync(currentPath);
+    const exactMatch = files.find(f => f === part);
+    const caseMatch = files.find(f => f.toLowerCase() === part.toLowerCase());
+
+    const matched = exactMatch || caseMatch;
+    if (!matched) return null;
+
+    currentPath = path.join(currentPath, matched);
+  }
+
+  return currentPath;
+}
 
 const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -65,12 +92,15 @@ const server = http.createServer((req, res) => {
 
   let reqPath = decodeURI(req.url.split('?')[0]);
 
-  // Check rewrites
+  // Check rewrites first
   if (rewrites[reqPath]) {
     reqPath = rewrites[reqPath];
+  } else if (rewrites[reqPath.toLowerCase()]) {
+    reqPath = rewrites[reqPath.toLowerCase()];
   }
 
-  let filePath = path.join(PUBLIC_DIR, reqPath);
+  // Resolve case-insensitively
+  let filePath = resolveCaseInsensitivePath(PUBLIC_DIR, reqPath) || path.join(PUBLIC_DIR, reqPath);
 
   // If path is a directory, look for index.html or index.dev.html
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
@@ -83,7 +113,7 @@ const server = http.createServer((req, res) => {
 
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end('<h1>404 Not Found</h1><p>Resource not found on localhost dev server.</p>');
+    res.end(`<h1>404 Not Found</h1><p>Resource not found: <code>${reqPath}</code></p>`);
     return;
   }
 
@@ -97,5 +127,5 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`\x1b[32m✓ Frontend Website running at:\x1b[0m http://localhost:${PORT}/Home`);
   console.log(`  - Clean URLs: /Home, /About, /Works, /Branding, /Pricing, /BookUs, /Support, /Profile, /SignUp`);
-  console.log(`  - Portfolio sites: /Portfolio/*`);
+  console.log(`  - Portfolio sites: /Portfolio/* (JERI, Waypoint, Cars, FilmAura, Tarot, etc.)`);
 });
