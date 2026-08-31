@@ -6,12 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velocity Auto | CarGo - Luxury & High Performance Automotive Hub</title>
     <meta name="description" content="Explore Velocity Auto & CarGo: Premium vehicle rentals, precision auto services, performance parts, and custom detailing.">
+    
+    <!-- Base Path Resolver for Universal Hosting (file://, local dev, Vercel subpaths) -->
+    <script>
+        (function() {
+            var proto = window.location.protocol;
+            var path = window.location.pathname || '';
+            var baseHref = './';
+            if (proto === 'http:' || proto === 'https:') {
+                if (path.indexOf('/frontend/') !== -1) {
+                    baseHref = '/frontend/Portfolio/Company/cars/';
+                } else {
+                    baseHref = '/Portfolio/Company/cars/';
+                }
+            }
+            var baseEl = document.createElement('base');
+            baseEl.href = baseHref;
+            document.head.appendChild(baseEl);
+        })();
+    </script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -19,7 +40,7 @@
     <!-- Main Navigation Bar -->
     <nav class="buylix-navbar" id="navbar">
         <a href="#home" class="logo">
-            <img src="./logo.jpg" alt="CarGo Velocity Auto Logo" class="logo-img">
+            <img src="logo.jpg" alt="CarGo Velocity Auto Logo" class="logo-img">
             <span>CarGo</span>
         </a>
         <ul class="nav-links">
@@ -36,7 +57,7 @@
     <!-- Hero Section -->
     <section class="buylix-hero" id="home">
         <video autoplay muted loop playsinline class="hero-video">
-            <source src="./carhero.mp4" type="video/mp4">
+            <source src="carhero.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
 
@@ -47,16 +68,16 @@
                 </div>
                 <div class="product-card-wrapper">
                     <div class="vertical-color-selector" id="color-selector">
-                        <div class="color-circle active" data-color="./black.png" style="background-color: #111111;" title="Onyx Black"></div>
-                        <div class="color-circle" data-color="./pink.png" style="background-color: #ff8fa3;" title="Rose Pink"></div>
-                        <div class="color-circle" data-color="./red.png" style="background-color: #e63946;" title="Crimson Red"></div>
-                        <div class="color-circle" data-color="./blue.png" style="background-color: #2563eb;" title="Electric Blue"></div>
-                        <div class="color-circle" data-color="./white.png" style="background-color: #ffffff; border: 1px solid #ccc;" title="Glacier White"></div>
+                        <div class="color-circle active" data-color="black.png" style="background-color: #111111;" title="Onyx Black"></div>
+                        <div class="color-circle" data-color="pink.png" style="background-color: #ff8fa3;" title="Rose Pink"></div>
+                        <div class="color-circle" data-color="red.png" style="background-color: #e63946;" title="Crimson Red"></div>
+                        <div class="color-circle" data-color="blue.png" style="background-color: #2563eb;" title="Electric Blue"></div>
+                        <div class="color-circle" data-color="white.png" style="background-color: #ffffff; border: 1px solid #ccc;" title="Glacier White"></div>
                     </div>
 
                     <div class="product-color-card">
                         <div class="card-img-container">
-                            <img src="./black.png" alt="Car Color" id="product-card-img" class="product-card-img active-img">
+                            <img src="black.png" alt="Car Color" id="product-card-img" class="product-card-img active-img">
                         </div>
                         <div class="card-badge">Custom Wrap</div>
                         <p class="card-desc">Premium Car Color Wraps &<br>Custom Vinyl Services.</p>
@@ -95,28 +116,28 @@
             <div class="d1-category-grid">
                 <div class="d1-cat-card">
                     <video autoplay muted loop playsinline class="d1-cat-bg-video">
-                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <h3>Sedans</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="sedan" title="Rent Sedan">↗</a>
                 </div>
                 <div class="d1-cat-card">
                     <video autoplay muted loop playsinline class="d1-cat-bg-video">
-                        <source src="./services/13790382_1920_1080_25fps.mp4" type="video/mp4">
+                        <source src="services/13790382_1920_1080_25fps.mp4" type="video/mp4">
                     </video>
                     <h3>SUVs</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="suv" title="Rent SUV">↗</a>
                 </div>
                 <div class="d1-cat-card">
                     <video autoplay muted loop playsinline class="d1-cat-bg-video">
-                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <h3>Hatchbacks</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="hatchback" title="Rent Hatchback">↗</a>
                 </div>
                 <div class="d1-cat-card">
                     <video autoplay muted loop playsinline class="d1-cat-bg-video">
-                        <source src="./services/14977819_3840_2160_50fps.mp4" type="video/mp4">
+                        <source src="services/14977819_3840_2160_50fps.mp4" type="video/mp4">
                     </video>
                     <h3>Crossovers</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="crossover" title="Rent Crossover">↗</a>
@@ -126,7 +147,7 @@
 
         <div class="d1-service-banner">
             <video autoplay muted loop playsinline class="d1-service-video">
-                <source src="./carwash.mp4" type="video/mp4">
+                <source src="carwash.mp4" type="video/mp4">
             </video>
             <div class="d1-service-overlay"></div>
             <div class="container-1200 d1-service-content">
@@ -145,7 +166,7 @@
             <div class="d2-bento-grid">
                 <div class="d2-bento-card d2-span-2x2">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13335233_3840_2160_24fps.mp4" type="video/mp4">
+                        <source src="services/13335233_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -155,7 +176,7 @@
                 </div>
                 <div class="d2-bento-card">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13335393_3840_2160_24fps.mp4" type="video/mp4">
+                        <source src="services/13335393_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -165,7 +186,7 @@
                 </div>
                 <div class="d2-bento-card d2-span-row-2">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13335668_3840_2160_24fps.mp4" type="video/mp4">
+                        <source src="services/13335668_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -175,7 +196,7 @@
                 </div>
                 <div class="d2-bento-card">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -185,7 +206,7 @@
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -195,7 +216,7 @@
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13676407_3840_2160_60fps.mp4" type="video/mp4">
+                        <source src="services/13676407_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -205,7 +226,7 @@
                 </div>
                 <div class="d2-bento-card">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/13790382_1920_1080_25fps.mp4" type="video/mp4">
+                        <source src="services/13790382_1920_1080_25fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -215,7 +236,7 @@
                 </div>
                 <div class="d2-bento-card">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/14977819_3840_2160_50fps.mp4" type="video/mp4">
+                        <source src="services/14977819_3840_2160_50fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -225,7 +246,7 @@
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
                     <video autoplay muted loop playsinline class="d2-bg-video">
-                        <source src="./services/18101976-uhd_3840_2160_30fps.mp4" type="video/mp4">
+                        <source src="services/18101976-uhd_3840_2160_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -241,7 +262,7 @@
     <section class="d3-parts-section" id="parts">
         <div class="d3-parts-hero">
             <video autoplay muted loop playsinline class="d3-parts-video">
-                <source src="./carparts.mp4" type="video/mp4">
+                <source src="carparts.mp4" type="video/mp4">
             </video>
             <div class="d3-parts-overlay"></div>
             <div class="container-1200 d3-hero-content">
@@ -258,7 +279,7 @@
             <div class="d3-discount-grid">
                 <div class="d3-discount-card">
                     <video autoplay muted loop playsinline class="d3-discount-bg">
-                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -269,7 +290,7 @@
                 </div>
                 <div class="d3-discount-card">
                     <video autoplay muted loop playsinline class="d3-discount-bg">
-                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -280,7 +301,7 @@
                 </div>
                 <div class="d3-discount-card">
                     <video autoplay muted loop playsinline class="d3-discount-bg">
-                        <source src="./services/13676407_3840_2160_60fps.mp4" type="video/mp4">
+                        <source src="services/13676407_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -336,7 +357,7 @@
             <div class="d4-services-grid">
                 <div class="d4-service-card">
                     <video autoplay muted loop playsinline class="d4-service-media">
-                        <source src="./serve1.mp4" type="video/mp4">
+                        <source src="serve1.mp4" type="video/mp4">
                     </video>
                     <a href="#booking" class="d4-arrow" data-service="wash" title="Book Car Wash">↗</a>
                     <h4 class="d4-text-red">PRECISION CAR WASH</h4>
@@ -344,7 +365,7 @@
                 </div>
                 <div class="d4-service-card">
                     <video autoplay muted loop playsinline class="d4-service-media">
-                        <source src="./serve2.mp4" type="video/mp4">
+                        <source src="serve2.mp4" type="video/mp4">
                     </video>
                     <a href="#booking" class="d4-arrow" data-service="detailing" title="Book Full Detailing">↗</a>
                     <h4 class="d4-text-red">FULL DETAILING & COATING</h4>
@@ -376,7 +397,7 @@
     <!-- SECTION 5: Booking & Rental Section -->
     <section class="booking-section" id="booking">
         <video autoplay muted loop playsinline class="booking-bg-video">
-            <source src="./services/13335393_3840_2160_24fps.mp4" type="video/mp4">
+            <source src="services/13335393_3840_2160_24fps.mp4" type="video/mp4">
         </video>
         <div class="booking-overlay"></div>
         <div class="container-1200 booking-container">
@@ -494,7 +515,7 @@
     </footer>
 
     <!-- Main JavaScript Logic -->
-    <script src="./app.js"></script>
+    <script src="app.js"></script>
 
 </body>
 

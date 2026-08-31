@@ -44,11 +44,17 @@
     { "source": "/profile", "destination": "/profile/index.html" },
     { "source": "/SignUp", "destination": "/signpg/index.html" },
     { "source": "/signup", "destination": "/signpg/index.html" },
+    { "source": "/Portfolio/Company/cars", "destination": "/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/cars/", "destination": "/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/cars/:match*", "destination": "/Portfolio/Company/cars/:match*" },
     { "source": "/Portfolio/Company/jeri", "destination": "/Portfolio/Company/JERI/index.html" },
     { "source": "/Portfolio/Company/jeri/", "destination": "/Portfolio/Company/JERI/index.html" },
     { "source": "/Portfolio/Company/jeri/:match*", "destination": "/Portfolio/Company/JERI/:match*" },
     { "source": "/Portfolio/Company/waypoint", "destination": "/Portfolio/Company/Waypoint/index.html" },
     { "source": "/Portfolio/Company/waypoint/", "destination": "/Portfolio/Company/Waypoint/index.html" },
-    { "source": "/Portfolio/Company/waypoint/:match*", "destination": "/Portfolio/Company/Waypoint/:match*" }
+    { "source": "/Portfolio/Company/waypoint/:match*", "destination": "/Portfolio/Company/Waypoint/:match*" },
+    { "source": "/Portfolio/Company/filmaura", "destination": "/Portfolio/Company/filmaura/index.html" },
+    { "source": "/Portfolio/Company/filmaura/", "destination": "/Portfolio/Company/filmaura/index.html" },
+    { "source": "/Portfolio/Company/filmaura/:match*", "destination": "/Portfolio/Company/filmaura/:match*" }
   ]
 }

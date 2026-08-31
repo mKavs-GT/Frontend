@@ -3,22 +3,22 @@
   "trailingSlash": false,
 
   "redirects": [
-    { "source": "/Portfolio/Ecommerce/Bag", "destination": "/frontend/Portfolio/E-Commerce/hush", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Ink", "destination": "/frontend/Portfolio/E-Commerce/slick", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Kaizoku", "destination": "/frontend/Portfolio/E-Commerce/kaizoku", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Wegrow", "destination": "/frontend/Portfolio/E-Commerce/wegrow", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Bag/:match*", "destination": "/frontend/Portfolio/E-Commerce/hush/:match*", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Ink/:match*", "destination": "/frontend/Portfolio/E-Commerce/slick/:match*", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Kaizoku/:match*", "destination": "/frontend/Portfolio/E-Commerce/kaizoku/:match*", "permanent": true },
-    { "source": "/Portfolio/Ecommerce/Wegrow/:match*", "destination": "/frontend/Portfolio/E-Commerce/wegrow/:match*", "permanent": true },
-    { "source": "/Portfolio/Company/Cars-website-main", "destination": "/frontend/Portfolio/Company/cars", "permanent": true },
-    { "source": "/Portfolio/Company/Cars-website-main/:match*", "destination": "/frontend/Portfolio/Company/cars/:match*", "permanent": true },
-    { "source": "/Portfolio/Company/FilmAura", "destination": "/frontend/Portfolio/Company/filmaura", "permanent": true },
-    { "source": "/Portfolio/Company/FilmAura/:match*", "destination": "/frontend/Portfolio/Company/filmaura/:match*", "permanent": true },
-    { "source": "/Portfolio/Dashboards/Kyat", "destination": "/frontend/Portfolio/Dashboard/Kyat", "permanent": true },
-    { "source": "/Portfolio/Dashboards/Serch", "destination": "/frontend/Portfolio/Dashboard/Serch", "permanent": true },
-    { "source": "/Portfolio/Dashboards/Kyat/:match*", "destination": "/frontend/Portfolio/Dashboard/Kyat/:match*", "permanent": true },
-    { "source": "/Portfolio/Dashboards/Serch/:match*", "destination": "/frontend/Portfolio/Dashboard/Serch/:match*", "permanent": true }
+    { "source": "/Portfolio/Ecommerce/Bag", "destination": "/Portfolio/E-Commerce/hush", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Ink", "destination": "/Portfolio/E-Commerce/slick", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Kaizoku", "destination": "/Portfolio/E-Commerce/kaizoku", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Wegrow", "destination": "/Portfolio/E-Commerce/wegrow", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Bag/:match*", "destination": "/Portfolio/E-Commerce/hush/:match*", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Ink/:match*", "destination": "/Portfolio/E-Commerce/slick/:match*", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Kaizoku/:match*", "destination": "/Portfolio/E-Commerce/kaizoku/:match*", "permanent": true },
+    { "source": "/Portfolio/Ecommerce/Wegrow/:match*", "destination": "/Portfolio/E-Commerce/wegrow/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/Cars-website-main", "destination": "/Portfolio/Company/cars", "permanent": true },
+    { "source": "/Portfolio/Company/Cars-website-main/:match*", "destination": "/Portfolio/Company/cars/:match*", "permanent": true },
+    { "source": "/Portfolio/Company/FilmAura", "destination": "/Portfolio/Company/filmaura", "permanent": true },
+    { "source": "/Portfolio/Company/FilmAura/:match*", "destination": "/Portfolio/Company/filmaura/:match*", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Kyat", "destination": "/Portfolio/Dashboard/Kyat", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Serch", "destination": "/Portfolio/Dashboard/Serch", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Kyat/:match*", "destination": "/Portfolio/Dashboard/Kyat/:match*", "permanent": true },
+    { "source": "/Portfolio/Dashboards/Serch/:match*", "destination": "/Portfolio/Dashboard/Serch/:match*", "permanent": true }
   ],
 
   "rewrites": [
@@ -44,11 +44,21 @@
     { "source": "/profile", "destination": "/frontend/profile/index.html" },
     { "source": "/SignUp", "destination": "/frontend/signpg/index.html" },
     { "source": "/signup", "destination": "/frontend/signpg/index.html" },
+    { "source": "/Portfolio/Company/cars", "destination": "/frontend/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/cars/", "destination": "/frontend/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/cars/:match*", "destination": "/frontend/Portfolio/Company/cars/:match*" },
     { "source": "/Portfolio/Company/jeri", "destination": "/frontend/Portfolio/Company/JERI/index.html" },
     { "source": "/Portfolio/Company/jeri/", "destination": "/frontend/Portfolio/Company/JERI/index.html" },
     { "source": "/Portfolio/Company/jeri/:match*", "destination": "/frontend/Portfolio/Company/JERI/:match*" },
     { "source": "/Portfolio/Company/waypoint", "destination": "/frontend/Portfolio/Company/Waypoint/index.html" },
     { "source": "/Portfolio/Company/waypoint/", "destination": "/frontend/Portfolio/Company/Waypoint/index.html" },
-    { "source": "/Portfolio/Company/waypoint/:match*", "destination": "/frontend/Portfolio/Company/Waypoint/:match*" }
+    { "source": "/Portfolio/Company/waypoint/:match*", "destination": "/frontend/Portfolio/Company/Waypoint/:match*" },
+    { "source": "/Portfolio/Company/filmaura", "destination": "/frontend/Portfolio/Company/filmaura/index.html" },
+    { "source": "/Portfolio/Company/filmaura/", "destination": "/frontend/Portfolio/Company/filmaura/index.html" },
+    { "source": "/Portfolio/Company/filmaura/:match*", "destination": "/frontend/Portfolio/Company/filmaura/:match*" },
+    { "source": "/Portfolio/Portfolio/:match*", "destination": "/frontend/Portfolio/Portfolio/:match*" },
+    { "source": "/Portfolio/E-Commerce/:match*", "destination": "/frontend/Portfolio/E-Commerce/:match*" },
+    { "source": "/Portfolio/Dashboard/:match*", "destination": "/frontend/Portfolio/Dashboard/:match*" },
+    { "source": "/Portfolio/:match*", "destination": "/frontend/Portfolio/:match*" }
   ]
 }

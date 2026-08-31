@@ -35,6 +35,12 @@
     { "source": "/Consult", "destination": "/consult/index.html" },
     { "source": "/Support", "destination": "/support/index.html" },
     { "source": "/Login", "destination": "/loginpg/index.html" },
-    { "source": "/SignUp", "destination": "/signpg/index.html" }
+    { "source": "/SignUp", "destination": "/signpg/index.html" },
+    { "source": "/Portfolio/Company/cars", "destination": "/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/cars/", "destination": "/Portfolio/Company/cars/index.html" },
+    { "source": "/Portfolio/Company/jeri", "destination": "/Portfolio/Company/JERI/index.html" },
+    { "source": "/Portfolio/Company/jeri/", "destination": "/Portfolio/Company/JERI/index.html" },
+    { "source": "/Portfolio/Company/waypoint", "destination": "/Portfolio/Company/Waypoint/index.html" },
+    { "source": "/Portfolio/Company/waypoint/", "destination": "/Portfolio/Company/Waypoint/index.html" }
   ]
 }
