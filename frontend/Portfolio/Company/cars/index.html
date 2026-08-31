@@ -4,30 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AM MotorCare - Vehicle Service Management</title>
-    <link rel="stylesheet" href="/Portfolio/Company/cars/STYLE.css">
+    <title>Velocity Auto | CarGo - Luxury & High Performance Automotive Hub</title>
+    <meta name="description" content="Explore Velocity Auto & CarGo: Premium vehicle rentals, precision auto services, performance parts, and custom detailing.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-    <!-- New Navbar -->
-    <nav class="buylix-navbar">
-        <div class="logo">
-            <img src="/Portfolio/Company/cars/logo.jpg" alt="CarGo Logo" class="logo-img"> CarGo
-        </div>
+    <!-- Main Navigation Bar -->
+    <nav class="buylix-navbar" id="navbar">
+        <a href="#home" class="logo">
+            <img src="./logo.jpg" alt="CarGo Velocity Auto Logo" class="logo-img">
+            <span>CarGo</span>
+        </a>
         <ul class="nav-links">
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Features</a></li>
-            <li><a href="#">Models</a></li>
-            <li><a href="#">Benefits</a></li>
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#vehicles">Rentals</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#parts">Parts</a></li>
+            <li><a href="#care">Detailing</a></li>
+            <li><a href="#booking">Book Now</a></li>
         </ul>
+        <a href="#booking" class="btn-contact">Book Service</a>
     </nav>
 
     <!-- Hero Section -->
-    <section class="buylix-hero">
-        <video autoplay muted playsinline class="hero-video">
-            <source src="/Portfolio/Company/cars/carhero.mp4" type="video/mp4">
+    <section class="buylix-hero" id="home">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="./carhero.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
 
@@ -37,295 +46,309 @@
                     <h1>Explore Quality <br><span class="highlight">Cars</span> You Can <br>Trust</h1>
                 </div>
                 <div class="product-card-wrapper">
-                    <div class="vertical-color-selector">
-                        <div class="color-circle active" data-color="black.png" style="background-color: #000000;">
-                        </div>
-                        <div class="color-circle" data-color="pink.png" style="background-color: #ffc0cb;"></div>
-                        <div class="color-circle" data-color="red.png" style="background-color: #ff0000;"></div>
-                        <div class="color-circle" data-color="blue.png" style="background-color: #0000ff;"></div>
+                    <div class="vertical-color-selector" id="color-selector">
+                        <div class="color-circle active" data-color="./black.png" style="background-color: #111111;" title="Onyx Black"></div>
+                        <div class="color-circle" data-color="./pink.png" style="background-color: #ff8fa3;" title="Rose Pink"></div>
+                        <div class="color-circle" data-color="./red.png" style="background-color: #e63946;" title="Crimson Red"></div>
+                        <div class="color-circle" data-color="./blue.png" style="background-color: #2563eb;" title="Electric Blue"></div>
+                        <div class="color-circle" data-color="./white.png" style="background-color: #ffffff; border: 1px solid #ccc;" title="Glacier White"></div>
                     </div>
 
                     <div class="product-color-card">
                         <div class="card-img-container">
-                            <img src="/Portfolio/Company/cars/black.png" alt="Car Color" id="product-card-img"
-                                class="product-card-img active-img">
+                            <img src="./black.png" alt="Car Color" id="product-card-img" class="product-card-img active-img">
                         </div>
-                        <div class="card-badge">Driving rang</div>
+                        <div class="card-badge">Custom Wrap</div>
                         <p class="card-desc">Premium Car Color Wraps &<br>Custom Vinyl Services.</p>
                     </div>
                 </div>
             </div>
 
             <div class="social-sidebar">
-                <a href="#" class="social-btn">f</a>
-                <a href="#" class="social-btn dark">📸</a>
-                <a href="#" class="social-btn">in</a>
-                <a href="#" class="social-btn">𝕏</a>
+                <a href="#booking" class="social-btn" title="Facebook">f</a>
+                <a href="#booking" class="social-btn dark" title="Instagram">📸</a>
+                <a href="#booking" class="social-btn" title="LinkedIn">in</a>
+                <a href="#booking" class="social-btn" title="Twitter / X">𝕏</a>
             </div>
 
             <div class="hero-bottom-elements">
-                <div class="discover-box">
+                <a href="#vehicles" class="discover-box">
                     <div class="arrow-icon">↗</div>
-                    <p>Discover premium cars with trusted quality, transparent pricing, and hassle-free buying
-                        experience.</p>
-                </div>
+                    <p>Discover premium cars with trusted quality, transparent pricing, and hassle-free buying experience.</p>
+                </a>
 
-                <div class="car-brands right-aligned">
-                    <span class="brand-badge active">BMW Cars</span>
-                    <span class="brand-badge">Toyota Cars</span>
-                    <span class="brand-badge">Mercedes-Benz Cars</span>
-                    <span class="brand-badge">Volkswagen Cars</span>
+                <div class="car-brands right-aligned" id="brand-filters">
+                    <span class="brand-badge active" data-brand="all">All Brands</span>
+                    <span class="brand-badge" data-brand="bmw">BMW</span>
+                    <span class="brand-badge" data-brand="toyota">Toyota</span>
+                    <span class="brand-badge" data-brand="mercedes">Mercedes-Benz</span>
+                    <span class="brand-badge" data-brand="porsche">Porsche</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- NEW SECTIONS START -->
-    <!-- Design 1: Vehicles -->
-    <section class="d1-vehicles-section">
+    <!-- SECTION 1: Vehicles & Rentals -->
+    <section class="d1-vehicles-section" id="vehicles">
         <div class="container-1200">
             <h2 class="d1-title">Rent a Car</h2>
             <div class="d1-category-grid">
                 <div class="d1-cat-card">
-                    <video autoplay muted loop playsinline class="d1-cat-bg-video"><source src="/Portfolio/Company/cars/services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                    </video>
                     <h3>Sedans</h3>
-                    <a href="#" class="d1-arrow-btn">↗</a>
+                    <a href="#booking" class="d1-arrow-btn" data-rent="sedan" title="Rent Sedan">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video autoplay muted loop playsinline class="d1-cat-bg-video"><source src="/Portfolio/Company/cars/services/13790382_1920_1080_25fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="./services/13790382_1920_1080_25fps.mp4" type="video/mp4">
+                    </video>
                     <h3>SUVs</h3>
-                    <a href="#" class="d1-arrow-btn">↗</a>
+                    <a href="#booking" class="d1-arrow-btn" data-rent="suv" title="Rent SUV">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video autoplay muted loop playsinline class="d1-cat-bg-video"><source src="/Portfolio/Company/cars/services/13676355_3840_2160_60fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                    </video>
                     <h3>Hatchbacks</h3>
-                    <a href="#" class="d1-arrow-btn">↗</a>
+                    <a href="#booking" class="d1-arrow-btn" data-rent="hatchback" title="Rent Hatchback">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video autoplay muted loop playsinline class="d1-cat-bg-video"><source src="/Portfolio/Company/cars/services/14977819_3840_2160_50fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="./services/14977819_3840_2160_50fps.mp4" type="video/mp4">
+                    </video>
                     <h3>Crossovers</h3>
-                    <a href="#" class="d1-arrow-btn">↗</a>
+                    <a href="#booking" class="d1-arrow-btn" data-rent="crossover" title="Rent Crossover">↗</a>
                 </div>
             </div>
-
         </div>
 
         <div class="d1-service-banner">
             <video autoplay muted loop playsinline class="d1-service-video">
-                <source src="/Portfolio/Company/cars/carwash.mp4" type="video/mp4">
+                <source src="./carwash.mp4" type="video/mp4">
             </video>
             <div class="d1-service-overlay"></div>
             <div class="container-1200 d1-service-content">
                 <div class="d1-service-left">
                     <h2>Premium Car Service<br>Expert Care & Detailing</h2>
-                    <a href="#" class="d1-service-btn">Book Service</a>
+                    <a href="#booking" class="d1-service-btn" data-service="detailing">Book Service</a>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- Design 2: Services Bento Grid -->
-    <section class="d2-services-section">
+    <!-- SECTION 2: Services Bento Grid -->
+    <section class="d2-services-section" id="services">
         <div class="container-1200">
             <h2 class="d2-title">Our Services</h2>
             <div class="d2-bento-grid">
                 <div class="d2-bento-card d2-span-2x2">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13335233_3840_2160_24fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13335233_3840_2160_24fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">SUSPENSION</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="suspension">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13335393_3840_2160_24fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13335393_3840_2160_24fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">INTERIOR REPAIR</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="repair">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-row-2">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13335668_3840_2160_24fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13335668_3840_2160_24fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">STEERING REPAIR</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="suspension">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">BRAKE SYSTEM</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="suspension">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13676355_3840_2160_60fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">ENGINE REPAIR</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="repair">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13676407_3840_2160_60fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13676407_3840_2160_60fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">OIL CHANGE</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="wash">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/13790382_1920_1080_25fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/13790382_1920_1080_25fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">AC CLEANING</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="repair">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/14977819_3840_2160_50fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/14977819_3840_2160_50fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">DETAILING &<br>POLISHING</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="detailing">Book Service</a>
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video autoplay muted loop playsinline class="d2-bg-video"><source src="/Portfolio/Company/cars/services/18101976-uhd_3840_2160_30fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="./services/18101976-uhd_3840_2160_30fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
                         <h3 style="color: #fff;">TIRE SERVICE</h3>
-                        <a href="#" class="d2-btn-light">Details</a>
+                        <a href="#booking" class="d2-btn-light" data-service="suspension">Book Service</a>
                     </div>
                 </div>
-            </div>          </div>
+            </div>
         </div>
     </section>
 
-    <!-- Design 3: Car Parts -->
-    <section class="d3-parts-section">
+    <!-- SECTION 3: Car Parts & Performance -->
+    <section class="d3-parts-section" id="parts">
         <div class="d3-parts-hero">
             <video autoplay muted loop playsinline class="d3-parts-video">
-                <source src="/Portfolio/Company/cars/carparts.mp4" type="video/mp4">
+                <source src="./carparts.mp4" type="video/mp4">
             </video>
             <div class="d3-parts-overlay"></div>
             <div class="container-1200 d3-hero-content">
                 <div class="d3-hero-left">
                     <span class="d3-subtitle">Premium Auto Components</span>
                     <h2>High-Performance<br>Car Parts</h2>
-                    <p>Upgrade your vehicle with our exclusive selection of top-tier performance parts and premium
-                        accessories.</p>
-                    <a href="#" class="d3-shop-btn">Shop Collection</a>
+                    <p>Upgrade your vehicle with our exclusive selection of top-tier performance parts and premium accessories.</p>
+                    <a href="#parts-grid" class="d3-shop-btn">Shop Collection</a>
                 </div>
             </div>
         </div>
 
-        <div class="container-1200">
-
+        <div class="container-1200" id="parts-grid">
             <div class="d3-discount-grid">
                 <div class="d3-discount-card">
-                    <video autoplay muted loop playsinline class="d3-discount-bg"><source src="/Portfolio/Company/cars/services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="./services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
-                        <span class="d3-desc">Car Wheel</span>
+                        <span class="d3-desc">Custom Alloy Wheels</span>
                         <h4>30% Off</h4>
-                        <a href="#" class="d3-link">Shop Now</a>
+                        <a href="#booking" class="d3-link">Order Now</a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1590212727670-65fa7848651f?q=80&w=400&auto=format&fit=crop"
-                        alt="Wheel">
                 </div>
                 <div class="d3-discount-card">
-                    <video autoplay muted loop playsinline class="d3-discount-bg"><source src="/Portfolio/Company/cars/services/13676355_3840_2160_60fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="./services/13676355_3840_2160_60fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
-                        <span class="d3-desc">Car Parts</span>
+                        <span class="d3-desc">Ceramic Brake Kits</span>
                         <h4>40% Off</h4>
-                        <a href="#" class="d3-link">Shop Now</a>
+                        <a href="#booking" class="d3-link">Order Now</a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=400&auto=format&fit=crop"
-                        alt="Brakes">
                 </div>
                 <div class="d3-discount-card">
-                    <video autoplay muted loop playsinline class="d3-discount-bg"><source src="/Portfolio/Company/cars/services/13676407_3840_2160_60fps.mp4" type="video/mp4"></video>
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="./services/13676407_3840_2160_60fps.mp4" type="video/mp4">
+                    </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
-                        <span class="d3-desc">Car Parts</span>
+                        <span class="d3-desc">Turbo & Engine Mods</span>
                         <h4>50% Off</h4>
-                        <a href="#" class="d3-link">Shop Now</a>
+                        <a href="#booking" class="d3-link">Order Now</a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1590212727670-65fa7848651f?q=80&w=400&auto=format&fit=crop"
-                        alt="Parts">
                 </div>
             </div>
 
             <div class="d3-arrivals-header">
                 <h3 class="d3-section-title">New Arrivals</h3>
-                <div class="d3-tabs">
-                    <a href="#" class="active">Car & Drive</a>
-                    <a href="#">Motorcycle</a>
-                    <a href="#">Truck & Drive</a>
+                <div class="d3-tabs" id="parts-tabs">
+                    <a href="#parts-grid" class="active" data-tab="all">Performance</a>
+                    <a href="#parts-grid" data-tab="brakes">Brakes & Wheels</a>
+                    <a href="#parts-grid" data-tab="engine">Engine & Intake</a>
                 </div>
             </div>
             <div class="d3-arrivals-grid">
-                <div class="d3-product-card">
-                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400&auto=format&fit=crop"
-                        alt="Part">
-                    <h4>New Balance Fresh Foam</h4>
-                    <p>Kaymin Car Parts</p>
-                    <span class="d3-price">$20.10</span>
+                <div class="d3-product-card" data-category="brakes">
+                    <img src="https://images.unsplash.com/photo-1590212727670-65fa7848651f?q=80&w=400&auto=format&fit=crop" alt="Forged Alloy Wheel">
+                    <h4>Forged 20" Alloy Wheels</h4>
+                    <p>Velocity Track Series</p>
+                    <span class="d3-price">$1,450.00</span>
                 </div>
-                <div class="d3-product-card">
-                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400&auto=format&fit=crop"
-                        alt="Part">
-                    <h4>New Balance Fresh Foam</h4>
-                    <p>Kaymin Car Parts</p>
-                    <span class="d3-price">$20.10</span>
+                <div class="d3-product-card" data-category="brakes">
+                    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=400&auto=format&fit=crop" alt="Ceramic Brakes">
+                    <h4>Carbon Ceramic Brake Rotors</h4>
+                    <p>Brembo Pro Spec</p>
+                    <span class="d3-price">$780.00</span>
                 </div>
-                <div class="d3-product-card">
-                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400&auto=format&fit=crop"
-                        alt="Part">
-                    <h4>New Balance Fresh Foam</h4>
-                    <p>Kaymin Car Parts</p>
-                    <span class="d3-price">$20.10</span>
+                <div class="d3-product-card" data-category="engine">
+                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400&auto=format&fit=crop" alt="Turbo Kit">
+                    <h4>Twin-Scroll Turbocharger</h4>
+                    <p>Garrett Boost Series</p>
+                    <span class="d3-price">$980.00</span>
                 </div>
-                <div class="d3-product-card">
-                    <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=400&auto=format&fit=crop"
-                        alt="Part">
-                    <h4>New Balance Fresh Foam</h4>
-                    <p>Kaymin Car Parts</p>
-                    <span class="d3-price">$20.10</span>
+                <div class="d3-product-card" data-category="engine">
+                    <img src="https://images.unsplash.com/photo-1548600916-dc8492f8e845?q=80&w=400&auto=format&fit=crop" alt="Coilovers">
+                    <h4>Adjustable Track Coilovers</h4>
+                    <p>KW Suspension Pro</p>
+                    <span class="d3-price">$620.00</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Design 4: Car Wash -->
-    <section class="d4-wash-section">
+    <!-- SECTION 4: Car Wash & Detailing -->
+    <section class="d4-wash-section" id="care">
         <div class="container-1200">
             <h2 class="d4-title">OUR BEST <span class="d4-text-red">Services</span></h2>
 
             <div class="d4-services-grid">
                 <div class="d4-service-card">
                     <video autoplay muted loop playsinline class="d4-service-media">
-                        <source src="/Portfolio/Company/cars/serve1.mp4" type="video/mp4">
+                        <source src="./serve1.mp4" type="video/mp4">
                     </video>
-                    <div class="d4-arrow">↗</div>
-                    <h4 class="d4-text-red">CAR WASH</h4>
-                    <p>One pack as a working process with excellent foam and precision. The package includes: Top & Even
-                        Conditions.</p>
+                    <a href="#booking" class="d4-arrow" data-service="wash" title="Book Car Wash">↗</a>
+                    <h4 class="d4-text-red">PRECISION CAR WASH</h4>
+                    <p>Touchless foam bath, undercarriage high-pressure wash, microfiber hand drying, and wheel decontamination.</p>
                 </div>
                 <div class="d4-service-card">
                     <video autoplay muted loop playsinline class="d4-service-media">
-                        <source src="/Portfolio/Company/cars/serve2.mp4" type="video/mp4">
+                        <source src="./serve2.mp4" type="video/mp4">
                     </video>
-                    <div class="d4-arrow">↗</div>
-                    <h4 class="d4-text-red">FULL SERVICE</h4>
-                    <p>One pack as a working process with excellent foam and precision. The package includes: Top & Even
-                        Conditions.</p>
+                    <a href="#booking" class="d4-arrow" data-service="detailing" title="Book Full Detailing">↗</a>
+                    <h4 class="d4-text-red">FULL DETAILING & COATING</h4>
+                    <p>9H Ceramic paint protection, paint correction, interior leather rejuvenation, and deep steam extraction.</p>
                 </div>
             </div>
 
@@ -344,60 +367,65 @@
                 </div>
                 <div class="d4-stat">
                     <h3>7+</h3>
-                    <p>AWARD WINNING</p>
+                    <p>INDUSTRY AWARDS</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Booking Section -->
-    <section class="booking-section">
+    <!-- SECTION 5: Booking & Rental Section -->
+    <section class="booking-section" id="booking">
         <video autoplay muted loop playsinline class="booking-bg-video">
-            <source src="/Portfolio/Company/cars/services/13335393_3840_2160_24fps.mp4" type="video/mp4">
+            <source src="./services/13335393_3840_2160_24fps.mp4" type="video/mp4">
         </video>
         <div class="booking-overlay"></div>
         <div class="container-1200 booking-container">
+            <!-- Service Booking Card -->
             <div class="booking-card">
                 <h2>Book Service</h2>
-                <form class="booking-form">
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="tel" placeholder="Phone Number" required>
-                    <select class="booking-select" required>
+                <form class="booking-form" id="service-form">
+                    <input type="text" id="service-name" placeholder="Full Name" required>
+                    <input type="tel" id="service-phone" placeholder="Phone Number" required>
+                    <select class="booking-select" id="service-select" required>
                         <option value="" disabled selected>Select Service</option>
-                        <option value="wash">Car Wash</option>
-                        <option value="repair">Interior Repair</option>
-                        <option value="suspension">Suspension</option>
-                        <option value="detailing">Full Detailing</option>
+                        <option value="wash">Precision Car Wash</option>
+                        <option value="repair">Interior Repair & Fixes</option>
+                        <option value="suspension">Suspension & Brakes</option>
+                        <option value="detailing">Full Detailing & Ceramic Coating</option>
                     </select>
                     <div class="date-input">
-                        <input type="text" placeholder="Preferred Date" required>
+                        <input type="date" id="service-date" required>
                         <span class="icon">📅</span>
                     </div>
                     <button type="submit" class="booking-submit">Submit Request</button>
+                    <div class="booking-feedback" id="service-feedback" style="display:none; color: #10b981; font-weight: 600; text-align: center; margin-top: 10px;"></div>
                 </form>
                 <p class="booking-disclaimer">By submitting, you agree to the processing of personal data.</p>
             </div>
+
+            <!-- Rent a Car Card -->
             <div class="booking-card">
                 <h2>Rent a Car</h2>
-                <form class="booking-form">
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="tel" placeholder="Phone Number" required>
-                    <select class="booking-select" required>
+                <form class="booking-form" id="rent-form">
+                    <input type="text" id="rent-name" placeholder="Full Name" required>
+                    <input type="tel" id="rent-phone" placeholder="Phone Number" required>
+                    <select class="booking-select" id="rent-select" required>
                         <option value="" disabled selected>Select Car Type</option>
-                        <option value="sedan">Sedans</option>
-                        <option value="suv">SUVs</option>
-                        <option value="hatchback">Hatchbacks</option>
-                        <option value="crossover">Crossovers</option>
+                        <option value="sedan">Executive Sedans</option>
+                        <option value="suv">Luxury SUVs</option>
+                        <option value="hatchback">Sport Hatchbacks</option>
+                        <option value="crossover">Performance Crossovers</option>
                     </select>
                     <div class="date-input">
-                        <input type="text" placeholder="Start Date" required>
+                        <input type="date" id="rent-start-date" required>
                         <span class="icon">📅</span>
                     </div>
                     <div class="date-input">
-                        <input type="text" placeholder="End Date" required>
+                        <input type="date" id="rent-end-date" required>
                         <span class="icon">📅</span>
                     </div>
-                    <button type="submit" class="booking-submit">Submit Request</button>
+                    <button type="submit" class="booking-submit">Reserve Vehicle</button>
+                    <div class="booking-feedback" id="rent-feedback" style="display:none; color: #10b981; font-weight: 600; text-align: center; margin-top: 10px;"></div>
                 </form>
                 <p class="booking-disclaimer">By submitting, you agree to the processing of personal data.</p>
             </div>
@@ -410,63 +438,63 @@
             <div class="footer-brand">
                 <h2 class="footer-logo">CarGo</h2>
                 <div class="social-icons">
-                    <a href="#">Fb</a>
-                    <a href="#">Ig</a>
-                    <a href="#">X</a>
-                    <a href="#">Tg</a>
+                    <a href="#booking" title="Facebook">Fb</a>
+                    <a href="#booking" title="Instagram">Ig</a>
+                    <a href="#booking" title="Twitter / X">𝕏</a>
+                    <a href="#booking" title="Telegram">Tg</a>
                 </div>
-                <a href="#" class="footer-btn">Choose a car</a>
+                <a href="#vehicles" class="footer-btn">Choose a car</a>
             </div>
-            
+
             <div class="footer-nav">
-                <h4>Clients</h4>
+                <h4>Navigation</h4>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Insurance</a></li>
-                    <li><a href="#">Autopark</a></li>
-                    <li><a href="#">Rates</a></li>
-                    <li><a href="#">Conditions</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contacts</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#vehicles">Autopark</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#parts">Performance Parts</a></li>
+                    <li><a href="#care">Car Detailing</a></li>
+                    <li><a href="#booking">Bookings</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-nav">
                 <h4>Autopark</h4>
                 <ul>
-                    <li><a href="#">Porsche</a></li>
-                    <li><a href="#">Cadillac</a></li>
-                    <li><a href="#">Dodge</a></li>
-                    <li><a href="#">Tesla</a></li>
-                    <li><a href="#">Mercedes</a></li>
-                    <li><a href="#">BMW</a></li>
+                    <li><a href="#vehicles">Porsche GT</a></li>
+                    <li><a href="#vehicles">Cadillac Escalade</a></li>
+                    <li><a href="#vehicles">Dodge Challenger</a></li>
+                    <li><a href="#vehicles">Tesla Model S</a></li>
+                    <li><a href="#vehicles">Mercedes-AMG</a></li>
+                    <li><a href="#vehicles">BMW M Series</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-nav">
-                <h4>For Events</h4>
+                <h4>Services</h4>
                 <ul>
-                    <li><a href="#">Weddings</a></li>
-                    <li><a href="#">Photo sessions</a></li>
-                    <li><a href="#">Promos</a></li>
-                    <li><a href="#">Video shoots</a></li>
-                    <li><a href="#">Corporate</a></li>
+                    <li><a href="#services">Suspension Tuning</a></li>
+                    <li><a href="#services">Engine Diagnostics</a></li>
+                    <li><a href="#care">Ceramic Coating</a></li>
+                    <li><a href="#care">Precision Car Wash</a></li>
+                    <li><a href="#parts">Performance Upgrades</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-nav">
                 <h4>Contacts</h4>
                 <ul>
                     <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
                     <li>123 Premium Ave, NY 10001</li>
                     <li><a href="mailto:info@cargo.com">info@cargo.com</a></li>
+                    <li>Mon - Sat: 8:00 AM - 8:00 PM</li>
                 </ul>
             </div>
         </div>
     </footer>
 
-    <!-- JS -->
-    <script src="/Portfolio/Company/cars/app.js"></script>
+    <!-- Main JavaScript Logic -->
+    <script src="./app.js"></script>
 
 </body>
 

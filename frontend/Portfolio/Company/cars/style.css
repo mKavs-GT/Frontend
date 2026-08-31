@@ -31,7 +31,7 @@ html {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--light);
     line-height: 1.6;
     color: var(--dark);
@@ -5599,6 +5599,59 @@ img.hero-video {
 
 /* Responsive basics */
 @media (max-width: 992px) {
+    .buylix-navbar {
+        padding: 15px 20px;
+    }
+
+    .buylix-navbar .nav-links {
+        position: static;
+        transform: none;
+        gap: 5px;
+        padding: 4px 10px;
+    }
+
+    .buylix-navbar .nav-links a {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .buylix-navbar .btn-contact {
+        display: none;
+    }
+
+    .hero-top-elements {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-main-title {
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .product-card-wrapper {
+        transform: none;
+        margin-top: 20px;
+    }
+
+    .social-sidebar {
+        display: none;
+    }
+
+    .hero-bottom-elements {
+        padding-left: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .discover-box {
+        transform: none;
+    }
+
+    .car-brands {
+        flex-wrap: wrap;
+    }
 
     .d1-category-grid,
     .d1-trend-grid,
@@ -5649,6 +5702,13 @@ img.hero-video {
 }
 
 @media (max-width: 768px) {
+    .buylix-navbar .nav-links {
+        display: none;
+    }
+
+    .hero-main-title h1 {
+        font-size: 38px;
+    }
 
     .d1-category-grid,
     .d1-trend-grid,
