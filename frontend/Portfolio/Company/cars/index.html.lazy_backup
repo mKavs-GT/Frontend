@@ -115,33 +115,29 @@
             <h2 class="d1-title">Rent a Car</h2>
             <div class="d1-category-grid">
                 <div class="d1-cat-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13675325-uhd_2160_4096_30fps_poster.webp" class="d1-cat-bg-video lazy-video">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <h3>Sedans</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="sedan" title="Rent Sedan">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13790382_1920_1080_25fps_poster.webp" class="d1-cat-bg-video lazy-video">
-                        <source data-src="services/13790382_1920_1080_25fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13790382_1920_1080_25fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="services/13790382_1920_1080_25fps.mp4" type="video/mp4">
                     </video>
                     <h3>SUVs</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="suv" title="Rent SUV">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13676355_3840_2160_60fps_poster.webp" class="d1-cat-bg-video lazy-video">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <h3>Hatchbacks</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="hatchback" title="Rent Hatchback">↗</a>
                 </div>
                 <div class="d1-cat-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/14977819_3840_2160_50fps_poster.webp" class="d1-cat-bg-video lazy-video">
-                        <source data-src="services/14977819_3840_2160_50fps_optimized.webm" type="video/webm">
-                        <source data-src="services/14977819_3840_2160_50fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d1-cat-bg-video">
+                        <source src="services/14977819_3840_2160_50fps.mp4" type="video/mp4">
                     </video>
                     <h3>Crossovers</h3>
                     <a href="#booking" class="d1-arrow-btn" data-rent="crossover" title="Rent Crossover">↗</a>
@@ -150,9 +146,9 @@
         </div>
 
         <div class="d1-service-banner">
-            <video preload="none" autoplay muted loop playsinline poster="carwash_poster.webp" class="d1-service-video lazy-video">
-                <source data-src="carwash_1080p_hq.webm" type="video/webm">
-                <source data-src="carwash_1080p_hq.mp4" type="video/mp4">
+            <video autoplay muted loop playsinline poster="carwash_poster.webp" class="d1-service-video">
+                <source src="carwash_1080p_hq.webm" type="video/webm">
+                <source src="carwash_1080p_hq.mp4" type="video/mp4">
             </video>
             <div class="d1-service-overlay"></div>
             <div class="container-1200 d1-service-content">
@@ -170,9 +166,8 @@
             <h2 class="d2-title">Our Services</h2>
             <div class="d2-bento-grid">
                 <div class="d2-bento-card d2-span-2x2">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13335233_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13335233_1080p_hq.webm" type="video/webm">
-                        <source data-src="services/13335233_1080p_hq.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13335233_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -181,9 +176,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13335393_3840_2160_24fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13335393_3840_2160_24fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13335393_3840_2160_24fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13335393_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -192,9 +186,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-row-2">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13335668_3840_2160_24fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13335668_3840_2160_24fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13335668_3840_2160_24fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13335668_3840_2160_24fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -203,9 +196,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13675325-uhd_2160_4096_30fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -214,9 +206,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13676355_3840_2160_60fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -225,9 +216,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13676407_3840_2160_60fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13676407_3840_2160_60fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13676407_3840_2160_60fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13676407_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -236,9 +226,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13790382_1920_1080_25fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/13790382_1920_1080_25fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13790382_1920_1080_25fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/13790382_1920_1080_25fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -247,9 +236,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/14977819_3840_2160_50fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/14977819_3840_2160_50fps_optimized.webm" type="video/webm">
-                        <source data-src="services/14977819_3840_2160_50fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/14977819_3840_2160_50fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -258,9 +246,8 @@
                     </div>
                 </div>
                 <div class="d2-bento-card d2-span-col-2">
-                    <video preload="none" autoplay muted loop playsinline poster="services/18101976-uhd_3840_2160_30fps_poster.webp" class="d2-bg-video lazy-video">
-                        <source data-src="services/18101976-uhd_3840_2160_30fps_optimized.webm" type="video/webm">
-                        <source data-src="services/18101976-uhd_3840_2160_30fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d2-bg-video">
+                        <source src="services/18101976-uhd_3840_2160_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d2-video-overlay"></div>
                     <div class="d2-content">
@@ -275,10 +262,9 @@
     <!-- SECTION 3: Car Parts & Performance -->
     <section class="d3-parts-section" id="parts">
         <div class="d3-parts-hero">
-            <video preload="none" autoplay muted loop playsinline poster="carparts_poster.webp" class="d3-parts-video lazy-video">
-                        <source data-src="carparts_optimized.webm" type="video/webm">
-                        <source data-src="carparts_optimized.mp4" type="video/mp4">
-                    </video>
+            <video autoplay muted loop playsinline class="d3-parts-video">
+                <source src="carparts.mp4" type="video/mp4">
+            </video>
             <div class="d3-parts-overlay"></div>
             <div class="container-1200 d3-hero-content">
                 <div class="d3-hero-left">
@@ -293,9 +279,8 @@
         <div class="container-1200" id="parts-grid">
             <div class="d3-discount-grid">
                 <div class="d3-discount-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13675325-uhd_2160_4096_30fps_poster.webp" class="d3-discount-bg lazy-video">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13675325-uhd_2160_4096_30fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="services/13675325-uhd_2160_4096_30fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -305,9 +290,8 @@
                     </div>
                 </div>
                 <div class="d3-discount-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13676355_3840_2160_60fps_poster.webp" class="d3-discount-bg lazy-video">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13676355_3840_2160_60fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="services/13676355_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -317,9 +301,8 @@
                     </div>
                 </div>
                 <div class="d3-discount-card">
-                    <video preload="none" autoplay muted loop playsinline poster="services/13676407_3840_2160_60fps_poster.webp" class="d3-discount-bg lazy-video">
-                        <source data-src="services/13676407_3840_2160_60fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13676407_3840_2160_60fps_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d3-discount-bg">
+                        <source src="services/13676407_3840_2160_60fps.mp4" type="video/mp4">
                     </video>
                     <div class="d3-discount-overlay"></div>
                     <div class="d3-discount-info">
@@ -374,18 +357,16 @@
 
             <div class="d4-services-grid">
                 <div class="d4-service-card">
-                    <video preload="none" autoplay muted loop playsinline poster="serve1_poster.webp" class="d4-service-media lazy-video">
-                        <source data-src="serve1_optimized.webm" type="video/webm">
-                        <source data-src="serve1_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d4-service-media">
+                        <source src="serve1.mp4" type="video/mp4">
                     </video>
                     <a href="#booking" class="d4-arrow" data-service="wash" title="Book Car Wash">↗</a>
                     <h4 class="d4-text-red">PRECISION CAR WASH</h4>
                     <p>Touchless foam bath, undercarriage high-pressure wash, microfiber hand drying, and wheel decontamination.</p>
                 </div>
                 <div class="d4-service-card">
-                    <video preload="none" autoplay muted loop playsinline poster="serve2_poster.webp" class="d4-service-media lazy-video">
-                        <source data-src="serve2_optimized.webm" type="video/webm">
-                        <source data-src="serve2_optimized.mp4" type="video/mp4">
+                    <video autoplay muted loop playsinline class="d4-service-media">
+                        <source src="serve2.mp4" type="video/mp4">
                     </video>
                     <a href="#booking" class="d4-arrow" data-service="detailing" title="Book Full Detailing">↗</a>
                     <h4 class="d4-text-red">FULL DETAILING & COATING</h4>
@@ -416,10 +397,9 @@
 
     <!-- SECTION 5: Booking & Rental Section -->
     <section class="booking-section" id="booking">
-        <video preload="none" autoplay muted loop playsinline poster="services/13335393_3840_2160_24fps_poster.webp" class="booking-bg-video lazy-video">
-                        <source data-src="services/13335393_3840_2160_24fps_optimized.webm" type="video/webm">
-                        <source data-src="services/13335393_3840_2160_24fps_optimized.mp4" type="video/mp4">
-                    </video>
+        <video autoplay muted loop playsinline class="booking-bg-video">
+            <source src="services/13335393_3840_2160_24fps.mp4" type="video/mp4">
+        </video>
         <div class="booking-overlay"></div>
         <div class="container-1200 booking-container">
             <!-- Service Booking Card -->
