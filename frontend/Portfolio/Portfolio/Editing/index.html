@@ -23,7 +23,10 @@
 
     <header class="hero">
         <div class="hero-video-placeholder">
-            <video src="/Portfolio/Portfolio/Editing/herovideo.mp4" autoplay loop muted playsinline></video>
+            <video autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/herovideo_poster.webp">
+                <source src="/Portfolio/Portfolio/Editing/herovideo_optimized.webm" type="video/webm">
+                <source src="/Portfolio/Portfolio/Editing/herovideo_optimized.mp4" type="video/mp4">
+            </video>
         </div>
         <div class="hero-content">
             <h1>GENESIS&reg;<br>WE MAKE VIDEOS</h1>
@@ -44,14 +47,20 @@
 
     <section class="showcase">
         <div class="showcase-item video-placeholder video-1">
-            <video src="/Portfolio/Portfolio/Editing/turnheads1.mp4" autoplay loop muted playsinline></video>
+            <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/turnheads1_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/turnheads1_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/turnheads1_optimized.mp4" type="video/mp4">
+            </video>
         </div>
         <div class="showcase-item center-text">
             <h2>WE MAKE<br>VIDEOS THAT<br>TURN HEADS</h2>
             <p class="tiny-text">GENESIS STUDIO</p>
         </div>
         <div class="showcase-item video-placeholder video-2">
-            <video src="/Portfolio/Portfolio/Editing/turnheads2.mp4" autoplay loop muted playsinline></video>
+            <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/turnheads2_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/turnheads2_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/turnheads2_optimized.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
@@ -78,7 +87,10 @@
             </div>
         </div>
         <div class="featured-video-placeholder">
-             <video src="/Portfolio/Portfolio/Editing/productionstudio.mp4" autoplay loop muted playsinline></video>
+             <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/productionstudio_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/productionstudio_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/productionstudio_optimized.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
@@ -91,13 +103,22 @@
         </div>
         <div class="precision-gallery">
             <div class="gallery-item video-placeholder">
-                <video src="/Portfolio/Portfolio/Editing/adv1.mp4" autoplay loop muted playsinline></video>
+                <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/adv1_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/adv1_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/adv1_optimized.mp4" type="video/mp4">
+            </video>
             </div>
             <div class="gallery-item video-placeholder">
-                <video src="/Portfolio/Portfolio/Editing/adv2.mp4" autoplay loop muted playsinline></video>
+                <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/adv2_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/adv2_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/adv2_optimized.mp4" type="video/mp4">
+            </video>
             </div>
             <div class="gallery-item video-placeholder">
-                <video src="/Portfolio/Portfolio/Editing/adv3.mp4" autoplay loop muted playsinline></video>
+                <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/adv3_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/adv3_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/adv3_optimized.mp4" type="video/mp4">
+            </video>
             </div>
         </div>
     </section>
@@ -105,7 +126,10 @@
     <!-- Section 2: Story -->
     <section class="story-section">
         <div class="story-image video-placeholder">
-            <video src="/Portfolio/Portfolio/Editing/unveiling.mp4" autoplay loop muted playsinline></video>
+            <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Portfolio/Editing/unveiling_poster.webp" class="lazy-video">
+                <source data-src="/Portfolio/Portfolio/Editing/unveiling_optimized.webm" type="video/webm">
+                <source data-src="/Portfolio/Portfolio/Editing/unveiling_optimized.mp4" type="video/mp4">
+            </video>
         </div>
         <div class="story-content">
             <h2>UNVEILING THE STORY BEHIND OUR LENS</h2>
@@ -236,5 +260,35 @@
     </footer>
 
     <script src="/Portfolio/Portfolio/Editing/script.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          const sources = video.querySelectorAll('source[data-src]');
+          if (sources.length > 0) {
+            sources.forEach(function(source) {
+              source.src = source.getAttribute('data-src');
+              source.removeAttribute('data-src');
+            });
+            video.load();
+          }
+          video.play().catch(function() {});
+        } else {
+          if (!video.paused) {
+            video.pause();
+          }
+        }
+      });
+    }, { rootMargin: '300px 0px 300px 0px' });
+    lazyVideos.forEach(function(v) { videoObserver.observe(v); });
+  }
+});
+</script>
+
 </body>
 </html>

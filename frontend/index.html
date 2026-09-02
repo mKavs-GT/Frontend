@@ -946,8 +946,10 @@
                 <div class="w-full max-w-4xl mx-auto px-4 mt-0 md:mt-16 mb-12">
                     <div class="w-full flex justify-center overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                         onclick="window.location.href='/Branding'">
-                        <video src="images/why.mp4" autoplay loop muted playsinline
-                            class="w-full md:w-auto h-auto md:h-[70vh] object-contain rounded-2xl"></video>
+                        <video preload="none" autoplay loop muted playsinline poster="images/why_poster.webp" class="w-full md:w-auto h-auto md:h-[70vh] object-contain rounded-2xl lazy-video">
+                            <source data-src="images/why_optimized.webm" type="video/webm">
+                            <source data-src="images/why_optimized.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
 
@@ -1506,13 +1508,13 @@
                 class="w-full flex-shrink-0 h-[100vh] relative cursor-pointer overflow-hidden mt-0 bg-black"
                 onclick="window.location.href = '/Branding'">
                 <!-- Desktop Video -->
-                <video id="end-cap-video-desktop" class="max-md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
+                <video id="end-cap-video-desktop" poster="images/vid_poster.webp" class="max-md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
                     preload="metadata">
                     <source src="images/vid.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
                 <!-- Mobile Video -->
-                <video id="end-cap-video-mobile" class="md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
+                <video id="end-cap-video-mobile" poster="images/mobvid_poster.webp" class="md:hidden absolute inset-0 w-full h-full object-cover" muted playsinline
                     preload="metadata">
                     <source src="images/mobvid.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -2124,6 +2126,36 @@
         </script>
         <script src="./neoncode/kairon-live-bot/script.fixed.js" defer></script>
 
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          const sources = video.querySelectorAll('source[data-src]');
+          if (sources.length > 0) {
+            sources.forEach(function(source) {
+              source.src = source.getAttribute('data-src');
+              source.removeAttribute('data-src');
+            });
+            video.load();
+          }
+          video.play().catch(function() {});
+        } else {
+          if (!video.paused) {
+            video.pause();
+          }
+        }
+      });
+    }, { rootMargin: '300px 0px 300px 0px' });
+    lazyVideos.forEach(function(v) { videoObserver.observe(v); });
+  }
+});
+</script>
 
 </body>
 

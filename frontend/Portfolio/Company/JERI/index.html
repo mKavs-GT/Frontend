@@ -112,8 +112,9 @@
 
   <!-- Personality Quiz Section -->
   <section id="personality-quiz" class="py-5 position-relative overflow-hidden" style="background-color: #2c3e50;">
-    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover; opacity: 0.6;">
-      <source src="/Portfolio/Company/jeri/quiz.mp4" type="video/mp4">
+    <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Company/jeri/quiz_poster.webp" class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100 lazy-video" style="z-index: 0; object-fit: cover; opacity: 0.6;">
+      <source data-src="/Portfolio/Company/jeri/quiz_optimized.webm" type="video/webm">
+      <source data-src="/Portfolio/Company/jeri/quiz_optimized.mp4" type="video/mp4">
     </video>
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.3); z-index: 1;"></div>
     <div class="container position-relative" style="z-index: 2;">
@@ -253,8 +254,9 @@
 
   <!-- Foster First Program -->
   <section class="py-5 position-relative text-white overflow-hidden" style="background-color: #2c3e50;">
-    <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100" style="z-index: 0; object-fit: cover; opacity: 0.7;">
-      <source src="/Portfolio/Company/jeri/foster.mp4" type="video/mp4">
+    <video preload="none" autoplay loop muted playsinline poster="/Portfolio/Company/jeri/foster_poster.webp" class="position-absolute top-50 start-50 translate-middle min-w-100 min-h-100 lazy-video" style="z-index: 0; object-fit: cover; opacity: 0.7;">
+      <source data-src="/Portfolio/Company/jeri/foster_optimized.webm" type="video/webm">
+      <source data-src="/Portfolio/Company/jeri/foster_optimized.mp4" type="video/mp4">
     </video>
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.5); z-index: 1;"></div>
     <div class="container position-relative" style="z-index: 2;">
@@ -416,5 +418,35 @@
       xhttp.send();
     });
   </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          const sources = video.querySelectorAll('source[data-src]');
+          if (sources.length > 0) {
+            sources.forEach(function(source) {
+              source.src = source.getAttribute('data-src');
+              source.removeAttribute('data-src');
+            });
+            video.load();
+          }
+          video.play().catch(function() {});
+        } else {
+          if (!video.paused) {
+            video.pause();
+          }
+        }
+      });
+    }, { rootMargin: '300px 0px 300px 0px' });
+    lazyVideos.forEach(function(v) { videoObserver.observe(v); });
+  }
+});
+</script>
+
 </body>
 </html>

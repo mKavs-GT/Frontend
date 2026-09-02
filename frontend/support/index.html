@@ -375,8 +375,10 @@
             </div>
             <!-- Decorative character or video -->
             <div class="support-banner-media absolute md:right-0 md:bottom-0 pointer-events-none md:opacity-100">
-                <video src="../about/images/mascot.mp4" autoplay loop muted playsinline
-                    class="w-64 h-64 md:w-96 md:h-96 object-contain translate-y-3 translate-x-12"></video>
+                <video autoplay loop muted playsinline poster="../about/images/mascot_poster.webp" class="w-64 h-64 md:w-96 md:h-96 object-contain translate-y-3 translate-x-12">
+                    <source src="../about/images/mascot_optimized.webm" type="video/webm">
+                    <source src="../about/images/mascot_optimized.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
 
@@ -576,7 +578,9 @@
 
                 <div class="dj-video-group">
                     <span class="video-wrapper">
-                        <video src="../about/images/mascot.mp4" class="dj-video" autoplay loop muted playsinline>
+                        <video class="dj-video" autoplay loop muted playsinline poster="../about/images/mascot_poster.webp">
+                            <source src="../about/images/mascot_optimized.webm" type="video/webm">
+                            <source src="../about/images/mascot_optimized.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </span>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serch - Search for Knowledge & Innovation</title>
+    <meta name="description" content="Discover innovative solutions and cutting-edge research through intuitive search and exploration.">
+    <link rel="stylesheet" href="/Portfolio/Dashboard/Serch/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Top Contact Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-left">
+                <span><i class="fa-solid fa-phone"></i> +1 (800) 555-SERCH</span>
+                <span><i class="fa-solid fa-envelope"></i> hello@serch.io</span>
+                <span><i class="fa-solid fa-location-dot"></i> Geneva, Switzerland</span>
+            </div>
+            <div class="top-right">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="logo"><img src="/Portfolio/Dashboard/Serch/assets/logo.png" alt="Serch" class="logo-img"> Serch</a>
+            <div class="nav-links" id="nav-links">
+                <a href="#about">About</a>
+                <a href="#services">Focus Areas</a>
+                <a href="#process">Process</a>
+                <a href="#initiatives">Initiatives</a>
+                <a href="#team">Team</a>
+                <a href="#faq">FAQs</a>
+            </div>
+            <a href="#contact" class="btn btn-primary nav-cta"><span>Get Involved</span></a>
+            <button class="mobile-toggle" id="mobile-toggle"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <video class="hero-video" src="/Portfolio/Dashboard/Serch/assets/serchhero.mp4" autoplay loop muted playsinline></video>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span class="hero-badge">Start Your Journey</span>
+            <h1>WE GROW <span class="text-accent">CREATORS</span>, NOT JUST NUMBERS</h1>
+            <p>Empower your creativity and innovation with Serch. Connect with fellow creators, discover resources, and build something extraordinary.</p>
+            <div class="hero-btns">
+                <a href="#services" class="btn btn-primary"><span>START GROWING</span></a>
+                <a href="#about" class="btn btn-outline"><span>Learn More</span></a>
+            </div>
+            <div class="hero-gallery">
+                <div class="gallery-item"><img src="/Portfolio/Dashboard/Serch/assets/1.jpg" alt="Creator 1"></div>
+                <div class="gallery-item"><img src="/Portfolio/Dashboard/Serch/assets/2.jpg" alt="Creator 2"></div>
+                <div class="gallery-item"><img src="/Portfolio/Dashboard/Serch/assets/3.jpg" alt="Creator 3"></div>
+                <div class="gallery-item"><img src="/Portfolio/Dashboard/Serch/assets/4.jpg" alt="Creator 4"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Marquee Banner -->
+    <div class="marquee-bar">
+        <div class="marquee-track">
+            <span>Global Policy <i class="fa-solid fa-star"></i></span>
+            <span>Sustainable Innovation <i class="fa-solid fa-star"></i></span>
+            <span>Data Science <i class="fa-solid fa-star"></i></span>
+            <span>Social Impact <i class="fa-solid fa-star"></i></span>
+            <span>Climate Research <i class="fa-solid fa-star"></i></span>
+            <span>AI for Good <i class="fa-solid fa-star"></i></span>
+            <span>Global Policy <i class="fa-solid fa-star"></i></span>
+            <span>Sustainable Innovation <i class="fa-solid fa-star"></i></span>
+            <span>Data Science <i class="fa-solid fa-star"></i></span>
+            <span>Social Impact <i class="fa-solid fa-star"></i></span>
+            <span>Climate Research <i class="fa-solid fa-star"></i></span>
+            <span>AI for Good <i class="fa-solid fa-star"></i></span>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="section about-section">
+        <div class="container about-grid">
+            <div class="about-images">
+                <div class="img-stack">
+                    <div class="img-box img-main"><img src="/Portfolio/Dashboard/Serch/assets/5.jpg" alt="Research"></div>
+                    <div class="img-box img-float"><img src="/Portfolio/Dashboard/Serch/assets/6.jpg" alt="Community"></div>
+                </div>
+            </div>
+            <div class="about-text">
+                <span class="section-tag"><i class="fa-solid fa-seedling"></i> About Serch</span>
+                <h2>Discover <span class="text-accent">Knowledge</span> at Scale</h2>
+                <p>Serch is your gateway to innovative research, breakthrough discoveries, and actionable insights. We make complex information accessible, connecting researchers, innovators, and knowledge seekers worldwide.</p>
+                <div class="stats-row">
+                    <div class="stat"><h3>150+</h3><p>Researchers</p></div>
+                    <div class="stat"><h3>50+</h3><p>Countries</p></div>
+                    <div class="stat"><h3>99%</h3><p>Impact Rate</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Focus Areas -->
+    <section id="services" class="section services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-compass"></i> Our Focus Areas</span>
+                <h2>Research & Innovation to <span class="text-accent">Elevate Humanity</span></h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                    <h3>Global Policy Research</h3>
+                    <p>Comprehensive research to shape effective, inclusive public policies across regions.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3>Sustainable Innovation</h3>
+                    <p>Pioneering technological and ecological solutions to address climate change.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-people-group"></i></div>
+                    <h3>Social Dynamics</h3>
+                    <p>Understanding cultural contexts, community behavior, and societal shifts.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>Tech for Good</h3>
+                    <p>Leveraging AI and data analytics to bridge the digital divide globally.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3>Impact Measurement</h3>
+                    <p>Advanced frameworks to monitor real-world success of socio-economic programs.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                    <h3>Strategic Advisory</h3>
+                    <p>Guiding NGOs and governments to turn data into humanitarian strategies.</p>
+                    <a href="#" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Process -->
+    <section id="process" class="section process-section">
+        <div class="container">
+            <div class="section-header center">
+                <span class="section-tag"><i class="fa-solid fa-diagram-project"></i> Our Methodology</span>
+                <h2>Our Proven <span class="text-accent">Research Process</span></h2>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i><span class="step-num">01</span></div>
+                    <h4>Discovery</h4>
+                    <p>We identify the most critical issues through extensive primary and secondary data collection.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <div class="step-icon"><i class="fa-solid fa-chart-column"></i><span class="step-num">02</span></div>
+                    <h4>Analysis</h4>
+                    <p>Our experts apply AI-driven analytics and behavioral science to decode complexity.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <div class="step-icon"><i class="fa-solid fa-rocket"></i><span class="step-num">03</span></div>
+                    <h4>Innovation</h4>
+                    <p>We design scalable, sustainable solutions tailored to community needs.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <div class="step-icon"><i class="fa-solid fa-bullseye"></i><span class="step-num">04</span></div>
+                    <h4>Implementation</h4>
+                    <p>We deploy initiatives with measurable KPIs and continuous impact tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section why-section">
+        <div class="container why-grid">
+            <div class="why-media">
+                <div class="why-img-box"><img src="/Portfolio/Dashboard/Serch/assets/7.jpg" alt="Why Choose Us"></div>
+            </div>
+            <div class="why-content">
+                <span class="section-tag"><i class="fa-solid fa-shield-halved"></i> Why Choose Us</span>
+                <h2>Why Trust Us for <span class="text-accent">Global Impact</span>?</h2>
+                <div class="why-features">
+                    <div class="why-feat"><div class="wf-icon"><i class="fa-solid fa-coins"></i></div><div><h4>Transparent Funding</h4><p>Every dollar tracked. Full accountability reports published quarterly.</p></div></div>
+                    <div class="why-feat"><div class="wf-icon"><i class="fa-solid fa-users-gear"></i></div><div><h4>Expert Coalition</h4><p>150+ senior researchers from world-renowned institutions.</p></div></div>
+                    <div class="why-feat"><div class="wf-icon"><i class="fa-solid fa-medal"></i></div><div><h4>10+ Years Experience</h4><p>A proven decade of impactful initiatives across 50+ countries.</p></div></div>
+                    <div class="why-feat"><div class="wf-icon"><i class="fa-solid fa-trophy"></i></div><div><h4>Award Winning</h4><p>Recognized by the UN, WHO, and World Economic Forum.</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner 2 -->
+    <div class="marquee-bar accent-bg">
+        <div class="marquee-track reverse">
+            <span>Climate Action <i class="fa-solid fa-star"></i></span>
+            <span>Education Equity <i class="fa-solid fa-star"></i></span>
+            <span>Healthcare Access <i class="fa-solid fa-star"></i></span>
+            <span>Digital Inclusion <i class="fa-solid fa-star"></i></span>
+            <span>Food Security <i class="fa-solid fa-star"></i></span>
+            <span>Clean Energy <i class="fa-solid fa-star"></i></span>
+            <span>Climate Action <i class="fa-solid fa-star"></i></span>
+            <span>Education Equity <i class="fa-solid fa-star"></i></span>
+            <span>Healthcare Access <i class="fa-solid fa-star"></i></span>
+            <span>Digital Inclusion <i class="fa-solid fa-star"></i></span>
+            <span>Food Security <i class="fa-solid fa-star"></i></span>
+            <span>Clean Energy <i class="fa-solid fa-star"></i></span>
+        </div>
+    </div>
+
+    <!-- Featured Initiatives -->
+    <section id="initiatives" class="section initiatives-section">
+        <div class="container">
+            <div class="section-header center">
+                <span class="section-tag"><i class="fa-solid fa-flask"></i> Our Initiatives</span>
+                <h2>Explore Our <span class="text-accent">Featured Initiatives</span></h2>
+            </div>
+            <div class="initiatives-grid">
+                <div class="initiative-card large">
+                    <div class="init-img"><img src="/Portfolio/Dashboard/Serch/assets/5.jpg" alt="Project GreenPulse"></div>
+                    <div class="init-overlay"><span class="init-tag">Climate</span><h3>Project GreenPulse</h3><p>AI-powered environmental monitoring across 30 nations</p></div>
+                </div>
+                <div class="initiative-card">
+                    <div class="init-img"><img src="/Portfolio/Dashboard/Serch/assets/1.jpg" alt="EduBridge"></div>
+                    <div class="init-overlay"><span class="init-tag">Education</span><h3>EduBridge</h3><p>Digital classrooms for underserved communities</p></div>
+                </div>
+                <div class="initiative-card">
+                    <div class="init-img"><img src="/Portfolio/Dashboard/Serch/assets/2.jpg" alt="MedReach"></div>
+                    <div class="init-overlay"><span class="init-tag">Health</span><h3>MedReach</h3><p>Mobile health clinics powered by telemedicine AI</p></div>
+                </div>
+                <div class="initiative-card">
+                    <div class="init-img"><img src="/Portfolio/Dashboard/Serch/assets/3.jpg" alt="SolarNet"></div>
+                    <div class="init-overlay"><span class="init-tag">Energy</span><h3>SolarNet</h3><p>Decentralized solar grids for rural electrification</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter Bar -->
+    <div class="counter-bar">
+        <div class="container counter-grid">
+            <div class="counter-item"><h3 data-target="150">0</h3><p>Expert Researchers</p></div>
+            <div class="counter-item"><h3 data-target="2000">0</h3><p>Studies Published</p></div>
+            <div class="counter-item"><h3 data-target="99">0</h3><p>% Impact Success</p></div>
+            <div class="counter-item"><h3 data-target="18">0</h3><p>Global Awards</p></div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <section class="section testimonials-section">
+        <div class="container">
+            <div class="section-header center">
+                <span class="section-tag"><i class="fa-solid fa-quote-left"></i> Testimonials</span>
+                <h2>Trusted by <span class="text-accent">Global Partners</span></h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span>5.0</span></div>
+                    <h4>Transformative Partnership!</h4>
+                    <p>"Serch's research fundamentally changed how we approach climate policy in Southeast Asia. Their data-driven insights were invaluable."</p>
+                    <div class="testimonial-author"><div class="author-avatar"><img src="/Portfolio/Dashboard/Serch/assets/3.jpg" alt="Dr. Amara Osei"></div><div><strong>Dr. Amara Osei</strong><span>Director, UNDP Climate Unit</span></div></div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> <span>5.0</span></div>
+                    <h4>Highly Recommended!</h4>
+                    <p>"Their EduBridge initiative brought digital education to over 10,000 students in our region. The impact has been profound and lasting."</p>
+                    <div class="testimonial-author"><div class="author-avatar"><img src="/Portfolio/Dashboard/Serch/assets/2.jpg" alt="Prof. Liam Chen"></div><div><strong>Prof. Liam Chen</strong><span>UNESCO Education Lead</span></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section team-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-people-roof"></i> Our Team</span>
+                <h2>Meet Our <span class="text-accent">Expert Team</span></h2>
+            </div>
+            <div class="team-grid">
+                <div class="team-card"><div class="team-img"><img src="/Portfolio/Dashboard/Serch/assets/4.jpg" alt="Dr. Elena Voss"></div><h4>Dr. Elena Voss</h4><p>Chief Research Officer</p></div>
+                <div class="team-card"><div class="team-img"><img src="/Portfolio/Dashboard/Serch/assets/6.jpg" alt="James Mwangi"></div><h4>James Mwangi</h4><p>Head of Innovation</p></div>
+                <div class="team-card"><div class="team-img"><img src="/Portfolio/Dashboard/Serch/assets/1.jpg" alt="Dr. Priya Sharma"></div><h4>Dr. Priya Sharma</h4><p>Data Science Lead</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Insights -->
+    <section class="section news-section">
+        <div class="container">
+            <div class="section-header center">
+                <span class="section-tag"><i class="fa-solid fa-newspaper"></i> News & Insights</span>
+                <h2>Our Latest <span class="text-accent">Research & Insights</span></h2>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-img"><span class="news-tag">Climate Research</span><img src="/Portfolio/Dashboard/Serch/assets/5.jpg" alt="Climate Modeling"></div>
+                    <div class="news-body"><span class="news-date"><i class="fa-solid fa-calendar"></i> April 15, 2026</span><h4>The Future of Climate Modeling: AI-Driven Predictions</h4><p>How machine learning is revolutionizing our ability to predict environmental shifts.</p><a href="#" class="card-link">Read More <i class="fa-solid fa-arrow-right"></i></a></div>
+                </div>
+                <div class="news-card">
+                    <div class="news-img"><span class="news-tag">Innovation</span><img src="/Portfolio/Dashboard/Serch/assets/6.jpg" alt="Decentralized Networks"></div>
+                    <div class="news-body"><span class="news-date"><i class="fa-solid fa-calendar"></i> March 22, 2026</span><h4>Decentralized Networks: Empowering Rural Communities</h4><p>New frameworks for delivering essential services to the world's most remote areas.</p><a href="#" class="card-link">Read More <i class="fa-solid fa-arrow-right"></i></a></div>
+                </div>
+                <div class="news-card">
+                    <div class="news-img"><span class="news-tag">Health</span><img src="/Portfolio/Dashboard/Serch/assets/7.jpg" alt="Mobile Health"></div>
+                    <div class="news-body"><span class="news-date"><i class="fa-solid fa-calendar"></i> Feb 10, 2026</span><h4>The Rise of Mobile Health: Telemedicine for All</h4><p>Bridging the healthcare gap with AI-powered mobile clinics in developing nations.</p><a href="#" class="card-link">Read More <i class="fa-solid fa-arrow-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section faq-section">
+        <div class="container faq-grid">
+            <div class="faq-left">
+                <span class="section-tag"><i class="fa-solid fa-circle-question"></i> FAQs</span>
+                <h2>Question? <span class="text-accent">Look here.</span></h2>
+                <div class="accordion">
+                    <div class="accordion-item active"><div class="accordion-header"><h4>What is Serch's core mission?</h4><i class="fa-solid fa-plus"></i></div><div class="accordion-body"><p>We are dedicated to empowering creators and innovators worldwide through cutting-edge research, sustainable innovation, and actionable insights that drive global impact.</p></div></div>
+                    <div class="accordion-item"><div class="accordion-header"><h4>How do you measure impact?</h4><i class="fa-solid fa-plus"></i></div><div class="accordion-body"><p>We use advanced KPI frameworks and real-time data tracking to monitor socio-economic outcomes, publishing transparent quarterly impact reports.</p></div></div>
+                    <div class="accordion-item"><div class="accordion-header"><h4>Can organizations partner with Serch?</h4><i class="fa-solid fa-plus"></i></div><div class="accordion-body"><p>Absolutely. We partner with NGOs, governments, academic institutions, and private enterprises. Reach out via our contact form to discuss collaboration.</p></div></div>
+                    <div class="accordion-item"><div class="accordion-header"><h4>How is research funded?</h4><i class="fa-solid fa-plus"></i></div><div class="accordion-body"><p>Through a mix of grants, institutional partnerships, and public funding. All financial reports are published for full transparency.</p></div></div>
+                    <div class="accordion-item"><div class="accordion-header"><h4>Do you offer technical support?</h4><i class="fa-solid fa-plus"></i></div><div class="accordion-body"><p>Yes, we provide 24/7 support for all active initiatives through dedicated regional teams.</p></div></div>
+                </div>
+            </div>
+            <div class="faq-right">
+                <div class="faq-cta-card"><h4>Have different questions?</h4><p>Our team is ready to answer all your questions.</p><a href="#contact" class="btn btn-primary"><span>Contact Us</span></a></div>
+                <div class="faq-info-card"><p>Your Contact, Our Priority</p><h3>24/7 Support</h3><span>hello@serch.io</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section newsletter-section">
+        <div class="container newsletter-inner">
+            <span class="section-tag"><i class="fa-solid fa-bell"></i> Our Newsletter</span>
+            <h2>Subscribe for <span class="text-accent">Expert Insights</span> & Updates</h2>
+            <form class="newsletter-form" onsubmit="event.preventDefault();">
+                <div class="input-wrap"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="Enter Email Address" required></div>
+                <button type="submit" class="btn btn-primary"><span>Subscribe</span></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact / Footer CTA -->
+    <footer id="contact" class="footer">
+        <div class="footer-cta-bar">
+            <div class="container footer-cta-inner">
+                <h2>Let's <span class="text-accent">Connect</span> there</h2>
+                <a href="#contact" class="btn btn-primary">Contact Us</a>
+            </div>
+        </div>
+        <div class="footer-main">
+            <div class="container footer-grid">
+                <div class="footer-about">
+                    <h3><i class="fa-solid fa-globe"></i> Serch</h3>
+                    <p>Search for Knowledge & Innovation. Empowering creators and innovators through data-driven solutions since 2016.</p>
+                    <div class="footer-socials"><a href="#"><i class="fa-brands fa-facebook-f"></i></a><a href="#"><i class="fa-brands fa-x-twitter"></i></a><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-youtube"></i></a></div>
+                </div>
+                <div class="footer-col"><h4>Navigation</h4><a href="#about">About</a><a href="#services">Focus Areas</a><a href="#initiatives">Initiatives</a><a href="#faq">FAQs</a></div>
+                <div class="footer-col"><h4>Contact</h4><a href="tel:+18005550000">+1 (800) 555-SERCH</a><a href="mailto:hello@serch.io">hello@serch.io</a></div>
+                <div class="footer-col"><h4>Get the latest information</h4><p>Subscribe to our newsletter for the latest research updates.</p><form class="footer-subscribe" onsubmit="event.preventDefault();"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+            </div>
+        </div>
+        <div class="footer-bottom"><div class="container footer-bottom-inner"><p>Copyright &copy; 2026 Serch. All Rights Reserved.</p><p><a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p></div></div>
+    </footer>
+
+    <script src="/Portfolio/Dashboard/Serch/script.js"></script>
+</body>
+</html>

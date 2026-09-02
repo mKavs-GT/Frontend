@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <base href="/pricingpage/">
+  <!-- Vercel Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO: Title & Description -->
+  <title>mKavs Pricing — Transparent Web Development Plans</title>
+  <meta name="description"
+    content="Choose from 5 flexible web development plans at mKavs. From ₹3,999 starter sites to ₹19,999 full e-commerce builds. Transparent pricing, no hidden costs." />
+  <meta name="keywords"
+    content="mKavs, web development pricing, startup website, e-commerce, React development, UI/UX design" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://dev.mkavs.com/Pricing" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="mKavs Pricing Tiers" />
+  <meta property="og:description"
+    content="5 flexible plans for every business stage. Transparent pricing from mKavs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dev.mkavs.com/Pricing" />
+  <meta property="og:image" content="https://mkavs.com/og-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="mKavs Pricing — Transparent Web Development Plans" />
+  <meta name="twitter:description"
+    content="5 flexible web development plans from ₹3,999. Transparent pricing, no hidden costs." />
+  <meta name="twitter:image" content="https://mkavs.com/og-preview.png" />
+  <!-- Extras -->
+  <meta name="author" content="mKavs" />
+  <meta name="theme-color" content="#0B0B1E" />
+
+  <!-- Circular Favicon -->
+  <link rel="icon" type="image/png" href="../images/LOGOI.png">
+
+  <!-- Dependencies from main site -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="../config.js"></script>
+
+  <!-- JSON-LD Structured Data: ItemList of Pricing Plans -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "mKavs Web Development Pricing Plans",
+      "description": "5 transparent web development pricing tiers from mKavs, from starter landing pages to full e-commerce stores.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Offer",
+            "name": "T0 Spark — Startup Launch",
+            "description": "1 page landing site with mobile responsive design, WhatsApp CTA, contact form, basic SEO, and custom color palette. Delivered in 6 days.",
+            "price": "3999",
+            "priceCurrency": "INR"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Offer",
+            "name": "T1 Launchpad — Starter",
+            "description": "1–2 page site with React animations, Google Analytics setup, and branded typography system. Delivered in 12 days.",
+            "price": "5999",
+            "priceCurrency": "INR"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Offer",
+            "name": "T2 Velocity — Growth",
+            "description": "3–5 page multipage site with Google Auth, Maps and form integration, and free server deployment. Delivered in 16 days.",
+            "price": "9999",
+            "priceCurrency": "INR"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "Offer",
+            "name": "T3 Empire — Business",
+            "description": "6–8 page business site with complete SEO, free domain for 1 year, speed optimisation, multi-factor auth, admin panel, and 3 months maintenance. Delivered in 22 days.",
+            "price": "12999",
+            "priceCurrency": "INR"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "Offer",
+            "name": "T4 Nexus — E-Commerce",
+            "description": "9–12 page full e-commerce store with payment gateway, order tracking, automated emails, and 6 months maintenance. Delivered in 30 days.",
+            "price": "19999",
+            "priceCurrency": "INR"
+          }
+        }
+      ]
+    }
+    </script>
+
+  <!-- Performance: Font preconnect + async non-blocking load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;700;900&display=swap" />
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;700;900&display=swap" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;700;900&display=swap" />
+  </noscript>
+
+  <!-- React App Assets -->
+  <script type="module" crossorigin src="./assets/index-ADnrm98P.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-5cMzOuyv.css">
+  <link rel="stylesheet" href="../footer.css">
+
+  <style>
+    /* Ensure navigation doesn't clash with React content */
+    #main-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: transparent;
+      backdrop-filter: none;
+    }
+
+    /* Overrides based on user requests */
+    :root {
+      --blue: #0C1AC1 !important;
+      --blue-light: #0C1AC1 !important;
+      --neon: #cafe00 !important;
+      --neon-dark: #cafe00 !important;
+    }
+
+    .hero {
+      display: none !important;
+    }
+
+    .marquee-dot {
+      display: none !important;
+    }
+
+    .cards-grid {
+      max-width: 98% !important;
+      padding: 0 10px !important;
+      gap: 15px !important;
+    }
+
+    .pricing-card {
+      min-width: 0 !important;
+    }
+
+    .footer-cta {
+      display: none !important;
+    }
+
+    body {
+      background-image: none !important;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    #root {
+      margin-top: 80px;
+      /* Space for fixed navbar */
+    }
+
+    /* Fix for skip link visibility */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: #c7f908;
+      color: black;
+      padding: 8px;
+      z-index: 1001;
+      transition: top 0.3s;
+    }
+
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ===== MOBILE OPTIMIZATIONS ===== */
+    @media (max-width: 768px) {
+      /* Hamburger button - fixed clean to top-left */
+      #mobile-menu-trigger {
+        position: fixed !important;
+        top: 1.25rem !important;
+        left: 1.25rem !important;
+        z-index: 9999 !important;
+        color: #111111 !important;
+        background: transparent !important;
+        border: none !important;
+        font-size: 2rem !important;
+        padding: 4px !important;
+        line-height: 1 !important;
+      }
+
+      /* Give root more top space on mobile */
+      #root {
+        margin-top: 60px !important;
+      }
+
+      /* Pricing cards scroll horizontally on mobile */
+      .cards-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        padding: 0 12px !important;
+        max-width: 100% !important;
+      }
+
+      .pricing-card {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* Footer is styled cleanly via footer.css */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- MAIN TOOLBAR (Fixed on top) -->
+  <nav id="main-toolbar" class="p-2 pt-4 md:p-4 md:pt-7 w-full transition-transform duration-700 ease-out">
+    <div class="flex justify-between items-center max-w-7xl mx-auto">
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <a href="/Home" id="toolbar-home-link"
+            class="text-lg text-black hover:text-blue-600 transition-colors">Home</a>
+          <a href="/About" class="text-lg text-black hover:text-blue-600 transition-colors">About</a>
+          <a href="/Works" class="text-lg text-black hover:text-blue-600 transition-colors">Our Work</a>
+          <a href="/Branding" class="text-lg text-black hover:text-blue-600 transition-colors">Branding</a>
+        </div>
+      </div>
+      <button id="mobile-menu-trigger" class="md:hidden text-3xl mr-auto pointer-events-auto text-black p-2 hover:text-gray-600 transition-colors" aria-label="Menu">&#x2261;</button>
+      <div class="hidden md:flex items-center space-x-8 text-lg font-medium min-w-0 ml-auto pointer-events-auto">
+        <div class="space-x-6 whitespace-nowrap flex items-center">
+          <a href="/Pricing" class="text-lg text-black hover:text-blue-600 transition-colors">Pricing</a>
+          <a href="/BookUs" class="text-lg text-black hover:text-blue-600 transition-colors">Book
+            Us</a>
+          <a href="/Support" class="text-lg text-black hover:text-blue-600 transition-colors">Support</a>
+          <a href="/BookUs" class="login-btn text-lg text-black hover:text-blue-600 transition-colors">Login</a>
+        </div>
+        <div class="flex space-x-4 text-xl">
+          <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank" class="text-black hover:text-blue-600"><i
+              class="fa-brands fa-instagram"></i></a>
+          <a href="https://discord.gg/HENvXDQQZJ" target="_blank" class="text-black hover:text-blue-600"><i
+              class="fa-brands fa-discord"></i></a>
+          <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+            class="text-black hover:text-blue-600"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="/Profile" class="text-black hover:text-blue-600"><i
+              class="fa-regular fa-user"></i></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Accessibility: Skip link -->
+  <a href="#root" class="skip-link">Skip to main content</a>
+
+  <!-- React App Root -->
+  <div id="root"></div>
+
+  <script src="../sticky-navbar.js"></script>
+
+  <link rel="stylesheet" href="../footer.css">
+  <!-- Digital Journey Section -->
+  <section class="digital-journey-section" style="position: relative; z-index: 10;">
+    <div class="dj-container">
+      <div class="dj-content">
+        <div class="dj-text-group">
+          <h1 class="dj-title">
+            YOUR <br>
+            <span class="text-blue">
+              DIGITAL JOURNEY
+            </span><br>
+            <span class="text-lime">STARTS HERE.</span>
+          </h1>
+
+          <div class="dj-buttons">
+            <a href="/BookUs" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-primary">
+                BOOK NOW
+              </button>
+            </a>
+            <a href="/Pricing" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-secondary">
+                VIEW PLANS
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="dj-video-group">
+          <span class="video-wrapper">
+            <video src="../about/images/mascot.mp4" class="dj-video" autoplay loop muted playsinline>
+              Your browser does not support the video tag.
+            </video>
+          </span>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <div class="footer-header-container">
+          <h2 class="footer-title">
+            JOIN OUR COMMUNITY
+          </h2>
+        </div>
+        <div class="footer-curve">
+          <div class="footer-socials">
+            <div class="social-links">
+              <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://discord.gg/HENvXDQQZJ"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" target="_blank"
+                rel="noopener noreferrer">
+                <i class="fa-brands fa-discord"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+            <div class="about-policy-links" style="display: flex; gap: 15px; font-family: 'Space Grotesk', sans-serif;">
+              <a href="../docs/T&C and Privacy Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy
+                Policy</a>
+              <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund
+                Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright-text"
+        style="text-align: center; font-family: 'Space Grotesk', sans-serif; padding-top: 20px;">
+        &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+      </div>
+    </div>
+  </section>
+
+  <!-- Kairon Chat Widget Integration -->
+  <link rel="stylesheet" href="../neoncode/kairon-live-bot/styles.css">
+  <script>window.KAIRON_BASE_PATH = "../neoncode/kairon-live-bot/";</script>
+  <div id="kairon">
+    <button id="kairon-button" aria-label="Open chat">
+      <img src="../about/images/little.png" alt="Kairon">
+    </button>
+    <div id="kairon-panel" role="dialog" aria-modal="true" aria-label="Chat window">
+      <div class="panel-header">
+        <div class="left-section">
+          <div class="logo-placeholder">
+            <img src="../about/images/little.png" alt="Logo">
+          </div>
+          <div class="title">Kairon</div>
+        </div>
+        <select id="agent-selector" class="agent-selector" style="display:none">
+          <option value="" disabled selected>Talk to Agent</option>
+          <option value="Mr.K">Mr.K</option>
+          <option value="Mr.A">Mr.A</option>
+          <option value="Mr.S">Mr.S</option>
+          <option value="Mr.V">Mr.V</option>
+          <option value="Mr.M">Mr.M</option>
+        </select>
+        <button id="kairon-close" class="close-btn" aria-label="Minimize chat"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+      </div>
+      <div id="kairon-messages" class="messages"></div>
+      <div class="interactive-area">
+        <div id="kairon-controls" class="kairon-controls">
+          <div id="kairon-categories" class="kairon-categories"></div>
+          <button id="kairon-browse-all" class="kairon-browse-all">Browse all</button>
+        </div>
+        <div id="kairon-faq-pane" class="kairon-faq-pane"></div>
+      </div>
+      <form id="kairon-form" class="composer" autocomplete="off">
+        <input id="kairon-input" type="text" aria-label="Message" />
+        <button type="submit" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+  <div id="kairon-live" class="kairon-live-panel" style="display:none"></div>
+  <button id="kairon-header-back-bot" style="display:none"></button>
+  <button id="kairon-faq-toggle" style="display:none"></button>
+
+  <script src="../neoncode/kairon-live-bot/script.fixed.js" defer></script>
+
+  <script>
+    (function initBackground() {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'bg-canvas';
+      document.body.prepend(canvas);
+
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const dotSpacing = 28;
+      const dotRadius = 1;
+      const mouse = { x: -1000, y: -1000 };
+      const repulsionRadius = 100;
+      const dots = [];
+
+      function initCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        dots.length = 0;
+        for (let x = 0; x <= width + dotSpacing; x += dotSpacing) {
+          for (let y = 0; y <= height + dotSpacing; y += dotSpacing) {
+            dots.push({ bx: x, by: y, x: x, y: y });
+          }
+        }
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = '#d1d5db';
+        for (const dot of dots) {
+          const dx = mouse.x - dot.bx;
+          const dy = mouse.y - dot.by;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < repulsionRadius) {
+            const force = (repulsionRadius - dist) / repulsionRadius;
+            dot.x = dot.bx - (dx / dist) * force * 15;
+            dot.y = dot.by - (dy / dist) * force * 15;
+          } else {
+            dot.x += (dot.bx - dot.x) * 0.1;
+            dot.y += (dot.by - dot.y) * 0.1;
+          }
+
+          ctx.beginPath();
+          ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener('resize', initCanvas);
+      window.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      window.addEventListener('mouseleave', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      });
+
+      initCanvas();
+      render();
+    })();
+  </script>
+
+  <script>
+    (function initCustomHeader() {
+      const timer = setInterval(() => {
+        const marquee = document.querySelector('.marquee-wrapper');
+        const firstSectionHeader = document.querySelector('.section-header');
+
+        if (marquee) {
+          // Hide the first section header if it's the pricing one
+          if (firstSectionHeader) {
+            firstSectionHeader.style.display = 'none';
+          }
+
+          if (!document.getElementById('custom-header-section')) {
+            const customHeader = document.createElement('div');
+            customHeader.id = 'custom-header-section';
+            customHeader.innerHTML = `
+              <div style="text-align: center; padding: 80px 20px 20px;">
+                <h1 style="font-family: 'Space Grotesk', sans-serif; color: #111; font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 20px; letter-spacing: -1px;">Affordable plans for every budget</h1>
+                <p style="font-family: 'Inter', sans-serif; color: #666; font-size: 1.1rem; max-width: 700px; margin: 0 auto 40px; line-height: 1.6;">Explore our range of pricing options designed to fit any budget, offering exceptional value and flexibility to meet your unique needs</p>
+                <div style="font-family: 'Space Grotesk', sans-serif; color: #111; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; max-width: 1000px; margin: 0 auto; line-height: 1.8;">
+                  5 Flexible Plans &nbsp;&bull;&nbsp; Scales for All Business Needs &nbsp;&bull;&nbsp; UI/UX, Backend, and E-Commerce Solutions &nbsp;&bull;&nbsp; Maintenance Included
+                </div>
+              </div>
+            `;
+            marquee.insertAdjacentElement('afterend', customHeader);
+          }
+
+          if (firstSectionHeader) {
+            clearInterval(timer);
+          }
+        }
+      }, 50);
+
+      // Stop checking after 5 seconds
+      setTimeout(() => clearInterval(timer), 5000);
+    })();
+  </script>
+
+  <!-- Digital Journey Section / Footer (Matching Branding Page) -->
+  <section class="digital-journey-section" style="position: relative; z-index: 10;">
+    <div class="dj-container">
+      <div class="dj-content">
+        <div class="dj-text-group">
+          <h1 class="dj-title">
+            YOUR <br>
+            <span class="text-blue">
+              DIGITAL JOURNEY
+            </span><br>
+            <span class="text-lime">STARTS HERE.</span>
+          </h1>
+
+          <div class="dj-buttons">
+            <a href="/BookUs" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-primary">
+                BOOK NOW
+              </button>
+            </a>
+            <a href="/Pricing" rel="noopener noreferrer">
+              <button class="btn-dj btn-dj-secondary">
+                VIEW PLANS
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="dj-video-group">
+          <span class="video-wrapper">
+            <video src="../images/mascot.mp4" class="dj-video" autoplay loop muted playsinline>
+              Your browser does not support the video tag.
+            </video>
+          </span>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <div class="footer-header-container">
+          <h2 class="footer-title">
+            JOIN OUR COMMUNITY
+          </h2>
+        </div>
+        <div class="footer-curve">
+          <div class="footer-socials">
+            <div class="social-links">
+              <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://discord.gg/HENvXDQQZJ"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" target="_blank"
+                rel="noopener noreferrer">
+                <i class="fa-brands fa-discord"></i>
+              </a>
+              <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                class="text-[#0E0E0E] hover:text-[#4F46E5] transition-colors duration-300" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+            </div>
+            <div class="about-policy-links" style="display: flex; gap: 15px; font-family: 'Space Grotesk', sans-serif;">
+              <a href="../docs/T&C and Privacy Policy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+              <a href="../docs/Refund Policy.pdf" target="_blank" rel="noopener noreferrer">Refund Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright-text" style="color: #000000;">
+        &copy; COPYRIGHT MKAVS GLOBAL TECH/ SUPPORT@MKAVS.COM
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile Side Menu Overlay -->
+  <div id="mobile-menu-overlay"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999998] opacity-0 pointer-events-none transition-opacity duration-300" style="z-index: 999998 !important;">
+        </div>
+
+        <!-- Mobile Side Menu Panel -->
+        <div id="mobile-menu-panel"
+            class="fixed inset-y-0 left-0 w-[75vw] max-w-[320px] bg-[#121212]/95 border-r border-white/10 backdrop-blur-xl z-[999999] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 pointer-events-auto" style="z-index: 999999 !important;">
+            <!-- Close Button -->
+            <div class="flex justify-between items-center mb-8">
+                <!-- Logo Image -->
+                <img src="/images/MKAVS.png" alt="MKAVS" class="h-8 w-auto">
+                <button id="mobile-menu-close" class="text-white text-3xl hover:text-[#c7f908] transition-colors p-2"
+                    aria-label="Close Menu">&times;</button>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex flex-col space-y-5 text-lg font-bold text-gray-300 flex-grow">
+                <a href="/Home" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Home</a>
+                <a href="/About" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">About</a>
+                <a href="/Works" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Our Work</a>
+                <a href="/Branding" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Branding</a>
+                <a href="/Pricing" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Pricing</a>
+                <a href="/BookUs" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Book Us</a>
+                <a href="/Support" class="hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Support</a>
+                <a href="/BookUs" class="login-btn hover:text-[#c7f908] transition-colors py-1 border-b border-white/5">Login</a>
+            </div>
+
+            <!-- Social Icons at bottom -->
+            <div class="flex space-x-6 text-2xl pt-6 border-t border-white/10 mt-auto justify-center">
+                <a href="https://www.instagram.com/mkavsglobaltech/" target="_blank"
+                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="https://discord.gg/HENvXDQQZJ" class="text-white hover:text-[#c7f908]" target="_blank"
+                    rel="noopener noreferrer"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.linkedin.com/company/mkavs-global-tech/about/" target="_blank"
+                    class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+                <a href="/Profile" class="text-white hover:text-[#c7f908]" rel="noopener noreferrer"
+                    aria-label="User Profile"><i class="fa-regular fa-user"></i></a>
+            </div>
+        </div>
+        </div>
+    <!-- Mobile Side Menu Logic -->
+    <script>
+    (() => {
+        const mobileMenuTrigger = document.getElementById('mobile-menu-trigger');
+        const customTrigger = document.getElementById('custom-mobile-menu-trigger');
+        const trigger = mobileMenuTrigger || customTrigger;
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+        if (trigger && mobileMenuOverlay && mobileMenuPanel) {
+            const openMobileMenu = () => {
+                mobileMenuPanel.classList.remove('-translate-x-full');
+                mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
+            };
+
+            const closeMobileMenu = () => {
+                mobileMenuPanel.classList.add('-translate-x-full');
+                mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+                mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+            };
+
+            trigger.addEventListener('click', openMobileMenu);
+            if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+        }
+    })();
+    </script>
+</body>
+
+</html>
