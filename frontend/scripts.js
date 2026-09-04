@@ -98,13 +98,17 @@ let endCapVideoSlide5;
 let endCapVideoSlide6;
 let mainFooter; // May not exist in DOM based on previous file, but we keep reference safety
 let scrollbarTrack, scrollbarThumb;
+let cachedToolbarElements = null;
+let lastToolbarIsSlide0 = null;
+let isHeroDotsRunning = false;
+let restartHeroDotsFn = null;
 
 
 // --- Data for Thumbnail Switching ---
 const THUMBNAIL_DATA = {
-    'portfolio': ['images/thumb2.png', 'images/thumb1.png', 'images/thumb3.png'],
-    'company': ['images/thumb5.png', 'images/thumb4.png', 'images/thumb6.png'],
-    'ecommerce': ['images/thumb8.png', 'images/thumb7.png', 'images/thumb9.png'],
+    'portfolio': ['images/thumb2.webp', 'images/thumb1.webp', 'images/thumb3.webp'],
+    'company': ['images/thumb5.webp', 'images/thumb4.webp', 'images/thumb6.webp'],
+    'ecommerce': ['images/thumb8.webp', 'images/thumb7.webp', 'images/thumb9.webp'],
 };
 
 const CATEGORY_ORDER = ['company', 'ecommerce', 'portfolio'];
@@ -265,7 +269,7 @@ function updateMainZoomImage(newSrc) {
 
     const zoomLink = document.getElementById('zoom-image-link');
     if (zoomLink) {
-        const match = newSrc.match(/thumb(\d+)\.png/);
+        const match = newSrc.match(/thumb(\d+)\.(png|webp)/);
         if (match && match[1]) {
             const portfolioNumber = match[1];
             // Check if this portfolio has an external URL
@@ -1575,7 +1579,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (desktopMid || mobileMid) {
         function toggleMidChar() {
             isChar1 = !isChar1;
-            const fileName = isChar1 ? 'mid1.png' : 'mid.png';
+            const fileName = isChar1 ? 'mid1.webp' : 'mid.webp';
             const duration = isChar1 ? 1500 : 400; // mid1: 1.5s, mid: 0.4s
 
             if (desktopMid) {

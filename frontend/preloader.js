@@ -21,7 +21,7 @@
             transition: opacity 0.8s ease-out;
         ">
             <div style="margin-bottom: 2rem;">
-                <img src="images/LOGOI.png" alt="mKavs Logo" style="height: 80px; filter: brightness(0) invert(1);" onerror="this.style.display='none'" />
+                <img src="images/LOGOI.webp" alt="mKavs Logo" style="height: 80px; filter: brightness(0) invert(1);" onerror="this.style.display='none'" />
             </div>
             
             <div style="
@@ -99,6 +99,8 @@
     let actualProgress = 0;
     let displayedProgress = 0;
     let preloaderCompleted = false;
+    let progressBar = null;
+    let progressText = null;
 
     function loop() {
         if (preloaderCompleted) return;
