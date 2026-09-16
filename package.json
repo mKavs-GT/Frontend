@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ../Backend/server.js",
-    "build": "npm run build --prefix frontend/admin",
+    "build:tailwind": "tailwindcss -i ./tailwind-input.css -o ./frontend/tailwind.min.css --minify",
+    "build": "npm run build:tailwind && npm run build --prefix frontend/admin",
     "postinstall": "npm install --prefix frontend/admin",
     "dev": "node ../Backend/scripts/open-admin.js --with-server",
     "admin": "node ../Backend/scripts/open-admin.js"
@@ -41,5 +42,8 @@
   "bugs": {
     "url": "https://github.com/vinithvrangan/mkavs-backend-testing/issues"
   },
-  "homepage": "https://github.com/vinithvrangan/mkavs-backend-testing#readme"
+  "homepage": "https://github.com/vinithvrangan/mkavs-backend-testing#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
 }
